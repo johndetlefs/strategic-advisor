@@ -90,7 +90,7 @@ Produce the deterministic early-access Agent Skills archive, prove every locally
 - [x] AC3: A fresh Codex context discovers and invokes the exact packaged source with retained runtime-target-source proof. Covers parent AC2. The downloaded standalone archive was invoked in an isolated clean Codex project with retained hash and source-access events.
 - [x] AC4: A fresh Claude Code context proves the equivalent path, or remains explicitly experimental with the missing proof named. Covers parent AC2. Claude Code is unavailable on the current test machine, and the missing live proof is explicit.
 - [x] AC5: Claude.ai and eligible ChatGPT accept and invoke the same archive in fresh chats, or remain individually experimental with exact verification steps. Covers parent AC1 and AC2. Both hosted paths remain experimental pending authorised account checks.
-- [ ] AC6: Public and machine-readable claims agree for every host on prerequisites, artifact identity, validation state, and behavioural limitations. Covers parent AC1. The corrected documents agree in this review branch; live default-branch verification must follow publication.
+- [x] AC6: Public and machine-readable claims agree for every host on prerequisites, artifact identity, validation state, and behavioural limitations. Covers parent AC1. The exact public `main` revision `527cbaf32add434e5d9e94c57b06e3f8cbe6ea50`, release, asset digests, and current host contracts were re-queried after publication.
 - [x] AC7: Clean-checkout build/validation reproduce the package identity and no host adapter copies strategic logic. Covers parent AC2 and AC7. Public-clone reproduction, independent download verification, exact-main CI, and negative drift/leakage coverage pass.
 
 ## Validation
@@ -110,28 +110,28 @@ Produce the deterministic early-access Agent Skills archive, prove every locally
 | 3 | Prove Codex installation | Install or link the packaged source in a clean Codex target and retain discovery, activation, and exact-source proof. | AC3: runtime-target-source evidence identifies the tested package and fresh context. | Invoke the skill explicitly on a synthetic canary and inspect loaded source identity. | Done — exact downloaded package and observable source-access trace retained |
 | 4 | Prove Claude Code installation | Install or link the same package at a documented Claude Code scope and retain equivalent proof if the host is available. | AC4: exact-host evidence passes, or public state remains experimental with the missing step explicit. | List available skills and invoke `/strategic-advisor` in a fresh clean project. | Done as explicit experimental path; executable unavailable locally |
 | 5 | Prepare and validate hosted uploads | Document and exercise the same ZIP in Claude.ai and eligible ChatGPT using authorised fresh chats. | AC5: each host has its own upload/activation evidence or an explicit experimental verdict and exact user check. | Upload, enable/install, explicitly invoke, and retain non-private host evidence. | Done as explicit experimental paths; authorised UI proof pending |
-| 6 | Align public host matrix | Update README, installation guide, product contract, and claim validation without implying behavioural parity. | AC6: public and structured claims match current proof for all four host paths. | Run claim/link validation and compare every host row with its evidence record. | In Testing — corrected documents await default-branch publication and live recheck |
-| 7 | Reproduce and hand off | Rebuild from a clean checkout, run the full suite, complete QA/code review, and prepare the exact early-access artifact. | AC7 and all ACs: clean proof is current and no invalid substitute is used. | Compare clean archive identity, CI-ready results, evidence records, and QA verdict. | In Testing — QA changes requested; public-claim closure remains |
+| 6 | Align public host matrix | Update README, installation guide, product contract, and claim validation without implying behavioural parity. | AC6: public and structured claims match current proof for all four host paths. | Run claim/link validation and compare every host row with its evidence record. | Done — exact public `main` revision and host claims re-queried after publication |
+| 7 | Reproduce and hand off | Rebuild from a clean checkout, run the full suite, complete QA/code review, and prepare the exact early-access artifact. | AC7 and all ACs: clean proof is current and no invalid substitute is used. | Compare clean archive identity, CI-ready results, evidence records, and QA verdict. | Done — QA passed with explicit cross-host and behavioural follow-ups |
 
 ## Parent AC Evidence
 
-- AC1: CLM-001 remains pending until the corrected README, installation guide, and product contract are merged to the public default branch and rechecked there. Release existence and artifact identities are already observed, but they are not an invalid substitute for live public-claim alignment.
+- AC1: `EVIDENCE.json` CLM-001 and `evidence/CLM-001-release-contract-alignment.json` retain the live public repository, exact default-branch document blobs, prerelease, asset identities, official host-contract comparison, and unsupported claim boundary after publication.
 - AC2: `EVIDENCE.json` CLM-002, `evidence/CLM-002-codex-runtime-source.json`, and its linked trace/output retain exact downloaded-package source use in a fresh Codex target.
 - AC7: `EVIDENCE.json` CLM-006 and `evidence/CLM-006-clean-release-reproduction.json` retain the fresh public clone, two-build comparison, independent verifier result, 93-test suite, exact-main CI, and downloaded-asset recheck.
 
 ## QA & Code Review
 
 - Date: 2026-07-22
-- Verdict: Changes requested
+- Verdict: Pass with follow-ups
 - Evidence: 93/93 unit tests pass; all seven repository validator scopes pass; the 31-case generated inventory is current; strict workflow doctor and `git diff --check` pass; exact artifact and nested evidence hashes were independently recomputed.
-- Findings: The first review rejected CLM-001 because it claimed live public-claim alignment at release commit `c15c859dbdd69bac78c4708532f4fe2406320d17`, whose README and installation guide still predated the published release and retained Codex proof. The review also required the exact Codex invocation prompt and separation of alpha-pinned verification from local-build verification. The prompt and verifier documentation are now corrected in this branch. CLM-001, AC6, task row 6, and final handoff remain open until these documentation changes are public and verified on `main`.
+- Findings: The first review correctly rejected premature CLM-001 public-state evidence, the missing exact Codex prompt, and a verifier example that mixed alpha-pinned and local-build identities. PR 2 published the corrected documents and exact-prompt evidence. A fresh live query then verified public `main` revision `527cbaf32add434e5d9e94c57b06e3f8cbe6ea50`, its README/install/product-contract blobs, public visibility/default branch, prerelease assets and digests, and current host-contract boundaries. Final review found that the release body still linked the older tag-pinned INSTALL file; the link was corrected to the immutable public-claims revision and re-queried before pass. No blocking finding remains. The Codex trace transparently retains one failed root-relative path probe followed by successful reads from the exact installed skill paths; the failed probe is not used as proof.
 - Follow-ups not blocking this early-access packaging task: Claude Code, Claude.ai, ChatGPT Personal Skills, and ChatGPT desktop Work-mode activation remain experimental; matched behavioural evaluation and real-pilot validation remain outside this task and incomplete.
 
 ## Retro
 
-- Reusable lessons: ____
-- Conventions or agent assets updated: ____
-- Follow-up tasks: ____
+- Reusable lessons: Public-state evidence cannot predate publication; retain the exact invocation prompt as well as output and observable source use; distinguish package activation from behavioural effectiveness.
+- Conventions or agent assets updated: Installation guidance now separates trusted release-pinned verification from structural verification of a local build, and QA records preserve initial rejected claims rather than rewriting history.
+- Follow-up tasks: Execute the frozen matched behavioural comparison under TASK-004, run sanitised real pilots under TASK-005, and collect separate authorised activation evidence for Claude Code, Claude.ai, ChatGPT Personal Skills, and ChatGPT desktop Work mode.
 
 ## Notes
 

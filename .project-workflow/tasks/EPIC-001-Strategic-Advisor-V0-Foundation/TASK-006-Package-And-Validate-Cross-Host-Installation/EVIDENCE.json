@@ -6,14 +6,14 @@
       "parent_ac": "AC1",
       "claim": "The public early-access repository, release assets, and installation claims align with current host contracts and exact generated artifacts without asserting unproved host activation.",
       "recipe": "external-contract-alignment",
-      "status": "pending",
-      "commit": "____",
-      "timestamp": "____",
-      "contract_artifact": "Current official OpenAI and Anthropic Agent Skills and plugin documentation plus the public product contract at the exact release revision",
+      "status": "pass",
+      "commit": "527cbaf32add434e5d9e94c57b06e3f8cbe6ea50",
+      "timestamp": "2026-07-22T08:07:35Z",
+      "contract_artifact": "Current official OpenAI and Anthropic Agent Skills and plugin documentation plus the public product contract at the exact public-claims revision",
       "implementation_artifact": "Public repository/default-branch state, release tag and assets, install provenance, README, INSTALL.md, and PRODUCT-CONTRACT.md",
       "comparison_method": "Compare repository, release, artifact, host-surface, prerequisite, support-state, and limitation claims field by field against official contracts and exact generated identities",
-      "evidence_artifact": "____",
-      "evidence_artifact_hash": "____"
+      "evidence_artifact": "evidence/CLM-001-release-contract-alignment.json",
+      "evidence_artifact_hash": "sha256:a4670e2b268288a8f5c886d94837ec9eaf30536f6e73390ff53b3d73446cbbd9"
     },
     {
       "id": "CLM-002",
