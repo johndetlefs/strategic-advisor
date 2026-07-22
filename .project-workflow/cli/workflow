@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# project-workflow:generated
+set -eu
+
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+
+# Always use Python 3 explicitly; many systems do not provide a `python` alias.
+exec python3 "$SCRIPT_DIR/workflow.py" "$@"

@@ -1,0 +1,17 @@
+{
+  "task_id_prefixes": [
+    "TASK"
+  ],
+  "default_task_id_prefix": "TASK",
+  "id_generation": {
+    "tasks": "sequential",
+    "epics": "sequential",
+    "fixes": "sequential",
+    "backlog": "sequential"
+  },
+  "unique_id_length": 5,
+  "accepted_doctor_warnings": [],
+  "prefix_guidance": {
+    "TASK": "General task work that does not need a repository-specific namespace."
+  }
+}
