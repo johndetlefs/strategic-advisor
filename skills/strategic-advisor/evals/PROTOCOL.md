@@ -1,13 +1,13 @@
 # Comparative Evaluation Protocol
 
-This protocol operationalises condition-masked comparison. It does not claim that a scorer cannot infer the condition from response structure. No treatment, control, scorer, or adjudicator output may exist before the iteration authority is frozen.
+This protocol operationalises condition-masked comparison. Quality scoring is isolated from condition-identifiability auditing; label masking is not claimed to make condition inference impossible. No treatment, control, quality-scorer, condition-auditor, assertion-grader, or adjudicator output may exist before the iteration authority is frozen.
 
 ## 1. Assemble before freezing
 
 1. Import all normative core and lens-case specifications.
 2. Build one executable `evals.json` with at least 16 distinct cases covering every required core and professional-lens risk.
 3. Validate prompts, expected decision properties, declared applicability, files, synthetic/public provenance, and coverage.
-4. Finalise `eval_queries.json`, [`RUBRIC.md`](RUBRIC.md), [`AGGREGATION.md`](AGGREGATION.md), the scorer, adjudicator, and case-assertion-grader prompts, model and tool controls, masking rules, host activation contract, declared evaluation clusters, sealed-holdout commitment, and all thresholds.
+4. Finalise `eval_queries.json`, [`RUBRIC.md`](RUBRIC.md), [`AGGREGATION.md`](AGGREGATION.md), the quality-scorer, condition-auditor, adjudicator, and case-assertion-grader prompts, model and tool controls, masking and structure-view rules, host activation contract, declared evaluation clusters, sealed-holdout commitment, and all thresholds.
 5. Confirm that no output or result artifact exists for the iteration.
 6. Commit that complete authority surface. This commit becomes `authority_source_commit`.
 
@@ -22,7 +22,7 @@ Use this two-commit envelope:
 1. `authority_source_commit` contains the final pre-result cases, rubric, protocol, aggregation contract, prompts, builder, and source allowlist, but no actual iteration outputs.
 2. From a clean checkout of that commit, build the runtime package provenance manifest and populate the iteration freeze manifest.
 3. Create a new single-parent **freeze commit** whose sole parent is `authority_source_commit`. It may add only the populated freeze manifest and the frozen artifacts it hashes: the runtime-package provenance manifest, exact non-secret context/tool/input artifacts, host activation contract, and sealed-holdout commitment/independence attestation. It must not modify an authority file or contain output.
-4. After committing, record the freeze-commit SHA and the SHA-256 of the populated freeze manifest in every generation, masking, score, adjudication, and result manifest. Git history supplies the parent relationship; those identities live outside the self-referential freeze document.
+4. After committing, record the freeze-commit SHA and the SHA-256 of the populated freeze manifest in every generation, masking, quality-score, condition-audit, assertion-grade, adjudication, and result manifest. Git history supplies the parent relationship; those identities live outside the self-referential freeze document.
 
 A merge commit, an authority-file change in the freeze commit, a dirty source tree, a mismatched parent/tree, or a result referring to another freeze identity invalidates the iteration.
 
@@ -61,7 +61,7 @@ Freeze the host-specific activation contract before output. User prompts remain 
 
 Context freshness is an auditable identity requirement, not an instruction to clear a reused conversation invisibly.
 
-## 5. Precommitted masking and scoring
+## 5. Precommitted masking, quality scoring, and condition auditing
 
 The freeze manifest supplies a 64-character lowercase hexadecimal `masking_seed_hex`. Parse it into 32 bytes and use HMAC-SHA-256 with algorithm ID `hmac-sha256-mask-v1`.
 
@@ -75,7 +75,16 @@ mapping_digest = HMAC-SHA256(
 )
 ```
 
-If `mapping_digest[0] & 1` is `0`, skilled is `A` and control is `B`; otherwise skilled is `B` and control is `A`. Store the mapping outside every scorer and adjudicator context.
+If `mapping_digest[0] & 1` is `0`, skilled is base response `A` and control is base response `B`; otherwise skilled is base response `B` and control is base response `A`. The base mapping is the only mapping used to unmask quality results. Store it outside every quality-scorer, condition-auditor, assertion-grader, and adjudicator context.
+
+### Quality-pass label inversion
+
+The two quality passes use the same frozen model family, exact model/version, host, configuration, prompt, rubric, case inputs, and candidate bytes in separate fresh contexts. They are repeated evidence from the same judge family, not independent judges.
+
+- `score-1`: presentation `A` is base response `A`; presentation `B` is base response `B`.
+- `score-2`: presentation `A` is base response `B`; presentation `B` is base response `A`.
+
+This exact inverse is algorithm `inverse-ab-quality-pass-v1`; no random draw or model choice controls it. Retain the pass-specific presentation map outside both scorer contexts. Before comparing pass scores, detecting disagreement, or adjudicating, normalize `score-2.A` to base `B` and `score-2.B` to base `A`. Never average or compare the same presentation letter across passes without this normalization.
 
 For scoring pass ID `score-1` or `score-2`, derive pair presentation order by sorting ascending on:
 
@@ -89,19 +98,49 @@ HMAC-SHA256(
 
 Break any digest tie by `(case_id, draw_id)` lexical order. Do not use a runtime-default random generator.
 
-For every `(case_id, draw_id, pass_id, attempt_id)`, start a separate fresh scorer context and retain its unique host context ID. `score-1` and `score-2` cannot share a context with each other or any other pair. Supply the case's frozen `not_applicable_dimensions` array as scope metadata. Require the scorer to echo it exactly, derive applicability only from membership, make no N/A choice of its own, record the condition guess before scores, provide response-specific evidence for every applicable dimension, and return all hard-gate verdicts.
+For every `(case_id, draw_id, pass_id, attempt_id)`, start a separate fresh quality-scorer context and retain its unique host context ID. `score-1` and `score-2` cannot share a context with each other or any other pair. Supply the case's frozen `not_applicable_dimensions` array as scope metadata. Require the scorer to echo it exactly, derive applicability only from membership, make no N/A choice of its own, provide response-specific evidence for every applicable dimension, and return all hard-gate verdicts. The scorer must not receive, guess, or return apparent condition. Any score, gate, comparison, or evidence based on apparent origin is invalid and receives only the frozen parser/contract retry.
 
-If the frozen disagreement rule triggers, start a separate fresh adjudication context for each `(case_id, draw_id, disputed_subject, attempt_id)`, retain its unique context ID, and provide only the masked dispute inputs permitted by the adjudicator contract.
+If the frozen disagreement rule triggers after pass-label normalization, start a separate fresh adjudication context for each `(case_id, draw_id, disputed_subject, attempt_id)`, retain its unique context ID, and provide only base-A/base-B masked dispute inputs permitted by the adjudicator contract.
 
 After generation, grade each masked A and B response against its frozen case assertions in two independent passes, `assertion-1` and `assertion-2`. Every `(case_id, draw_id, response_id, assertion_pass_id, attempt_id)` uses a separate fresh context with a retained unique ID. The assertion grader receives one response and cannot receive the A/B mapping, the other response, general scores, prior grades, or another case. Assertion grades never enter the general scorer or adjudicator context.
 
-For scorer, adjudicator, and assertion-grader JSON/parser failure, retain the invalid raw artifact and allow exactly one fresh-context retry for the same logical pass with only the frozen inputs and machine diagnostic codes. Record `attempt_id` as `initial` or `parser-retry-1`. A retry is not an independent draw, score pass, assertion pass, or adjudication. A second parser failure is an error. No generation context is retryable, and no generation, scorer, adjudicator, assertion-grader, or retry context ID may be reused.
+### Deterministic structure-only view
 
-Report condition-guess accuracy and confidence as masking evidence, not proof that response structure concealed condition. Calculate leakage over every determinate A/B guess regardless of the scorer's self-reported basis; basis labels are diagnostic only.
+The gating audit must physically exclude lexical response content rather than asking an auditor to ignore prose it can see. Algorithm `structure-view-v1` operates independently on each raw UTF-8 response:
+
+1. Decode strict UTF-8 and normalize `CRLF` and `CR` to `LF`; invalid UTF-8 is an audit error.
+2. Process lines in order and emit one record per source line. A blank line emits `BLANK`. A non-blank line emits exactly one kind: `ATX_HEADING`, `SETEXT_MARKER`, `UNORDERED_ITEM`, `ORDERED_ITEM`, `BLOCKQUOTE`, `FENCE`, `TABLE_ROW`, or `TEXT` using ordinary Markdown prefixes in that precedence order.
+3. Each non-blank record retains only kind, zero-based leading-space count, Markdown marker class or heading level when applicable, Unicode-code-point count after its structural prefix, Unicode-whitespace-delimited word count, and counts of link-shaped spans, inline-code spans, and emphasis markers. It never retains words, link targets, code, numbers from prose, heading text, list item text, quotations, or punctuation other than the structural marker class.
+4. Preserve record order and terminate the rendered UTF-8 structure view with one `LF`. The runner hashes and retains the raw response and rendered view separately.
+
+Any implementation that exposes lexical tokens, silently repairs invalid input, uses a model to summarize structure, or changes these records is not `structure-view-v1` and invalidates the iteration.
+
+### Separate condition-identifiability audits
+
+Run [`CONDITION-AUDITOR-PROMPT.md`](CONDITION-AUDITOR-PROMPT.md) once in each mode for every `(case_id, draw_id)` after both responses exist. Each mode gets a separate fresh context and cannot receive quality scores, mappings, assertions, expected properties, skill files, another pair, or the other mode's output.
+
+Derive the mode-specific presentation map with HMAC-SHA-256:
+
+```text
+audit_mapping_digest = HMAC-SHA256(
+  key = masking_seed_bytes,
+  message = UTF8("strategic-advisor-condition-audit-map-v1") || 0x00 ||
+            UTF8(audit_mode) || 0x00 || UTF8(case_id) || 0x00 || UTF8(draw_id)
+)
+```
+
+If `audit_mapping_digest[0] & 1` is `0`, audit presentation A is base A and B is base B; otherwise they are swapped. Retain this map outside auditor context.
+
+- `structure-only` receives only the two `structure-view-v1` artifacts. It is the sole condition-identifiability result used by the release gate.
+- `full-response` receives the case and full candidate responses, not structure views. It reports full-response identifiability descriptively. Its accuracy cannot pass, fail, rescue, reweight, or alter the release gate or any quality result.
+
+For quality-scorer, condition-auditor, adjudicator, and assertion-grader JSON/parser failure, retain the invalid raw artifact and allow exactly one fresh-context retry for the same logical pass with only the frozen inputs and machine diagnostic codes. Record `attempt_id` as `initial` or `parser-retry-1`. A retry is not an independent draw, quality pass, audit, assertion pass, or adjudication. A second parser failure is an error. No generation context is retryable, and no generation, quality-scorer, condition-auditor, adjudicator, assertion-grader, or retry context ID may be reused.
+
+After unmasking, report each audit mode's guess, confidence, correctness, determinate count, unclear count, and accuracy. Apply the frozen systematic-leakage threshold only to `structure-only`; report `full-response` separately without a gating verdict.
 
 ## 6. Aggregate without moving the goalposts
 
-Use [`AGGREGATION.md`](AGGREGATION.md) exactly. It defines scorer resolution, the sole N/A hook, fail-closed missing/error handling, declared evaluation-cluster estimates, the SHA-256 evaluation-cluster bootstrap sampler, Type 7 percentile interval, exact win/loss/tie classification, trigger metrics, and required result provenance.
+Use [`AGGREGATION.md`](AGGREGATION.md) exactly. It defines quality-pass normalization and resolution, condition-audit accounting, the sole N/A hook, fail-closed missing/error handling, declared evaluation-cluster estimates, the SHA-256 evaluation-cluster bootstrap sampler, Type 7 percentile interval, exact win/loss/tie classification, trigger metrics, and required result provenance.
 
 The sealed holdout is committed by hash and independence attestation before public-matrix outputs are viewed. Its plaintext cases and expected properties stay unavailable to the skill authors and generation conditions until the public matrix is complete. After opening, retain the commitment comparison and run it once through the frozen pipeline; do not tune the skill, prompts, thresholds, or holdout inside that iteration.
 
@@ -111,4 +150,4 @@ Retain failed, errored, incomplete, and extra artifacts. Do not replace, remove,
 
 ## 7. Review
 
-Use a human reviewer before any public effectiveness claim. Review the authority/freeze parent relationship, package bytes and manifest, exact context/activation artifacts, holdout commitment and independence, raw outputs, case fairness, scorer evidence, condition-guess leakage, context uniqueness, disagreements, errors, applicability, evaluation-cluster aggregation reproduction, and every hard gate. Same-family model judging is useful evidence but not independent human validation. A missing human review blocks a public effectiveness claim even when the automated gate passes; systematic structural leakage fails the automated gate under the rubric and cannot be waived inside the iteration.
+Use a human reviewer before any public effectiveness claim. Review the authority/freeze parent relationship, package bytes and manifest, exact context/activation artifacts, holdout commitment and independence, raw outputs, case fairness, quality-scorer evidence, inverse-label normalization, both condition-audit modes, structure-view byte isolation, context uniqueness, disagreements, errors, applicability, evaluation-cluster aggregation reproduction, and every hard gate. Same-family model judging is useful repeated evidence but not independent human validation. A missing human review blocks a public effectiveness claim even when the automated gate passes; systematic structure-only leakage fails the automated gate under the rubric and cannot be waived inside the iteration, while full-response identifiability remains descriptive.

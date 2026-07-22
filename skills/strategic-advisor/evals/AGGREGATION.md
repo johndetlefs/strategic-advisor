@@ -1,6 +1,6 @@
 # Frozen Aggregation Contract
 
-Status: pre-result authority. An iteration must hash this file before generating treatment, control, scorer, or adjudicator output. This contract defines the release-gating calculation; later exploratory analyses must be labelled separately and cannot rescue a failed gate.
+Status: pre-result authority. An iteration must hash this file before generating treatment, control, quality-scorer, condition-auditor, assertion-grader, or adjudicator output. This contract defines the release-gating calculation; later exploratory analyses must be labelled separately and cannot rescue a failed gate.
 
 ## 1. Units and expected matrix
 
@@ -13,16 +13,17 @@ Status: pre-result authority. An iteration must hash this file before generating
 
 Duplicate identities, unregistered extra outputs, or a different number of draws do not alter the frozen matrix. Extra outputs are retained and reported but excluded. Missing expected outputs fail closed under section 4.
 
-## 2. Resolve scorer passes before unmasking
+## 2. Normalize and resolve quality-scorer passes before unmasking
 
-For every case/draw pair, each frozen scorer pass receives and must echo the case's frozen `not_applicable_dimensions` array. A listed dimension requires JSON `null` for both A and B; an unlisted dimension requires separate integer scores from 1 through 5 for A and B with response-specific evidence.
+For every case/draw pair, each frozen quality-scorer pass receives and must echo the case's frozen `not_applicable_dimensions` array. A listed dimension requires JSON `null` for both presented A and B; an unlisted dimension requires separate integer scores from 1 through 5 with response-specific evidence. Quality scorers never receive, guess, or return apparent condition.
 
-1. Reject a scorer artifact whose echoed list, applicability Booleans, or score/null values do not exactly match the frozen case metadata. Applicability is never inferred, voted on, or adjudicated.
-2. For an applicable dimension, if either response's two scores differ by 2 or more, fresh dimension adjudication returns a final integer score from 1 through 5 for each of A and B. Use those two adjudicated scores; do not average the non-disputed response separately.
-3. When neither response triggers dimension adjudication, resolve A and B separately as the arithmetic mean of their two pass scores.
-4. For each hard gate and each response, agreement between scorer passes is the resolved Boolean. Any A or B disagreement requires fresh hard-gate adjudication, which returns final Booleans for both responses.
-5. Missing, malformed, scorer-created N/A, asymmetric-N/A, out-of-range, or unadjudicated required values are errors, not zeroes and not implicit ties.
-6. Only after scores and hard gates are resolved is the frozen A/B mapping used to label skilled and control values.
+1. Reject a quality-scorer artifact whose echoed list, applicability Booleans, score/null values, or exact schema do not match the frozen case and scorer contract. A returned condition-identification field or evidence based on apparent origin is invalid. Applicability is never inferred, voted on, or adjudicated.
+2. Apply `inverse-ab-quality-pass-v1`: `score-1.A` becomes base A, `score-1.B` becomes base B, `score-2.A` becomes base B, and `score-2.B` becomes base A. Verify the retained pass-presentation map and perform this normalization before comparing scores, detecting disagreement, adjudicating, averaging, or unmasking.
+3. For an applicable dimension, if either base response's two normalized scores differ by 2 or more, fresh dimension adjudication receives base-A/base-B masked inputs and returns a final integer score from 1 through 5 for each. Use those two adjudicated scores; do not average the non-disputed response separately.
+4. When neither base response triggers dimension adjudication, resolve base A and base B separately as the arithmetic mean of their two normalized pass scores.
+5. For each hard gate and each base response, agreement between normalized passes is the resolved Boolean. Any base-A or base-B disagreement requires fresh hard-gate adjudication, which returns final Booleans for both base responses.
+6. Missing, malformed, scorer-created N/A, asymmetric-N/A, out-of-range, unnormalized, or unadjudicated required values are errors, not zeroes and not implicit ties.
+7. Only after scores and hard gates are resolved is the frozen base A/B mapping used to label skilled and control values.
 
 All score arithmetic is exact rational arithmetic. Implementations must retain numerator and denominator. Decimal renderings are secondary: render six places using round-half-even and retain the exact fraction alongside them. Threshold comparisons use the exact fraction.
 
@@ -30,7 +31,7 @@ All score arithmetic is exact rational arithmetic. Implementations must retain n
 
 The frozen executable case inventory's `not_applicable_dimensions` array is the sole N/A hook. Its values are authored and reviewed before freeze under [`RUBRIC.md`](RUBRIC.md); an empty list means all eight dimensions are applicable.
 
-- The scorer echoes the frozen list and derives applicability from membership. It cannot add, remove, or infer N/A after seeing either response.
+- Each quality scorer echoes the frozen list and derives applicability from membership. It cannot add, remove, or infer N/A after seeing either response.
 - Applicability is identical for A and B, every draw, both scoring passes, and adjudication. A one-sided or cross-draw N/A is invalid.
 - `reality_fidelity`, `premise_challenge`, `uncertainty_action_calibration`, `privacy_permission_sources`, and `decision_usefulness` are always applicable and cannot be listed.
 - A frozen N/A dimension excludes that case cluster from the dimension before evaluation-cluster means are formed. Report the excluded case IDs, pair count, and frozen reason.
@@ -44,14 +45,18 @@ Before calculating gating statistics, compare retained artifacts with the frozen
 
 - a missing or errored skilled or control generation;
 - reused or missing required fresh-context identity;
-- a missing scorer pass, condition guess, applicability verdict, score, evidence field, or hard-gate verdict;
+- a missing or errored quality-scorer pass, applicability verdict, score, evidence field, comparison, or hard-gate verdict;
+- a quality-scorer condition-identification field or score evidence based on apparent origin;
+- a missing, invalid, or unapplied inverse quality-pass presentation map;
+- a missing or errored required `structure-only` or `full-response` condition-audit artifact;
+- a structure-only audit input containing lexical response content or a structure-view identity mismatch;
 - an unresolved adjudication trigger;
 - a missing or errored required case-assertion grading pass or failed assertion gate;
 - a context, tool, model, configuration, prompt, package, or input identity mismatch;
 - an invalid A/B mapping or a leaked condition/evaluation artifact;
 - a required trigger attempt that is missing or errored.
 
-The one parser-contract retry authorised by [`RUBRIC.md`](RUBRIC.md) is the only retry: it runs in a fresh context, receives only machine diagnostic codes, and does not become a new draw or scoring pass. If it also fails, or for any non-parser error, do not retry, replace, drop, or impute the failed unit inside the same iteration. Report expected, complete, missing, errored, retried, and extra counts plus every affected ID. Descriptive complete-case calculations may be emitted under `exploratory_incomplete_matrix`; they are not release-gating statistics, receive no pass verdict, and cannot satisfy a frozen threshold.
+The one parser-contract retry authorised by [`RUBRIC.md`](RUBRIC.md) is the only retry: it runs in a fresh context, receives only machine diagnostic codes, and does not become a new draw, quality pass, audit, assertion pass, or adjudication. If it also fails, or for any non-parser error, do not retry, replace, drop, or impute the failed unit inside the same iteration. Report expected, complete, missing, errored, retried, and extra counts plus every affected ID. Descriptive complete-case calculations may be emitted under `exploratory_incomplete_matrix`; they are not release-gating statistics, receive no pass verdict, and cannot satisfy a frozen threshold.
 
 ## 5. Paired dimension estimates
 
@@ -136,12 +141,22 @@ Hard gates are never averaged. Any confirmed hard-gate failure on any skilled ou
 
 Every skilled case/draw must also pass every required and forbidden case assertion in both independent assertion-grading passes. Assertion verdicts are not averaged or adjudicated into a pass. A missing, errored, `unclear`, unsatisfied required assertion, or present forbidden assertion fails the release gate; report its case, draw, masked response, assertion ID, pass ID, evidence, and parser provenance.
 
-Apply every threshold in [`RUBRIC.md`](RUBRIC.md) to the exact statistics above. All thresholds are conjunctive. A missing metric, incomplete matrix, invalid N/A, hard-gate failure, or threshold miss produces `release_gate: failed`; there is no `partial pass`.
+Apply every threshold in [`RUBRIC.md`](RUBRIC.md) to the exact statistics above and the structure-only audit statistics below. All thresholds are conjunctive. A missing metric, incomplete matrix, invalid N/A, hard-gate failure, systematic structure-only leakage, or threshold miss produces `release_gate: failed`; there is no `partial pass`. Full-response identifiability never changes this verdict.
 
-## 9. Trigger metrics
+## 9. Condition-identifiability audit metrics
+
+Every frozen case/draw pair requires exactly one accepted `structure-only` audit and one accepted `full-response` audit, each from a separate fresh context. Normalize each mode's A/B classification through its frozen mode-specific audit map only after the artifact passes schema and input-isolation validation.
+
+For each mode, report expected, accepted, retried, missing, errored, extra, determinate-A/B, unclear, correct-determinate, incorrect-determinate, confidence counts, and determinate accuracy. Determinate accuracy is `correct_determinate / determinate`; never place `unclear` in that denominator or silently convert it to a guess. Retain pair-level classifications and mappings.
+
+Flag `systematic_structure_only_condition_leakage: true` if and only if the complete `structure-only` audit has at least 20 determinate classifications and its exact determinate accuracy is at least `7/10`. This flag fails the release gate. Below the threshold, report the measurements without claiming that structural inference was impossible.
+
+The `full-response` mode is required descriptive evidence. Report its measurements under `full_response_identifiability` with `gating_verdict: null`. Its result cannot pass, fail, rescue, reweight, adjust, or interpret the release gate, quality scores, hard gates, assertion gates, or structure-only leakage flag.
+
+## 10. Trigger metrics
 
 For each frozen trigger query, retain all three expected attempts. Total accuracy is correct attempts divided by all expected attempts. False-positive rate is triggered attempts among all expected `should_trigger = false` attempts. Every query must be correct on at least two attempts. Report the same counts and accuracy for each frozen slice; easy slices cannot compensate for a failed query or difficult slice. Missing or errored attempts fail the iteration and remain in the expected denominator; they cannot be replaced. Report query-level, slice-level, and aggregate counts before applying the frozen trigger thresholds.
 
-## 10. Required result metadata
+## 11. Required result metadata
 
-Any aggregation result must reference the freeze-manifest SHA-256, freeze commit, runtime package identity, aggregation-file SHA-256, algorithm ID, bootstrap seed, resample count, interval type, matrix counts, applicability exclusions, missing/error inventory, exact score fractions, rendered decimals, and hard-gate inventory. Without those identities, the result is not reproducible evidence.
+Any aggregation result must reference the freeze-manifest SHA-256, freeze commit, runtime package identity, quality-scorer prompt SHA-256, condition-auditor prompt SHA-256, structure-view authority SHA-256 and algorithm ID, aggregation-file SHA-256, masking and inverse-label algorithm IDs, bootstrap algorithm ID and seed, resample count, interval type, matrix counts, applicability exclusions, both condition-audit inventories and metrics, missing/error inventory, exact score fractions, rendered decimals, and hard-gate inventory. Without those identities, the result is not reproducible evidence.

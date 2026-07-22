@@ -1,120 +1,148 @@
 [
   {
+    "id": "TRIGGER-001",
     "query": "We shipped every milestone, but six weeks later almost nobody is using the feature. What are we getting wrong and what should we do next?",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-002",
     "query": "My manager praises my work but promotion keeps slipping with no written criteria. Help me work out what is actually happening and choose a strategy.",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-003",
     "query": "I need a strategy for getting three directors with different incentives to approve a platform migration without pretending politics do not exist.",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-004",
     "query": "A previously strong team member is missing outcomes. I have anecdotes but weak performance data. What should I test before deciding on a performance plan?",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-005",
     "query": "We love this internal product and have invested eighteen months, but the adoption curve is flat. Should we continue, pivot, or kill it?",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-006",
     "query": "My skip-level says I am operating above level, while my manager says there is no headcount. Give me the strongest rival explanations and a career decision plan.",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-007",
     "query": "Everyone says the project is green, but the customer outcome metric is declining. I want a candid feasibility and risk assessment.",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-008",
     "query": "A peer controls a dependency and keeps delaying us. Help me map power, incentives, likely responses, and the least fragile influence strategy.",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-009",
     "query": "We could reorganize the team now, but it would be expensive to reverse and the causal evidence is thin. What evidence is worth buying first?",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-010",
     "query": "Here is my project outcome, evidence, assumptions, stakeholders, and constraints. Challenge the premise and identify the binding constraint and next three moves.",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-011",
     "query": "I have to choose tomorrow between extending a troubled pilot, narrowing it, or stopping. The team is emotionally committed and the evidence points in different directions.",
     "slice": "implicit-mixed-positive",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-012",
     "query": "The team wants to start building, but nobody can tell me what user behaviour should change or which assumption is carrying the plan. Does this proposal make sense?",
     "slice": "implicit-mixed-positive",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-013",
     "query": "Summarize this steering paper, then tell me whether its recommendation survives the outcome data and what decision we should make.",
     "slice": "implicit-mixed-positive",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-014",
     "query": "I can keep waiting for an internal role, seek a transfer, or test the market. My manager is encouraging but has made no commitment. Help me choose.",
     "slice": "implicit-mixed-positive",
     "should_trigger": true
   },
   {
+    "id": "TRIGGER-015",
     "query": "Rewrite this stakeholder update so it is shorter and friendlier.",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-016",
     "query": "Summarize these meeting notes into five bullet points.",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-017",
     "query": "Fix the TypeScript error in this React component and add a unit test.",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-018",
     "query": "Create a paid social marketing campaign for a new beverage brand.",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-019",
     "query": "Build a five-year valuation model for this acquisition target.",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-020",
     "query": "My partner and I keep arguing about chores. Tell me how to change their behaviour.",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-021",
     "query": "Make a weekly family calendar from these school and sports times.",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-022",
     "query": "Explain what a SWOT analysis is in one paragraph.",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-023",
     "query": "What is the current average engineering manager salary in Sydney?",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-024",
     "query": "Polish the wording of this performance review without changing its meaning.",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-025",
     "query": "Extract the promotion-cycle dates and eligibility fields from this policy into a table.",
     "slice": "supported-operational-negative",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-026",
     "query": "Calculate the last six sprints' average velocity from this CSV and chart the result.",
     "slice": "supported-operational-negative",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-027",
     "query": "Draft a clear feedback email using the performance decision and evidence I have already supplied; do not reassess the decision.",
     "slice": "supported-operational-negative",
     "should_trigger": false
   },
   {
+    "id": "TRIGGER-028",
     "query": "According to this organisation chart and delegation policy, who signs off department budgets?",
     "slice": "supported-operational-negative",
     "should_trigger": false

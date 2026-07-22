@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "status": "template-not-frozen",
   "iteration": "iteration-001",
   "frozen_at": "YYYY-MM-DDTHH:MM:SSZ",
@@ -44,6 +44,10 @@
       "sha256": ""
     },
     {
+      "path": "skills/strategic-advisor/evals/CONDITION-AUDITOR-PROMPT.md",
+      "sha256": ""
+    },
+    {
       "path": "skills/strategic-advisor/evals/ADJUDICATOR-PROMPT.md",
       "sha256": ""
     },
@@ -61,6 +65,10 @@
     },
     {
       "path": "scripts/build_runtime_package.py",
+      "sha256": ""
+    },
+    {
+      "path": "scripts/evaluation_harness.py",
       "sha256": ""
     },
     {
@@ -139,9 +147,14 @@
     "algorithm_id": "hmac-sha256-mask-v1",
     "masking_seed_hex": "",
     "seed_format": "Exactly 64 lowercase hexadecimal characters selected before any output.",
-    "mapping_rule": "HMAC-SHA256(key=seed, message=UTF8('strategic-advisor-mask-v1') || 0x00 || UTF8(case_id) || 0x00 || UTF8(draw_id)); first-byte low bit 0 means skilled=A, 1 means skilled=B.",
+    "mapping_rule": "HMAC-SHA256(key=seed, message=UTF8('strategic-advisor-mask-v1') || 0x00 || UTF8(case_id) || 0x00 || UTF8(draw_id)); first-byte low bit 0 means skilled=base A, 1 means skilled=base B.",
+    "quality_pass_label_algorithm": "inverse-ab-quality-pass-v1",
+    "quality_pass_label_rule": "score-1 presents base A as A and base B as B; score-2 presents base B as A and base A as B.",
+    "quality_normalization_rule": "Normalize score-2.A to base B and score-2.B to base A before comparison, disagreement detection, adjudication, averaging, or unmasking.",
+    "audit_mapping_algorithm": "hmac-sha256-condition-audit-map-v1",
+    "audit_mapping_rule": "For each audit_mode, HMAC-SHA256(key=seed, message=UTF8('strategic-advisor-condition-audit-map-v1') || 0x00 || UTF8(audit_mode) || 0x00 || UTF8(case_id) || 0x00 || UTF8(draw_id)); first-byte low bit 0 preserves base A/B and 1 swaps them.",
     "scoring_order_rule": "For each pass, sort by HMAC-SHA256(key=seed, message=UTF8('strategic-advisor-score-order-v1') || 0x00 || UTF8(pass_id) || 0x00 || UTF8(case_id) || 0x00 || UTF8(draw_id)); break digest ties lexically by case_id then draw_id.",
-    "mapping_storage": "Retained outside scorer and adjudicator context."
+    "mapping_storage": "Base, quality-pass, and condition-audit mappings are retained outside quality-scorer, condition-auditor, assertion-grader, and adjudicator contexts."
   },
   "scoring": {
     "model": "",
@@ -153,6 +166,8 @@
       "score-2"
     ],
     "passes": 2,
+    "pass_relationship": "same-family-repeated-evidence-not-independent-judges",
+    "condition_identity_policy": "Quality scorers never receive, guess, or return apparent condition; any quality evidence based on apparent origin invalidates the pass.",
     "scorer_prompt_sha256": "",
     "adjudication_model": "",
     "adjudication_model_version": "",
@@ -186,7 +201,7 @@
           "attempt_id"
         ],
         "required_record": "host_context_id",
-        "uniqueness": "Every assertion grading attempt has a non-empty host_context_id unused by any generation, scorer, adjudicator, or assertion-grader attempt."
+        "uniqueness": "Every assertion grading attempt has a non-empty host_context_id unused by any generation, quality-scorer, condition-auditor, adjudicator, or assertion-grader attempt."
       }
     },
     "fresh_context_identity": {
@@ -203,7 +218,49 @@
         "attempt_id"
       ],
       "required_record": "host_context_id",
-      "uniqueness": "No generation, scorer, or adjudicator host_context_id may be reused."
+      "uniqueness": "No generation, quality-scorer, condition-auditor, assertion-grader, or adjudicator host_context_id may be reused."
+    }
+  },
+  "condition_audit": {
+    "model": "",
+    "model_version": "",
+    "host": "",
+    "configuration": {},
+    "mode_ids": [
+      "structure-only",
+      "full-response"
+    ],
+    "passes_per_mode_per_pair": 1,
+    "prompt_sha256": "",
+    "structure_view": {
+      "algorithm_id": "structure-view-v1",
+      "authority_path": "skills/strategic-advisor/evals/PROTOCOL.md",
+      "authority_sha256": ""
+    },
+    "structure_only_gate": {
+      "minimum_determinate": 20,
+      "failure_accuracy_gte": 0.7,
+      "denominator": "determinate A/B classifications only",
+      "unclear_policy": "Report separately; unclear is not determinate and cannot be silently reclassified."
+    },
+    "full_response_policy": "Required descriptive identifiability evidence only; accuracy cannot pass, fail, rescue, reweight, adjust, or interpret the release gate or any quality result.",
+    "parser_retry_policy": {
+      "maximum_retries_per_logical_pass": 1,
+      "retry_context": "Fresh context with identical frozen mode-specific inputs plus machine diagnostic codes only.",
+      "attempt_ids": [
+        "initial",
+        "parser-retry-1"
+      ]
+    },
+    "fresh_context_identity": {
+      "key_fields": [
+        "case_id",
+        "draw_id",
+        "audit_mode",
+        "attempt_id"
+      ],
+      "required_record": "host_context_id",
+      "uniqueness": "Every condition-audit attempt has a non-empty host_context_id unused by any generation, quality-scorer, condition-auditor, assertion-grader, or adjudicator attempt."
     }
   },
   "aggregation": {
@@ -222,10 +279,11 @@
       "lower_probability": 0.025,
       "upper_probability": 0.975
     },
-    "score_resolution": "Verify each scorer exactly echoes the frozen case not_applicable_dimensions list. For every unlisted dimension, use separate two-pass A and B means unless either response differs by at least 2; then use the fresh adjudicator's final A and B scores. Applicability is never adjudicated.",
+    "score_resolution": "Verify each quality scorer exactly echoes the frozen case not_applicable_dimensions list, normalize score-2 through inverse-ab-quality-pass-v1 to base A/B, then use separate two-pass base-A and base-B means unless either base response differs by at least 2; then use the fresh adjudicator's final base-A and base-B scores. Applicability is never adjudicated.",
     "win_loss_tie": "After draw, case, and evaluation-cluster aggregation, primary cluster delta greater than 0 is a win, less than 0 is a loss, and exactly 0 is a tie; tolerance is zero.",
-    "n_a_policy": "Use only not_applicable_dimensions from frozen executable case metadata. Scorers must echo it exactly and cannot infer, add, remove, or adjudicate N/A; always-applicable dimensions cannot be listed; never impute.",
-    "missing_or_error_policy": "After at most the one frozen parser-contract retry, fail the iteration, retain and report the unit, do not retry/drop/replace/impute, and give incomplete-matrix descriptive statistics no gating verdict."
+    "n_a_policy": "Use only not_applicable_dimensions from frozen executable case metadata. Quality scorers must echo it exactly and cannot infer, add, remove, or adjudicate N/A; always-applicable dimensions cannot be listed; never impute.",
+    "missing_or_error_policy": "After at most the one frozen parser-contract retry, fail the iteration for any required generation, quality-score, condition-audit, assertion-grade, or adjudication artifact that is missing or errored; retain and report the unit, do not retry/drop/replace/impute, and give incomplete-matrix descriptive statistics no gating verdict.",
+    "condition_audit_policy": "Only complete structure-only audit accuracy can trigger the frozen systematic-leakage failure; complete full-response audit accuracy is descriptive and never gating."
   },
   "sealed_holdout": {
     "required": true,
@@ -249,7 +307,10 @@
       "freeze_commit_sha",
       "freeze_manifest_sha256",
       "runtime_package_identity_sha256",
-      "runtime_package_manifest_sha256"
+      "runtime_package_manifest_sha256",
+      "quality_scorer_prompt_sha256",
+      "condition_auditor_prompt_sha256",
+      "structure_view_authority_sha256"
     ]
   }
 }

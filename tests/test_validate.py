@@ -109,6 +109,12 @@ class ValidatorFixtureTests(unittest.TestCase):
         result = self.run_validator("claims")
         self.assert_named_failure(result, "CLAIMS_PROMOTION_DISABLED")
 
+    def test_missing_install_artifact_builder_fails_claims_scope(self) -> None:
+        path = self.fixture_root / "scripts" / "build_install_artifacts.py"
+        path.unlink()
+        result = self.run_validator("claims")
+        self.assert_named_failure(result, "CLAIMS_PUBLIC_DRIFT")
+
     def test_copied_strategic_logic_fails_skill_scope(self) -> None:
         canonical = (
             self.fixture_root / "skills" / "strategic-advisor" / "SKILL.md"
@@ -136,6 +142,16 @@ class ValidatorFixtureTests(unittest.TestCase):
             "name: strategic-advisor\nlicense: Apache-2.0\n",
             1,
         )
+        path.write_text(text, encoding="utf-8")
+        result = self.run_validator("skill")
+        self.assert_named_failure(result, "SKILL_FRONTMATTER_INVALID")
+
+    def test_skill_description_over_cross_host_limit_fails_skill_scope(self) -> None:
+        path = self.fixture_root / "skills" / "strategic-advisor" / "SKILL.md"
+        text = path.read_text(encoding="utf-8")
+        start = text.index("description:")
+        end = text.index("\n", start)
+        text = text[:start] + "description: " + ("x" * 201) + text[end:]
         path.write_text(text, encoding="utf-8")
         result = self.run_validator("skill")
         self.assert_named_failure(result, "SKILL_FRONTMATTER_INVALID")
@@ -272,6 +288,20 @@ class ValidatorFixtureTests(unittest.TestCase):
         result = self.run_validator("evals")
         self.assert_named_failure(result, "EVALS_TRIGGER_INVALID")
 
+    def test_duplicate_trigger_id_fails_evals_scope(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "evals"
+            / "eval_queries.json"
+        )
+        inventory = json.loads(path.read_text(encoding="utf-8"))
+        inventory[1]["id"] = inventory[0]["id"]
+        path.write_text(json.dumps(inventory, indent=2) + "\n", encoding="utf-8")
+        result = self.run_validator("evals")
+        self.assert_named_failure(result, "EVALS_TRIGGER_INVALID")
+
     def test_incomplete_freeze_authority_fails_evals_scope(self) -> None:
         path = (
             self.fixture_root
@@ -304,6 +334,36 @@ class ValidatorFixtureTests(unittest.TestCase):
         path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         result = self.run_validator("evals")
         self.assert_named_failure(result, "EVALS_FREEZE_CONTROLS_INVALID")
+
+    def test_non_inverse_quality_passes_fail_option_a_validation(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "evals"
+            / "freeze-manifest.template.json"
+        )
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        manifest["masking"]["quality_pass_label_algorithm"] = "same-order-v1"
+        path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+        result = self.run_validator("evals")
+        self.assert_named_failure(result, "EVALS_OPTION_A_INVALID")
+
+    def test_condition_guess_in_quality_scorer_fails_option_a_validation(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "evals"
+            / "SCORER-PROMPT.md"
+        )
+        path.write_text(
+            path.read_text(encoding="utf-8")
+            + "\nReturn a condition_guess field for this fixture.\n",
+            encoding="utf-8",
+        )
+        result = self.run_validator("evals")
+        self.assert_named_failure(result, "EVALS_OPTION_A_INVALID")
 
     def test_wrong_bootstrap_collection_fails_evals_scope(self) -> None:
         path = (

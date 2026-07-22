@@ -55,7 +55,7 @@ Implement a deterministic validation surface and a frozen, reproducible behaviou
 - Import all core and TASK-003 lens-case specifications, then define and freeze the complete executable inventory, rubric anchors, hard gates, controls, scorer contract, uncertainty rule, and material-improvement threshold before producing any treatment or control output.
 - Keep structural, privacy, reference, and claim checks deterministic under `python3 scripts/validate.py`; keep model calls outside credential-free CI.
 - Store realistic synthetic output and trigger cases in the canonical skill source, with stable IDs and decision-property expectations rather than phrase-matching answers; build an allowlisted runtime skill package that excludes the evaluation surface and record its manifest.
-- Generate at least two independent skilled and unskilled draws for at least sixteen cases in fresh matched contexts with identical non-treatment tools, anonymise and randomise them, score in two fresh condition-masked passes with recorded condition guesses and adjudication, and retain enough metadata to reproduce the scoped verdict.
+- Generate at least two independent skilled and unskilled draws for at least sixteen cases in fresh matched contexts with identical non-treatment tools, anonymise and randomise them, score in two fresh condition-masked same-family passes with deterministically swapped A/B labels and adjudication, run a separate structure-only leakage audit, and retain enough metadata to reproduce the scoped verdict.
 - Treat any hard-gate failure or missed frozen threshold as a failed release gate, not an invitation to move the goalposts.
 
 ## Phases
@@ -76,8 +76,8 @@ Implement a deterministic validation surface and a frozen, reproducible behaviou
 ### Phase 3 — Matched behavioural comparison
 
 - Produce two independent clean-context draws per condition for at least sixteen frozen cases under the exact frozen configuration.
-- Randomise and remove condition labels; run two fresh scorer passes, record each condition guess before scores, report masking success, and adjudicate disagreements under the frozen rule.
-- Validation: audit raw outputs, runtime/context/tool manifests, mapping, guesses, scores, disagreements, errors, timestamps, and model/configuration identity; recompute the scoped verdict without condition labels.
+- Randomise and remove condition labels; run two fresh quality-scorer passes without condition guesses, swap A/B labels deterministically between passes, adjudicate disagreements under the frozen rule, and run the separate structure-only leakage audit.
+- Validation: audit raw outputs, runtime/context/tool manifests, mapping, quality scores, disagreements, leakage-audit results, errors, timestamps, and model/configuration identity; recompute the scoped verdict without condition labels.
 
 ### Phase 4 — CI and QA gate
 
@@ -90,7 +90,7 @@ Implement a deterministic validation surface and a frozen, reproducible behaviou
 - [x] AC1: Evaluation JSON and deterministic repository validation satisfy the schema, coverage, privacy, reference, and canonical-logic requirements. Covers parent AC7.
 - [ ] AC2: The complete imported case inventory, allowlisted runtime-package manifest, rubric, hard gates, controls, scorer contract, uncertainty rule, and improvement threshold are frozen and identified before any treatment or control output. Covers parent AC5.
 - [x] AC3: Case coverage maps all required core and professional-lens risks to stable cases with decision-property expectations. Covers parent AC3 and AC4.
-- [ ] AC4: A matched clean-context run covers at least sixteen cases with two independent draws per condition, proves evaluation-surface isolation and matched non-treatment context/tools, and retains raw outputs, condition-masked mappings, scorer provenance/guesses/disagreements, scores, uncertainty, configuration, and errors. Covers parent AC5.
+- [ ] AC4: A matched clean-context run covers at least sixteen cases with two independent draws per condition, proves evaluation-surface isolation and matched non-treatment context/tools, and retains raw outputs, condition-masked mappings, quality-scorer provenance/disagreements, separate leakage-audit results, scores, uncertainty, configuration, and errors. Covers parent AC5.
 - [ ] AC5: On the exact frozen matrix and configuration, the skilled condition clears the frozen improvement and uncertainty thresholds with zero hard-gate failures, or the release gate remains explicitly failed. Covers parent AC3, AC4, and AC5.
 - [ ] AC6: Valid clean-checkout CI passes and all required malformed/private/drift fixtures fail with expected diagnostics. Covers parent AC7.
 
@@ -99,8 +99,8 @@ Implement a deterministic validation surface and a frozen, reproducible behaviou
 - AC1: Parse and validate all evaluation JSON; run the valid and invalid repository fixtures.
 - AC2: After importing all cases, hash the pre-result inventory, runtime-package manifest, protocol, rubric, scorer contract, uncertainty rule, and thresholds and record the identity in run metadata; prove the package excludes evaluation material.
 - AC3: Generate and inspect the stable risk-to-case coverage report.
-- AC4: Reproduce the matched matrix from documented commands or prompts and verify the sixteen-case/two-draw minimum, treatment-package isolation, matched tools/context, condition guesses, two scoring passes, adjudication, uncertainty, and retained artifacts.
-- AC5: Re-score condition-masked artifacts and independently recalculate the threshold, uncertainty, and hard-gate verdicts while preserving condition guesses and disclosed masking limitations.
+- AC4: Reproduce the matched matrix from documented commands or prompts and verify the sixteen-case/two-draw minimum, treatment-package isolation, matched tools/context, two quality-scoring passes with swapped labels, separate leakage audit, adjudication, uncertainty, and retained artifacts.
+- AC5: Re-score condition-masked artifacts and independently recalculate the threshold, uncertainty, and hard-gate verdicts while preserving the separation between quality scores and disclosed leakage limitations.
 - AC6: Run the deterministic suite locally and in a clean GitHub Actions checkout; compare expected diagnostics for negative fixtures.
 
 ## Task List
@@ -108,9 +108,9 @@ Implement a deterministic validation surface and a frozen, reproducible behaviou
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
 | 1 | Assemble machine-readable cases | Import TASK-002 core and TASK-003 normative lens specifications, add stable synthetic output cases and positive/negative trigger queries, and prove complete core/lens risk coverage. | AC1, AC3: JSON validates, at least sixteen distinct cases exist, and the coverage report has no missing required risks. | Run the JSON validator and coverage command before any output generation. | Done: 31 cases and 28 trigger queries |
-| 2 | Freeze and isolate evaluation authority | Freeze the complete inventory, rubric, gates, thresholds, uncertainty, controls, scorer/adjudication contract, and allowlisted runtime package after import but before outputs. | AC2: Frozen artifacts have a recorded identity, runtime package excludes evaluation material, and no result artifact predates them. | Inspect Git history/manifests and run the evaluation preflight/leakage validator. | Authority implemented; commit and freeze pending |
+| 2 | Freeze and isolate evaluation authority | Freeze the complete inventory, rubric, gates, thresholds, uncertainty, controls, scorer/adjudication contract, and allowlisted runtime package after import but before outputs. | AC2: Frozen artifacts have a recorded identity, runtime package excludes evaluation material, and no result artifact predates them. | Inspect Git history/manifests and run the evaluation preflight/leakage validator. | Option A authority and deterministic freeze verifier implemented; authority commit and freeze pending |
 | 3 | Build deterministic repository validation | Implement transparent checks for skill structure, references, links, evaluation metadata, supported-domain claims, private-data sentinels, and canonical-logic duplication with positive and negative fixtures. | AC1, AC6: Valid repository passes; each required invalid fixture fails with its expected diagnostic. | Run the full deterministic validation suite locally. | Done locally; clean CI pending |
-| 4 | Run matched condition-masked comparison | Generate two independent draws per condition for at least sixteen cases under the frozen configuration, randomise/remove labels, run two fresh scorer passes with condition guesses and adjudication, and retain complete artifacts. | AC4: Runtime/context/tool manifests, raw outputs, mapping, guesses, scores, disagreements, uncertainty, model settings, timestamps, and errors are reproducible and complete. | Re-run or audit the recorded comparison procedure from fresh contexts. | To Do |
+| 4 | Run matched condition-masked comparison | Generate two independent draws per condition for at least sixteen cases under the frozen configuration, randomise/remove labels, run two fresh quality-scoring passes with swapped labels plus a separate structure-only leakage audit and adjudication, and retain complete artifacts. | AC4: Runtime/context/tool manifests, raw outputs, mapping, quality scores, leakage results, disagreements, uncertainty, model settings, timestamps, and errors are reproducible and complete. | Re-run or audit the recorded comparison procedure from fresh contexts. | Deterministic 31-case plan and fail-closed artifact verifier implemented; external model run To Do |
 | 5 | Apply frozen release gates | Recalculate matched dimensions, uncertainty, and hard gates without changing thresholds, then record pass or failure without post-hoc reinterpretation. | AC5: The scoped threshold calculation is reproducible and every hard gate is explicitly reported. | Run the score aggregation/check command against retained condition-masked scores. | To Do |
 | 6 | Prove clean CI behavior | Configure credential-free validation in a clean checkout and retain the live workflow identity after push. | AC6: GitHub Actions passes the valid repository while local negative fixtures remain proven failures. | Inspect the exact GitHub Actions run and rerun local negative fixtures. | To Do |
 
@@ -135,3 +135,4 @@ Implement a deterministic validation surface and a frozen, reproducible behaviou
 - Task: TASK-004
 - Title: Build Adversarial and Comparative Evaluations
 - Created: 2026-07-22
+- Clarification resolved: owner approved Option A on 2026-07-22. Quality scoring is separated from a structure-only leakage audit; no treatment, control, scorer, adjudicator, assertion-grader, trigger, or leakage-audit output preceded approval.

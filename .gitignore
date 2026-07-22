@@ -8,3 +8,6 @@ venv/
 
 # Local evaluation output is evidence only when deliberately retained elsewhere.
 skills/strategic-advisor/evaluation-results/
+
+# Reproducible install archives are release assets, not committed source.
+/dist/

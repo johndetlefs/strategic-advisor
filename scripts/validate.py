@@ -23,6 +23,7 @@ from build_evals import EvalBuildError, serialized_document
 SCOPES = ("skill", "lenses", "evals", "pilots", "privacy", "claims", "links")
 PUBLIC_ARTIFACTS = (
     "README.md",
+    "INSTALL.md",
     "ARCHITECTURE.md",
     "PRODUCT-CONTRACT.md",
     "CONTRIBUTING.md",
@@ -121,6 +122,7 @@ EVALUATION_AUTHORITY_FILES = (
     "PROTOCOL.md",
     "AGGREGATION.md",
     "SCORER-PROMPT.md",
+    "CONDITION-AUDITOR-PROMPT.md",
     "ADJUDICATOR-PROMPT.md",
     "CASE-ASSERTION-GRADER-PROMPT.md",
     "freeze-manifest.template.json",
@@ -134,11 +136,13 @@ FROZEN_AUTHORITY_PATHS = {
     "skills/strategic-advisor/evals/PROTOCOL.md",
     "skills/strategic-advisor/evals/AGGREGATION.md",
     "skills/strategic-advisor/evals/SCORER-PROMPT.md",
+    "skills/strategic-advisor/evals/CONDITION-AUDITOR-PROMPT.md",
     "skills/strategic-advisor/evals/ADJUDICATOR-PROMPT.md",
     "skills/strategic-advisor/evals/CASE-ASSERTION-GRADER-PROMPT.md",
     "skills/strategic-advisor/runtime-manifest.json",
     "scripts/build_evals.py",
     "scripts/build_runtime_package.py",
+    "scripts/evaluation_harness.py",
     "scripts/validate.py",
 }
 CONTRACT_START = "<!-- strategic-advisor-contract:start -->"
@@ -472,6 +476,14 @@ def check_claims(root: Path) -> list[Diagnostic]:
                 "PRODUCT-CONTRACT.md",
             )
         )
+    if contract.get("early_access_distribution_version") != "0.1.0-alpha.1":
+        failures.append(
+            diagnostic(
+                "CLAIMS_PUBLIC_DRIFT",
+                "early_access_distribution_version must match the current pre-release plugin artifact version.",
+                "PRODUCT-CONTRACT.md",
+            )
+        )
     if contract.get("capability_promotion_enabled") is not False:
         failures.append(
             diagnostic(
@@ -582,10 +594,27 @@ def check_claims(root: Path) -> list[Diagnostic]:
             )
         )
 
+    install_builder = contract.get("install_artifact_builder")
+    if (
+        install_builder != "scripts/build_install_artifacts.py"
+        or not (root / "scripts/build_install_artifacts.py").is_file()
+    ):
+        failures.append(
+            diagnostic(
+                "CLAIMS_PUBLIC_DRIFT",
+                "install_artifact_builder must name scripts/build_install_artifacts.py and that builder must exist.",
+                "PRODUCT-CONTRACT.md",
+            )
+        )
+
     readme_path = root / "README.md"
     if readme_path.is_file():
         readme = read_text(readme_path)
-        required_readme_claims = ["Current status: pre-release", "skills/strategic-advisor/"]
+        required_readme_claims = [
+            "Current status: pre-release",
+            "skills/strategic-advisor/",
+            "`v0.1.0-alpha.1`",
+        ]
         if not validated:
             required_readme_claims.extend(
                 [
@@ -853,11 +882,11 @@ def check_skill(root: Path) -> list[Diagnostic]:
                 )
             )
         description = frontmatter.get("description", "")
-        if not description or len(description) > 1024:
+        if not description or len(description) > 200:
             failures.append(
                 diagnostic(
                     "SKILL_FRONTMATTER_INVALID",
-                    "Skill description must be non-empty and no longer than 1024 characters.",
+                    "Skill description must be non-empty and no longer than 200 characters for the strictest supported host.",
                     skill_path.relative_to(root),
                 )
             )
@@ -1539,6 +1568,8 @@ def check_evals(root: Path) -> list[Diagnostic]:
                 and len(queries) >= 20
                 and all(
                     isinstance(item, dict)
+                    and isinstance(item.get("id"), str)
+                    and re.fullmatch(r"TRIGGER-[0-9]{3}", item["id"])
                     and isinstance(item.get("query"), str)
                     and item["query"].strip()
                     and type(item.get("should_trigger")) is bool
@@ -1547,6 +1578,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
             )
             if valid_queries:
                 trigger_query_count = len(queries)
+                query_ids = [item["id"] for item in queries]
                 query_texts = [item["query"] for item in queries]
                 positive = sum(item["should_trigger"] is True for item in queries)
                 negative = sum(item["should_trigger"] is False for item in queries)
@@ -1574,7 +1606,9 @@ def check_evals(root: Path) -> list[Diagnostic]:
                         continue
                     slice_counts[slice_name] += 1
                 valid_queries = (
-                    len(set(query_texts)) == len(query_texts)
+                    len(set(query_ids)) == len(query_ids)
+                    and query_ids == sorted(query_ids)
+                    and len(set(query_texts)) == len(query_texts)
                     and positive >= 8
                     and negative >= 8
                     and slice_valid
@@ -1585,7 +1619,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
                 failures.append(
                     diagnostic(
                         "EVALS_TRIGGER_INVALID",
-                        "Trigger inventory needs at least 20 unique queries, boolean labels, at least 8 per class, and four correctly labelled examples in each difficult slice.",
+                        "Trigger inventory needs at least 20 ordered unique TRIGGER-NNN IDs and query texts, boolean labels, at least 8 per class, and four correctly labelled examples in each difficult slice.",
                         trigger_path.relative_to(root),
                     )
                 )
@@ -1680,6 +1714,77 @@ def check_evals(root: Path) -> list[Diagnostic]:
                 diagnostic(
                     "EVALS_FREEZE_CONTROLS_INVALID",
                     "Freeze template must preserve exact context artifacts, treatment activation proof, pair-aware aggregation, and the sealed holdout gate.",
+                    freeze_path.relative_to(root),
+                )
+            )
+
+        masking = freeze_template.get("masking")
+        scoring = freeze_template.get("scoring")
+        condition_audit = freeze_template.get("condition_audit")
+        structure_view = (
+            condition_audit.get("structure_view")
+            if isinstance(condition_audit, dict)
+            else None
+        )
+        structure_gate = (
+            condition_audit.get("structure_only_gate")
+            if isinstance(condition_audit, dict)
+            else None
+        )
+        option_a_template_valid = bool(
+            freeze_template.get("schema_version") == 3
+            and isinstance(masking, dict)
+            and masking.get("quality_pass_label_algorithm")
+            == "inverse-ab-quality-pass-v1"
+            and masking.get("quality_pass_label_rule")
+            == "score-1 presents base A as A and base B as B; score-2 presents base B as A and base A as B."
+            and "Normalize score-2.A to base B and score-2.B to base A"
+            in str(masking.get("quality_normalization_rule"))
+            and masking.get("audit_mapping_algorithm")
+            == "hmac-sha256-condition-audit-map-v1"
+            and isinstance(scoring, dict)
+            and scoring.get("pass_ids") == ["score-1", "score-2"]
+            and scoring.get("passes") == 2
+            and scoring.get("pass_relationship")
+            == "same-family-repeated-evidence-not-independent-judges"
+            and "never receive, guess, or return apparent condition"
+            in str(scoring.get("condition_identity_policy"))
+            and isinstance(condition_audit, dict)
+            and condition_audit.get("mode_ids")
+            == ["structure-only", "full-response"]
+            and condition_audit.get("passes_per_mode_per_pair") == 1
+            and isinstance(structure_view, dict)
+            and structure_view.get("algorithm_id") == "structure-view-v1"
+            and structure_view.get("authority_path")
+            == "skills/strategic-advisor/evals/PROTOCOL.md"
+            and isinstance(structure_gate, dict)
+            and structure_gate.get("minimum_determinate") == 20
+            and structure_gate.get("failure_accuracy_gte") == 0.7
+            and "cannot pass, fail, rescue, reweight, adjust, or interpret"
+            in str(condition_audit.get("full_response_policy"))
+        )
+
+        scorer_path = eval_root / "SCORER-PROMPT.md"
+        scorer_text = read_text(scorer_path) if scorer_path.is_file() else ""
+        auditor_path = eval_root / "CONDITION-AUDITOR-PROMPT.md"
+        auditor_text = read_text(auditor_path) if auditor_path.is_file() else ""
+        protocol_path = eval_root / "PROTOCOL.md"
+        protocol_text = read_text(protocol_path) if protocol_path.is_file() else ""
+        option_a_authority_valid = bool(
+            "strategic-advisor-scorer-v2" in scorer_text
+            and "condition_guess" not in scorer_text
+            and '"likely_skilled"' not in scorer_text
+            and "strategic-advisor-condition-auditor-v1" in auditor_text
+            and "`structure-only`" in auditor_text
+            and "`full-response`" in auditor_text
+            and "structure-view-v1" in protocol_text
+            and "same judge family, not independent judges" in protocol_text
+        )
+        if not option_a_template_valid or not option_a_authority_valid:
+            failures.append(
+                diagnostic(
+                    "EVALS_OPTION_A_INVALID",
+                    "Option A requires condition-free quality scoring, exact inverse A/B quality passes from one judge family, and a separate structure-only gating/full-response descriptive condition audit.",
                     freeze_path.relative_to(root),
                 )
             )

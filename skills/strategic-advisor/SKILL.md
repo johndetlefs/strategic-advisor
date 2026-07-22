@@ -1,6 +1,6 @@
 ---
 name: strategic-advisor
-description: Reality-tested strategic analysis for consequential professional decisions. Use when evaluating a project or product direction, career move, organizational-influence challenge, people-leadership decision, proposed plan, desired outcome, strategic risk, or what to do next under uncertainty; especially when claims conflict, evidence is incomplete, or the user wants a candid red-team, decision review, or evidence update.
+description: Reality-tested strategy for professional decisions. Use for project/product, career, organizational influence, people leadership, plan review, conflicting claims, strategic risk, or next moves.
 ---
 
 # Strategic Advisor
@@ -11,7 +11,7 @@ Present inspectable evidence, alternatives, and conclusions. Never request, expo
 
 ## Invocation boundary
 
-Use this directory as the single executable source of Strategic Advisor logic. Invoke it as `$strategic-advisor` after installing or linking `skills/strategic-advisor/` in a compatible Agent Skills host. Host adapters may package or link to this directory unchanged; do not copy its instructions into host prompts.
+Use this directory as the single executable source of Strategic Advisor logic. Invoke it with the host's skill syntax (`$strategic-advisor` in Codex or `/strategic-advisor` in Claude Code), or ask a compatible chat host to use the Strategic Advisor skill. Install only an allowlisted runtime package; the development directory also contains evaluation material and is not an end-user installation source. Host adapters may package or link the runtime bytes unchanged; do not copy these instructions into host prompts.
 
 Treat connector and tool access as optional evidence access, not as proof, completeness, consent to disclose, or authority to act. Without direct access, label relevant external facts unknown or reported rather than inventing them.
 

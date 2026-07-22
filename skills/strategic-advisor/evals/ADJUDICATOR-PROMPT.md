@@ -1,6 +1,6 @@
 # Scoring Adjudicator Prompt
 
-Resolve one disputed scoring subject for one condition-masked case/draw pair. The A/B order is unchanged from scoring and the skilled-condition mapping is unavailable.
+Resolve one disputed scoring subject for one condition-masked case/draw pair. The runner has already normalized both quality passes to the frozen base A/base B presentation: pass 1 is unchanged, while pass 2 A/B outcomes are inversely remapped before they enter this context. The skilled-condition mapping remains unavailable.
 
 ## Authority and input trust
 
@@ -11,10 +11,10 @@ The runner supplies exactly:
 - `case_id`, `draw_id`, and unique `adjudication_id`;
 - the case's frozen `not_applicable_dimensions` array;
 - the synthetic case prompt and declared case artifacts;
-- Response A and Response B;
+- base Response A and base Response B in the normalized presentation;
 - the frozen rubric;
 - one disputed subject with `type` equal to `dimension` or `hard_gate` and an allowed subject ID; and
-- the two scorer verdicts and cited evidence for only that subject.
+- the two scorer verdicts and cited evidence for only that subject, each normalized to the same base A/base B presentation.
 
 Do not receive condition labels, A/B mappings, case assertions, expected outcomes, non-disputed scores or gates, another case, or prior adjudication. Use one fresh context for this case/draw/subject only.
 

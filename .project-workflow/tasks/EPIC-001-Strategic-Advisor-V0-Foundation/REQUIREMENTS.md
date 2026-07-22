@@ -25,8 +25,8 @@ As a person making a consequential project, career, organisational, or people-le
 - Approved scope envelope: Yes
 - Approved by: John Detlefs
 - Approval date: 2026-07-22
-- Approval note / source: Codex conversation on 2026-07-22: owner accepted Apache-2.0 and directed go for it after receiving the exact requirements and acceptance envelope.
-- Approved artifact identity: sha256:cb114fa48dbb350a724f50715b4e4bb34f17f56a4e62b28703845cf1c50fff55
+- Approval note / source: Codex conversation on 2026-07-22: owner approved Option A and directed the project to move as quickly as possible toward installable Codex, Claude, and ChatGPT use with further testing acknowledged.
+- Approved artifact identity: sha256:de0ce451b286eaedbfe9726e5380890e853c075efbcc426e3ba674acdca2ea3f
 
 ## Goal
 
@@ -87,9 +87,10 @@ Deliver an open-source v0 foundation whose scope is explicit, whose canonical st
 - D4. Treat model breadth, parallel hypothesis generation, counterfactual search, and low-ego revision as advantages in strategic search, not as privileged access to truth.
 - D5. Professional stakeholder modelling and deliberate influence are legitimate. People remain adaptive actors, not deterministic components.
 - D6. Personal and intimate relationships require a separate lens and are out of v0 implementation scope.
-- D7. Defer connectors and vendor adapters until the canonical skill demonstrates value without them.
+- D7. Originally defer connectors and vendor adapters until the canonical skill demonstrates value without them. The adapter portion of this decision is superseded by D10; broad connectors remain deferred.
 - D8. Use Project Workflow lightly: one v0 Epic coordinates genuine workstreams; ordinary design discussion does not become a task by default.
 - D9. License the repository under Apache License 2.0, providing a permissive licence with an explicit patent grant.
+- D10. Owner approved bringing thin Codex, Claude, and ChatGPT installation packaging and exact-host activation proof into EPIC-001 on 2026-07-22 so real-world testing can start promptly. The shipped artifact must be the allowlisted runtime package rather than the development tree; adapters may package or link it without copying strategic logic. Installation success and behavioural support remain separate claims, and unsupported hosts remain labelled experimental until their own current evidence passes.
 
 ## Proposed Child Work
 

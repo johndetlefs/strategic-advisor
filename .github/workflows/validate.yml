@@ -28,3 +28,13 @@ jobs:
         run: python3 scripts/build_evals.py --check
       - name: Run negative-fixture tests
         run: python3 -m unittest discover -s tests -v
+      - name: Reproduce install artifacts
+        run: |
+          mkdir -p /tmp/strategic-advisor-build-a /tmp/strategic-advisor-build-b
+          python3 scripts/build_install_artifacts.py build --license LICENSE --skill-archive /tmp/strategic-advisor-build-a/strategic-advisor.zip --plugin-archive /tmp/strategic-advisor-build-a/strategic-advisor-plugin.zip --provenance-out /tmp/strategic-advisor-build-a/install-artifacts.json
+          python3 scripts/build_install_artifacts.py build --license LICENSE --skill-archive /tmp/strategic-advisor-build-b/strategic-advisor.zip --plugin-archive /tmp/strategic-advisor-build-b/strategic-advisor-plugin.zip --provenance-out /tmp/strategic-advisor-build-b/install-artifacts.json
+          python3 scripts/build_install_artifacts.py verify --skill-archive /tmp/strategic-advisor-build-a/strategic-advisor.zip --plugin-archive /tmp/strategic-advisor-build-a/strategic-advisor-plugin.zip --provenance /tmp/strategic-advisor-build-a/install-artifacts.json
+          python3 scripts/build_install_artifacts.py verify --skill-archive /tmp/strategic-advisor-build-b/strategic-advisor.zip --plugin-archive /tmp/strategic-advisor-build-b/strategic-advisor-plugin.zip --provenance /tmp/strategic-advisor-build-b/install-artifacts.json
+          cmp /tmp/strategic-advisor-build-a/strategic-advisor.zip /tmp/strategic-advisor-build-b/strategic-advisor.zip
+          cmp /tmp/strategic-advisor-build-a/strategic-advisor-plugin.zip /tmp/strategic-advisor-build-b/strategic-advisor-plugin.zip
+          cmp /tmp/strategic-advisor-build-a/install-artifacts.json /tmp/strategic-advisor-build-b/install-artifacts.json

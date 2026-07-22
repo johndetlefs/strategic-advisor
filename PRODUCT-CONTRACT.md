@@ -22,10 +22,12 @@ A validated capability's `evidence` array contains objects with exactly `artifac
 {
   "schema_version": 1,
   "release_status": "pre-release",
+  "early_access_distribution_version": "0.1.0-alpha.1",
   "capability_promotion_enabled": false,
   "canonical_product_path": "skills/strategic-advisor/",
   "supported_installation_available": false,
   "runtime_package_manifest": "skills/strategic-advisor/runtime-manifest.json",
+  "install_artifact_builder": "scripts/build_install_artifacts.py",
   "supported_capabilities": [],
   "capabilities": [
     {
@@ -107,15 +109,39 @@ A validated capability's `evidence` array contains objects with exactly `artifac
       "evidence": []
     },
     {
-      "id": "host.chatgpt-web-plugin",
+      "id": "host.codex-runtime-package",
       "kind": "host",
-      "state": "out-of-scope",
+      "state": "implemented-not-validated",
       "evidence": []
     },
     {
-      "id": "host.claude",
+      "id": "host.chatgpt-custom-skill",
       "kind": "host",
-      "state": "out-of-scope",
+      "state": "implemented-not-validated",
+      "evidence": []
+    },
+    {
+      "id": "host.chatgpt-desktop-local-plugin",
+      "kind": "host",
+      "state": "implemented-not-validated",
+      "evidence": []
+    },
+    {
+      "id": "host.chatgpt-web-plugin",
+      "kind": "host",
+      "state": "planned",
+      "evidence": []
+    },
+    {
+      "id": "host.claude-code",
+      "kind": "host",
+      "state": "implemented-not-validated",
+      "evidence": []
+    },
+    {
+      "id": "host.claude-ai-custom-skill",
+      "kind": "host",
+      "state": "implemented-not-validated",
       "evidence": []
     },
     {
@@ -137,9 +163,9 @@ A validated capability's `evidence` array contains objects with exactly `artifac
 
 ## Current interpretation
 
-The repository is pre-release and capability promotion is disabled. The canonical core, four v0 professional lenses, Codex-oriented local authoring metadata, and comparative-evaluation definitions are implemented but not behaviourally or host validated. No frozen comparative run or improvement result exists. These artifacts are candidates for evaluation, not supported capabilities. There is no supported installation, validated domain, connector, ChatGPT web plugin, or Claude path.
+The repository is pre-release and capability promotion is disabled. The canonical core, four v0 professional lenses, comparative-evaluation definitions, deterministic install builder, standalone Agent Skills envelope, and skill-only OpenAI local-marketplace envelope are implemented but not behaviourally validated. The latter follows the documented local shape used by Codex and ChatGPT desktop Work mode; neither host inherits the other's evidence. Retained release-commit host evidence remains pending. Claude Code, Claude.ai, and ChatGPT lack their own retained live activation proof. A public ChatGPT Plugin Directory submission package has not been implemented. No frozen comparative run or improvement result exists. These artifacts are candidates for early testing and evaluation, not supported capabilities. There is no supported installation, validated domain, or connector.
 
-The runtime package is an explicit allowlist in [`skills/strategic-advisor/runtime-manifest.json`](skills/strategic-advisor/runtime-manifest.json). Evaluation definitions, expected properties, rubrics, fixtures, and prior results must never enter the model-visible treatment package.
+The runtime package is an explicit allowlist in [`skills/strategic-advisor/runtime-manifest.json`](skills/strategic-advisor/runtime-manifest.json). [`scripts/build_install_artifacts.py`](scripts/build_install_artifacts.py) wraps those exact runtime bytes in deterministic standalone-Skill and OpenAI local-marketplace plugin envelopes and identifies the added Apache-2.0 licence separately. Evaluation definitions, expected properties, rubrics, fixtures, and prior results must never enter the model-visible treatment or install package.
 
 ## Promotion rule
 
