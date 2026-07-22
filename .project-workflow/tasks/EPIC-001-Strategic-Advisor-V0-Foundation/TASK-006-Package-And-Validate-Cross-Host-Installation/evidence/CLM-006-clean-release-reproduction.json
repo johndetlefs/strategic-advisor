@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "claim_id": "CLM-006",
+  "observed_at": "2026-07-22T07:37:49Z",
+  "release_source_commit": "c15c859dbdd69bac78c4708532f4fe2406320d17",
+  "verdict": "pass",
+  "clean_checkout": {
+    "method": "Fresh anonymous HTTPS clone of public main",
+    "origin": "https://github.com/johndetlefs/strategic-advisor.git",
+    "head": "c15c859dbdd69bac78c4708532f4fe2406320d17",
+    "tree_clean_before_and_after": true
+  },
+  "reproducible_build": {
+    "independent_build_count": 2,
+    "standalone_archives_byte_identical": true,
+    "openai_marketplace_archives_byte_identical": true,
+    "provenance_documents_byte_identical": true,
+    "standalone_skill_sha256": "a675fecbfd0d9b6169f11766e99f2c3ae468ba3ac5833d61a6c2776f5e8d4521",
+    "openai_local_marketplace_sha256": "b08fba62a92fdf1b4bce271600d0c55ab50180e5346750673a3f16cb747dcec3",
+    "provenance_sha256": "86a3133b4591f19f13f5ab98e4fa4e886d86d7d92870f42ca28f9b0a253d70ce",
+    "runtime_package_identity_sha256": "743bcdd018c192a0ba9a4721cad38027587153b04f30689376cd028ae94940ea"
+  },
+  "consumer_verification": {
+    "build_mode": "release",
+    "source_revision": "c15c859dbdd69bac78c4708532f4fe2406320d17",
+    "source_revision_exact": true,
+    "source_tree_state": "clean",
+    "trusted_provenance_sha256_matched": true,
+    "trusted_runtime_identity_matched": true,
+    "verification": "structural-and-internal-consistency-passed"
+  },
+  "clean_checkout_validation": {
+    "combined_evaluation_cases": 31,
+    "repository_validator_scopes_passed": 7,
+    "unit_tests_passed": 93,
+    "workflow_doctor_strict": "pass",
+    "diff_check": "pass"
+  },
+  "github_actions": {
+    "conclusion": "success",
+    "head_sha": "c15c859dbdd69bac78c4708532f4fe2406320d17",
+    "required_job": "deterministic-validation",
+    "reproduce_install_artifacts_step": "success",
+    "run_id": 29900504587,
+    "url": "https://github.com/johndetlefs/strategic-advisor/actions/runs/29900504587"
+  },
+  "published_asset_recheck": {
+    "downloaded_fresh_from_release": true,
+    "github_asset_digests_match": true,
+    "consumer_verification_with_trusted_identities": "pass",
+    "release_url": "https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.1.0-alpha.1"
+  },
+  "negative_coverage": [
+    "alternate runtime allowlist",
+    "archive and provenance mismatch",
+    "condition or skill identity leakage",
+    "dirty or non-Git release source",
+    "evaluation content leakage",
+    "hidden answer key",
+    "malformed or non-normalized archive paths",
+    "missing or substituted Apache-2.0 license",
+    "output ancestor symlink",
+    "runtime or plugin metadata tampering",
+    "scorer and auditor envelope drift"
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "claim_id": "CLM-002",
+  "captured_at": "2026-07-22T07:52:00Z",
+  "thread_id": "019f88ce-b6b0-7841-9a55-e5e71e3a5820",
+  "invocation": {
+    "input_method": "stdin from the exact committed prompt artifact",
+    "prompt_artifact": "evidence/CLM-002-codex-prompt.md",
+    "prompt_artifact_sha256": "452bde9c22cda2e0764ba6de12a06ffe8e89a10eb7f28739de8986f15dfc9ec5",
+    "prompt_artifact_size_bytes": 880
+  },
+  "raw_event_log": {
+    "sha256": "3ed337be8634c90796e486e3e7bcd4204110d80dd38be284afc0b27ffcd8f8ec",
+    "size_bytes": 34390
+  },
+  "observable_events": [
+    {
+      "type": "agent_message",
+      "text": "I’m using the Strategic Advisor skill as requested. I’ll first verify the installed skill’s hash, then inspect its routing instructions and load only the references needed for this project/product review."
+    },
+    {
+      "type": "command_execution",
+      "command": "Hash and read .agents/skills/strategic-advisor/SKILL.md.",
+      "exit_code": 0,
+      "installed_skill_sha256": "793ea25ad303155aee6af95ab6e25b9b399769b9eeb4b358a4211f21aeefcccd"
+    },
+    {
+      "type": "command_execution",
+      "command": "Probe incorrectly root-relative reference paths.",
+      "exit_code": 1,
+      "proof_use": false,
+      "reason": "The model corrected the paths to the installed skill directory before reading source."
+    },
+    {
+      "type": "command_execution",
+      "command": "Count and then read the selected references at exact installed paths.",
+      "line_count_exit_code": 0,
+      "read_exit_code": 0,
+      "loaded_paths": [
+        ".agents/skills/strategic-advisor/references/response-contract.md",
+        ".agents/skills/strategic-advisor/references/project-product.md",
+        ".agents/skills/strategic-advisor/references/evidence.md",
+        ".agents/skills/strategic-advisor/references/readiness.md",
+        ".agents/skills/strategic-advisor/references/competing-worlds.md",
+        ".agents/skills/strategic-advisor/references/action-policy.md"
+      ],
+      "line_counts": {
+        "response-contract.md": 29,
+        "project-product.md": 75,
+        "evidence.md": 51,
+        "readiness.md": 22,
+        "competing-worlds.md": 31,
+        "action-policy.md": 31
+      }
+    },
+    {
+      "type": "agent_message",
+      "artifact": "evidence/CLM-002-codex-output.md",
+      "committed_artifact_sha256": "2b57599445f65b74b4043581c6c2b63c09466492232b6c4dd51f1262188f4a30",
+      "raw_capture_sha256": "1b9d0a4169ad59afdce6f402fb18100c299b6f3713f34b8b5164de6c691e6366"
+    }
+  ],
+  "turn_usage": {
+    "input_tokens": 80142,
+    "cached_input_tokens": 67328,
+    "output_tokens": 1718,
+    "reasoning_output_tokens": 254
+  }
+}
