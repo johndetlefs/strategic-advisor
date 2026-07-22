@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "claim_id": "CLM-001",
+  "observed_at": "2026-07-22T08:07:35Z",
+  "public_claims_revision": "527cbaf32add434e5d9e94c57b06e3f8cbe6ea50",
+  "release_source_commit": "c15c859dbdd69bac78c4708532f4fe2406320d17",
+  "verdict": "pass",
+  "public_repository": {
+    "default_branch": "main",
+    "public": true,
+    "url": "https://github.com/johndetlefs/strategic-advisor"
+  },
+  "public_claim_artifacts": [
+    {
+      "path": "README.md",
+      "git_blob_sha1": "02cb681723673178ee6857f1ed499a57fd7d6f2b",
+      "observed_claims": [
+        "The v0.1.0-alpha.1 prerelease is linked as the early-access distribution.",
+        "One exact-release-package Codex activation path is retained.",
+        "Claude and ChatGPT activation remain unverified.",
+        "No installation, host, connector, domain, or behavioural capability is supported."
+      ]
+    },
+    {
+      "path": "INSTALL.md",
+      "git_blob_sha1": "3c01d8b90dd955258d4aecce5bc8daa21e8278c4",
+      "observed_claims": [
+        "The current alpha release and its two trusted verification identities are named.",
+        "Release-pinned verification is separated from structurally verifying a local build.",
+        "Each host route has its own prerequisites, smoke test, and explicit experimental boundary."
+      ]
+    },
+    {
+      "path": "PRODUCT-CONTRACT.md",
+      "git_blob_sha1": "53a0455521bbcc2c81376adc7ec51fc58fde12f1",
+      "observed_claims": [
+        "The exact-package Codex trace is installation evidence only.",
+        "Capability promotion remains disabled and no comparative or pilot result is claimed.",
+        "Claude and ChatGPT live activation remain unproved."
+      ]
+    }
+  ],
+  "release": {
+    "prerelease": true,
+    "published_at": "2026-07-22T07:33:57Z",
+    "tag": "v0.1.0-alpha.1",
+    "target_commit": "c15c859dbdd69bac78c4708532f4fe2406320d17",
+    "url": "https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.1.0-alpha.1",
+    "installation_instructions_public_claims_revision": "527cbaf32add434e5d9e94c57b06e3f8cbe6ea50",
+    "installation_instructions_url": "https://github.com/johndetlefs/strategic-advisor/blob/527cbaf32add434e5d9e94c57b06e3f8cbe6ea50/INSTALL.md",
+    "assets": [
+      {
+        "name": "strategic-advisor.zip",
+        "sha256": "a675fecbfd0d9b6169f11766e99f2c3ae468ba3ac5833d61a6c2776f5e8d4521",
+        "size_bytes": 64472
+      },
+      {
+        "name": "strategic-advisor-plugin.zip",
+        "sha256": "b08fba62a92fdf1b4bce271600d0c55ab50180e5346750673a3f16cb747dcec3",
+        "size_bytes": 67703
+      },
+      {
+        "name": "install-artifacts.json",
+        "sha256": "86a3133b4591f19f13f5ab98e4fa4e886d86d7d92870f42ca28f9b0a253d70ce",
+        "size_bytes": 21801
+      }
+    ]
+  },
+  "contract_comparison": [
+    {
+      "contract": "https://learn.chatgpt.com/docs/build-skills",
+      "implementation": "The standalone ZIP has one strategic-advisor root, canonical SKILL.md, supporting resources, and no evaluation plane.",
+      "public_claim": "Structurally prepared for compatible Agent Skills hosts; no host or behaviour support claim.",
+      "result": "aligned"
+    },
+    {
+      "contract": "https://help.openai.com/en/articles/20001066",
+      "implementation": "The standalone ZIP is the experimental ChatGPT Personal Skill artifact.",
+      "public_claim": "Eligibility and per-surface installation are explicit; ChatGPT upload and activation remain unverified.",
+      "result": "aligned"
+    },
+    {
+      "contract": "https://learn.chatgpt.com/docs/build-plugins",
+      "implementation": "The plugin ZIP contains .agents/plugins/marketplace.json and plugins/strategic-advisor/.codex-plugin/plugin.json with identical runtime bytes.",
+      "public_claim": "Targeted only at Codex and ChatGPT desktop Work-mode local marketplaces; it is not a direct Skill upload or public Plugin Directory submission.",
+      "result": "aligned"
+    },
+    {
+      "contract": "https://support.claude.com/en/articles/12512180-use-skills-in-claude",
+      "implementation": "The same standalone Agent Skills ZIP is provided for experimental Claude.ai installation.",
+      "public_claim": "Claude.ai upload and activation remain unverified and unsupported.",
+      "result": "aligned"
+    },
+    {
+      "contract": "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills",
+      "implementation": "INSTALL.md names the current Claude.ai upload path and prerequisites.",
+      "public_claim": "Upload acceptance is not treated as activation proof.",
+      "result": "aligned"
+    },
+    {
+      "contract": "https://code.claude.com/docs/en/slash-commands",
+      "implementation": "INSTALL.md names project and personal Claude Code Skill paths for the standalone package.",
+      "public_claim": "Claude Code remains experimental because its executable was unavailable for direct proof.",
+      "result": "aligned"
+    }
+  ],
+  "public_claim_boundary": {
+    "behavioural_evaluation_completed": false,
+    "capability_promotion_enabled": false,
+    "supported_capabilities": [],
+    "supported_installation_available": false,
+    "unverified_hosts": [
+      "claude-ai",
+      "claude-code",
+      "chatgpt-desktop-work",
+      "chatgpt-personal-skills"
+    ]
+  },
+  "method": "After PR 2 merged, query the live public GitHub repository, exact default-branch files and blob identities, merge commit, release tag, release-body installation link, asset digests, and current official host contracts; compare repository, release, artifact, host-surface, prerequisite, support-state, and limitation claims field by field. Re-query the release after correcting its stale tag-pinned INSTALL link."
+}
