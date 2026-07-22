@@ -1,0 +1,255 @@
+{
+  "schema_version": 2,
+  "status": "template-not-frozen",
+  "iteration": "iteration-001",
+  "frozen_at": "YYYY-MM-DDTHH:MM:SSZ",
+  "freeze_envelope": {
+    "authority_source_commit": "0000000000000000000000000000000000000000",
+    "authority_source_tree": "0000000000000000000000000000000000000000",
+    "freeze_manifest_path": "evidence/evaluations/iteration-001/freeze-manifest.json",
+    "required_commit_relationship": "The freeze commit has authority_source_commit as its sole parent and changes only this populated freeze manifest plus the frozen artifacts it hashes: runtime-package provenance, exact non-secret context/tool/input artifacts, host activation contract, and sealed-holdout commitment and independence attestation.",
+    "self_identity_rule": "Do not place the future freeze-commit SHA or this manifest's own SHA-256 inside this file. Record both after commit in every run and result manifest."
+  },
+  "authority_files": [
+    {
+      "path": "skills/strategic-advisor/evals/evals.json",
+      "sha256": ""
+    },
+    {
+      "path": "skills/strategic-advisor/evals/core_cases.json",
+      "sha256": ""
+    },
+    {
+      "path": "skills/strategic-advisor/evals/lens_cases.json",
+      "sha256": ""
+    },
+    {
+      "path": "skills/strategic-advisor/evals/eval_queries.json",
+      "sha256": ""
+    },
+    {
+      "path": "skills/strategic-advisor/evals/RUBRIC.md",
+      "sha256": ""
+    },
+    {
+      "path": "skills/strategic-advisor/evals/PROTOCOL.md",
+      "sha256": ""
+    },
+    {
+      "path": "skills/strategic-advisor/evals/AGGREGATION.md",
+      "sha256": ""
+    },
+    {
+      "path": "skills/strategic-advisor/evals/SCORER-PROMPT.md",
+      "sha256": ""
+    },
+    {
+      "path": "skills/strategic-advisor/evals/ADJUDICATOR-PROMPT.md",
+      "sha256": ""
+    },
+    {
+      "path": "skills/strategic-advisor/evals/CASE-ASSERTION-GRADER-PROMPT.md",
+      "sha256": ""
+    },
+    {
+      "path": "skills/strategic-advisor/runtime-manifest.json",
+      "sha256": ""
+    },
+    {
+      "path": "scripts/build_evals.py",
+      "sha256": ""
+    },
+    {
+      "path": "scripts/build_runtime_package.py",
+      "sha256": ""
+    },
+    {
+      "path": "scripts/validate.py",
+      "sha256": ""
+    }
+  ],
+  "runtime_package": {
+    "source_allowlist": {
+      "path": "skills/strategic-advisor/runtime-manifest.json",
+      "sha256": ""
+    },
+    "package_manifest": {
+      "path": "evidence/evaluations/iteration-001/runtime-package-manifest.json",
+      "sha256": ""
+    },
+    "package_identity_sha256": "",
+    "identity_algorithm": "sha256-canonical-json-v1",
+    "model_visible_package_location": "A new isolated directory outside the source repository; its local path is run metadata and is not authority."
+  },
+  "generation": {
+    "model": "",
+    "model_version": "",
+    "host": "",
+    "configuration": {},
+    "draw_ids": [
+      "draw-1",
+      "draw-2"
+    ],
+    "draws_per_condition_per_case": 2,
+    "tool_policy_sha256": "",
+    "system_and_developer_context_sha256": "",
+    "non_treatment_context_sha256": "",
+    "declared_input_manifest_sha256": "",
+    "frozen_context_artifacts": {
+      "system_and_developer_context": {
+        "path": "",
+        "sha256": ""
+      },
+      "tool_policy": {
+        "path": "",
+        "sha256": ""
+      },
+      "non_treatment_context": {
+        "path": "",
+        "sha256": ""
+      },
+      "declared_input_manifest": {
+        "path": "",
+        "sha256": ""
+      }
+    },
+    "treatment_activation": {
+      "contract_path": "",
+      "contract_sha256": "",
+      "user_prompt_policy": "User prompt bytes are identical across conditions and contain no treatment-only invocation token.",
+      "package_availability_proof": "",
+      "trace_fields": [
+        "package_discovered",
+        "skill_selected",
+        "loaded_reference_paths"
+      ],
+      "selection_policy": "Record observed selection and loaded references when exposed. A non-selection is retained as treatment behaviour; inability to prove package availability invalidates the run."
+    },
+    "fresh_context_identity": {
+      "key_fields": [
+        "case_id",
+        "draw_id",
+        "condition"
+      ],
+      "required_record": "host_context_id",
+      "uniqueness": "Every generation matrix row has a non-empty host_context_id unique across the iteration."
+    }
+  },
+  "masking": {
+    "algorithm_id": "hmac-sha256-mask-v1",
+    "masking_seed_hex": "",
+    "seed_format": "Exactly 64 lowercase hexadecimal characters selected before any output.",
+    "mapping_rule": "HMAC-SHA256(key=seed, message=UTF8('strategic-advisor-mask-v1') || 0x00 || UTF8(case_id) || 0x00 || UTF8(draw_id)); first-byte low bit 0 means skilled=A, 1 means skilled=B.",
+    "scoring_order_rule": "For each pass, sort by HMAC-SHA256(key=seed, message=UTF8('strategic-advisor-score-order-v1') || 0x00 || UTF8(pass_id) || 0x00 || UTF8(case_id) || 0x00 || UTF8(draw_id)); break digest ties lexically by case_id then draw_id.",
+    "mapping_storage": "Retained outside scorer and adjudicator context."
+  },
+  "scoring": {
+    "model": "",
+    "model_version": "",
+    "host": "",
+    "configuration": {},
+    "pass_ids": [
+      "score-1",
+      "score-2"
+    ],
+    "passes": 2,
+    "scorer_prompt_sha256": "",
+    "adjudication_model": "",
+    "adjudication_model_version": "",
+    "adjudication_configuration": {},
+    "adjudicator_prompt_sha256": "",
+    "parser_retry_policy": {
+      "maximum_retries_per_logical_pass": 1,
+      "retry_context": "Fresh context with identical frozen inputs plus machine diagnostic codes only.",
+      "attempt_ids": [
+        "initial",
+        "parser-retry-1"
+      ]
+    },
+    "case_assertion_grading": {
+      "model": "",
+      "model_version": "",
+      "host": "",
+      "configuration": {},
+      "pass_ids": [
+        "assertion-1",
+        "assertion-2"
+      ],
+      "passes_per_masked_response": 2,
+      "prompt_sha256": "",
+      "fresh_context_identity": {
+        "key_fields": [
+          "case_id",
+          "draw_id",
+          "response_id",
+          "assertion_pass_id",
+          "attempt_id"
+        ],
+        "required_record": "host_context_id",
+        "uniqueness": "Every assertion grading attempt has a non-empty host_context_id unused by any generation, scorer, adjudicator, or assertion-grader attempt."
+      }
+    },
+    "fresh_context_identity": {
+      "score_key_fields": [
+        "case_id",
+        "draw_id",
+        "pass_id",
+        "attempt_id"
+      ],
+      "adjudication_key_fields": [
+        "case_id",
+        "draw_id",
+        "disputed_subject",
+        "attempt_id"
+      ],
+      "required_record": "host_context_id",
+      "uniqueness": "No generation, scorer, or adjudicator host_context_id may be reused."
+    }
+  },
+  "aggregation": {
+    "authority_path": "skills/strategic-advisor/evals/AGGREGATION.md",
+    "authority_sha256": "",
+    "algorithm_id": "evaluation-cluster-paired-bootstrap-sha256-v1",
+    "bootstrap_seed_hex": "",
+    "seed_format": "Exactly 64 lowercase hexadecimal characters selected before any output.",
+    "bootstrap_resamples": 10000,
+    "cluster_unit": "Use non-empty frozen pair_id; otherwise case_id. Average draws within case, cases within evaluation cluster, then weight evaluation clusters equally.",
+    "point_estimate": "Equal-weight arithmetic mean of evaluation-cluster paired deltas.",
+    "interval": {
+      "type": "two-sided-percentile",
+      "confidence": 0.95,
+      "quantile_method": "Hyndman-Fan Type 7",
+      "lower_probability": 0.025,
+      "upper_probability": 0.975
+    },
+    "score_resolution": "Verify each scorer exactly echoes the frozen case not_applicable_dimensions list. For every unlisted dimension, use separate two-pass A and B means unless either response differs by at least 2; then use the fresh adjudicator's final A and B scores. Applicability is never adjudicated.",
+    "win_loss_tie": "After draw, case, and evaluation-cluster aggregation, primary cluster delta greater than 0 is a win, less than 0 is a loss, and exactly 0 is a tie; tolerance is zero.",
+    "n_a_policy": "Use only not_applicable_dimensions from frozen executable case metadata. Scorers must echo it exactly and cannot infer, add, remove, or adjudicate N/A; always-applicable dimensions cannot be listed; never impute.",
+    "missing_or_error_policy": "After at most the one frozen parser-contract retry, fail the iteration, retain and report the unit, do not retry/drop/replace/impute, and give incomplete-matrix descriptive statistics no gating verdict."
+  },
+  "sealed_holdout": {
+    "required": true,
+    "minimum_cases": 6,
+    "minimum_causal_families": 3,
+    "commitment_manifest_path": "",
+    "commitment_manifest_sha256": "",
+    "independence_attestation_path": "",
+    "independence_attestation_sha256": "",
+    "authorship_rule": "Holdout cases are authored by a person who did not write the skill or public matrix and remain unavailable to those authors and both generation conditions until the public matrix is complete.",
+    "opening_rule": "After public-matrix completion, verify every plaintext case and assertion against the frozen commitment and run the holdout once through the same matched pipeline without tuning.",
+    "release_rule": "At least six cases across three causal families; zero skilled hard-gate or assertion failures; positive mean deltas on Reality fidelity and Decision usefulness; losses on no more than one third of evaluation clusters."
+  },
+  "result_reference_requirements": {
+    "record_after_freeze_commit": [
+      "freeze_commit_sha",
+      "freeze_manifest_sha256"
+    ],
+    "record_in_every_run_and_result": [
+      "authority_source_commit",
+      "freeze_commit_sha",
+      "freeze_manifest_sha256",
+      "runtime_package_identity_sha256",
+      "runtime_package_manifest_sha256"
+    ]
+  }
+}

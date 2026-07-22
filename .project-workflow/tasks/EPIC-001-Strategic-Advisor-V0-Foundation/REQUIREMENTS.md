@@ -6,18 +6,6 @@
 - Title: Strategic Advisor v0 Foundation
 - Last updated: 2026-07-22
 
-## Owner Approval
-
-- Requirements reviewed by owner: No
-- Acceptance criteria reviewed by owner: No
-- Approved for decomposition: No
-- Approved for implementation: No
-- Approved scope envelope: No
-- Approved by: Not approved
-- Approval date: Not approved
-- Approval note / source: Not approved
-- Approved artifact identity: Not approved
-
 ## Overview
 
 Strategic Advisor v0 will establish one portable, reality-constrained advisory skill and the evidence needed to make bounded claims about its usefulness. It will use flagship models for broad hypothesis, reference-class, incentive, and counterfactual search while preventing aspiration, repetition, authority, or polished narrative from being promoted into evidence.
@@ -27,6 +15,18 @@ The foundation must be useful without broad connector access. Connectors, host-s
 ## User Story
 
 As a person making a consequential project, career, organisational, or people-leadership decision, I want a capable model to challenge my account of reality, compare credible alternative explanations, and recommend the highest-leverage supportable next move so that I can act without being flattered into an attractive but ungrounded strategy.
+
+## Owner Approval
+
+- Requirements reviewed by owner: Yes
+- Acceptance criteria reviewed by owner: Yes
+- Approved for decomposition: Yes
+- Approved for implementation: No
+- Approved scope envelope: Yes
+- Approved by: John Detlefs
+- Approval date: 2026-07-22
+- Approval note / source: Codex conversation on 2026-07-22: owner accepted Apache-2.0 and directed go for it after receiving the exact requirements and acceptance envelope.
+- Approved artifact identity: sha256:cb114fa48dbb350a724f50715b4e4bb34f17f56a4e62b28703845cf1c50fff55
 
 ## Goal
 
@@ -77,7 +77,7 @@ Deliver an open-source v0 foundation whose scope is explicit, whose canonical st
 
 ## Open Questions (Answer Needed)
 
-- OQ1. Licence choice: use Apache-2.0 (recommended for an explicit patent grant) or MIT (shorter and more permissive in form)?
+- None.
 
 ## Decisions (Resolved)
 
@@ -89,6 +89,7 @@ Deliver an open-source v0 foundation whose scope is explicit, whose canonical st
 - D6. Personal and intimate relationships require a separate lens and are out of v0 implementation scope.
 - D7. Defer connectors and vendor adapters until the canonical skill demonstrates value without them.
 - D8. Use Project Workflow lightly: one v0 Epic coordinates genuine workstreams; ordinary design discussion does not become a task by default.
+- D9. License the repository under Apache License 2.0, providing a permissive licence with an explicit patent grant.
 
 ## Proposed Child Work
 

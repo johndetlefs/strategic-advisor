@@ -1,0 +1,10 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.coverage
+.pytest_cache/
+.venv/
+venv/
+
+# Local evaluation output is evidence only when deliberately retained elsewhere.
+skills/strategic-advisor/evaluation-results/
