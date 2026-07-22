@@ -11,8 +11,9 @@
 - The owner-approved `REQUIREMENTS.md` and its recorded artifact identity define the scope envelope.
 - `.project-workflow/CONSTITUTION.md` defines stable product outcomes and principles.
 - The canonical contents of `skills/strategic-advisor/` define shipped strategic behaviour.
+- The content-addressed allowlisted runtime package defines installable skill bytes; the development tree, evaluation surface, and an adapter-side copy are invalid substitutes.
 - Committed evaluation definitions, frozen thresholds, raw run artifacts, blind scores, and hard-gate verdicts define evaluated behaviour.
-- Live GitHub state, clean-checkout validation, and CI results define repository and packaging state.
+- Live GitHub state, clean-checkout validation, CI results, and exact-host discovery/activation evidence define repository, packaging, and installation state.
 - Sanitised pilot decision records and explicit owner judgments define pilot evidence; they do not prove general effectiveness.
 
 ## Invalid Substitutes
@@ -44,17 +45,17 @@
 - Root public artifacts: `README.md`, `PRODUCT-CONTRACT.md`, `CONTRIBUTING.md`, `SECURITY.md`, an explicit open-source licence, and validation entrypoint.
 - Canonical product: `skills/strategic-advisor/SKILL.md`, progressively loaded references, domain lenses, user-facing templates, and skill-local evaluation definitions.
 - Evaluation evidence: frozen rubric and thresholds, synthetic/public cases, trigger tests, raw paired outputs, blind scores, hard-gate verdicts, and reproducible run metadata.
-- Delivery proof: clean-checkout validation artifacts, CI results, sanitised pilot decision records, and epic acceptance audit.
+- Delivery proof: clean-checkout validation artifacts, CI results, content-addressed runtime bundles, exact-host discovery/activation records, sanitised pilot decision records, and epic acceptance audit.
 
 ## Parent AC Proof Ownership
 
 | Parent AC | Proof Owner | Required Evidence |
 | --- | --- | --- |
-| AC1 | TASK-001 | Live GitHub query, clean-checkout artifact/link review, and public-claim comparison. |
-| AC2 | TASK-002 | Skill specification validation, clean-context invocation proof, and duplicate-logic scan. |
+| AC1 | TASK-001, TASK-006 | Live GitHub query, clean-checkout artifact/link review, install-artifact identity, and public-claim comparison. |
+| AC2 | TASK-002, TASK-006 | Skill specification validation, allowlisted runtime-package proof, clean-context exact-host invocation proof, and duplicate-logic scan. |
 | AC3 | TASK-002, TASK-004 | Passing core adversarial cases with retained outputs and hard-gate verdicts. |
 | AC4 | TASK-003, TASK-004 | Four substantive lens contracts plus passing lens and boundary cases. |
 | AC5 | TASK-004 | Precommitted rubric/threshold identity, equivalent run metadata, blinded scores, and zero hard-gate failures. |
 | AC6 | TASK-005 | Two privacy-reviewed sanitised pilot decision records and explicit case-owner usefulness judgments. |
-| AC7 | TASK-001, TASK-004 | Passing positive/negative validators locally and in a clean CI checkout. |
+| AC7 | TASK-001, TASK-004, TASK-006 | Passing positive/negative validators locally and in a clean CI checkout, including package drift and forbidden evaluation-surface fixtures. |
 | AC8 | TASK-005 | Complete parent acceptance audit linked to current artifacts, failures, limitations, and release verdict. |

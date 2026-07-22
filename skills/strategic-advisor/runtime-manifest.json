@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "package_root": "skills/strategic-advisor",
+  "include": [
+    "SKILL.md",
+    "agents/openai.yaml",
+    "references/evidence.md",
+    "references/readiness.md",
+    "references/competing-worlds.md",
+    "references/action-policy.md",
+    "references/boundaries.md",
+    "references/response-contract.md",
+    "references/project-product.md",
+    "references/career.md",
+    "references/organizational-influence.md",
+    "references/people-leadership.md"
+  ],
+  "excluded_roots": [
+    "evals",
+    "evaluation-results"
+  ]
+}

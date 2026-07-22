@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Strategic Advisor non-sensitive pilot run manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "pilot_id",
+    "skill_commit",
+    "skill_package_sha256",
+    "model",
+    "host",
+    "configuration",
+    "started_at",
+    "completed_at",
+    "attestation_reference",
+    "public_record"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "pilot_id": {
+      "type": "string",
+      "pattern": "^PILOT-[A-Z0-9]{8}$"
+    },
+    "skill_commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "skill_package_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "model": { "type": "string", "minLength": 1 },
+    "host": { "type": "string", "minLength": 1 },
+    "configuration": {
+      "type": "object",
+      "additionalProperties": { "type": ["string", "number", "boolean", "null"] }
+    },
+    "started_at": { "type": "string", "format": "date-time" },
+    "completed_at": { "type": "string", "format": "date-time" },
+    "attestation_reference": {
+      "type": "string",
+      "pattern": "^external:[A-Za-z0-9._:-]+$"
+    },
+    "public_record": {
+      "type": "string",
+      "pattern": "^pilots/[A-Za-z0-9._/-]+\\.md$"
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Strategic Advisor public pilot registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status", "entries"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "status": {
+      "enum": ["no-pilots-enrolled", "pilots-enrolled", "pilots-complete"]
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pilot_id",
+          "domain",
+          "registered_at",
+          "eligibility_status",
+          "eligibility_reason_code",
+          "consent_status",
+          "consent_reference",
+          "terminal_status",
+          "public_record",
+          "run_manifest"
+        ],
+        "properties": {
+          "pilot_id": {
+            "type": "string",
+            "pattern": "^PILOT-[A-Z0-9]{8}$"
+          },
+          "domain": {
+            "enum": ["project-product", "career-organizational"]
+          },
+          "registered_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eligibility_status": {
+            "enum": ["pending", "eligible", "excluded"]
+          },
+          "eligibility_reason_code": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "consent_status": {
+            "enum": ["pending", "granted", "withdrawn"]
+          },
+          "consent_reference": {
+            "type": ["string", "null"]
+          },
+          "terminal_status": {
+            "enum": ["preregistered", "excluded", "withdrawn", "failed", "inconclusive", "completed"]
+          },
+          "public_record": {
+            "type": ["string", "null"]
+          },
+          "run_manifest": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    }
+  }
+}

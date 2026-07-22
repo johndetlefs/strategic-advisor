@@ -6,18 +6,6 @@
 - Title: Strategic Advisor v0 Foundation
 - Last updated: 2026-07-22
 
-## Owner Approval
-
-- Requirements reviewed by owner: No
-- Acceptance criteria reviewed by owner: No
-- Approved for decomposition: No
-- Approved for implementation: No
-- Approved scope envelope: No
-- Approved by: Not approved
-- Approval date: Not approved
-- Approval note / source: Not approved
-- Approved artifact identity: Not approved
-
 ## Overview
 
 Strategic Advisor v0 will establish one portable, reality-constrained advisory skill and the evidence needed to make bounded claims about its usefulness. It will use flagship models for broad hypothesis, reference-class, incentive, and counterfactual search while preventing aspiration, repetition, authority, or polished narrative from being promoted into evidence.
@@ -27,6 +15,18 @@ The foundation must be useful without broad connector access. Connectors, host-s
 ## User Story
 
 As a person making a consequential project, career, organisational, or people-leadership decision, I want a capable model to challenge my account of reality, compare credible alternative explanations, and recommend the highest-leverage supportable next move so that I can act without being flattered into an attractive but ungrounded strategy.
+
+## Owner Approval
+
+- Requirements reviewed by owner: Yes
+- Acceptance criteria reviewed by owner: Yes
+- Approved for decomposition: Yes
+- Approved for implementation: No
+- Approved scope envelope: Yes
+- Approved by: John Detlefs
+- Approval date: 2026-07-22
+- Approval note / source: Codex conversation on 2026-07-22: owner approved Option A and directed the project to move as quickly as possible toward installable Codex, Claude, and ChatGPT use with further testing acknowledged.
+- Approved artifact identity: sha256:de0ce451b286eaedbfe9726e5380890e853c075efbcc426e3ba674acdca2ea3f
 
 ## Goal
 
@@ -77,7 +77,7 @@ Deliver an open-source v0 foundation whose scope is explicit, whose canonical st
 
 ## Open Questions (Answer Needed)
 
-- OQ1. Licence choice: use Apache-2.0 (recommended for an explicit patent grant) or MIT (shorter and more permissive in form)?
+- None.
 
 ## Decisions (Resolved)
 
@@ -87,8 +87,10 @@ Deliver an open-source v0 foundation whose scope is explicit, whose canonical st
 - D4. Treat model breadth, parallel hypothesis generation, counterfactual search, and low-ego revision as advantages in strategic search, not as privileged access to truth.
 - D5. Professional stakeholder modelling and deliberate influence are legitimate. People remain adaptive actors, not deterministic components.
 - D6. Personal and intimate relationships require a separate lens and are out of v0 implementation scope.
-- D7. Defer connectors and vendor adapters until the canonical skill demonstrates value without them.
+- D7. Originally defer connectors and vendor adapters until the canonical skill demonstrates value without them. The adapter portion of this decision is superseded by D10; broad connectors remain deferred.
 - D8. Use Project Workflow lightly: one v0 Epic coordinates genuine workstreams; ordinary design discussion does not become a task by default.
+- D9. License the repository under Apache License 2.0, providing a permissive licence with an explicit patent grant.
+- D10. Owner approved bringing thin Codex, Claude, and ChatGPT installation packaging and exact-host activation proof into EPIC-001 on 2026-07-22 so real-world testing can start promptly. The shipped artifact must be the allowlisted runtime package rather than the development tree; adapters may package or link it without copying strategic logic. Installation success and behavioural support remain separate claims, and unsupported hosts remain labelled experimental until their own current evidence passes.
 
 ## Proposed Child Work
 

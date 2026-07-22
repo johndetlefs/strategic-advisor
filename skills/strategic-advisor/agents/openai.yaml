@@ -1,0 +1,4 @@
+interface:
+  display_name: "Strategic Advisor"
+  short_description: "Reality-tested strategy under uncertainty"
+  default_prompt: "Use $strategic-advisor to test my account of reality and identify the highest-leverage supportable next move."
