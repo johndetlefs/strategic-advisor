@@ -13,7 +13,7 @@ The design is one canonical reality protocol plus selectively loaded professiona
 | Field | Current state |
 | --- | --- |
 | Maturity | Pre-release |
-| Early-access distribution target | `v0.1.0-alpha.1` |
+| Early-access distribution | [`v0.1.0-alpha.1` GitHub prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.1.0-alpha.1) |
 | Canonical product | [`skills/strategic-advisor/`](skills/strategic-advisor/) |
 | Supported installation | None |
 | Early-access installation | Deterministic standalone Skill and OpenAI local-marketplace plugin builders; see [INSTALL.md](INSTALL.md) |
@@ -29,11 +29,11 @@ The design is one canonical reality protocol plus selectively loaded professiona
 
 Build or install only the generated allowlisted artifacts described in [INSTALL.md](INSTALL.md). The standalone ZIP is intended for compatible Codex, Claude Code, Claude.ai, and eligible ChatGPT Personal Skill surfaces. The plugin ZIP is a skill-only OpenAI local-marketplace envelope for Codex and ChatGPT desktop Work mode. It is not a Personal Skill upload or public Plugin Directory submission package. Both contain the same runtime skill bytes and exclude the evaluation plane.
 
-Artifact compatibility, successful host activation, comparative behavioural improvement, and useful real-world outcomes are separate claims. Release-commit host activation evidence is still pending, and the release contract remains pre-release and unsupported until the host and behavioural gates are promoted with current structured evidence.
+Artifact compatibility, successful host activation, comparative behavioural improvement, and useful real-world outcomes are separate claims. A retained exact-release-package Codex activation check exists; Claude and ChatGPT activation remain unverified. The product remains pre-release and unsupported until the relevant host and behavioural gates are promoted with current structured evidence.
 
 ## Host and installation boundary
 
-- **Codex:** the repository's relative symlink at `.agents/skills/strategic-advisor` is for authoring only. The generated standalone and local-marketplace artifacts provide the end-user boundary. Release-commit discovery, activation, and source-use evidence remains pending.
+- **Codex:** the repository's relative symlink at `.agents/skills/strategic-advisor` is for authoring only. The generated standalone and local-marketplace artifacts provide the end-user boundary. A fresh isolated Codex task loaded the exact released standalone package and produced a retained source-access trace; this proves that one activation path, not strategic effectiveness or general support.
 - **ChatGPT:** the standalone archive is structurally prepared for eligible Personal Skills upload. The OpenAI local-marketplace archive is also structurally prepared for ChatGPT desktop Work mode. Personal Skills are currently generally available on managed ChatGPT plans, subject to workspace controls; live upload/installation and activation remain unverified on both routes. The plugin ZIP is not a direct Skill upload or public Plugin Directory submission.
 - **Claude or Claude Code:** the standalone archive follows the current custom-Skill shape. Claude Code is not installed on the maintainer's current test machine and no authorised Claude.ai upload has yet been retained, so both paths remain experimental.
 - **Connectors:** no Slack, Teams, repository, email, calendar, document-store, or other connector is shipped. Connecting a data source would not by itself make its contents complete, true, relevant, or authorised.

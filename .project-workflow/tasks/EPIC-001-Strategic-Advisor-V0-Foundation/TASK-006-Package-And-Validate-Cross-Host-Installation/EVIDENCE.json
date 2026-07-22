@@ -20,29 +20,29 @@
       "parent_ac": "AC2",
       "claim": "A fresh Codex context discovers and invokes the exact released standalone runtime package.",
       "recipe": "runtime-target-source",
-      "status": "pending",
-      "commit": "____",
-      "timestamp": "____",
+      "status": "pass",
+      "commit": "c15c859dbdd69bac78c4708532f4fe2406320d17",
+      "timestamp": "2026-07-22T07:52:00Z",
       "execution_target": "Fresh Codex context in a clean project that does not contain the Strategic Advisor source repository",
       "source_artifact": "Released standalone Strategic Advisor archive and its recorded package, archive, and operative SKILL identities",
       "observation_method": "Install the released package at a documented Codex scope, invoke it on a synthetic canary, and retain host/model/version, archive and source identities, invocation, visible source-access trace, loaded references, and output",
-      "target_used_source_proof": "____",
-      "evidence_artifact": "____",
-      "evidence_artifact_hash": "____"
+      "target_used_source_proof": "The retained exact prompt and Codex event trace record successful shell hashing of the installed SKILL.md and successful reads of six exact installed reference paths before the source-bound response; see evidence/CLM-002-codex-prompt.md (sha256:452bde9c22cda2e0764ba6de12a06ffe8e89a10eb7f28739de8986f15dfc9ec5) and evidence/CLM-002-codex-trace.json (sha256:d6fef43116e8321ad2ff9cf2293b542225233122510e4fbb21a33e5a3943c553).",
+      "evidence_artifact": "evidence/CLM-002-codex-runtime-source.json",
+      "evidence_artifact_hash": "sha256:64fd307663f78dd13201ea3196bc5f75536d60bb03a01a73716d4c466ac344b1"
     },
     {
       "id": "CLM-006",
       "parent_ac": "AC7",
       "claim": "A clean checkout of the exact release commit reproduces the deterministic install artifacts and rejects package drift and evaluation leakage.",
       "recipe": "external-contract-alignment",
-      "status": "pending",
-      "commit": "____",
-      "timestamp": "____",
+      "status": "pass",
+      "commit": "c15c859dbdd69bac78c4708532f4fe2406320d17",
+      "timestamp": "2026-07-22T07:37:49Z",
       "contract_artifact": "Committed canonical runtime allowlist, install-artifact schema, independent verifier contract, and positive/negative repository validation contract",
       "implementation_artifact": "Clean-checkout archives, provenance, independent verification, full validation output, and successful CI result for the exact release commit",
       "comparison_method": "Build twice, compare byte identities, independently verify both triples, run all positive and negative checks, and match the successful CI checkout SHA",
-      "evidence_artifact": "____",
-      "evidence_artifact_hash": "____"
+      "evidence_artifact": "evidence/CLM-006-clean-release-reproduction.json",
+      "evidence_artifact_hash": "sha256:292eea6c8e498e1c8f3e89326aef933f468161c64c882d6cd6982b9debfe8847"
     }
   ]
 }

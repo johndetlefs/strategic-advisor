@@ -1,6 +1,6 @@
 # Install Strategic Advisor
 
-Strategic Advisor is being packaged for **early-access testing**. Installation and strategic effectiveness are different claims: a host may load the package correctly even though the project has not yet passed its comparative behavioural or real-pilot release gates.
+Strategic Advisor is available for **early-access testing**. Installation and strategic effectiveness are different claims: a host may load the package correctly even though the project has not yet passed its comparative behavioural or real-pilot release gates.
 
 Use only a generated install artifact. Do not point an end-user host at the development directory under `skills/strategic-advisor/`; that directory deliberately contains evaluation authority that must remain outside model context.
 
@@ -12,9 +12,26 @@ A distribution contains three files:
 - `strategic-advisor-plugin.zip` — a skill-only OpenAI local marketplace and plugin bundle for Codex and ChatGPT desktop Work mode; and
 - `install-artifacts.json` — external provenance, entry inventory, runtime-package identity, source revision, and archive hashes.
 
-Once published, download all three files together from the [`v0.1.0-alpha.1` early-access release](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.1.0-alpha.1). Until that release exists, build only from a clean checkout and do not treat locally generated files as published release artifacts.
+Download all three files together from the current [`v0.1.0-alpha.1` early-access release](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.1.0-alpha.1). Keep the provenance document beside both ZIPs.
 
-To build them from a checkout, choose three paths that do not already exist:
+### Verify the downloaded alpha
+
+Use the consumer-side verifier with the trusted identities for `v0.1.0-alpha.1`:
+
+```sh
+python3 scripts/build_install_artifacts.py verify \
+  --skill-archive strategic-advisor.zip \
+  --plugin-archive strategic-advisor-plugin.zip \
+  --provenance install-artifacts.json \
+  --expected-provenance-sha256 86a3133b4591f19f13f5ab98e4fa4e886d86d7d92870f42ca28f9b0a253d70ce \
+  --expected-runtime-identity 743bcdd018c192a0ba9a4721cad38027587153b04f30689376cd028ae94940ea
+```
+
+This checks archive safety, deterministic metadata, package identity, cross-archive runtime-byte equality, consistency with the provenance document, and equality with the named alpha identities. It does not prove source authenticity if an attacker can replace the release page and every trusted reference; download from the named GitHub release and compare its commit and digests through a separately trusted route when that threat matters.
+
+### Build from a checkout
+
+Choose three paths that do not already exist:
 
 ```sh
 mkdir -p dist
@@ -27,16 +44,16 @@ python3 scripts/build_install_artifacts.py build \
 
 For a Git checkout, the builder also refuses a dirty source tree so the recorded revision cannot silently describe different bytes. `--allow-dirty` exists only for local exploration and marks the revision as inexact; never publish that output. The builder intentionally refuses to overwrite any destination.
 
-Use the consumer-side verifier before installation:
+Verify a local build for structural and internal consistency without pinning it to the alpha identities:
 
 ```sh
 python3 scripts/build_install_artifacts.py verify \
-  --skill-archive strategic-advisor.zip \
-  --plugin-archive strategic-advisor-plugin.zip \
-  --provenance install-artifacts.json
+  --skill-archive dist/strategic-advisor.zip \
+  --plugin-archive dist/strategic-advisor-plugin.zip \
+  --provenance dist/install-artifacts.json
 ```
 
-This checks archive safety, deterministic metadata, package identity, cross-archive runtime-byte equality, and consistency with the provenance document. It does not prove source authenticity if an attacker can replace both archives and the provenance together; use files from the named GitHub release and compare its recorded commit and digests with a trusted release reference.
+That command does not assert that the local build is the published alpha. If you intend to distribute a later revision, establish and publish new trusted provenance and runtime identities for that revision.
 
 ## Codex
 

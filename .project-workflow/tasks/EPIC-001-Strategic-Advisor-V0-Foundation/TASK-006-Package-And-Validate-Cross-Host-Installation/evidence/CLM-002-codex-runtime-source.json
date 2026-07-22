@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "claim_id": "CLM-002",
+  "observed_at": "2026-07-22T07:52:00Z",
+  "verdict": "pass",
+  "release": {
+    "source_commit": "c15c859dbdd69bac78c4708532f4fe2406320d17",
+    "tag": "v0.1.0-alpha.1",
+    "url": "https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.1.0-alpha.1",
+    "standalone_archive_sha256": "a675fecbfd0d9b6169f11766e99f2c3ae468ba3ac5833d61a6c2776f5e8d4521",
+    "provenance_sha256": "86a3133b4591f19f13f5ab98e4fa4e886d86d7d92870f42ca28f9b0a253d70ce",
+    "runtime_package_identity_sha256": "743bcdd018c192a0ba9a4721cad38027587153b04f30689376cd028ae94940ea"
+  },
+  "execution_target": {
+    "codex_cli_version": "0.145.0-alpha.18",
+    "ephemeral": true,
+    "git_repository_clean": true,
+    "isolated_project_commit": "c7549a6eb3f77d38506c501800893eb226baf7a1",
+    "model_requested": "gpt-5.6-sol",
+    "sandbox": "read-only",
+    "source_repository_absent": true,
+    "user_config_ignored": true,
+    "user_rules_ignored": true
+  },
+  "installation": {
+    "archive_origin": "Fresh download from the public GitHub prerelease",
+    "installed_scope": "project",
+    "installed_skill_path": ".agents/skills/strategic-advisor/SKILL.md",
+    "installed_skill_sha256": "793ea25ad303155aee6af95ab6e25b9b399769b9eeb4b358a4211f21aeefcccd"
+  },
+  "invocation": {
+    "explicit_skill": "$strategic-advisor",
+    "prompt_artifact": "evidence/CLM-002-codex-prompt.md",
+    "prompt_artifact_sha256": "452bde9c22cda2e0764ba6de12a06ffe8e89a10eb7f28739de8986f15dfc9ec5",
+    "prompt_input_method": "stdin from the exact committed artifact",
+    "case_data": "Fictional green-delivery-dashboard case with zero active users after six weeks and a request to scale",
+    "mode_expected": "Review",
+    "primary_lens_expected": "Project / Product"
+  },
+  "observable_source_proof": {
+    "trace_artifact": "evidence/CLM-002-codex-trace.json",
+    "trace_artifact_sha256": "d6fef43116e8321ad2ff9cf2293b542225233122510e4fbb21a33e5a3943c553",
+    "raw_event_log_sha256": "3ed337be8634c90796e486e3e7bcd4204110d80dd38be284afc0b27ffcd8f8ec",
+    "installed_skill_hash_command_exit_code": 0,
+    "reference_read_command_exit_code": 0,
+    "loaded_paths": [
+      ".agents/skills/strategic-advisor/references/response-contract.md",
+      ".agents/skills/strategic-advisor/references/project-product.md",
+      ".agents/skills/strategic-advisor/references/evidence.md",
+      ".agents/skills/strategic-advisor/references/readiness.md",
+      ".agents/skills/strategic-advisor/references/competing-worlds.md",
+      ".agents/skills/strategic-advisor/references/action-policy.md"
+    ]
+  },
+  "retained_output": {
+    "artifact": "evidence/CLM-002-codex-output.md",
+    "committed_artifact_sha256": "2b57599445f65b74b4043581c6c2b63c09466492232b6c4dd51f1262188f4a30",
+    "raw_capture_sha256": "1b9d0a4169ad59afdce6f402fb18100c299b6f3713f34b8b5164de6c691e6366",
+    "readiness_labels_exact": true,
+    "readiness_verdict": "Not validated",
+    "engagement_mode": "Review",
+    "primary_lens": "Project / Product"
+  },
+  "proof_boundary": {
+    "automatic_triggering_proven": false,
+    "behavioural_superiority_proven": false,
+    "cross_host_parity_proven": false,
+    "host_source_activation_proven": true,
+    "strategic_suitability_proven": false
+  }
+}
