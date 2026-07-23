@@ -30,11 +30,12 @@
 
 ## Goal
 
-Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: it should widen a bounded question when a higher decision altitude could change the answer, actively explore alternatives with the user, reconverge through an evidence-only reality reset, and optionally use a private, owner-controlled Strategy Workspace for continuity in Codex.
+Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: it should activate selectively for material strategic work, widen a bounded question when a higher decision altitude could change the answer, actively explore alternatives with the user, reconverge through an evidence-only reality reset, and optionally use a private, owner-controlled Strategy Workspace for continuity in Codex.
 
 ## Non-Goals
 
 - Making a repository mandatory before a user receives first value.
+- Making Strategic Advisor the default response mode for every question inside a host, project, or Strategy Workspace.
 - Storing private owner context in this public product repository, install artifacts, examples, evaluations, or retained public evidence.
 - Automatically writing conversation content into durable context without explicit owner review and approval.
 - Treating stored preferences, prior conclusions, or narrative coherence as current evidence.
@@ -49,6 +50,7 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - A returning user may want an inspectable, portable record of approved objectives, project roles, material claims, decisions, falsifiers, and review conditions.
 - A user can ask a valid tactical question whose proposed intervention is nevertheless at the wrong decision altitude; the advisor must not answer it in isolation when stepping up could materially change the recommendation.
 - A user can also ask a small reversible question where portfolio or whole-person analysis would add noise; the advisor must operate at the minimum sufficient altitude.
+- A user can ask factual, status, summarisation, routine implementation, or casual ideation questions that do not justify a strategic protocol merely because project or strategy vocabulary is present.
 - The owner will dogfood the first private Strategy Workspace in Codex while both the workspace contract and Strategic Advisor remain experimental.
 - Contributors need sanitised evidence that the exact canonical/runtime skill and workspace scaffold were used without receiving the owner's private workspace contents.
 
@@ -66,6 +68,10 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - R10. Multi-turn evaluation tests exploration quality, altitude calibration, preference capture, unsupported claim upgrades, stale-context capture, failure to revise, and return from broad exploration to a decision-useful next move.
 - R11. Public documentation presents a progressive onboarding path: immediate one-decision use first, optional workspace-backed continuity second, with precise host and maturity boundaries.
 - R12. Product, install, runtime-manifest, validation, and capability claims remain deterministic and fail closed when workspace, host, or behavioural proof is absent.
+- R13. The full strategic protocol activates only for an explicit or clearly implied material decision, prioritisation, strategic claim, plan, or risk within supported scope when reality-testing could plausibly change the action.
+- R14. Factual questions, status reports, summarisation, routine implementation inside approved scope, simple edits, and casual ideation receive normal direct assistance unless the user requests strategic review or a material strategic decision emerges.
+- R15. Exploratory dialogue may remain open without a forced readiness verdict or premature closure until an executable direction exists. When a strategic checkpoint becomes useful, the advisor makes that transition proportionately and returns to natural conversation afterward.
+- R16. Presence inside a Strategy Workspace, host project, or repository does not itself authorise Strategic Advisor invocation, additional context reads, durable writes, system integration, or cross-project coupling.
 
 ## Acceptance Criteria (Verifiable)
 
@@ -79,6 +85,9 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - AC8: The frozen multi-turn evaluation includes required and forbidden assertions for active discovery, genuine alternatives, minimum-sufficient altitude, evidence-only readiness change, preference invariance, stale-context handling, and convergence; no skilled result may pass with a relevant hard-gate failure.
 - AC9: Runtime and install artifacts contain the approved workspace instructions/templates only when named by the runtime allowlist, reproduce deterministically, and contain no private owner data, host-specific strategic copy, or evaluation leakage.
 - AC10: README, installation guidance, product contract, and capability registry describe the workspace and Codex dogfood state no more strongly than current retained evidence permits; unsupported hosts and general-life, business, marketing, and financial domains remain explicitly unpromoted.
+- AC11: Matched routing cases that contain the same project or strategy vocabulary but differ in user intent activate the full protocol only for the material strategic decision; factual, status, summarisation, routine implementation, simple-edit, and casual-ideation controls receive proportionate direct answers.
+- AC12: Actual multi-turn exploration cases can remain conversationally open while alternatives are being developed, identify when an actionable decision has emerged, apply a visible strategic checkpoint without manufacturing readiness, and return to natural dialogue or a bounded next move.
+- AC13: Fresh host-project and Strategy Workspace cases prove that location alone does not trigger the skill, broaden context access, authorise a write, or create an integration or dependency between separately owned projects.
 
 ## Open Questions (Answer Needed)
 
@@ -94,6 +103,8 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - D6. Conversation transcripts are not canonical context. Only owner-approved distilled claims, decisions, and review conditions may become durable.
 - D7. This Epic may use supplied whole-person objectives as context for bounded professional/project decisions, but broader holistic advisory scope remains owned by `BL-003`.
 - D8. Contextual adjacency does not create product coupling. Cross-repository integration, shared storage, or source-of-truth relationships require explicit owner direction.
+- D9. Strategic Advisor is a selectively invoked decision-quality capability, not the default conversational personality or mandatory wrapper around ordinary assistance.
+- D10. Exploratory conversation does not need to manufacture an executable decision. Readiness becomes mandatory only before execution advice or commitment, not as ceremony during open exploration.
 
 ## Validation Plan
 
@@ -104,13 +115,16 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - AC8: Freeze cases, prompts, assertions, hard gates, context-turn rules, and aggregation before generating candidate outputs. Treat missing turns, reused contexts, or leaked expected properties as invalid rather than incomplete success.
 - AC9: Run deterministic runtime/install builders, structural validators, unit tests, forbidden-content scans, and clean-checkout reproduction against exact source revisions.
 - AC10: Compare every public workspace/host/domain claim with `PRODUCT-CONTRACT.md`, structured capability state, current evidence, and exact host proof; fail on stronger unsupported language.
+- AC11: Freeze matched-intent routing cases with shared vocabulary and different decision stakes; fail both false-positive full-protocol activation and false-negative omission on a material strategic decision.
+- AC12: Run genuine multi-turn exploration with uncued user contributions, record the point at which a decision object does or does not emerge, and fail premature readiness, forced convergence, cosmetic brainstorming, or failure to return to a bounded next move when one becomes justified.
+- AC13: Run fresh-context controls inside and outside a Strategy Workspace and host project; retain only sanitised access/action observations and fail implicit invocation, unnecessary reads, silent writes, or inferred system coupling.
 
 ## Proposed Child Work
 
 | Proposed Child | Parent ACs | Purpose |
 | --- | --- | --- |
-| Implement Interactive Discovery And Altitude Calibration | AC1, AC2, AC3, AC7 | Add the working-position, active exploration, minimum-sufficient-altitude, evidence-delta, and reconvergence behaviour without making ordinary tactical use verbose. |
+| Freeze Selective Invocation And Multi-Turn Evaluation Contract | AC1, AC2, AC3, AC5, AC8, AC11, AC12, AC13 | Precommit matched routing controls, genuine multi-turn cases, assertions, hard gates, context rules, and a sanitised current-skill baseline before changing canonical behaviour. |
+| Implement Selective Invocation, Interactive Discovery And Altitude Calibration | AC1, AC2, AC3, AC7, AC11, AC12, AC13 | Add intent-sensitive routing, working-position dialogue, active exploration, minimum-sufficient altitude, evidence-delta checks, and reconvergence without wrapping ordinary assistance in unnecessary strategic ceremony. |
 | Define And Validate The Strategy Workspace Contract | AC4, AC5, AC7, AC9 | Create the optional portable scaffold, user-approval lifecycle, provenance/freshness contract, deterministic builder, and negative validation fixtures. |
-| Prove Private Codex Owner Dogfood | AC6, AC7, AC10 | Create the private owner workspace, prove exact Codex/runtime/workspace use with sanitised retained evidence, and keep private content outside the public repository. |
-| Build Multi-Turn Reality Guardrail Evaluation | AC1, AC2, AC3, AC5, AC8 | Add precommitted multi-turn cases and fail-closed assertions for exploration, altitude, preference invariance, stale context, revision, and convergence. |
-| Publish Progressive Workspace Onboarding | AC7, AC9, AC10 | Document one-decision quick use and optional continuity, update bounded capability claims, and reproduce install artifacts without overstating host or domain support. |
+| Prove Private Codex Owner Dogfood | AC6, AC7, AC10, AC12, AC13 | Use the implemented behaviour and approved workspace contract on a bounded owner decision, retain only sanitised activation/result/write-control evidence, and keep private content outside the public repository. |
+| Publish Progressive Workspace Onboarding | AC7, AC9, AC10, AC13 | Document normal assistance, one-decision strategic use, and optional continuity; update bounded capability claims and reproduce install artifacts without overstating host or domain support. |

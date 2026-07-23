@@ -20,6 +20,8 @@
 
 - A repository template, documentation, or first-party enthusiasm in place of observed multi-turn behaviour.
 - More conversational prose, more questions, or longer answers in place of genuinely distinct alternatives and decision-relevant exploration.
+- Project or strategy vocabulary, repository location, or workspace presence in place of a material strategic decision that justifies invoking the full protocol.
+- A readiness verdict, formal section structure, or strategic terminology added as ceremony to an ordinary factual, status, implementation, summarisation, simple-edit, or casual-ideation response.
 - User agreement, repeated claims, polished narrative, or stored prior decisions in place of qualifying evidence.
 - A single-turn prompt that narrates several turns in place of an actual fresh multi-turn interaction.
 - A public fixture, copied example, or template-only check in place of authorised private-owner dogfood.
@@ -32,6 +34,8 @@
 ## Invariants
 
 - Strategic Advisor remains useful without a repository or workspace.
+- The full strategic protocol is selectively invoked by decision intent and consequence, not by keywords, repository location, or workspace presence.
+- Open exploration may remain conversational until a decision object emerges; readiness is not manufactured merely to complete a response template.
 - Operate at the minimum sufficient altitude and return from exploration to a bounded decision or validation step.
 - Dialogue may expand the option set; only qualifying evidence, scope, or constraints may change claim support or readiness.
 - Opposite user preferences on the same material facts do not change the diagnosis.
@@ -44,7 +48,7 @@
 
 ## Artifact Targets
 
-- Canonical behaviour: updated core skill/reference files under `skills/strategic-advisor/`.
+- Canonical behaviour: updated core skill/reference files under `skills/strategic-advisor/`, including the invocation boundary and proportional exploration-to-checkpoint transition.
 - Workspace product surface: portable Markdown templates/instructions named by the runtime allowlist plus a deterministic scaffold builder and validator.
 - Evaluation authority: frozen multi-turn cases, turn/context rules, case assertions, hard gates, and aggregation updates excluded from model-visible packages.
 - Host proof: sanitised Codex trace identifying exact model, host, runtime package, workspace template, authorised source class, and observed result/write-control class.
@@ -65,3 +69,6 @@
 | AC8 | Multi-Turn Evaluation child | Frozen actual-turn matrix, assertions, hard gates, raw artifacts, and fail-closed result. |
 | AC9 | Strategy Workspace child, Onboarding child | Runtime/install allowlist identity, deterministic builds, tests, and forbidden-content scans. |
 | AC10 | Codex Owner Dogfood child, Onboarding child | Current public-claim comparison against structured capability and exact retained proof. |
+| AC11 | Interactive Discovery child, Multi-Turn Evaluation child | Matched intent-routing cases with shared vocabulary, false-positive controls, and a material-decision activation case. |
+| AC12 | Interactive Discovery child, Multi-Turn Evaluation child | Actual multi-turn exploration showing open dialogue, justified checkpoint timing, no manufactured readiness, and proportionate reconvergence. |
+| AC13 | Interactive Discovery child, Strategy Workspace child, Codex Owner Dogfood child, Multi-Turn Evaluation child, Onboarding child | Fresh-context host/workspace controls proving no location-triggered invocation, unnecessary reads, silent writes, or inferred coupling. |
