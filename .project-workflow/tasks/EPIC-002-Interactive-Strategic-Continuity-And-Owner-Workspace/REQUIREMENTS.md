@@ -6,18 +6,6 @@
 - Title: Interactive Strategic Continuity And Owner Workspace
 - Last updated: 2026-07-23
 
-## Owner Approval
-
-- Requirements reviewed by owner: No
-- Acceptance criteria reviewed by owner: No
-- Approved for decomposition: No
-- Approved for implementation: No
-- Approved scope envelope: No
-- Approved by: Not approved
-- Approval date: Not approved
-- Approval note / source: Not approved
-- Approved artifact identity: Not approved
-
 ## Backlog Source
 
 - ID: BL-001
@@ -27,6 +15,18 @@
 - Status before promotion: Proposed
 - Outcome: Strategic Advisor conducts active multi-turn exploration, calibrates decision altitude, preserves reality through a final evidence reset, and can use an owner-approved private Strategy Workspace in Codex without making repository setup mandatory.
 - Notes: Immediate owner-directed programme: working-position dialogue, question reframing, portfolio roles, private workspace scaffold, Codex dogfood, freshness/permission controls, and multi-turn preference-capture evaluation.
+
+## Owner Approval
+
+- Requirements reviewed by owner: Yes
+- Acceptance criteria reviewed by owner: Yes
+- Approved for decomposition: Yes
+- Approved for implementation: No
+- Approved scope envelope: Yes
+- Approved by: John Detlefs
+- Approval date: 2026-07-23
+- Approval note / source: Codex conversation 2026-07-23: owner approved Epic 002 updates aligned to the discussion and instructed execution to begin in a new task
+- Approved artifact identity: sha256:b357bac0380f9b69fbc1080df6f770fc4534e3c12d13a26164d93b10a4c06c07
 
 ## Goal
 
