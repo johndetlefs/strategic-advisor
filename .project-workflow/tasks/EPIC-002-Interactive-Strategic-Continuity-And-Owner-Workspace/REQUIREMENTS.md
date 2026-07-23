@@ -40,7 +40,6 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - Treating stored preferences, prior conclusions, or narrative coherence as current evidence.
 - Claiming general-life, financial, medical, legal, family, relationship, business, marketing, or growth advice is supported through this Epic.
 - Implementing the business and marketing lenses tracked separately in `BL-002`.
-- Implementing the Daily Checklist strategy-to-execution bridge tracked separately in `BL-004`.
 - Claiming Claude, ChatGPT, or external-workspace support; those paths remain separately gated by `BL-005` and host-specific evidence.
 - Building a central memory service, custom database, or broad connector layer.
 
@@ -94,7 +93,7 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - D5. Start with portable Markdown and Git history. Do not add a database, memory service, or complex schema before dogfood demonstrates a stable invariant.
 - D6. Conversation transcripts are not canonical context. Only owner-approved distilled claims, decisions, and review conditions may become durable.
 - D7. This Epic may use supplied whole-person objectives as context for bounded professional/project decisions, but broader holistic advisory scope remains owned by `BL-003`.
-- D8. Daily Checklist remains the eventual execution/review surface, not the first canonical strategy store; integration remains owned by `BL-004`.
+- D8. Contextual adjacency does not create product coupling. Cross-repository integration, shared storage, or source-of-truth relationships require explicit owner direction.
 
 ## Validation Plan
 
