@@ -75,7 +75,7 @@ Implement the owner-approved TASK-008 product behaviour in the canonical skill, 
 - Date: 2026-07-24
 - Reusable lessons: Treat fail-closed evaluation as a claim boundary, not an automatic feature-delivery blockade. Keep conversational strategy proportional by testing intent routing, altitude changes, evidence reset, and bounded return rather than requiring every reply to exhibit the full protocol. Resolve contradictions between core and reference files during review, especially around when readiness is required.
 - Conventions or agent assets updated: `.project-workflow/guidance.md` now separates implementation readiness from capability validation and requires a live claim or promotion gate before evaluation machinery is expanded.
-- Follow-up tasks: TASK-007 remains blocked and should be revisited only when a rigorous comparative or support claim is again required. No recovery task was created.
+- Follow-up tasks: TASK-007 is superseded and removed from active work. Create a new current-source evaluation task only if a rigorous comparative, validated, or supported claim is proposed.
 - Missed in-scope work: None. Private Strategy Workspace work, host dogfood, and later EPIC-002 children remain intentionally untouched.
 
 ## Notes

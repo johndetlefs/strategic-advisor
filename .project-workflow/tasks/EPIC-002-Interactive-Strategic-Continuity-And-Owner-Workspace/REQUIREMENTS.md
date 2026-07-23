@@ -25,8 +25,8 @@
 - Approved scope envelope: Yes
 - Approved by: John Detlefs
 - Approval date: 2026-07-24
-- Approval note / source: Dedicated Codex conversation 2026-07-24: owner accepted the pragmatic recovery recommendation and instructed delivery to proceed
-- Approved artifact identity: sha256:54b0f74ca5966bbb9fa9cb5d0de63cc939d94fd1507841ae59b42ad5c8ca0e56
+- Approval note / source: Dedicated Codex conversation 2026-07-24: owner directed TASK-007 be superseded and removed from active work
+- Approved artifact identity: sha256:d315970cc00231d8ce03016378c8949a80a5de982d3b2c7506649761a3c9fefd
 
 ## Goal
 
@@ -67,7 +67,7 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - R7. A portable Markdown Strategy Workspace scaffold records approved context, portfolio roles, durable decisions, provenance, freshness, falsifiers, and review conditions without copying canonical strategic logic.
 - R8. Workspace access is least-data and case-scoped. Stored content is input rather than authority, stale context is surfaced, and any proposed durable update requires explicit owner approval before writing.
 - R9. A private owner workspace can be created and used in Codex with an exact skill/runtime identity and a retained sanitised activation/source trace; no private workspace content enters this repository or public evidence.
-- R10. Multi-turn evaluation tests exploration quality, altitude calibration, preference capture, unsupported claim upgrades, stale-context capture, failure to revise, and return from broad exploration to a decision-useful next move.
+- R10. Before any future validated or supported behavioural claim, a then-current multi-turn evaluation must test exploration quality, altitude calibration, preference capture, unsupported claim upgrades, stale-context capture, failure to revise, and return from broad exploration to a decision-useful next move.
 - R11. Public documentation presents a progressive onboarding path: immediate one-decision use first, optional workspace-backed continuity second, with precise host and maturity boundaries.
 - R12. Product, install, runtime-manifest, validation, and capability claims remain deterministic and fail closed when workspace, host, or behavioural proof is absent.
 - R13. The full strategic protocol activates only for an explicit or clearly implied material decision, prioritisation, strategic claim, plan, or risk within supported scope when reality-testing could plausibly change the action.
@@ -86,7 +86,7 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - AC5: The workspace contract distinguishes user-approved durable context from reports, inferences, assumptions, forecasts, unknowns, and prior decisions; stale or conflicting content is surfaced rather than silently selected.
 - AC6: Codex can load the exact identified Strategic Advisor runtime and the owner-authorised private workspace in a fresh context, answer one bounded portfolio/project question, and propose rather than silently write a durable update; retained public evidence contains only sanitised identities, result class, and pass/fail observations.
 - AC7: Strategic Advisor continues to work in a fresh context with no workspace present, and onboarding does not require repository creation before the first substantive answer.
-- AC8: The frozen multi-turn evaluation includes required and forbidden assertions for active discovery, genuine alternatives, minimum-sufficient altitude, evidence-only readiness change, preference invariance, stale-context handling, and convergence; no skilled result may pass with a relevant hard-gate failure.
+- AC8: Before any validated or supported interactive-strategy claim, a then-current frozen multi-turn evaluation includes required and forbidden assertions for active discovery, genuine alternatives, minimum-sufficient altitude, evidence-only readiness change, preference invariance, stale-context handling, and convergence; no skilled result may pass with a relevant hard-gate failure.
 - AC9: Runtime and install artifacts contain the approved workspace instructions/templates only when named by the runtime allowlist, reproduce deterministically, and contain no private owner data, host-specific strategic copy, or evaluation leakage.
 - AC10: README, installation guidance, product contract, and capability registry describe the workspace, Codex dogfood state, and new lens maturity no more strongly than current retained evidence permits; unsupported hosts and general-life, legal, medical, relationship, and financial domains remain explicitly unpromoted.
 - AC11: Matched routing cases that contain the same project or strategy vocabulary but differ in user intent activate the full protocol only for the material strategic decision; factual, status, summarisation, routine implementation, simple-edit, and casual-ideation controls receive proportionate direct answers.
@@ -111,9 +111,10 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - D8. Contextual adjacency does not create product coupling. Cross-repository integration, shared storage, or source-of-truth relationships require explicit owner direction.
 - D9. Strategic Advisor is a selectively invoked decision-quality capability, not the default conversational personality or mandatory wrapper around ordinary assistance.
 - D10. Exploratory conversation does not need to manufacture an executable decision. Readiness becomes mandatory only before execution advice or commitment, not as ceremony during open exploration.
-- D11. The failed TASK-007 evaluation spike is retained as failed evidence and does not block implementation. It cannot support behavioural, host, or effectiveness claims.
+- D11. TASK-007 is superseded and removed from active work. Its intended pre-TASK-008 baseline is no longer possible or decision-useful after TASK-008 changed canonical behaviour. The failed attempt is retained only as audit history and cannot support behavioural, host, or effectiveness claims.
 - D12. TASK-008 owns the conversational behaviour and bounded business/marketing routing needed for this alpha. Validation is proportionate: existing deterministic checks plus a small representative conversational review, with no new evaluation infrastructure.
 - D13. Business/venture and marketing/growth move only to implemented-not-validated. They remain unsupported until separately promoted with direct evidence.
+- D14. Rigorous behavioural evaluation remains a future capability-promotion gate, not an active Epic child. Create a new evaluation task against the then-current source only if validated or supported claims are proposed.
 
 ## Validation Plan
 
@@ -121,7 +122,7 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - AC4-AC5: Build the workspace scaffold twice from a clean checkout, compare byte identities, validate required headings/status fields, and run negative fixtures for copied strategic logic, evaluation leakage, missing freshness, malformed provenance, secrets, and private-data sentinels.
 - AC6: In a fresh Codex context, retain the exact model/host, runtime-package identity, workspace template identity, authorised source path class, discovery/selection trace when exposed, tool/result class, and explicit-write-control observation. Retain no private workspace prose, project names, identifiers, or reconstructable facts.
 - AC7: Run the same supported professional case without a workspace and verify that absence produces labeled unknowns or bounded questions rather than setup refusal.
-- AC8: Freeze cases, prompts, assertions, hard gates, context-turn rules, and aggregation before generating candidate outputs. Treat missing turns, reused contexts, or leaked expected properties as invalid rather than incomplete success.
+- AC8: Deferred until capability promotion is proposed. Any future evaluation must freeze cases, prompts, assertions, hard gates, context-turn rules, and aggregation before generating candidate outputs, and must treat missing turns, reused contexts, or leaked expected properties as invalid rather than incomplete success.
 - AC9: Run deterministic runtime/install builders, structural validators, unit tests, forbidden-content scans, and clean-checkout reproduction against exact source revisions.
 - AC10: Compare every public workspace/host/domain claim with `PRODUCT-CONTRACT.md`, structured capability state, current evidence, and exact host proof; fail on stronger unsupported language.
 - AC11: Freeze matched-intent routing cases with shared vocabulary and different decision stakes; fail both false-positive full-protocol activation and false-negative omission on a material strategic decision.
@@ -133,7 +134,6 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 
 | Proposed Child | Parent ACs | Purpose |
 | --- | --- | --- |
-| Freeze Selective Invocation And Multi-Turn Evaluation Contract | AC1, AC2, AC3, AC5, AC8, AC11, AC12, AC13 | Precommit matched routing controls, genuine multi-turn cases, assertions, hard gates, context rules, and a sanitised current-skill baseline before changing canonical behaviour. |
 | Implement Selective Invocation, Interactive Discovery, Altitude Calibration And Commercial Lenses | AC1, AC2, AC3, AC7, AC10, AC11, AC12, AC13, AC14, AC15 | Add intent-sensitive routing, working-position dialogue, active exploration, minimum-sufficient altitude, evidence-delta checks, reconvergence, and bounded business/venture and marketing/growth lenses without wrapping ordinary assistance in unnecessary strategic ceremony. |
 | Define And Validate The Strategy Workspace Contract | AC4, AC5, AC7, AC9 | Create the optional portable scaffold, user-approval lifecycle, provenance/freshness contract, deterministic builder, and negative validation fixtures. |
 | Prove Private Codex Owner Dogfood | AC6, AC7, AC10, AC12, AC13 | Use the implemented behaviour and approved workspace contract on a bounded owner decision, retain only sanitised activation/result/write-control evidence, and keep private content outside the public repository. |

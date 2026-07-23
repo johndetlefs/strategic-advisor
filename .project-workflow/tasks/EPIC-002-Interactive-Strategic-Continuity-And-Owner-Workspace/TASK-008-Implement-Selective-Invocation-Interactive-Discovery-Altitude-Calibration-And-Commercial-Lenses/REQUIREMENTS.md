@@ -16,7 +16,7 @@
 - Approved by: John Detlefs
 - Approval date: 2026-07-24
 - Approval note / source: Dedicated Codex conversation 2026-07-24; owner accepted the pragmatic recovery recommendation and instructed delivery to proceed.
-- Approved artifact identity: inherited from the refreshed EPIC-002 envelope `sha256:54b0f74ca5966bbb9fa9cb5d0de63cc939d94fd1507841ae59b42ad5c8ca0e56`
+- Approved artifact identity: inherited from the refreshed EPIC-002 envelope `sha256:d315970cc00231d8ce03016378c8949a80a5de982d3b2c7506649761a3c9fefd`
 
 ## User Story
 
@@ -68,7 +68,7 @@ Ship the canonical conversational behaviour and bounded commercial lenses needed
 
 ## Decisions (Resolved)
 
-- D1. TASK-007 remains blocked and non-authoritative; no new recovery task or evaluation harness is created.
+- D1. TASK-007 is superseded, removed from active work, and non-authoritative; no recovery task or evaluation harness is created.
 - D2. TASK-008 owns conversational behaviour plus both bounded commercial lenses for this alpha.
 - D3. Testing is proportionate: current repository checks plus twelve synthetic scenario expectations and at most one correction pass.
 - D4. Business/venture and marketing/growth remain implemented-not-validated and unsupported.
