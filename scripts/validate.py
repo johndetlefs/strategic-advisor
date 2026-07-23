@@ -38,12 +38,23 @@ CORE_REFERENCES = (
     "references/action-policy.md",
     "references/boundaries.md",
     "references/response-contract.md",
+    "references/conversational-strategy.md",
+)
+CONVERSATIONAL_HEADINGS = (
+    "selective activation",
+    "minimum sufficient altitude",
+    "conversational loop",
+    "evidence-only reality reset",
+    "proportionate convergence",
+    "response shape",
 )
 LENS_REFERENCES = {
     "domain.project-product": "references/project-product.md",
     "domain.career": "references/career.md",
     "domain.organizational-influence": "references/organizational-influence.md",
     "domain.people-leadership": "references/people-leadership.md",
+    "domain.business-venture": "references/business-venture.md",
+    "domain.marketing-growth": "references/marketing-growth.md",
 }
 LENS_HEADINGS = (
     "routing boundary",
@@ -938,6 +949,24 @@ def check_skill(root: Path) -> list[Diagnostic]:
                     "skills/strategic-advisor/runtime-manifest.json",
                 )
             )
+        conversational_path = root / SKILL_ROOT / "references/conversational-strategy.md"
+        if conversational_path.is_file():
+            conversational_headings = markdown_headings(read_text(conversational_path))
+            missing_headings = [
+                heading
+                for heading in CONVERSATIONAL_HEADINGS
+                if heading not in conversational_headings
+            ]
+            if missing_headings:
+                failures.append(
+                    diagnostic(
+                        "SKILL_CONVERSATIONAL_CONTRACT",
+                        "Conversational strategy is missing required headings: "
+                        + ", ".join(missing_headings)
+                        + ".",
+                        conversational_path.relative_to(root),
+                    )
+                )
     if includes:
         markdown_reference_pattern = re.compile(
             r"(?:\]\(|`)((?:references|agents)/[^)`#]+\.(?:md|yaml|yml))(?:#[^)`]+)?[)`]"

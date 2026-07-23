@@ -8,6 +8,8 @@ Use this file for repo-specific workflow guidance that should survive project-wo
 - Preserve the epistemic status and provenance of material claims in requirements, implementation notes, reviews, evaluations, and release documentation.
 - Proof must target the exact claim. Documentation proves documented intent; static validation proves structure; behavioural evaluation proves observed model behaviour; neither is a substitute for the other.
 - Freeze comparative evaluation cases, rubric, thresholds, model identity, and context controls before viewing treatment results. Retain raw outputs and hard-gate verdicts.
+- Separate implementation readiness from capability validation. A failed-closed evaluation blocks claims that depend on it; it does not automatically block owner-approved alpha implementation when the product contract remains `implemented-not-validated` and the failed evidence is recorded honestly.
+- Before extending evaluation machinery, identify the exact live claim or promotion gate the new control protects. If no current claim depends on it, prefer existing deterministic checks plus a bounded representative review and defer the heavier proof work.
 - Use only synthetic, public, or irreversibly sanitised examples. Never commit employer, client, household, connector, credential, or other private case data.
 - Do not mark a domain, host, connector, or release ready based on placeholder files, happy-path examples, aggregate scores, or model self-assessment.
 - Add dependencies and automation only when they enforce an approved invariant or proof obligation. Prefer portable Markdown and small transparent validators.

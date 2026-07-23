@@ -19,9 +19,9 @@ The design is one canonical reality protocol plus selectively loaded professiona
 | Early-access installation | Deterministic standalone Skill and OpenAI local-marketplace plugin builders; see [INSTALL.md](INSTALL.md) |
 | Validated domains | None |
 | Supported connectors | None |
-| v0 candidates, implemented but not validated | Project/product, career, organisational influence, people leadership |
-| Evaluation | Definitions and protocol exist; no frozen comparative run, result, or release verdict |
-| Outside the current v0 | Business/venture, marketing/growth, personal relationships, family/household, legal, medical/clinical, financial |
+| Alpha candidates, implemented but not validated | Selective interactive strategy; project/product, career, organisational influence, people leadership, business/venture, marketing/growth |
+| Evaluation | Definitions and a failed closed spike exist; no passing comparative run, improvement result, or release verdict |
+| Outside the current scope | Personal relationships, family/household, general-life, legal, medical/clinical, financial |
 
 “Implemented but not validated” means reviewable source exists and structural checks can inspect it. It does not mean the model behaves as intended, improves decisions, or works in a particular host. The current evaluation definitions are likewise not evidence that an evaluation ran or passed.
 
@@ -52,7 +52,7 @@ python3 -m unittest discover -s tests -v
 
 Run one scope with `python3 scripts/validate.py --scope <scope>`.
 
-`build_evals.py --check` proves that the committed 31-case executable inventory is the deterministic import of the normative core and lens inventories. `build_runtime_package.py` can construct a content-addressed, allowlisted package for a future frozen run; its existence and unit tests do not constitute a host installation or behavioural result.
+`build_evals.py --check` proves that the committed executable inventory is the deterministic import of the normative core and original four-lens inventories. The newer interactive, business, and marketing source is packaged for alpha testing but is not covered by a passing comparative run. `build_runtime_package.py` can construct a content-addressed, allowlisted package; its existence and unit tests do not constitute a host installation or behavioural result.
 
 `build_install_artifacts.py` wraps those allowlisted runtime bytes in deterministic standalone-Skill and OpenAI local-marketplace ZIPs and writes external provenance. Repeated-build and adversarial unit tests prove the archive contract; [INSTALL.md](INSTALL.md) explains the host-specific early-access steps.
 
