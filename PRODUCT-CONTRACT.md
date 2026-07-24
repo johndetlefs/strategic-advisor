@@ -22,7 +22,7 @@ A validated capability's `evidence` array contains objects with exactly `artifac
 {
   "schema_version": 1,
   "release_status": "pre-release",
-  "early_access_distribution_version": "0.1.0-alpha.1",
+  "early_access_distribution_version": "0.2.0-alpha.1",
   "capability_promotion_enabled": false,
   "canonical_product_path": "skills/strategic-advisor/",
   "supported_installation_available": false,
@@ -127,6 +127,12 @@ A validated capability's `evidence` array contains objects with exactly `artifac
       "evidence": []
     },
     {
+      "id": "host.chatgpt-custom-gpt",
+      "kind": "host",
+      "state": "implemented-not-validated",
+      "evidence": []
+    },
+    {
       "id": "host.chatgpt-desktop-local-plugin",
       "kind": "host",
       "state": "implemented-not-validated",
@@ -169,9 +175,9 @@ A validated capability's `evidence` array contains objects with exactly `artifac
 
 ## Current interpretation
 
-The repository is pre-release and capability promotion is disabled. The canonical core, selective interactive-strategy contract, six bounded lenses, comparative-evaluation definitions, deterministic install builder, standalone Agent Skills envelope, and skill-only OpenAI local-marketplace envelope are implemented but not behaviourally validated. The latter follows the documented local shape used by Codex and ChatGPT desktop Work mode; neither host inherits the other's evidence. A retained fresh-context trace proves one exact-release-package Codex activation path, but capability promotion remains disabled and that trace does not prove strategic effectiveness or general host support. Claude Code, Claude.ai, and ChatGPT lack their own retained live activation proof. A public ChatGPT Plugin Directory submission package has not been implemented. No passing frozen comparative run or improvement result exists. These artifacts are candidates for early testing and evaluation, not supported capabilities. There is no supported installation, validated domain, or connector.
+The repository is pre-release and capability promotion is disabled. The canonical core, selective interactive-strategy contract, six bounded lenses, comparative-evaluation definitions, deterministic install builder, standalone Agent Skills envelope, skill-only OpenAI local-marketplace envelope, and paid-personal ChatGPT Custom GPT kit are implemented. The Custom GPT kit mechanically derives its Instructions from canonical `SKILL.md` and supplies the remaining runtime references/templates as Knowledge; it is not a Personal Skill. A bounded current-source Codex drift smoke passed its exact five public-synthetic scenarios, and a retained fresh-context trace proves one earlier exact-release-package Codex activation path. Neither result proves strategic effectiveness, general host support, or another host. Current-revision Codex, ChatGPT, and Claude activation states remain owned by exact host evidence. A public ChatGPT Plugin Directory or GPT Store submission has not been implemented. No passing frozen comparative run or improvement result exists. These artifacts are candidates for early testing and evaluation, not supported capabilities. There is no supported installation, validated domain, or connector.
 
-The runtime package is an explicit allowlist in [`skills/strategic-advisor/runtime-manifest.json`](skills/strategic-advisor/runtime-manifest.json). [`scripts/build_install_artifacts.py`](scripts/build_install_artifacts.py) wraps those exact runtime bytes in deterministic standalone-Skill and OpenAI local-marketplace plugin envelopes and identifies the added Apache-2.0 licence separately. Evaluation definitions, expected properties, rubrics, fixtures, and prior results must never enter the model-visible treatment or install package.
+The runtime package is an explicit allowlist in [`skills/strategic-advisor/runtime-manifest.json`](skills/strategic-advisor/runtime-manifest.json). [`scripts/build_install_artifacts.py`](scripts/build_install_artifacts.py) wraps those exact runtime bytes in deterministic standalone-Skill, OpenAI local-marketplace plugin, and ChatGPT Custom GPT envelopes and identifies the added Apache-2.0 licence separately. The Custom GPT envelope contains generated canonical Instructions and an exact Knowledge projection rather than a hand-maintained prompt fork. Evaluation definitions, expected properties, rubrics, fixtures, and prior results must never enter the model-visible treatment or install package.
 
 ## Promotion rule
 

@@ -27,7 +27,7 @@ Professional influence is treated as real strategy. Truthful framing, private pr
 
 ## Host boundary
 
-Host integrations point to or package the canonical allowlisted runtime bytes unchanged. The repo-local Codex adapter is a relative symlink for authoring; end-user artifacts are generated as a standalone Agent Skills archive and a skill-only OpenAI local plugin/marketplace archive. The envelopes may add licence and host metadata, but never a copied or translated strategic method. Codex, Claude Code, Claude.ai, ChatGPT, and any future host must each prove discovery, activation, and source identity before being called supported. Connectors are evidence access only: access does not establish accuracy, completeness, permission to disclose, or authority to act.
+Host integrations point to or package the canonical allowlisted runtime. The repo-local Codex adapter is a relative symlink for authoring; end-user artifacts are generated as a standalone Agent Skills archive, a skill-only OpenAI local plugin/marketplace archive, and a paid-personal ChatGPT Custom GPT kit. Skill-capable hosts receive unchanged runtime bytes. Because personal ChatGPT Custom GPTs use Instructions plus Knowledge rather than Personal Skills, that adapter is generated deterministically: canonical `SKILL.md` becomes the strategic Instructions body and the remaining declared runtime resources become exact Knowledge files. No host prompt is maintained independently. Codex, Claude Code, Claude.ai, ChatGPT, and any future host must each prove discovery, activation, and source identity before being called supported. Connectors are evidence access only: access does not establish accuracy, completeness, permission to disclose, or authority to act.
 
 ## Evaluation boundary
 

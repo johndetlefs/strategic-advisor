@@ -527,7 +527,7 @@ def check_claims(root: Path) -> list[Diagnostic]:
                 "PRODUCT-CONTRACT.md",
             )
         )
-    if contract.get("early_access_distribution_version") != "0.1.0-alpha.1":
+    if contract.get("early_access_distribution_version") != "0.2.0-alpha.1":
         failures.append(
             diagnostic(
                 "CLAIMS_PUBLIC_DRIFT",
@@ -664,7 +664,7 @@ def check_claims(root: Path) -> list[Diagnostic]:
         required_readme_claims = [
             "Current status: pre-release",
             "skills/strategic-advisor/",
-            "`v0.1.0-alpha.1`",
+            f"`v{contract.get('early_access_distribution_version', '')}`",
         ]
         if not validated:
             required_readme_claims.extend(

@@ -4,9 +4,11 @@
 The runtime-package builder remains the authority for selecting model-visible
 Strategic Advisor files. This module adds the repository-root Apache-2.0
 license, places those exact bytes into deterministic distribution envelopes,
-and records external provenance. The plugin archive is an OpenAI local
-marketplace bundle for Codex and ChatGPT desktop Work mode only; it is neither
-a Personal Skill upload nor a public Plugin Directory submission package.
+and records external provenance. The ChatGPT archive is a Custom GPT
+configuration kit for paid personal accounts, not a Personal Skill. The plugin
+archive is an OpenAI local marketplace bundle for Codex and ChatGPT desktop
+Work mode only; it is neither a Personal Skill upload nor a public Plugin
+Directory submission package.
 """
 
 from __future__ import annotations
@@ -32,7 +34,7 @@ import build_runtime_package as runtime_package  # noqa: E402
 
 
 SKILL_NAME = "strategic-advisor"
-PLUGIN_VERSION = "0.1.0-alpha.1"
+PLUGIN_VERSION = "0.2.0-alpha.1"
 PLUGIN_DESCRIPTION = (
     "Reality-tested strategic analysis for consequential professional decisions."
 )
@@ -47,9 +49,10 @@ FIXED_TIMESTAMP_TEXT = "1980-01-01T00:00:00"
 FILE_MODE = 0o644
 DIRECTORY_MODE = 0o755
 ARCHIVE_ORDER = "ascending-posix-path-v1"
-PROVENANCE_SCHEMA_VERSION = 2
+PROVENANCE_SCHEMA_VERSION = 3
 STANDALONE_ARTIFACT_KEY = "standalone_skill"
 OPENAI_MARKETPLACE_ARTIFACT_KEY = "openai_local_marketplace"
+CHATGPT_CUSTOM_GPT_ARTIFACT_KEY = "chatgpt_custom_gpt"
 OPENAI_MARKETPLACE_TARGET_SURFACES = ["chatgpt-desktop-work", "codex"]
 EXCLUDED_PLUGIN_DISTRIBUTION_CLAIMS = [
     "chatgpt-personal-skill-upload",
@@ -59,6 +62,15 @@ MAX_ARCHIVE_ENTRIES = 512
 MAX_ARCHIVE_UNCOMPRESSED_BYTES = 16 * 1024 * 1024
 MAX_ARCHIVE_BYTES = 32 * 1024 * 1024
 MAX_PROVENANCE_BYTES = 4 * 1024 * 1024
+CHATGPT_KIT_ROOT = "strategic-advisor-chatgpt"
+CHATGPT_KNOWLEDGE_LIMIT = 20
+CHATGPT_EXCLUDED_RUNTIME_PATHS = {"SKILL.md", "agents/openai.yaml"}
+CHATGPT_CONVERSATION_STARTERS = [
+    "Reality-test a consequential decision I am considering.",
+    "Help me distinguish what we know from what we are assuming.",
+    "Pressure-test this business or marketing plan before I commit.",
+    "Review new evidence and tell me whether the decision should change.",
+]
 
 
 class InstallArtifactError(ValueError):
@@ -331,6 +343,143 @@ def marketplace_manifest_bytes() -> bytes:
     )
 
 
+def _chatgpt_knowledge_records(runtime_files: Sequence[dict]) -> list[dict]:
+    """Map runtime references/templates to flat Custom GPT Knowledge names."""
+
+    records: list[dict] = []
+    seen_names: set[str] = set()
+    for entry in runtime_files:
+        source_path = runtime_package.normalized_relative_path(
+            entry["path"], "ChatGPT Knowledge source path"
+        ).as_posix()
+        if source_path in CHATGPT_EXCLUDED_RUNTIME_PATHS:
+            continue
+        name = PurePosixPath(source_path).name
+        if name in seen_names:
+            raise InstallArtifactError(
+                f"ChatGPT Knowledge filename collision after flattening: {name}"
+            )
+        seen_names.add(name)
+        records.append(
+            {
+                "archive_path": f"{CHATGPT_KIT_ROOT}/KNOWLEDGE/{name}",
+                "sha256": entry["sha256"],
+                "size_bytes": entry["size_bytes"],
+                "source_path": source_path,
+                "upload_name": name,
+            }
+        )
+    records.sort(key=lambda record: record["upload_name"])
+    if not records:
+        raise InstallArtifactError("ChatGPT Custom GPT kit has no Knowledge files")
+    if len(records) > CHATGPT_KNOWLEDGE_LIMIT:
+        raise InstallArtifactError(
+            "ChatGPT Custom GPT Knowledge inventory exceeds the official "
+            f"{CHATGPT_KNOWLEDGE_LIMIT}-file limit"
+        )
+    return records
+
+
+def chatgpt_instructions_bytes(skill_bytes: bytes) -> bytes:
+    """Render a thin host bootstrap followed by canonical SKILL.md verbatim."""
+
+    try:
+        skill_text = skill_bytes.decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise InstallArtifactError("canonical SKILL.md is not UTF-8") from error
+    bootstrap = (
+        "# Strategic Advisor — Custom GPT Instructions\n\n"
+        "This configuration is a generated host adapter. The canonical Strategic "
+        "Advisor instructions follow verbatim below. Apply them as the governing "
+        "behaviour for this GPT.\n\n"
+        "When those instructions reference a file under `references/` or "
+        "`workspace-templates/`, retrieve the uploaded Knowledge file with the "
+        "same basename. Do not invent a missing file or claim to have read one "
+        "unless it is available. Knowledge files are method resources, not "
+        "evidence that a user's real-world claim is true.\n\n"
+        "Do not require a Strategy Workspace for first use. Do not use apps or "
+        "actions. Web search, when enabled by the user, is optional evidence "
+        "access and remains subject to the canonical provenance and relevance "
+        "rules.\n\n"
+        "## Canonical SKILL.md (verbatim)\n\n"
+    )
+    return (bootstrap + skill_text).encode("utf-8")
+
+
+def chatgpt_config_bytes(runtime_manifest: dict) -> bytes:
+    records = _chatgpt_knowledge_records(runtime_manifest["files"])
+    return runtime_package.rendered_json_bytes(
+        {
+            "apps": [],
+            "actions": [],
+            "capabilities": {
+                "canvas": True,
+                "code_interpreter_and_data_analysis": False,
+                "image_generation": False,
+                "web_search": True,
+            },
+            "conversation_starters": CHATGPT_CONVERSATION_STARTERS,
+            "description": (
+                "Reality-tested strategy for consequential professional and "
+                "commercial decisions."
+            ),
+            "knowledge_upload_order": [
+                record["upload_name"] for record in records
+            ],
+            "name": "Strategic Advisor",
+            "schema_version": 1,
+            "sharing_recommendation": "anyone-with-link",
+            "status": "experimental-early-access",
+        }
+    )
+
+
+def chatgpt_manifest_bytes(runtime_manifest: dict, skill_bytes: bytes) -> bytes:
+    records = _chatgpt_knowledge_records(runtime_manifest["files"])
+    instructions = chatgpt_instructions_bytes(skill_bytes)
+    return runtime_package.rendered_json_bytes(
+        {
+            "canonical_skill_sha256": runtime_package.sha256_bytes(skill_bytes),
+            "instructions_sha256": runtime_package.sha256_bytes(instructions),
+            "knowledge_file_count": len(records),
+            "knowledge_files": records,
+            "runtime_package_identity_sha256": runtime_manifest[
+                "package_identity_sha256"
+            ],
+            "schema_version": 1,
+        }
+    )
+
+
+def chatgpt_readme_bytes(runtime_manifest: dict) -> bytes:
+    records = _chatgpt_knowledge_records(runtime_manifest["files"])
+    names = "\n".join(f"- `{record['upload_name']}`" for record in records)
+    text = f"""# Install the Strategic Advisor Custom GPT
+
+This kit is for paid personal ChatGPT accounts. It is a Custom GPT configuration,
+not a ChatGPT Personal Skill, app, action, or public GPT Store package.
+
+1. Open `https://chatgpt.com/gpts/editor` on the web and create a GPT.
+2. Copy the complete contents of `INSTRUCTIONS.md` into **Instructions**.
+3. Upload all {len(records)} files under `KNOWLEDGE/` as **Knowledge**.
+4. Apply the values in `CONFIG.json`. Keep Apps and Actions empty.
+5. In Preview, run the fictional trigger and control prompts from `CONFIG.json`
+   conversation starters or the repository `INSTALL.md`.
+6. Save privately first. After the smoke passes, use **Share → Anyone with the
+   link** when that option is available.
+
+Knowledge files:
+
+{names}
+
+Do not upload `MANIFEST.json`, `CONFIG.json`, `README.md`, `LICENSE`, or
+`INSTRUCTIONS.md` as Knowledge. The configuration remains experimental decision
+support and does not replace human authority or professional legal, medical, or
+financial advice.
+"""
+    return text.encode("utf-8")
+
+
 def _source_provenance(source_root: Path) -> dict:
     """Observe Git state without upgrading an unavailable or dirty state."""
 
@@ -424,6 +573,7 @@ def _license_details(
 ) -> dict:
     return {
         "apache_2_0_canonical": True,
+        "chatgpt_kit_path": f"{CHATGPT_KIT_ROOT}/LICENSE",
         "included": True,
         "plugin_archive_path": (
             "plugins/strategic-advisor/skills/strategic-advisor/LICENSE"
@@ -580,6 +730,46 @@ def _plugin_files(source: SourcePackage) -> tuple[list[ArchiveEntry], dict[str, 
     return files, roles
 
 
+def _chatgpt_files(source: SourcePackage) -> tuple[list[ArchiveEntry], dict[str, str]]:
+    runtime_by_path = {
+        relative.as_posix(): content for relative, content in source.runtime_files
+    }
+    skill_bytes = runtime_by_path.get("SKILL.md")
+    if skill_bytes is None:
+        raise InstallArtifactError("canonical runtime lacks SKILL.md")
+    records = _chatgpt_knowledge_records(source.runtime_manifest["files"])
+    generated = {
+        f"{CHATGPT_KIT_ROOT}/CONFIG.json": (
+            chatgpt_config_bytes(source.runtime_manifest),
+            "chatgpt-config",
+        ),
+        f"{CHATGPT_KIT_ROOT}/INSTRUCTIONS.md": (
+            chatgpt_instructions_bytes(skill_bytes),
+            "chatgpt-instructions",
+        ),
+        f"{CHATGPT_KIT_ROOT}/LICENSE": (source.license_bytes, "license"),
+        f"{CHATGPT_KIT_ROOT}/MANIFEST.json": (
+            chatgpt_manifest_bytes(source.runtime_manifest, skill_bytes),
+            "chatgpt-manifest",
+        ),
+        f"{CHATGPT_KIT_ROOT}/README.md": (
+            chatgpt_readme_bytes(source.runtime_manifest),
+            "chatgpt-readme",
+        ),
+    }
+    files = [
+        _file_entry(path, content, role)
+        for path, (content, role) in generated.items()
+    ]
+    roles = {path: role for path, (_, role) in generated.items()}
+    for record in records:
+        content = runtime_by_path[record["source_path"]]
+        path = record["archive_path"]
+        files.append(_file_entry(path, content, "runtime-knowledge"))
+        roles[path] = "runtime-knowledge"
+    return files, roles
+
+
 def _reject_symlinked_output_ancestors(path: Path) -> None:
     current = path.absolute()
     while True:
@@ -648,6 +838,7 @@ def build(
     allowlist_path: str,
     skill_archive_out: Path,
     plugin_archive_out: Path,
+    chatgpt_kit_out: Path,
     provenance_out: Path,
     license_path: str = "LICENSE",
     allow_dirty: bool = False,
@@ -668,8 +859,13 @@ def build(
         raise InstallArtifactError(f"source root must be a real directory: {source_root}")
     initial_snapshot = _source_provenance(source_root)
     _require_release_source(initial_snapshot, allow_dirty)
-    skill_archive_out, plugin_archive_out, provenance_out = _validate_output_paths(
-        [skill_archive_out, plugin_archive_out, provenance_out]
+    (
+        skill_archive_out,
+        plugin_archive_out,
+        chatgpt_kit_out,
+        provenance_out,
+    ) = _validate_output_paths(
+        [skill_archive_out, plugin_archive_out, chatgpt_kit_out, provenance_out]
     )
 
     source = _collect_source_package(source_root, allowlist_path)
@@ -681,10 +877,13 @@ def build(
 
     standalone_files, standalone_roles = _standalone_files(source)
     plugin_files, plugin_roles = _plugin_files(source)
+    chatgpt_files, chatgpt_roles = _chatgpt_files(source)
     skill_archive_bytes = build_zip(standalone_files)
     plugin_archive_bytes = build_zip(plugin_files)
+    chatgpt_kit_bytes = build_zip(chatgpt_files)
     skill_inventory = archive_inventory(skill_archive_bytes, standalone_roles)
     plugin_inventory = archive_inventory(plugin_archive_bytes, plugin_roles)
+    chatgpt_inventory = archive_inventory(chatgpt_kit_bytes, chatgpt_roles)
 
     if not allow_dirty:
         final_snapshot = _source_provenance(source_root)
@@ -709,6 +908,20 @@ def build(
     provenance = {
         "archive_policy": _archive_policy(),
         "artifacts": {
+            CHATGPT_CUSTOM_GPT_ARTIFACT_KEY: {
+                "distribution": "chatgpt-custom-gpt-kit",
+                "format": "zip",
+                "instructions_source_sha256": runtime_package.sha256_bytes(
+                    dict(source.runtime_files)[PurePosixPath("SKILL.md")]
+                ),
+                "inventory": chatgpt_inventory,
+                "knowledge_file_count": len(
+                    _chatgpt_knowledge_records(source.runtime_manifest["files"])
+                ),
+                "sha256": runtime_package.sha256_bytes(chatgpt_kit_bytes),
+                "size_bytes": len(chatgpt_kit_bytes),
+                "target_surface": "chatgpt-custom-gpt",
+            },
             OPENAI_MARKETPLACE_ARTIFACT_KEY: {
                 "distribution": "openai-local-marketplace-plugin",
                 "excluded_distribution_claims": EXCLUDED_PLUGIN_DISTRIBUTION_CLAIMS,
@@ -733,7 +946,7 @@ def build(
             "revision": None if allow_dirty else initial_snapshot["revision"],
             "status_rechecked_before_write": not allow_dirty,
         },
-        "identity_algorithm": "sha256-install-artifacts-v2",
+        "identity_algorithm": "sha256-install-artifacts-v3",
         "license": source.license_details,
         "runtime_package": source.runtime_manifest,
         "schema_version": PROVENANCE_SCHEMA_VERSION,
@@ -746,12 +959,16 @@ def build(
         [
             (skill_archive_out, skill_archive_bytes),
             (plugin_archive_out, plugin_archive_bytes),
+            (chatgpt_kit_out, chatgpt_kit_bytes),
             (provenance_out, provenance_bytes),
         ]
     )
     return {
         "openai_local_marketplace_sha256": provenance["artifacts"][
             OPENAI_MARKETPLACE_ARTIFACT_KEY
+        ]["sha256"],
+        "chatgpt_custom_gpt_sha256": provenance["artifacts"][
+            CHATGPT_CUSTOM_GPT_ARTIFACT_KEY
         ]["sha256"],
         "provenance_sha256": runtime_package.sha256_bytes(provenance_bytes),
         "runtime_package_identity_sha256": source.runtime_manifest[
@@ -1019,6 +1236,55 @@ def _verify_artifact_record(
         raise InstallArtifactError(f"{label} provenance size does not match archive")
 
 
+def _verify_chatgpt_artifact_record(
+    record_value: object,
+    archive_bytes: bytes,
+    inventory: list[dict],
+    runtime_manifest: dict,
+) -> None:
+    record = _require_keys(
+        record_value,
+        {
+            "distribution",
+            "format",
+            "instructions_source_sha256",
+            "inventory",
+            "knowledge_file_count",
+            "sha256",
+            "size_bytes",
+            "target_surface",
+        },
+        "ChatGPT Custom GPT artifact provenance",
+    )
+    skill_entry = next(
+        (entry for entry in runtime_manifest["files"] if entry["path"] == "SKILL.md"),
+        None,
+    )
+    if skill_entry is None:
+        raise InstallArtifactError("runtime_package lacks canonical SKILL.md")
+    expected_count = len(_chatgpt_knowledge_records(runtime_manifest["files"]))
+    if (
+        record["distribution"] != "chatgpt-custom-gpt-kit"
+        or record["format"] != "zip"
+        or record["target_surface"] != "chatgpt-custom-gpt"
+        or record["instructions_source_sha256"] != skill_entry["sha256"]
+        or record["knowledge_file_count"] != expected_count
+    ):
+        raise InstallArtifactError("ChatGPT Custom GPT distribution metadata mismatch")
+    if record["inventory"] != inventory:
+        raise InstallArtifactError(
+            "ChatGPT Custom GPT provenance inventory does not match archive"
+        )
+    if record["sha256"] != runtime_package.sha256_bytes(archive_bytes):
+        raise InstallArtifactError(
+            "ChatGPT Custom GPT provenance SHA-256 does not match archive"
+        )
+    if record["size_bytes"] != len(archive_bytes):
+        raise InstallArtifactError(
+            "ChatGPT Custom GPT provenance size does not match archive"
+        )
+
+
 def _validate_plugin_metadata(content: bytes, marketplace: bool) -> None:
     label = "OpenAI marketplace metadata" if marketplace else "OpenAI plugin metadata"
     parsed = _strict_json_bytes(content, label)
@@ -1086,9 +1352,62 @@ def _plugin_expectations(runtime_manifest: dict) -> dict[str, ExpectedArchiveFil
     return expected
 
 
+def _chatgpt_expectations(
+    runtime_manifest: dict,
+    skill_bytes: bytes,
+) -> dict[str, ExpectedArchiveFile]:
+    expected: dict[str, ExpectedArchiveFile] = {}
+    generated = {
+        f"{CHATGPT_KIT_ROOT}/CONFIG.json": (
+            chatgpt_config_bytes(runtime_manifest),
+            "chatgpt-config",
+        ),
+        f"{CHATGPT_KIT_ROOT}/INSTRUCTIONS.md": (
+            chatgpt_instructions_bytes(skill_bytes),
+            "chatgpt-instructions",
+        ),
+        f"{CHATGPT_KIT_ROOT}/LICENSE": (
+            None,
+            "license",
+        ),
+        f"{CHATGPT_KIT_ROOT}/MANIFEST.json": (
+            chatgpt_manifest_bytes(runtime_manifest, skill_bytes),
+            "chatgpt-manifest",
+        ),
+        f"{CHATGPT_KIT_ROOT}/README.md": (
+            chatgpt_readme_bytes(runtime_manifest),
+            "chatgpt-readme",
+        ),
+    }
+    for path, (content, role) in generated.items():
+        if content is None:
+            expected[path] = ExpectedArchiveFile(
+                role=role,
+                sha256=APACHE_2_0_LICENSE_SHA256,
+                size_bytes=APACHE_2_0_LICENSE_SIZE_BYTES,
+            )
+        else:
+            expected[path] = ExpectedArchiveFile(
+                role=role,
+                sha256=runtime_package.sha256_bytes(content),
+                size_bytes=len(content),
+                content=content,
+            )
+    runtime_by_path = {entry["path"]: entry for entry in runtime_manifest["files"]}
+    for record in _chatgpt_knowledge_records(runtime_manifest["files"]):
+        entry = runtime_by_path[record["source_path"]]
+        expected[record["archive_path"]] = ExpectedArchiveFile(
+            role="runtime-knowledge",
+            sha256=entry["sha256"],
+            size_bytes=entry["size_bytes"],
+        )
+    return expected
+
+
 def _expected_license_details(runtime_manifest: dict) -> dict:
     return {
         "apache_2_0_canonical": True,
+        "chatgpt_kit_path": f"{CHATGPT_KIT_ROOT}/LICENSE",
         "included": True,
         "plugin_archive_path": (
             "plugins/strategic-advisor/skills/strategic-advisor/LICENSE"
@@ -1259,6 +1578,7 @@ def _validate_git_provenance(provenance: dict, runtime_manifest: dict) -> None:
 def verify(
     skill_archive: Path,
     plugin_archive: Path,
+    chatgpt_kit: Path,
     provenance_path: Path,
     expected_provenance_sha256: str | None = None,
     expected_runtime_identity: str | None = None,
@@ -1296,7 +1616,7 @@ def verify(
         raise InstallArtifactError("install provenance is not canonical rendered JSON")
     if provenance["schema_version"] != PROVENANCE_SCHEMA_VERSION:
         raise InstallArtifactError("install provenance schema_version mismatch")
-    if provenance["identity_algorithm"] != "sha256-install-artifacts-v2":
+    if provenance["identity_algorithm"] != "sha256-install-artifacts-v3":
         raise InstallArtifactError("install provenance identity algorithm mismatch")
     if provenance["archive_policy"] != _archive_policy():
         raise InstallArtifactError("install provenance archive policy mismatch")
@@ -1324,6 +1644,12 @@ def verify(
         "OpenAI local marketplace",
         _plugin_expectations(runtime_manifest),
     )
+    skill_bytes = skill_files[f"{SKILL_NAME}/SKILL.md"]
+    chatgpt_kit_bytes, chatgpt_inventory, chatgpt_files = _verify_archive(
+        chatgpt_kit,
+        "ChatGPT Custom GPT kit",
+        _chatgpt_expectations(runtime_manifest, skill_bytes),
+    )
 
     plugin_manifest_path = "plugins/strategic-advisor/.codex-plugin/plugin.json"
     marketplace_path = ".agents/plugins/marketplace.json"
@@ -1350,10 +1676,26 @@ def verify(
         raise InstallArtifactError(
             "OpenAI marketplace plugin skill bytes differ from standalone skill bytes"
         )
+    runtime_by_path = {
+        entry["path"]: standalone_skill_files[entry["path"]]
+        for entry in runtime_manifest["files"]
+    }
+    for record in _chatgpt_knowledge_records(runtime_manifest["files"]):
+        if chatgpt_files[record["archive_path"]] != runtime_by_path[
+            record["source_path"]
+        ]:
+            raise InstallArtifactError(
+                "ChatGPT Knowledge bytes differ from standalone runtime bytes: "
+                f"{record['source_path']}"
+            )
 
     artifacts = _require_keys(
         provenance["artifacts"],
-        {OPENAI_MARKETPLACE_ARTIFACT_KEY, STANDALONE_ARTIFACT_KEY},
+        {
+            CHATGPT_CUSTOM_GPT_ARTIFACT_KEY,
+            OPENAI_MARKETPLACE_ARTIFACT_KEY,
+            STANDALONE_ARTIFACT_KEY,
+        },
         "install provenance artifacts",
     )
     _verify_artifact_record(
@@ -1370,8 +1712,17 @@ def verify(
         plugin_inventory,
         openai_marketplace=True,
     )
+    _verify_chatgpt_artifact_record(
+        artifacts[CHATGPT_CUSTOM_GPT_ARTIFACT_KEY],
+        chatgpt_kit_bytes,
+        chatgpt_inventory,
+        runtime_manifest,
+    )
 
     return {
+        "chatgpt_custom_gpt_sha256": runtime_package.sha256_bytes(
+            chatgpt_kit_bytes
+        ),
         "openai_local_marketplace_sha256": runtime_package.sha256_bytes(
             plugin_archive_bytes
         ),
@@ -1395,8 +1746,8 @@ def verify(
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Build a deterministic standalone skill ZIP and OpenAI local "
-            "marketplace/plugin ZIP from the Strategic Advisor runtime allowlist."
+            "Build deterministic standalone Skill, OpenAI local marketplace, "
+            "and ChatGPT Custom GPT ZIPs from the Strategic Advisor runtime allowlist."
         )
     )
     parser.add_argument(
@@ -1436,6 +1787,12 @@ def _build_parser() -> argparse.ArgumentParser:
         help="New output path for the OpenAI local marketplace/plugin ZIP.",
     )
     parser.add_argument(
+        "--chatgpt-kit",
+        type=Path,
+        required=True,
+        help="New output path for the paid-personal ChatGPT Custom GPT kit ZIP.",
+    )
+    parser.add_argument(
         "--provenance-out",
         type=Path,
         required=True,
@@ -1466,6 +1823,7 @@ def _verify_parser() -> argparse.ArgumentParser:
         type=Path,
         required=True,
     )
+    parser.add_argument("--chatgpt-kit", type=Path, required=True)
     parser.add_argument("--provenance", type=Path, required=True)
     parser.add_argument(
         "--expected-provenance-sha256",
@@ -1501,6 +1859,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             summary = verify(
                 skill_archive=args.skill_archive,
                 plugin_archive=args.plugin_archive,
+                chatgpt_kit=args.chatgpt_kit,
                 provenance_path=args.provenance,
                 expected_provenance_sha256=args.expected_provenance_sha256,
                 expected_runtime_identity=args.expected_runtime_identity,
@@ -1511,6 +1870,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 allowlist_path=args.allowlist,
                 skill_archive_out=args.skill_archive,
                 plugin_archive_out=args.plugin_archive,
+                chatgpt_kit_out=args.chatgpt_kit,
                 provenance_out=args.provenance_out,
                 license_path=args.license_path,
                 allow_dirty=args.allow_dirty,

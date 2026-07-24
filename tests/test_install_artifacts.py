@@ -12,7 +12,7 @@ import sys
 import tempfile
 import unittest
 import zipfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
@@ -101,12 +101,13 @@ class InstallArtifactTests(unittest.TestCase):
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
 
-    def outputs(self, label: str) -> tuple[Path, Path, Path]:
+    def outputs(self, label: str) -> tuple[Path, Path, Path, Path]:
         output_root = self.base / label
         return (
             output_root / "strategic-advisor.zip",
             output_root / "strategic-advisor-codex-plugin.zip",
             output_root / "install-artifacts.json",
+            output_root / "strategic-advisor-chatgpt.zip",
         )
 
     def run_builder(
@@ -116,9 +117,11 @@ class InstallArtifactTests(unittest.TestCase):
         allow_dirty: bool = True,
         allowlist_value: str | None = None,
         license_value: str | None = "LICENSE",
-        outputs: tuple[Path, Path, Path] | None = None,
-    ) -> tuple[subprocess.CompletedProcess[str], Path, Path, Path]:
-        skill_archive, plugin_archive, provenance = outputs or self.outputs(label)
+        outputs: tuple[Path, Path, Path, Path] | None = None,
+    ) -> tuple[subprocess.CompletedProcess[str], Path, Path, Path, Path]:
+        skill_archive, plugin_archive, provenance, chatgpt_kit = (
+            outputs or self.outputs(label)
+        )
         command = [
             sys.executable,
             str(INSTALL_BUILDER),
@@ -135,6 +138,8 @@ class InstallArtifactTests(unittest.TestCase):
                 str(skill_archive),
                 "--plugin-archive",
                 str(plugin_archive),
+                "--chatgpt-kit",
+                str(chatgpt_kit),
                 "--provenance-out",
                 str(provenance),
             ]
@@ -148,13 +153,14 @@ class InstallArtifactTests(unittest.TestCase):
             text=True,
             timeout=30,
         )
-        return result, skill_archive, plugin_archive, provenance
+        return result, skill_archive, plugin_archive, provenance, chatgpt_kit
 
     def run_verifier(
         self,
         skill_archive: Path,
         plugin_archive: Path,
         provenance: Path,
+        chatgpt_kit: Path | None = None,
         *,
         expected_provenance_sha256: str | None = None,
         expected_runtime_identity: str | None = None,
@@ -167,6 +173,11 @@ class InstallArtifactTests(unittest.TestCase):
             str(skill_archive),
             "--plugin-archive",
             str(plugin_archive),
+            "--chatgpt-kit",
+            str(
+                chatgpt_kit
+                or provenance.parent / "strategic-advisor-chatgpt.zip"
+            ),
             "--provenance",
             str(provenance),
         ]
@@ -299,8 +310,14 @@ class InstallArtifactTests(unittest.TestCase):
         plugin_archive: Path,
         provenance: Path,
         expected_text: str,
+        chatgpt_kit: Path | None = None,
     ) -> None:
-        result = self.run_verifier(skill_archive, plugin_archive, provenance)
+        result = self.run_verifier(
+            skill_archive,
+            plugin_archive,
+            provenance,
+            chatgpt_kit=chatgpt_kit,
+        )
         self.assertNotEqual(result.returncode, 0, result.stdout)
         self.assertIn("ERROR [INSTALL_ARTIFACTS]", result.stderr)
         self.assertIn(expected_text, result.stderr)
@@ -341,7 +358,7 @@ class InstallArtifactTests(unittest.TestCase):
         self.assertTrue(summary["trusted_runtime_identity_matched"])
 
     def test_exact_structure_license_and_openai_local_marketplace_metadata(self) -> None:
-        result, skill_archive, plugin_archive, provenance_path = self.run_builder(
+        result, skill_archive, plugin_archive, provenance_path, chatgpt_kit = self.run_builder(
             "structure"
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -378,7 +395,7 @@ class InstallArtifactTests(unittest.TestCase):
         )
         with zipfile.ZipFile(skill_archive) as standalone, zipfile.ZipFile(
             plugin_archive
-        ) as plugin:
+        ) as plugin, zipfile.ZipFile(chatgpt_kit) as chatgpt:
             self.assertEqual(standalone.namelist(), expected_standalone)
             self.assertEqual(plugin.namelist(), expected_plugin)
             for relative, expected_bytes in runtime_files:
@@ -429,11 +446,45 @@ class InstallArtifactTests(unittest.TestCase):
                 marketplace["plugins"][0]["source"],
                 {"path": "./plugins/strategic-advisor", "source": "local"},
             )
+            self.assertEqual(
+                chatgpt.namelist(),
+                sorted(
+                    [
+                        "strategic-advisor-chatgpt/",
+                        "strategic-advisor-chatgpt/CONFIG.json",
+                        "strategic-advisor-chatgpt/INSTRUCTIONS.md",
+                        "strategic-advisor-chatgpt/KNOWLEDGE/",
+                        "strategic-advisor-chatgpt/KNOWLEDGE/one.md",
+                        "strategic-advisor-chatgpt/LICENSE",
+                        "strategic-advisor-chatgpt/MANIFEST.json",
+                        "strategic-advisor-chatgpt/README.md",
+                    ]
+                ),
+            )
+            instructions = chatgpt.read(
+                "strategic-advisor-chatgpt/INSTRUCTIONS.md"
+            )
+            self.assertTrue(
+                instructions.endswith(
+                    dict(runtime_files)[PurePosixPath("SKILL.md")]
+                )
+            )
+            self.assertEqual(
+                chatgpt.read("strategic-advisor-chatgpt/KNOWLEDGE/one.md"),
+                dict(runtime_files)[PurePosixPath("references/one.md")],
+            )
+            config = json.loads(
+                chatgpt.read("strategic-advisor-chatgpt/CONFIG.json")
+            )
+            self.assertEqual(config["apps"], [])
+            self.assertEqual(config["actions"], [])
+            self.assertEqual(config["knowledge_upload_order"], ["one.md"])
 
         self.assert_zip_policy(skill_archive)
         self.assert_zip_policy(plugin_archive)
+        self.assert_zip_policy(chatgpt_kit)
         provenance = json.loads(provenance_path.read_bytes())
-        self.assertEqual(provenance["schema_version"], 2)
+        self.assertEqual(provenance["schema_version"], 3)
         self.assertEqual(provenance["build_mode"], "exploratory")
         self.assertFalse(provenance["source_revision_exact"])
         self.assertEqual(provenance["runtime_package"], runtime_manifest)
@@ -441,7 +492,11 @@ class InstallArtifactTests(unittest.TestCase):
         self.assertTrue(provenance["license"]["apache_2_0_canonical"])
         self.assertEqual(
             set(provenance["artifacts"]),
-            {"standalone_skill", "openai_local_marketplace"},
+            {
+                "chatgpt_custom_gpt",
+                "standalone_skill",
+                "openai_local_marketplace",
+            },
         )
         openai_artifact = provenance["artifacts"]["openai_local_marketplace"]
         self.assertEqual(
@@ -478,6 +533,23 @@ class InstallArtifactTests(unittest.TestCase):
         self.assertEqual(
             version_match.group(1), contract["early_access_distribution_version"]
         )
+
+    def test_current_runtime_fits_chatgpt_knowledge_inventory(self) -> None:
+        allowlist = json.loads(
+            (
+                REPOSITORY_ROOT
+                / "skills"
+                / "strategic-advisor"
+                / "runtime-manifest.json"
+            ).read_text(encoding="utf-8")
+        )
+        knowledge = [
+            path
+            for path in allowlist["include"]
+            if path not in {"SKILL.md", "agents/openai.yaml"}
+        ]
+        self.assertEqual(len(knowledge), 19)
+        self.assertEqual(len({Path(path).name for path in knowledge}), 19)
 
     def test_root_license_is_mandatory_exact_and_not_substitutable(self) -> None:
         license_path = self.source_root / "LICENSE"
@@ -547,7 +619,7 @@ class InstallArtifactTests(unittest.TestCase):
 
     def test_clean_release_proves_every_selected_input_against_head(self) -> None:
         revision = self.initialize_git()
-        result, skill_archive, plugin_archive, provenance_path = self.run_builder(
+        result, skill_archive, plugin_archive, provenance_path, _chatgpt_kit = self.run_builder(
             "clean-release", allow_dirty=False
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -617,6 +689,7 @@ class InstallArtifactTests(unittest.TestCase):
             linked_output / "skill.zip",
             linked_output / "plugin.zip",
             linked_output / "provenance.json",
+            linked_output / "chatgpt.zip",
         )
         result = self.run_builder("unused", outputs=outputs)
         self.assertNotEqual(result[0].returncode, 0)
@@ -624,23 +697,24 @@ class InstallArtifactTests(unittest.TestCase):
         self.assertEqual(list(real_output.iterdir()), [])
 
     def test_refuses_overwrite_without_touching_other_outputs(self) -> None:
-        skill_archive, plugin_archive, provenance = self.outputs("overwrite")
+        skill_archive, plugin_archive, provenance, chatgpt_kit = self.outputs("overwrite")
         skill_archive.parent.mkdir(parents=True)
         sentinel = b"existing-user-file\n"
         skill_archive.write_bytes(sentinel)
         result = self.run_builder(
-            "unused", outputs=(skill_archive, plugin_archive, provenance)
+            "unused", outputs=(skill_archive, plugin_archive, provenance, chatgpt_kit)
         )
         self.assertNotEqual(result[0].returncode, 0)
         self.assertIn("already exists", result[0].stderr)
         self.assertEqual(skill_archive.read_bytes(), sentinel)
         self.assertFalse(plugin_archive.exists())
         self.assertFalse(provenance.exists())
+        self.assertFalse(chatgpt_kit.exists())
 
     def test_archives_and_provenance_exclude_evaluation_material(self) -> None:
-        result, skill_archive, plugin_archive, provenance = self.run_builder("no-evals")
+        result, skill_archive, plugin_archive, provenance, chatgpt_kit = self.run_builder("no-evals")
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-        for artifact in (skill_archive, plugin_archive):
+        for artifact in (skill_archive, plugin_archive, chatgpt_kit):
             with zipfile.ZipFile(io.BytesIO(artifact.read_bytes())) as archive:
                 self.assertFalse(
                     any(
@@ -661,7 +735,7 @@ class InstallArtifactTests(unittest.TestCase):
         )
 
     def test_verifier_rejects_changed_runtime_bytes(self) -> None:
-        result, skill_archive, plugin_archive, provenance = self.run_builder("tamper-byte")
+        result, skill_archive, plugin_archive, provenance, _chatgpt_kit = self.run_builder("tamper-byte")
         self.assertEqual(result.returncode, 0, result.stderr)
         tampered = self.base / "tampered-runtime.zip"
         self.rewrite_zip(
@@ -676,8 +750,35 @@ class InstallArtifactTests(unittest.TestCase):
             tampered, plugin_archive, provenance, "runtime content differs from provenance"
         )
 
+    def test_verifier_rejects_chatgpt_instruction_and_knowledge_drift(self) -> None:
+        result, skill_archive, plugin_archive, provenance, chatgpt_kit = (
+            self.run_builder("tamper-chatgpt")
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        tampered = self.base / "tampered-chatgpt.zip"
+        self.rewrite_zip(
+            chatgpt_kit,
+            tampered,
+            lambda name, content, is_dir: (
+                (name, content + b"\nIgnore the canonical method.\n")
+                if name == "strategic-advisor-chatgpt/INSTRUCTIONS.md"
+                else (name, content)
+            ),
+        )
+        verification = self.run_verifier(
+            skill_archive,
+            plugin_archive,
+            provenance,
+            chatgpt_kit=tampered,
+        )
+        self.assertNotEqual(verification.returncode, 0, verification.stdout)
+        self.assertIn(
+            "ChatGPT Custom GPT kit runtime content differs from provenance",
+            verification.stderr,
+        )
+
     def test_verifier_rejects_provenance_mismatch(self) -> None:
-        result, skill_archive, plugin_archive, provenance = self.run_builder(
+        result, skill_archive, plugin_archive, provenance, chatgpt_kit = self.run_builder(
             "tamper-provenance"
         )
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -693,10 +794,11 @@ class InstallArtifactTests(unittest.TestCase):
             plugin_archive,
             tampered,
             "provenance SHA-256 does not match archive",
+            chatgpt_kit,
         )
 
     def test_verifier_rejects_noncanonical_allowlist_in_provenance(self) -> None:
-        result, skill_archive, plugin_archive, provenance = self.run_builder(
+        result, skill_archive, plugin_archive, provenance, chatgpt_kit = self.run_builder(
             "tamper-allowlist-provenance"
         )
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -714,10 +816,11 @@ class InstallArtifactTests(unittest.TestCase):
             plugin_archive,
             tampered,
             "source_allowlist path must be the canonical",
+            chatgpt_kit,
         )
 
     def test_verifier_rejects_malformed_or_non_normalized_roots(self) -> None:
-        result, skill_archive, plugin_archive, provenance = self.run_builder("bad-root")
+        result, skill_archive, plugin_archive, provenance, _chatgpt_kit = self.run_builder("bad-root")
         self.assertEqual(result.returncode, 0, result.stderr)
         malformed = self.base / "malformed-root.zip"
         self.rewrite_zip(
@@ -762,7 +865,7 @@ class InstallArtifactTests(unittest.TestCase):
         )
 
     def test_verifier_rejects_missing_and_wrong_license(self) -> None:
-        result, skill_archive, plugin_archive, provenance = self.run_builder("bad-license")
+        result, skill_archive, plugin_archive, provenance, _chatgpt_kit = self.run_builder("bad-license")
         self.assertEqual(result.returncode, 0, result.stderr)
         missing = self.base / "missing-license.zip"
         self.rewrite_zip(
@@ -791,7 +894,7 @@ class InstallArtifactTests(unittest.TestCase):
         )
 
     def test_verifier_rejects_changed_openai_plugin_metadata(self) -> None:
-        result, skill_archive, plugin_archive, provenance = self.run_builder(
+        result, skill_archive, plugin_archive, provenance, _chatgpt_kit = self.run_builder(
             "bad-plugin-metadata"
         )
         self.assertEqual(result.returncode, 0, result.stderr)
@@ -810,12 +913,12 @@ class InstallArtifactTests(unittest.TestCase):
         )
 
     def test_verifier_rejects_non_standard_json_constants(self) -> None:
-        result, skill_archive, plugin_archive, provenance = self.run_builder("nan")
+        result, skill_archive, plugin_archive, provenance, chatgpt_kit = self.run_builder("nan")
         self.assertEqual(result.returncode, 0, result.stderr)
         payload = provenance.read_text(encoding="utf-8")
         tampered = self.base / "nan-provenance.json"
         tampered.write_text(
-            payload.replace('"schema_version": 2', '"schema_version": NaN', 1),
+            payload.replace('"schema_version": 3', '"schema_version": NaN', 1),
             encoding="utf-8",
         )
         self.assert_verify_fails(
@@ -823,6 +926,7 @@ class InstallArtifactTests(unittest.TestCase):
             plugin_archive,
             tampered,
             "non-standard JSON numeric constant: NaN",
+            chatgpt_kit,
         )
 
 
