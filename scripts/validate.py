@@ -18,6 +18,8 @@ from typing import Iterable, Sequence
 from urllib.parse import unquote
 
 from build_evals import EvalBuildError, serialized_document
+from drift_smoke import SmokeError as DriftSmokeError
+from drift_smoke import validate_spec as validate_drift_smoke_spec
 
 
 SCOPES = ("skill", "lenses", "evals", "pilots", "privacy", "claims", "links")
@@ -1598,6 +1600,17 @@ def check_evals(root: Path) -> list[Diagnostic]:
 
     failures.extend(check_core_case_inventory(root))
     failures.extend(check_lens_case_inventory(root))
+    drift_spec_path = eval_root / "drift_smoke_cases.json"
+    try:
+        validate_drift_smoke_spec(root, drift_spec_path)
+    except (OSError, DriftSmokeError) as error:
+        failures.append(
+            diagnostic(
+                "DRIFT_SMOKE_INVALID",
+                str(error),
+                drift_spec_path.relative_to(root),
+            )
+        )
 
     combined_path = eval_root / "evals.json"
     try:

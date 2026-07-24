@@ -1,0 +1,27 @@
+{
+  "task_id": "TASK-012",
+  "claims": [
+    {
+      "id": "CLM-001",
+      "parent_ac": "AC8",
+      "claim": "Fresh Codex CLI sessions used the exact identified current Strategic Advisor runtime package for every retained actual-turn drift scenario.",
+      "recipe": "runtime-target-source",
+      "status": "pending",
+      "commit": "pending pre-result authority commit",
+      "timestamp": "pending execution",
+      "execution_target": "Isolated neutral temporary Git repository with only the built Strategic Advisor runtime installed as a project skill",
+      "source_artifact": "Current committed runtime-manifest allowlist and content-addressed runtime package",
+      "observation_method": "Build the runtime package, invoke it explicitly in unique fresh Codex CLI sessions, resume each session for later turns, and retain bounded session, source-read, turn, and response evidence",
+      "target_used_source_proof": "Pending retained Codex event traces and content-addressed runtime package identity",
+      "evidence_artifact": "pending retained TASK-012 smoke summary",
+      "evidence_artifact_hash": "pending",
+      "invalid_substitutes": [
+        "Static validation",
+        "A single prompt narrating several turns",
+        "A plausible response without source-read evidence",
+        "A run against repository source containing evaluation material",
+        "A run from a different source or model identity"
+      ]
+    }
+  ]
+}

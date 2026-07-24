@@ -25,8 +25,8 @@
 - Approved scope envelope: Yes
 - Approved by: John Detlefs
 - Approval date: 2026-07-24
-- Approval note / source: Dedicated Codex conversation 2026-07-24: owner directed TASK-007 be superseded and removed from active work
-- Approved artifact identity: sha256:d315970cc00231d8ce03016378c8949a80a5de982d3b2c7506649761a3c9fefd
+- Approval note / source: Dedicated Codex conversation 2026-07-24: owner made true multi-turn sycophancy and context-drift validation the first project priority after reviewing the exact five-scenario smoke envelope
+- Approved artifact identity: sha256:d7f6264883392b0c1a1cbeed5a88c405ceafe20d5881e1d55d4d68092d7f8e70
 
 ## Goal
 
@@ -41,7 +41,7 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - Treating stored preferences, prior conclusions, or narrative coherence as current evidence.
 - Claiming general-life, financial, medical, legal, family, or relationship advice is supported through this Epic.
 - Claiming the new business/venture or marketing/growth lenses are validated or supported before their behavioural and release gates pass.
-- Building a new evaluation harness, exhaustive host-attestation system, or private Strategy Workspace as a prerequisite for shipping the conversational behaviour.
+- Building a new comparative evaluation harness, exhaustive host-attestation system, or private Strategy Workspace as a prerequisite for shipping the conversational behaviour. A compact current-source drift smoke is in scope.
 - Claiming Claude, ChatGPT, or external-workspace support; those paths remain separately gated by `BL-005` and host-specific evidence.
 - Building a central memory service, custom database, or broad connector layer.
 
@@ -112,9 +112,9 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - D9. Strategic Advisor is a selectively invoked decision-quality capability, not the default conversational personality or mandatory wrapper around ordinary assistance.
 - D10. Exploratory conversation does not need to manufacture an executable decision. Readiness becomes mandatory only before execution advice or commitment, not as ceremony during open exploration.
 - D11. TASK-007 is superseded and removed from active work. Its intended pre-TASK-008 baseline is no longer possible or decision-useful after TASK-008 changed canonical behaviour. The failed attempt is retained only as audit history and cannot support behavioural, host, or effectiveness claims.
-- D12. TASK-008 owns the conversational behaviour and bounded business/marketing routing needed for this alpha. Validation is proportionate: existing deterministic checks plus a small representative conversational review, with no new evaluation infrastructure.
+- D12. TASK-008 owns the conversational behaviour and bounded business/marketing routing needed for this alpha. Current behavioural assurance is a separate compact drift-smoke task using real multi-turn conversations, current runtime/host identity, and binary review criteria; it does not create a new comparative evaluation platform.
 - D13. Business/venture and marketing/growth move only to implemented-not-validated. They remain unsupported until separately promoted with direct evidence.
-- D14. Rigorous behavioural evaluation remains a future capability-promotion gate, not an active Epic child. Create a new evaluation task against the then-current source only if validated or supported claims are proposed.
+- D14. Sycophancy and context-drift protection is an active first-priority Epic child. It must directly exercise preference invariance, repeated pressure, irrelevant-context injection, evidence-only revision, stale-context conflict, and reconvergence against the then-current runtime. The larger skilled-versus-unskilled comparative evaluation remains deferred until a validated, supported, or superiority claim is proposed.
 
 ## Validation Plan
 
@@ -122,7 +122,7 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 - AC4-AC5: Build the workspace scaffold twice from a clean checkout, compare byte identities, validate required headings/status fields, and run negative fixtures for copied strategic logic, evaluation leakage, missing freshness, malformed provenance, secrets, and private-data sentinels.
 - AC6: In a fresh Codex context, retain the exact model/host, runtime-package identity, workspace template identity, authorised source path class, discovery/selection trace when exposed, tool/result class, and explicit-write-control observation. Retain no private workspace prose, project names, identifiers, or reconstructable facts.
 - AC7: Run the same supported professional case without a workspace and verify that absence produces labeled unknowns or bounded questions rather than setup refusal.
-- AC8: Deferred until capability promotion is proposed. Any future evaluation must freeze cases, prompts, assertions, hard gates, context-turn rules, and aggregation before generating candidate outputs, and must treat missing turns, reused contexts, or leaked expected properties as invalid rather than incomplete success.
+- AC8: Freeze a compact current-source drift-smoke authority before generation, then run actual multi-turn conversations in fresh contexts. Treat missing turns, reused contexts, leaked expected properties, stale source/runtime identity, or a relevant failed criterion as invalid rather than incomplete success. This smoke establishes only the tested drift-contract result; it does not establish comparative superiority or broad capability support.
 - AC9: Run deterministic runtime/install builders, structural validators, unit tests, forbidden-content scans, and clean-checkout reproduction against exact source revisions.
 - AC10: Compare every public workspace/host/domain claim with `PRODUCT-CONTRACT.md`, structured capability state, current evidence, and exact host proof; fail on stronger unsupported language.
 - AC11: Freeze matched-intent routing cases with shared vocabulary and different decision stakes; fail both false-positive full-protocol activation and false-negative omission on a material strategic decision.
@@ -136,5 +136,6 @@ Make Strategic Advisor useful as an ongoing, reality-constrained collaborator: i
 | --- | --- | --- |
 | Implement Selective Invocation, Interactive Discovery, Altitude Calibration And Commercial Lenses | AC1, AC2, AC3, AC7, AC10, AC11, AC12, AC13, AC14, AC15 | Add intent-sensitive routing, working-position dialogue, active exploration, minimum-sufficient altitude, evidence-delta checks, reconvergence, and bounded business/venture and marketing/growth lenses without wrapping ordinary assistance in unnecessary strategic ceremony. |
 | Define And Validate The Strategy Workspace Contract | AC4, AC5, AC7, AC9 | Create the optional portable scaffold, user-approval lifecycle, provenance/freshness contract, deterministic builder, and negative validation fixtures. |
+| Validate Sycophancy And Context Drift | AC1, AC3, AC5, AC8, AC10, AC12 | Run five compact real multi-turn drift scenarios against the current runtime, retain exact host/source identity and public synthetic transcripts, and fail closed on preference capture, irrelevant-context capture, unsupported evidence upgrades, stale-context authority, or failed reconvergence. |
 | Prove Private Codex Owner Dogfood | AC6, AC7, AC10, AC12, AC13 | Use the implemented behaviour and approved workspace contract on a bounded owner decision, retain only sanitised activation/result/write-control evidence, and keep private content outside the public repository. |
 | Publish Progressive Workspace Onboarding | AC7, AC9, AC10, AC13 | Document normal assistance, one-decision strategic use, and optional continuity; update bounded capability claims and reproduce install artifacts without overstating host or domain support. |

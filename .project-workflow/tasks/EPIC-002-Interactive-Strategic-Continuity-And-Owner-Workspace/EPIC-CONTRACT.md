@@ -30,7 +30,7 @@
 - Local source files or a different package revision in place of exact runtime-package and host-source proof.
 - Codex proof in place of Claude, ChatGPT, or general connector support.
 - A supplied whole-person preference in place of a supported general-life, financial, medical, legal, family, or relationship domain.
-- Structural checks, a small conversational review, or the retired TASK-007 attempt in place of behavioural validation for business, marketing, or interactive-strategy claims.
+- Structural checks, single-turn prompts that narrate multiple reviews, or the retired TASK-007 attempt in place of observed actual-turn behaviour. The compact drift smoke proves only its named invariants and cannot promote business, marketing, comparative-superiority, or broad support claims.
 
 ## Invariants
 
@@ -52,7 +52,7 @@
 
 - Canonical behaviour: updated core skill/reference files under `skills/strategic-advisor/`, including the invocation boundary and proportional exploration-to-checkpoint transition.
 - Workspace product surface: portable Markdown templates/instructions named by the runtime allowlist plus a deterministic scaffold builder and validator.
-- Evaluation authority: existing evaluation material remains excluded from model-visible packages; the retired TASK-007 attempt cannot be used as passing evidence. A new evaluation authority is required only before capability promotion and must bind the then-current source.
+- Evaluation authority: existing evaluation material remains excluded from model-visible packages; the retired TASK-007 attempt cannot be used as passing evidence. TASK-012 binds a compact actual-turn drift smoke to the then-current runtime and host. The larger comparative authority remains required before capability promotion or superiority claims.
 - Host proof: sanitised Codex trace identifying exact model, host, runtime package, workspace template, authorised source class, and observed result/write-control class.
 - Public contract: bounded README, installation, architecture, and structured capability updates.
 - Private dogfood: a separate private repository with no path, content, or reconstructable case data required in public artifacts.
@@ -61,18 +61,18 @@
 
 | Parent AC | Proof Owner | Required Evidence |
 | --- | --- | --- |
-| AC1 | TASK-008 | Actual multi-turn outputs showing working position, exploration, reconvergence, and bounded tactical control. |
+| AC1 | TASK-008, TASK-012 | Actual multi-turn outputs showing working position, exploration, reconvergence, and bounded tactical control. |
 | AC2 | TASK-008 | Trigger and negative cases proving material altitude changes and return to a bounded decision. |
-| AC3 | TASK-008 | Matched opposite-preference/repetition cases plus explicit evidence-delta findings and hard-gate verdicts. |
+| AC3 | TASK-008, TASK-012 | Matched opposite-preference/repetition cases plus explicit evidence-delta findings and hard-gate verdicts. |
 | AC4 | TASK-009 | Deterministic scaffold reproduction, required-field validation, and negative forbidden-content fixtures. |
-| AC5 | TASK-009 | Provenance/freshness/conflict validation and stale-context adversarial behaviour. |
+| AC5 | TASK-009, TASK-012 | Provenance/freshness/conflict validation and stale-context adversarial behaviour. |
 | AC6 | TASK-010 | Exact runtime/workspace activation and write-control proof retaining no private content. |
 | AC7 | TASK-008, TASK-009, TASK-010, TASK-011 | Fresh no-workspace journey plus optional continuity journey. |
-| AC8 | Deferred capability-promotion gate | A future task must freeze the actual-turn matrix, assertions, hard gates, and current source identity before generating outputs. |
+| AC8 | TASK-012 | A compact actual-turn drift matrix frozen against current source/runtime/host, with public transcripts, binary invariant review, and fail-closed stale or failed status. |
 | AC9 | TASK-009, TASK-011 | Runtime/install allowlist identity, deterministic builds, tests, and forbidden-content scans. |
-| AC10 | TASK-008, TASK-010, TASK-011 | Current public-claim comparison against structured capability and exact retained proof. |
+| AC10 | TASK-008, TASK-010, TASK-011, TASK-012 | Current public-claim comparison against structured capability and exact retained proof. |
 | AC11 | TASK-008 | Matched intent-routing cases with shared vocabulary, false-positive controls, and a material-decision activation case. |
-| AC12 | TASK-008, TASK-010 | Actual multi-turn exploration showing open dialogue, justified checkpoint timing, no manufactured readiness, and proportionate reconvergence. |
+| AC12 | TASK-008, TASK-010, TASK-012 | Actual multi-turn exploration showing open dialogue, justified checkpoint timing, no manufactured readiness, and proportionate reconvergence. |
 | AC13 | TASK-008, TASK-009, TASK-010, TASK-011 | Fresh-context host/workspace controls proving no location-triggered invocation, unnecessary reads, silent writes, or inferred coupling. |
 | AC14 | TASK-008 | Reviewable business/venture lens plus representative synthetic cases; capability remains implemented-not-validated. |
 | AC15 | TASK-008 | Reviewable marketing/growth lens plus representative synthetic cases; capability remains implemented-not-validated. |
