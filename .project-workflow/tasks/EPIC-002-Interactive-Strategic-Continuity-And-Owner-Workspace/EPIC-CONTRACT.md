@@ -4,7 +4,7 @@
 
 - Epic: EPIC-002
 - Title: Interactive Strategic Continuity And Owner Workspace
-- Last updated: 2026-07-23
+- Last updated: 2026-07-24
 
 ## Sources of Truth
 
@@ -29,7 +29,8 @@
 - A host project, connector, memory store, or adapter-side prompt copy in place of the canonical skill and portable workspace contract.
 - Local source files or a different package revision in place of exact runtime-package and host-source proof.
 - Codex proof in place of Claude, ChatGPT, or general connector support.
-- A supplied whole-person preference in place of a supported general-life, financial, medical, legal, family, relationship, business, or marketing domain.
+- A supplied whole-person preference in place of a supported general-life, financial, medical, legal, family, or relationship domain.
+- Structural checks, a small conversational review, or the retired TASK-007 attempt in place of behavioural validation for business, marketing, or interactive-strategy claims.
 
 ## Invariants
 
@@ -45,12 +46,13 @@
 - The private owner workspace never enters public source, examples, evaluations, packages, logs, or retained evidence.
 - One canonical skill remains the only source of strategic logic.
 - Host, workspace, connector, domain, and behavioural claims do not exceed direct current proof.
+- Business/venture and marketing/growth may be implemented for alpha use while remaining explicitly unvalidated and unsupported.
 
 ## Artifact Targets
 
 - Canonical behaviour: updated core skill/reference files under `skills/strategic-advisor/`, including the invocation boundary and proportional exploration-to-checkpoint transition.
 - Workspace product surface: portable Markdown templates/instructions named by the runtime allowlist plus a deterministic scaffold builder and validator.
-- Evaluation authority: frozen multi-turn cases, turn/context rules, case assertions, hard gates, and aggregation updates excluded from model-visible packages.
+- Evaluation authority: existing evaluation material remains excluded from model-visible packages; the retired TASK-007 attempt cannot be used as passing evidence. A new evaluation authority is required only before capability promotion and must bind the then-current source.
 - Host proof: sanitised Codex trace identifying exact model, host, runtime package, workspace template, authorised source class, and observed result/write-control class.
 - Public contract: bounded README, installation, architecture, and structured capability updates.
 - Private dogfood: a separate private repository with no path, content, or reconstructable case data required in public artifacts.
@@ -59,16 +61,18 @@
 
 | Parent AC | Proof Owner | Required Evidence |
 | --- | --- | --- |
-| AC1 | Interactive Discovery child, Multi-Turn Evaluation child | Actual multi-turn outputs showing working position, exploration, reconvergence, and bounded tactical control. |
-| AC2 | Interactive Discovery child, Multi-Turn Evaluation child | Trigger and negative cases proving material altitude changes and return to a bounded decision. |
-| AC3 | Interactive Discovery child, Multi-Turn Evaluation child | Matched opposite-preference/repetition cases plus explicit evidence-delta findings and hard-gate verdicts. |
+| AC1 | Interactive Discovery child | Actual multi-turn outputs showing working position, exploration, reconvergence, and bounded tactical control. |
+| AC2 | Interactive Discovery child | Trigger and negative cases proving material altitude changes and return to a bounded decision. |
+| AC3 | Interactive Discovery child | Matched opposite-preference/repetition cases plus explicit evidence-delta findings and hard-gate verdicts. |
 | AC4 | Strategy Workspace child | Deterministic scaffold reproduction, required-field validation, and negative forbidden-content fixtures. |
-| AC5 | Strategy Workspace child, Multi-Turn Evaluation child | Provenance/freshness/conflict validation and stale-context adversarial behaviour. |
+| AC5 | Strategy Workspace child | Provenance/freshness/conflict validation and stale-context adversarial behaviour. |
 | AC6 | Codex Owner Dogfood child | Exact runtime/workspace activation and write-control proof retaining no private content. |
 | AC7 | Interactive Discovery child, Strategy Workspace child, Codex Owner Dogfood child, Onboarding child | Fresh no-workspace journey plus optional continuity journey. |
-| AC8 | Multi-Turn Evaluation child | Frozen actual-turn matrix, assertions, hard gates, raw artifacts, and fail-closed result. |
+| AC8 | Deferred capability-promotion gate | A future task must freeze the actual-turn matrix, assertions, hard gates, and current source identity before generating outputs. |
 | AC9 | Strategy Workspace child, Onboarding child | Runtime/install allowlist identity, deterministic builds, tests, and forbidden-content scans. |
 | AC10 | Codex Owner Dogfood child, Onboarding child | Current public-claim comparison against structured capability and exact retained proof. |
-| AC11 | Interactive Discovery child, Multi-Turn Evaluation child | Matched intent-routing cases with shared vocabulary, false-positive controls, and a material-decision activation case. |
-| AC12 | Interactive Discovery child, Multi-Turn Evaluation child | Actual multi-turn exploration showing open dialogue, justified checkpoint timing, no manufactured readiness, and proportionate reconvergence. |
-| AC13 | Interactive Discovery child, Strategy Workspace child, Codex Owner Dogfood child, Multi-Turn Evaluation child, Onboarding child | Fresh-context host/workspace controls proving no location-triggered invocation, unnecessary reads, silent writes, or inferred coupling. |
+| AC11 | Interactive Discovery child | Matched intent-routing cases with shared vocabulary, false-positive controls, and a material-decision activation case. |
+| AC12 | Interactive Discovery child, Codex Owner Dogfood child | Actual multi-turn exploration showing open dialogue, justified checkpoint timing, no manufactured readiness, and proportionate reconvergence. |
+| AC13 | Interactive Discovery child, Strategy Workspace child, Codex Owner Dogfood child, Onboarding child | Fresh-context host/workspace controls proving no location-triggered invocation, unnecessary reads, silent writes, or inferred coupling. |
+| AC14 | Interactive Discovery child | Reviewable business/venture lens plus representative synthetic cases; capability remains implemented-not-validated. |
+| AC15 | Interactive Discovery child | Reviewable marketing/growth lens plus representative synthetic cases; capability remains implemented-not-validated. |

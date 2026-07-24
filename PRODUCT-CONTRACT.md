@@ -37,6 +37,12 @@ A validated capability's `evidence` array contains objects with exactly `artifac
       "evidence": []
     },
     {
+      "id": "core.interactive-strategy",
+      "kind": "behaviour",
+      "state": "implemented-not-validated",
+      "evidence": []
+    },
+    {
       "id": "domain.project-product",
       "kind": "domain",
       "state": "implemented-not-validated",
@@ -63,13 +69,13 @@ A validated capability's `evidence` array contains objects with exactly `artifac
     {
       "id": "domain.business-venture",
       "kind": "domain",
-      "state": "out-of-scope",
+      "state": "implemented-not-validated",
       "evidence": []
     },
     {
       "id": "domain.marketing-growth",
       "kind": "domain",
-      "state": "out-of-scope",
+      "state": "implemented-not-validated",
       "evidence": []
     },
     {
@@ -163,7 +169,7 @@ A validated capability's `evidence` array contains objects with exactly `artifac
 
 ## Current interpretation
 
-The repository is pre-release and capability promotion is disabled. The canonical core, four v0 professional lenses, comparative-evaluation definitions, deterministic install builder, standalone Agent Skills envelope, and skill-only OpenAI local-marketplace envelope are implemented but not behaviourally validated. The latter follows the documented local shape used by Codex and ChatGPT desktop Work mode; neither host inherits the other's evidence. A retained fresh-context trace proves one exact-release-package Codex activation path, but capability promotion remains disabled and that trace does not prove strategic effectiveness or general host support. Claude Code, Claude.ai, and ChatGPT lack their own retained live activation proof. A public ChatGPT Plugin Directory submission package has not been implemented. No frozen comparative run or improvement result exists. These artifacts are candidates for early testing and evaluation, not supported capabilities. There is no supported installation, validated domain, or connector.
+The repository is pre-release and capability promotion is disabled. The canonical core, selective interactive-strategy contract, six bounded lenses, comparative-evaluation definitions, deterministic install builder, standalone Agent Skills envelope, and skill-only OpenAI local-marketplace envelope are implemented but not behaviourally validated. The latter follows the documented local shape used by Codex and ChatGPT desktop Work mode; neither host inherits the other's evidence. A retained fresh-context trace proves one exact-release-package Codex activation path, but capability promotion remains disabled and that trace does not prove strategic effectiveness or general host support. Claude Code, Claude.ai, and ChatGPT lack their own retained live activation proof. A public ChatGPT Plugin Directory submission package has not been implemented. No passing frozen comparative run or improvement result exists. These artifacts are candidates for early testing and evaluation, not supported capabilities. There is no supported installation, validated domain, or connector.
 
 The runtime package is an explicit allowlist in [`skills/strategic-advisor/runtime-manifest.json`](skills/strategic-advisor/runtime-manifest.json). [`scripts/build_install_artifacts.py`](scripts/build_install_artifacts.py) wraps those exact runtime bytes in deterministic standalone-Skill and OpenAI local-marketplace plugin envelopes and identifies the added Apache-2.0 licence separately. Evaluation definitions, expected properties, rubrics, fixtures, and prior results must never enter the model-visible treatment or install package.
 

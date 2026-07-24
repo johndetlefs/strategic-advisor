@@ -8,7 +8,8 @@ flowchart LR
     H --> A["Thin adapter or canonical link"]
     A --> S["Canonical Strategic Advisor skill"]
     S --> C["Reality protocol"]
-    C --> L["One primary lens; optional material secondary"]
+    C --> Q["Selective dialogue and minimum sufficient altitude"]
+    Q --> L["One primary lens; optional material secondary"]
     X["Authorised connector or tool"] -->|"bounded evidence access"| C
     E["Evaluation authority"] --> P["Allowlisted runtime package"]
     P --> D["Deterministic Skill / plugin envelopes"]
@@ -20,7 +21,7 @@ flowchart LR
 
 The reality protocol is domain-independent: claim provenance, contradiction handling, readiness, competing explanations, action calibration, and falsifiable controls should not change because a question concerns a product rather than a career. The domain lenses are materially different where evidence, causal mechanisms, decision rights, power, stakeholder agency, and characteristic failure modes differ. This avoids both false separation and a single generic prompt that treats every decision as the same problem.
 
-The current four lenses are project/product, career, organisational influence, and people leadership. They reuse the core rather than redefining it. Personal and intimate relationships, family and household decisions, business and venture strategy, marketing and growth, legal, medical, clinical, and financial advice are outside v0. A mixed request may use a lens only for a genuinely separable in-scope v0 professional decision.
+The current six lenses are project/product, career, organisational influence, people leadership, business/venture, and marketing/growth. They reuse the core rather than redefining it. The conversational contract activates that core only for a material decision, climbs from tactic to outcome or portfolio only when the higher level could change the answer, then returns to a bounded move. Personal and intimate relationships, family and household decisions, general-life strategy, legal, medical, clinical, and financial advice remain outside scope. A mixed request may use a lens only for a genuinely separable in-scope professional or commercial decision.
 
 Professional influence is treated as real strategy. Truthful framing, private preparation, sequencing, negotiation, coalition building, incentive alignment, accountability, credible alternatives, and proportionate consequences are legitimate subjects. Stakeholders remain autonomous and adaptive; the system does not make plans depend silently on obedience, inferred motives, material deception, coercion, exploitation, or hidden monitoring.
 

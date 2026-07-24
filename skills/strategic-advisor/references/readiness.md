@@ -1,6 +1,6 @@
 # Readiness gate
 
-Assess the proposed strategic direction or candidate action as currently scoped. State exactly one current readiness verdict before execution advice: **Ready**, **Conditional**, **Not validated**, or **Infeasible as posed**.
+Assess a proposed strategic direction or candidate action as currently scoped. State exactly one current readiness verdict before execution advice or commitment: **Ready**, **Conditional**, **Not validated**, or **Infeasible as posed**. If open exploration has not produced a candidate direction, do not manufacture one merely to assign a verdict.
 
 ## Determine the verdict
 
@@ -11,7 +11,7 @@ First identify the decision-critical causal bridge, the strongest material contr
 - **Not validated**: A decision-critical claim, causal bridge, outcome, or constraint lacks adequate support, so execution should pause or become validation work. State the missing validation and the cheapest useful test. Not validated means “not yet supported,” not false or impossible.
 - **Infeasible as posed**: An identified, sufficiently established constraint directly conflicts with the objective or plan within the stated scope, horizon, authority, or resources. Name the constraint, its provenance, the conflict, and what would have to change. Missing evidence alone never establishes infeasibility.
 
-If no executable direction is supplied, formulate the smallest faithful candidate direction from the request. If the material needed even to formulate it is absent, classify it Not validated and ask or test for that information.
+When the user is asking for a decision but the candidate action is implicit, formulate the smallest faithful candidate direction and state it before applying readiness. When the user is deliberately exploring and no commitment is pending, remain in exploration and identify the next discriminating question or observation instead.
 
 ## Prevent state laundering
 

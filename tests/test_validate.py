@@ -134,6 +134,35 @@ class ValidatorFixtureTests(unittest.TestCase):
         result = self.run_validator("skill")
         self.assert_named_failure(result, "SKILL_FRONTMATTER_INVALID")
 
+    def test_incomplete_conversational_contract_fails_skill_scope(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "references"
+            / "conversational-strategy.md"
+        )
+        text = path.read_text(encoding="utf-8").replace(
+            "## Minimum sufficient altitude",
+            "## Broader context",
+            1,
+        )
+        path.write_text(text, encoding="utf-8")
+        result = self.run_validator("skill")
+        self.assert_named_failure(result, "SKILL_CONVERSATIONAL_CONTRACT")
+
+    def test_missing_implemented_commercial_lens_fails_lenses_scope(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "references"
+            / "business-venture.md"
+        )
+        path.unlink()
+        result = self.run_validator("lenses")
+        self.assert_named_failure(result, "LENSES_MISSING")
+
     def test_extra_skill_frontmatter_fails_skill_scope(self) -> None:
         path = self.fixture_root / "skills" / "strategic-advisor" / "SKILL.md"
         text = path.read_text(encoding="utf-8")

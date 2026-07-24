@@ -7,7 +7,7 @@ Use this lens for decisions about team or individual outcomes, role clarity, cap
 - Select this as the primary lens when the central decision concerns leading a team or managing an individual's work outcomes, development, performance, role, or accountability.
 - Select it as a secondary lens only when another supported professional decision is primary and team capability, operating conditions, or leadership consequences materially change the evidence, risk, or action.
 - Do not route a manager's own advancement question here unless a distinct team decision is material; use the career lens for the personal career outcome.
-- Personal, intimate, family, household, business, marketing, and general-life requests activate zero professional lenses unless a supported people-leadership sub-decision is separable and explicitly bounded.
+- Personal, intimate, family, household, and general-life requests activate zero lenses unless a supported people-leadership sub-decision is separable and explicitly bounded. Route business-model and marketing decisions to their own lenses.
 
 ## Supported decisions and outcomes
 

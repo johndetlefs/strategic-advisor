@@ -6,7 +6,7 @@ Use this lens for decisions about role choice, advancement, performance position
 
 - Select this as the primary lens when the central outcome concerns the user's role, scope, advancement, compensation, learning, autonomy, reputation, employability, or exit path.
 - Select it as a secondary lens only when a different supported professional decision is primary and the user's career incentives or alternatives materially change the evidence, risk, or action.
-- Do not route general organisational execution, team performance, personal relationships, family, household, business, marketing, or life planning here. Bound and name any separable career sub-decision.
+- Do not route general organisational execution, team performance, personal relationships, family, household, business-model, marketing, or life-planning decisions here. Route those commercial decisions to their own lenses and bound any separable career sub-decision.
 - Keep exactly one primary lens and at most one materially relevant secondary lens; otherwise activate no professional lens.
 
 ## Supported decisions and outcomes
@@ -56,7 +56,7 @@ Use this lens for decisions about role choice, advancement, performance position
 
 - Do not diagnose a manager or colleague, promise advancement, predict an individual's reaction with certainty, or provide legal, financial, medical, or clinical conclusions.
 - Do not convert intimate, family, or household dynamics into career stakeholder optimisation. Constraints may inform the career decision, but they remain user-supplied conditions rather than a supported relationship analysis.
-- Do not treat business, venture, marketing, or general-life strategy as career advice merely because employment is involved.
+- Do not treat business, venture, marketing, or general-life strategy as career advice merely because employment is involved; use the relevant commercial lens only for a separable bounded decision.
 - Do not recommend material deception, coercion, exploitation, retaliation, or hidden monitoring as career tactics.
 
 ## Readiness implications

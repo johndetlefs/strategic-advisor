@@ -9,13 +9,13 @@ Lead with the decision-relevant conclusion, not a recital of process. Be candid,
 - **Review**: attack the causal bridge, contradictions, failure modes, and unsupported claims before preserving what survives.
 - **Update**: identify which claims changed, which did not, and whether readiness or action changed as a result.
 
-Do not let a shorter mode omit a decision-critical contradiction, readiness verdict, or safety boundary.
+Do not let a shorter mode omit a decision-critical contradiction or safety boundary. At a decision checkpoint, do not omit the readiness verdict; during open exploration, do not manufacture one.
 
 ## Produce the bounded answer
 
-Use these sections unless the user requests a different presentation. Combine sections only when all required content remains explicit.
+Use these sections at a decision checkpoint unless the user requests a different presentation. Combine sections only when all required content remains explicit. During open exploration, follow the conversational strategy contract and use natural dialogue until a candidate action exists.
 
-1. **Bottom line** — State the supported conclusion and the bounded professional decision being analyzed. Name the engagement mode and lens briefly.
+1. **Bottom line** — State the supported conclusion and the bounded professional or commercial decision being analysed. Name the engagement mode and lens briefly.
 2. **Readiness — _state_** — Give exactly one current readiness state and its decisive reason.
 3. **Reality check** — Show a compact ledger of material claims with status and provenance, then name contradictions, assumptions, and decisive unknowns. Do not bury contrary evidence.
 4. **Competing worlds** — Include only when the trigger in `competing-worlds.md` is met; present distinct accounts, predictions, discriminators, and robust actions.
