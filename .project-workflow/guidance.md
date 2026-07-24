@@ -14,5 +14,7 @@ Use this file for repo-specific workflow guidance that should survive project-wo
 - Use only synthetic, public, or irreversibly sanitised examples. Never commit employer, client, household, connector, credential, or other private case data.
 - Do not mark a domain, host, connector, or release ready based on placeholder files, happy-path examples, aggregate scores, or model self-assessment.
 - When a scaffolded child has no applicable visual, external-contract, deployed-artifact, runtime-target/source, or responsive proof recipe, keep child `EVIDENCE.json` claims empty; remove generated recipe placeholders instead of inventing irrelevant evidence.
+- In an Epic contract, record parent acceptance proof owners as exact scaffolded child IDs such as `TASK-014`; descriptive role labels are not auditable ownership.
+- For cross-host distributions, retain one exact-host ledger that separates package readiness, installation, activation, behavioural smoke, sharing, validation, support, and adoption. Never promote one state or host from another.
 - Add dependencies and automation only when they enforce an approved invariant or proof obligation. Prefer portable Markdown and small transparent validators.
 - Use `./.project-workflow/cli/workflow doctor` after workflow-state changes. Record exact validation commands and artifacts in child evidence before review.

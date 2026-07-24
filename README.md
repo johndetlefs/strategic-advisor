@@ -39,9 +39,22 @@ No repository, Strategy Workspace, connector, database, or virtual environment i
 
 Package compatibility, successful host activation, behavioural smoke results, comparative improvement, and useful real-world outcomes are separate claims. The product remains pre-release and unsupported until the relevant gates are promoted with current structured evidence.
 
+### Exact current host status
+
+| Host | Package | Account result |
+| --- | --- | --- |
+| John — personal Codex | Exact `v0.2.0-alpha.1` standalone ZIP | Installed; fresh source-bound fictional smoke passed |
+| John — paid personal ChatGPT | Exact Custom GPT kit | Live by link; 19-file Knowledge upload and both Preview checks passed |
+| Christina — paid personal ChatGPT | [Shared Strategic Advisor GPT](https://chatgpt.com/g/g-6a632c0422688191b32d51fa147e441c-strategic-advisor) or the same kit | Shared path ready; separate-account open not yet observed |
+| Christina — Canva Claude Enterprise | Exact standalone ZIP | Package and preflight ready; private account upload/activation not run |
+
+The bounded, non-private record is
+[`evidence/hosts/v0.2.0-alpha.1/host-status.json`](evidence/hosts/v0.2.0-alpha.1/host-status.json).
+It is an execution ledger, not a supported-capability registry.
+
 ## Host and installation boundary
 
-- **Codex:** the repository's relative symlink at `.agents/skills/strategic-advisor` is for authoring only. The generated standalone and local-marketplace artifacts provide the end-user boundary. Exact current personal-install evidence remains revision-specific.
+- **Codex:** the repository's relative symlink at `.agents/skills/strategic-advisor` is for authoring only. The generated standalone and local-marketplace artifacts provide the end-user boundary. One exact current personal-install activation passed on the recorded CLI/model/date; that does not promote general Codex support.
 - **ChatGPT:** managed plans can expose Personal Skills, but paid personal accounts use the deterministic Custom GPT kit. Its Instructions are generated from canonical `SKILL.md`; its 19 Knowledge files are exact remaining runtime resources. The plugin ZIP is not a Personal Skill, Custom GPT, or public Plugin Directory submission.
 - **Claude or Claude Code:** the unchanged standalone archive follows the current custom-Skill shape. Claude Enterprise requires organisation-enabled Skills and code execution/file creation. Package readiness is not live Claude activation.
 - **Connectors:** no Slack, Teams, repository, email, calendar, document-store, or other connector is shipped. Connecting a data source would not by itself make its contents complete, true, relevant, or authorised.

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "release": {
+    "tag": "v0.2.0-alpha.1",
+    "status": "prerelease",
+    "published_at": "2026-07-24T08:32:46Z",
+    "url": "https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.1",
+    "source_revision": "fe834cd13f0fa4bcdcad0e5dd491c8bddbe92655",
+    "runtime_package_identity_sha256": "0d3c22bed94c05516cba38974e649046f0b35d05814875c87cb92692a491a77e",
+    "assets": [
+      {
+        "name": "install-artifacts.json",
+        "sha256": "e13d6ef1b9d840e1dfd0da4552a128325574249277e8e4b03231617c8f173ff9",
+        "size_bytes": 44131
+      },
+      {
+        "name": "strategic-advisor.zip",
+        "sha256": "02db0e7b0e4f59cb383cb129c3f55362fe29a4b9a6128ae5469b00e7c237a0a8",
+        "size_bytes": 91574
+      },
+      {
+        "name": "strategic-advisor-plugin.zip",
+        "sha256": "69622510670afccfc9ed90f7cb2861ede18ebaa05dd2112ce3a785d040e1fa82",
+        "size_bytes": 95465
+      },
+      {
+        "name": "strategic-advisor-chatgpt.zip",
+        "sha256": "f1132d8aa854cf525b55f8a840b60fea37b42123afbfb181855de087fa201f6f",
+        "size_bytes": 101018
+      }
+    ]
+  },
+  "reproduction": {
+    "two_clean_builds_byte_identical": true,
+    "clean_download_consumer_verification": "pass",
+    "archive_paths_safe": true,
+    "unexpected_files_rejected": true,
+    "evaluation_or_workflow_files_in_artifacts": false,
+    "credential_or_non_public_case_material_in_artifacts": false
+  },
+  "chatgpt_projection": {
+    "instructions_source": "Canonical skills/strategic-advisor/SKILL.md with a bounded generated host bootstrap",
+    "canonical_skill_body_exact": true,
+    "knowledge_file_count": 19,
+    "host_file_limit": 20,
+    "knowledge_bytes_match_runtime": true,
+    "apps": [],
+    "actions": [],
+    "negative_instruction_drift_test": "pass",
+    "negative_inventory_drift_test": "pass"
+  },
+  "runtime_inventory": {
+    "business_venture_lens_present": true,
+    "marketing_growth_lens_present": true,
+    "strategy_workspace_method_present": true,
+    "strategy_workspace_templates_present": true,
+    "strategy_workspace_required_for_first_use": false,
+    "connector_required_for_first_use": false
+  },
+  "validation": {
+    "unit_tests": {
+      "result": "pass",
+      "tests": 121
+    },
+    "aggregate_validation": {
+      "result": "pass",
+      "scopes": 7
+    },
+    "evaluation_definition_count": 31,
+    "pull_request": "https://github.com/johndetlefs/strategic-advisor/pull/8",
+    "pull_request_ci": "pass",
+    "project_workflow_doctor": "pass"
+  },
+  "current_contracts_checked": [
+    "https://help.openai.com/en/articles/20001066",
+    "https://help.openai.com/en/articles/8554397-creating-and-editing-gpts",
+    "https://support.claude.com/en/articles/12512180-use-skills-in-claude",
+    "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills"
+  ],
+  "proof_boundary": {
+    "package_and_release_alignment_proven": true,
+    "chatgpt_projection_integrity_proven": true,
+    "codex_account_activation_proven_here": false,
+    "chatgpt_account_activation_proven_here": false,
+    "claude_account_activation_proven_here": false,
+    "cross_host_parity_proven": false,
+    "strategic_effectiveness_proven": false,
+    "supported_capability_claimed": false
+  }
+}

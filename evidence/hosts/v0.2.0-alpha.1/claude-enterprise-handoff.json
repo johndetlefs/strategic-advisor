@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-07-24T09:01:13Z",
+  "release": {
+    "tag": "v0.2.0-alpha.1",
+    "source_revision": "fe834cd13f0fa4bcdcad0e5dd491c8bddbe92655",
+    "standalone_archive_sha256": "02db0e7b0e4f59cb383cb129c3f55362fe29a4b9a6128ae5469b00e7c237a0a8",
+    "provenance_sha256": "e13d6ef1b9d840e1dfd0da4552a128325574249277e8e4b03231617c8f173ff9",
+    "runtime_package_identity_sha256": "0d3c22bed94c05516cba38974e649046f0b35d05814875c87cb92692a491a77e"
+  },
+  "package_verification": {
+    "clean_download_consumer_verifier": "pass",
+    "single_skill_root": "strategic-advisor/",
+    "skill_md_at_root": true,
+    "supporting_references_packaged": true,
+    "external_dependencies": [],
+    "unsafe_archive_paths": false,
+    "unexpected_files": false,
+    "evaluation_or_workflow_files": false,
+    "credential_or_non_public_case_material": false
+  },
+  "official_contract": {
+    "custom_skills_available_on_enterprise": true,
+    "member_upload_route": "Customize > Skills > plus > Create skill > Upload a skill",
+    "administrator_prerequisites": [
+      "Skills is enabled for the organisation",
+      "Code execution and file creation is enabled for the organisation"
+    ],
+    "sources": [
+      "https://support.claude.com/en/articles/12512180-use-skills-in-claude",
+      "https://support.claude.com/en/articles/12512198-how-to-create-custom-skills"
+    ]
+  },
+  "handoff": {
+    "public_instructions": "INSTALL.md#christina-install-in-canva-claude-enterprise",
+    "upload_file": "strategic-advisor.zip",
+    "upload_file_must_remain_unchanged": true,
+    "fresh_chat_required": true,
+    "fictional_material_trigger_provided": true,
+    "fictional_direct_assistance_control_provided": true,
+    "non_public_case_material_required": false,
+    "strategy_workspace_required": false
+  },
+  "account_result": {
+    "account_accessed": false,
+    "enterprise_settings_observed": false,
+    "uploaded": false,
+    "enabled": false,
+    "visible_activation_observed": false,
+    "behavioural_smoke": "not-run",
+    "status": "pending-user-or-organisation-action",
+    "pending_reason": "Only Christina or an authorised Canva Claude owner can confirm organisation settings and perform the account-scoped private upload."
+  },
+  "proof_boundary": {
+    "package_ready": true,
+    "official_install_path_current": true,
+    "enterprise_preflight_complete": true,
+    "live_claude_activation_proven": false,
+    "cross_host_parity_proven": false,
+    "strategic_effectiveness_proven": false,
+    "supported_capability_claimed": false
+  }
+}

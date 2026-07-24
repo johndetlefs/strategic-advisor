@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-07-24T08:37:59Z",
+  "verdict": "pass",
+  "release": {
+    "tag": "v0.2.0-alpha.1",
+    "source_revision": "fe834cd13f0fa4bcdcad0e5dd491c8bddbe92655",
+    "standalone_archive_sha256": "02db0e7b0e4f59cb383cb129c3f55362fe29a4b9a6128ae5469b00e7c237a0a8",
+    "provenance_sha256": "e13d6ef1b9d840e1dfd0da4552a128325574249277e8e4b03231617c8f173ff9",
+    "runtime_package_identity_sha256": "0d3c22bed94c05516cba38974e649046f0b35d05814875c87cb92692a491a77e"
+  },
+  "installation": {
+    "scope": "personal-global",
+    "source": "Clean download of the public GitHub prerelease",
+    "installed_skill_path_class": "$HOME/.agents/skills/strategic-advisor/SKILL.md",
+    "installed_file_count_including_license": 22,
+    "installed_tree_equals_extracted_release": true,
+    "installed_skill_sha256": "5c1ac7672fef5eb75d7d264953e2f7d6c83e1cb0024c8072e55d82c2b7f2577f",
+    "repository_symlink_used": false
+  },
+  "execution_target": {
+    "host": "Codex CLI",
+    "version": "0.145.0-alpha.30",
+    "model_requested": "gpt-5.6-sol",
+    "ephemeral": true,
+    "sandbox": "read-only",
+    "neutral_temporary_git_repository": true,
+    "strategic_advisor_source_repository_absent": true
+  },
+  "invocation": {
+    "explicit_skill": "$strategic-advisor",
+    "case": "Public fictional green-delivery-dashboard case with zero active users after six weeks and a request to scale",
+    "non_public_case_material_used": false
+  },
+  "observable_source_proof": {
+    "method": "Codex JSON event trace recorded a successful command reading the installed SKILL.md and the exact installed references before the final response; only bounded relative paths are retained publicly.",
+    "loaded_paths": [
+      "SKILL.md",
+      "references/conversational-strategy.md",
+      "references/response-contract.md",
+      "references/project-product.md",
+      "references/evidence.md",
+      "references/readiness.md",
+      "references/action-policy.md",
+      "references/competing-worlds.md"
+    ]
+  },
+  "retained_output": {
+    "artifact": "codex-personal-output.md",
+    "sha256": "3db3bcd41eea23274d7a742586ba31ca804444e2f9ad66012a129323297c417e",
+    "mode": "Review",
+    "primary_lens": "Project / Product",
+    "readiness": "Not validated",
+    "unsupported_scale_rejected": true,
+    "measurement_failure_retained_as_rival": true,
+    "bounded_next_test_proposed": true
+  },
+  "proof_boundary": {
+    "exact_personal_install_activation_proven": true,
+    "selective_non_invocation_proven": false,
+    "chatgpt_activation_proven": false,
+    "claude_activation_proven": false,
+    "cross_host_parity_proven": false,
+    "strategic_effectiveness_proven": false
+  }
+}

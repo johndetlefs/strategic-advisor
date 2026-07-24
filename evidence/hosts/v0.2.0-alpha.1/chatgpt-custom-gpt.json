@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-07-24T09:20:00Z",
+  "verdict": "pass",
+  "release": {
+    "tag": "v0.2.0-alpha.1",
+    "source_revision": "fe834cd13f0fa4bcdcad0e5dd491c8bddbe92655",
+    "custom_gpt_kit_sha256": "f1132d8aa854cf525b55f8a840b60fea37b42123afbfb181855de087fa201f6f",
+    "provenance_sha256": "e13d6ef1b9d840e1dfd0da4552a128325574249277e8e4b03231617c8f173ff9",
+    "runtime_package_identity_sha256": "0d3c22bed94c05516cba38974e649046f0b35d05814875c87cb92692a491a77e"
+  },
+  "execution_target": {
+    "host": "ChatGPT web Custom GPT editor and live GPT page",
+    "account_class_observed": "Paid personal Pro",
+    "preview_model_label_observed": "Heavy",
+    "recommended_model_configured": false,
+    "canvas_control_exposed": false
+  },
+  "configuration": {
+    "name": "Strategic Advisor",
+    "description": "Reality-tested strategy for consequential professional and commercial decisions.",
+    "generated_instructions_applied": true,
+    "canonical_skill_body_exact_in_generated_instructions": true,
+    "knowledge_files_uploaded": [
+      "CHANGELOG.md",
+      "CLAIMS.md",
+      "DECISIONS.md",
+      "PORTFOLIO.md",
+      "WORKSPACE.md",
+      "action-policy.md",
+      "boundaries.md",
+      "business-venture.md",
+      "career.md",
+      "competing-worlds.md",
+      "conversational-strategy.md",
+      "evidence.md",
+      "marketing-growth.md",
+      "organizational-influence.md",
+      "people-leadership.md",
+      "project-product.md",
+      "readiness.md",
+      "response-contract.md",
+      "strategy-workspace.md"
+    ],
+    "knowledge_file_count": 19,
+    "conversation_starter_count": 4,
+    "web_search": true,
+    "image_generation": false,
+    "code_interpreter_and_data_analysis": false,
+    "apps": [],
+    "actions": []
+  },
+  "material_preview": {
+    "case": "Public fictional green-delivery-dashboard case with zero active users after six weeks and a request to scale",
+    "visible_source_signal": "Searching my knowledge",
+    "mode": "Decision",
+    "primary_lens": "Project / Product",
+    "readiness": "Not validated",
+    "unsupported_scale_rejected": true,
+    "delivery_and_outcome_evidence_separated": true,
+    "measurement_failure_retained_as_live_alternative": true,
+    "bounded_adoption_diagnostic_proposed": true,
+    "result": "pass"
+  },
+  "direct_assistance_control": {
+    "prompt": "Summarise this fictional status in one sentence: all milestones are complete and active users remain at zero after six weeks.",
+    "response": "All milestones are complete, but the product has recorded zero active users after six weeks.",
+    "one_sentence": true,
+    "strategic_ledger_or_readiness_ceremony_added": false,
+    "result": "pass"
+  },
+  "sharing": {
+    "state": "Live",
+    "audience": "Anyone with a link",
+    "url": "https://chatgpt.com/g/g-6a632c0422688191b32d51fa147e441c-strategic-advisor",
+    "live_page_loaded": true,
+    "name_description_and_four_starters_visible": true,
+    "incomplete_private_duplicate_removed": true
+  },
+  "proof_boundary": {
+    "exact_custom_gpt_configuration_proven": true,
+    "knowledge_upload_proven": true,
+    "material_preview_proven": true,
+    "selective_direct_assistance_control_proven": true,
+    "share_link_available": true,
+    "christina_external_account_open_proven": false,
+    "claude_activation_proven": false,
+    "cross_host_parity_proven": false,
+    "strategic_effectiveness_proven": false,
+    "supported_capability_claimed": false
+  }
+}

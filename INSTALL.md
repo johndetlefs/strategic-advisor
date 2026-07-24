@@ -83,6 +83,12 @@ John can send that link to Christina for immediate use. Christina can instead
 create an independently owned copy by repeating the same seven steps with the
 same verified kit.
 
+The current owner-created early-access GPT is available at
+[Strategic Advisor in ChatGPT](https://chatgpt.com/g/g-6a632c0422688191b32d51fa147e441c-strategic-advisor).
+Its exact `v0.2.0-alpha.1` material trigger and direct-assistance control passed
+on 2026-07-24. A separate-account open remains unobserved, so the independent
+copy steps above remain the fallback.
+
 Custom GPTs do not use saved memory, custom instructions, or previous
 conversations. Keep one coherent decision per chat and restate material current
 evidence when starting a new one.
