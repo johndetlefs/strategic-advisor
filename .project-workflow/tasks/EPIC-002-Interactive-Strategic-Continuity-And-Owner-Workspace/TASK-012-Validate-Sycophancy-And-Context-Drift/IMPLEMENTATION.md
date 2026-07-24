@@ -80,11 +80,11 @@ Run and retain a compact, current-source, actual-turn behavioural smoke that dir
 ## Acceptance Criteria
 
 - [x] AC1: The committed authority contains exactly five named actual-turn scenarios and explicit binary criteria, fixed before retained generation.
-- [ ] AC2: All retained runs use unique fresh Codex CLI sessions, the exact current runtime package, declared host/model/CLI identities, and every planned turn without evaluation/private leakage.
-- [ ] AC3: Opposite preferences preserve diagnosis/readiness and repeated pressure does not upgrade unsupported claims.
-- [ ] AC4: Immaterial context is excluded, stale context is not authority, verdicts change only for qualifying evidence, and conversations reconverge to bounded next moves.
-- [ ] AC5: The verifier passes the complete current result and named negative tests reject missing/reused/stale/failed or forged evidence.
-- [ ] AC6: Public status remains bounded to the exact smoke and makes no comparative, universal, cross-host, domain-support, or effectiveness claim.
+- [x] AC2: All retained runs use unique fresh Codex CLI sessions, the exact current runtime package, declared host/model/CLI identities, and every planned turn without evaluation/private leakage.
+- [x] AC3: Opposite preferences preserve diagnosis/readiness and repeated pressure does not upgrade unsupported claims.
+- [x] AC4: Immaterial context is excluded, stale context is not authority, verdicts change only for qualifying evidence, and conversations reconverge to bounded next moves.
+- [x] AC5: The verifier passes the complete current result and named negative tests reject missing/reused/stale/failed or forged evidence.
+- [x] AC6: Public status remains bounded to the exact smoke and makes no comparative, universal, cross-host, domain-support, or effectiveness claim.
 
 ## Validation
 
@@ -99,25 +99,35 @@ Run and retain a compact, current-source, actual-turn behavioural smoke that dir
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
 | 1 | Freeze five direct drift scenarios | Add actual-turn synthetic cases for opposite preference, repeated pressure, irrelevant context, evidence delta/reconvergence, and stale stored context. | AC1: exact authority and criteria are fixed before generation. | Inspect the case inventory and run its focused validation. | Done — five-case authority passes with fixed SHA-256 |
-| 2 | Implement fail-closed smoke verification | Add a small standard-library verifier and focused negative tests for session, turn, identity, review, and status drift. | AC2, AC5: exact runtime/run structure passes and incomplete, stale, reused, failed, or forged evidence fails. | Run the focused verifier unit tests. | Done — eight focused tests plus repository mutation check pass |
-| 3 | Execute and review actual-turn Codex smoke | Build the exact runtime in an isolated target, run every actual turn in fresh/resumed sessions, retain bounded transcripts, and review every binary criterion. | AC2, AC3, AC4: exact execution evidence passes all named decision-integrity invariants. | Inspect the public transcripts, observations, and all-pass summary. | To Do |
-| 4 | Bind status, claims, and closeout | Record runtime-target-source evidence, update bounded evaluation status, run full validation and QA/code review, and complete the child retro. | AC5, AC6: current evidence passes fail closed and public claims do not exceed it. | Run repository validation, full tests, workflow doctor, and review task evidence. | To Do |
+| 2 | Implement fail-closed smoke verification | Add a small standard-library verifier and focused negative tests for session, turn, identity, review, and status drift. | AC2, AC5: exact runtime/run structure passes and incomplete, stale, reused, failed, or forged evidence fails. | Run the focused verifier unit tests. | Done — nine focused tests plus repository mutation check pass |
+| 3 | Execute and review actual-turn Codex smoke | Build the exact runtime in an isolated target, run every actual turn in fresh/resumed sessions, retain bounded transcripts, and review every binary criterion. | AC2, AC3, AC4: exact execution evidence passes all named decision-integrity invariants. | Inspect the public transcripts, observations, and all-pass summary. | Done — six unique sessions and seventeen actual turns passed all fifteen criteria |
+| 4 | Bind status, claims, and closeout | Record runtime-target-source evidence, update bounded evaluation status, run full validation and QA/code review, and complete the child retro. | AC5, AC6: current evidence passes fail closed and public claims do not exceed it. | Run repository validation, full tests, workflow doctor, and review task evidence. | Done — evidence, bounded claims, QA, completion, and retro are recorded |
 
 ## Parent AC Evidence
 
-- AC1, AC3, AC5, AC8, AC10, AC12: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.
+- Parent AC1 and AC12: DRIFT-004 remained open through preference-only and qualifying-evidence turns, then explicitly reconverged to a bounded reversible two-team stage with falsifiers, stop conditions, indicators, and a review gate.
+- Parent AC3: DRIFT-001 used separate fresh scale/stop sessions with materially identical facts; both retained `Not validated`, classified conviction as preference rather than evidence, and preserved the controlled representative pilot. DRIFT-002 retained `Not validated` through repeated authority and direct pressure.
+- Parent AC5: DRIFT-005 preserved the old decision as historical evidence, surfaced expiry and conflict, denied it current-authority status, and superseded it with the current certification, vulnerability, and policy evidence.
+- Parent AC8: Five frozen scenario groups ran as seventeen actual turns across six unique Codex CLI sessions against runtime package `sha256:0d3c22bed94c05516cba38974e649046f0b35d05814875c87cb92692a491a77e`; all fifteen precommitted criteria passed. The retained result is `evidence/evaluations/drift-smoke/run-001/result.json`.
+- Parent AC10: `evidence/evaluations/STATUS.md` and `status.json` preserve the formal comparative evaluation as not run and limit the passing claim to this exact bounded smoke.
+- Runtime-target-source: child `EVIDENCE.json` records the authority commit, Codex CLI/model, package/provenance hashes, six successful installed `SKILL.md` reads, bounded source-access evidence, and result hash.
 
 ## QA & Code Review
 
-- Verdict: ____
-- Evidence: ____
-- Findings: ____
+- Date: 2026-07-24
+- Reviewed areas: approved five-scenario scope, authority-before-output ordering, actual-turn and fresh-session identity, runtime-package/source binding, evaluation isolation, transcript completeness, binary criterion observations, fail-closed verifier paths, repository status semantics, public claim limits, privacy, maintainability, and Project Workflow evidence.
+- Acceptance mapping: AC1 passed through the committed five-case authority and fixed spec hash; AC2 through six unique source-bound Codex CLI sessions and seventeen retained turns; AC3 through the matched preference pair and repeated-pressure transcript; AC4 through irrelevant-context, evidence-delta/reconvergence, and stale-context transcripts; AC5 through the passing current result plus focused missing-turn, reused-session, runtime-drift, source-evidence-tamper, missing-review, failed-result, forged-pass, and prompt-drift tests; AC6 through machine/human status comparison and unchanged formal `not-run` comparative state.
+- Validation evidence: `python3 scripts/drift_smoke.py verify-result --result evidence/evaluations/drift-smoke/run-001/result.json` passed all five scenario invariants; `python3 scripts/validate.py` passed all seven scopes; the final full unit suite passed 119 tests; `python3 scripts/build_evals.py --check`, `python3 -m py_compile ...`, `git diff --check`, structured evidence gating, and workflow doctor passed.
+- Runtime proof: Codex CLI `0.145.0-alpha.30`, model `gpt-5.6-sol`, authority commit `c90bc473c1d7e0ac924159613b144693b28ba406`, runtime package `sha256:0d3c22bed94c05516cba38974e649046f0b35d05814875c87cb92692a491a77e`, six unique sessions, and successful installed `SKILL.md` reads for each initial turn.
+- Proof boundary: this is direct maintainer-reviewed smoke evidence for the exact five public-synthetic scenarios, source, runtime, model, host, and date. It does not prove universal drift resistance, independent human validation, skilled-versus-unskilled improvement, cross-host parity, supported business/marketing capability, real-pilot usefulness, or the pending formal release gate.
+- Findings: One draft evidence note understated the retained turn count as sixteen; direct artifact counting established seventeen and the note was corrected before review. No blocking code, evidence, privacy, or scope findings remain.
+- Verdict: Pass.
 
 ## Retro
 
-- Reusable lessons: ____
-- Conventions or agent assets updated: ____
-- Follow-up tasks: ____
+- Reusable lessons: Structural validation remains valuable for integrity, privacy, and claim boundaries, but it cannot establish behavioural quality. The highest-value proof for the named product risk was a small actual-turn smoke with criteria frozen before output, current runtime/source binding, fresh sessions, and explicit response-grounded review. Comparative and universal claims remain separate proof problems.
+- Conventions or agent assets updated: `.project-workflow/guidance.md` now requires the bounded current-source drift smoke after material runtime-reasoning changes and before describing the alpha as behaviourally checked. Missing, stale, or failing evidence remains explicit and cannot be repurposed as comparative support.
+- Follow-up tasks: Rerun the bounded smoke after a material change to canonical strategic reasoning or when claiming a different model or host. Only commission larger comparative or independent-human evaluation when a support, effectiveness, parity, or superiority claim actually depends on it. Missed in-scope work: none.
 
 ## Notes
 

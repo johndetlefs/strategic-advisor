@@ -228,6 +228,19 @@ def validate_result(root: Path, spec: dict, spec_sha256: str, result_path: Path)
     }
     if not isinstance(source_access, list) or not required_access.issubset(set(source_access)):
         raise SmokeError("result lacks positive access evidence for the installed runtime")
+    if target.get("source_access_artifact") != "source-access.json":
+        raise SmokeError("result must bind the adjacent source-access.json artifact")
+    source_access_path = result_path.parent / "source-access.json"
+    source_evidence, source_evidence_bytes = load_json(
+        source_access_path, "source-access evidence"
+    )
+    if target.get("source_access_artifact_sha256") != sha256_bytes(
+        source_evidence_bytes
+    ):
+        raise SmokeError("source-access evidence hash is stale or mismatched")
+    source_records = source_evidence.get("records")
+    if not isinstance(source_records, list):
+        raise SmokeError("source-access evidence records must be an array")
     scenarios = result.get("scenarios")
     if not isinstance(scenarios, list):
         raise SmokeError("result scenarios must be an array")
@@ -294,6 +307,16 @@ def validate_result(root: Path, spec: dict, spec_sha256: str, result_path: Path)
     expected_status = "pass" if overall_pass else "fail"
     if result.get("status") != expected_status:
         raise SmokeError("overall status does not match scenario results")
+    source_session_ids: set[str] = set()
+    for record in source_records:
+        if not isinstance(record, dict):
+            raise SmokeError("source-access record must be an object")
+        source_session_ids.add(nonempty(record.get("session_id"), "source-access session_id"))
+        reads = record.get("successful_runtime_reads")
+        if not isinstance(reads, list) or "SKILL.md" not in reads:
+            raise SmokeError("every fresh session needs successful installed SKILL.md access")
+    if source_session_ids != all_session_ids or len(source_records) != len(all_session_ids):
+        raise SmokeError("source-access session coverage differs from the retained run")
     return overall_pass
 
 

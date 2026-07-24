@@ -97,10 +97,27 @@ class DriftSmokeTests(unittest.TestCase):
                     "references/conversational-strategy.md",
                     "references/evidence.md",
                 ],
+                "source_access_artifact": "source-access.json",
             },
         }
 
     def write_result(self, value: dict) -> Path:
+        source_access = {
+            "records": [
+                {
+                    "session_id": session["session_id"],
+                    "successful_runtime_reads": ["SKILL.md"],
+                }
+                for scenario in value["scenarios"]
+                for session in scenario["sessions"]
+            ],
+            "schema_version": 1,
+        }
+        source_bytes = json.dumps(source_access).encode("utf-8")
+        (self.base / "source-access.json").write_bytes(source_bytes)
+        value["target"]["source_access_artifact_sha256"] = TOOL_MODULE.sha256_bytes(
+            source_bytes
+        )
         path = self.base / "result.json"
         path.write_text(json.dumps(value), encoding="utf-8")
         return path
@@ -136,6 +153,20 @@ class DriftSmokeTests(unittest.TestCase):
         value["target"]["runtime_package_identity_sha256"] = "0" * 64
         with self.assertRaisesRegex(TOOL_MODULE.SmokeError, "runtime package identity"):
             self.verify(value)
+
+    def test_source_access_artifact_tampering_fails(self) -> None:
+        value = copy.deepcopy(self.result)
+        result_path = self.write_result(value)
+        (self.base / "source-access.json").write_text(
+            '{"records":[],"schema_version":1}', encoding="utf-8"
+        )
+        with self.assertRaisesRegex(TOOL_MODULE.SmokeError, "source-access evidence hash"):
+            TOOL_MODULE.validate_result(
+                REPOSITORY_ROOT,
+                self.spec,
+                self.spec_hash,
+                result_path,
+            )
 
     def test_missing_review_criterion_fails(self) -> None:
         value = copy.deepcopy(self.result)

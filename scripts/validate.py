@@ -19,6 +19,7 @@ from urllib.parse import unquote
 
 from build_evals import EvalBuildError, serialized_document
 from drift_smoke import SmokeError as DriftSmokeError
+from drift_smoke import validate_result as validate_drift_smoke_result
 from drift_smoke import validate_spec as validate_drift_smoke_spec
 
 
@@ -1902,6 +1903,47 @@ def check_evals(root: Path) -> list[Diagnostic]:
                 )
             )
 
+        drift_result_path = (
+            root
+            / "evidence"
+            / "evaluations"
+            / "drift-smoke"
+            / "run-001"
+            / "result.json"
+        )
+        drift_result, drift_result_failures = load_json_object(drift_result_path, root)
+        failures.extend(drift_result_failures)
+        drift_result_valid = False
+        if drift_result is not None:
+            try:
+                drift_spec, drift_spec_sha256 = validate_drift_smoke_spec(
+                    root, eval_root / "drift_smoke_cases.json"
+                )
+                drift_result_valid = validate_drift_smoke_result(
+                    root,
+                    drift_spec,
+                    drift_spec_sha256,
+                    drift_result_path,
+                )
+            except (OSError, DriftSmokeError) as error:
+                failures.append(
+                    diagnostic(
+                        "DRIFT_SMOKE_RESULT_INVALID",
+                        str(error),
+                        drift_result_path.relative_to(root),
+                    )
+                )
+        if not drift_result_valid:
+            failures.append(
+                diagnostic(
+                    "DRIFT_SMOKE_RESULT_INVALID",
+                    "The current bounded drift smoke is missing, structurally invalid, or contains a failed criterion.",
+                    drift_result_path.relative_to(root),
+                )
+            )
+        drift_target = (
+            drift_result.get("target", {}) if isinstance(drift_result, dict) else {}
+        )
         expected_status = {
             "schema_version": 1,
             "behavioral_comparison": "not-run",
@@ -1911,6 +1953,17 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "real_pilot_evidence": "none-enrolled",
             "executable_case_count": combined_case_count,
             "trigger_query_count": trigger_query_count,
+            "bounded_drift_smoke": "pass",
+            "bounded_drift_smoke_run": "run-001",
+            "bounded_drift_smoke_authority_commit": (
+                drift_result.get("authority_commit", "")
+                if isinstance(drift_result, dict)
+                else ""
+            ),
+            "bounded_drift_smoke_model": drift_target.get("model", ""),
+            "bounded_drift_smoke_runtime_package_identity_sha256": drift_target.get(
+                "runtime_package_identity_sha256", ""
+            ),
         }
         status_path = root / "evidence/evaluations/status.json"
         status, status_failures = load_json_object(status_path, root)
@@ -1932,6 +1985,8 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "Real-pilot evidence: **None enrolled**",
             f"Executable synthetic inventory: **{combined_case_count} cases**",
             f"Trigger inventory: **{trigger_query_count} queries**",
+            "Bounded current-source drift smoke: **Pass**",
+            "Drift-smoke execution: **Codex CLI / gpt-5.6-sol / run-001**",
         )
         if not status_markdown.is_file() or any(
             line not in read_text(status_markdown) for line in required_status_lines
@@ -1944,11 +1999,27 @@ def check_evals(root: Path) -> list[Diagnostic]:
                 )
             )
         evaluation_evidence_root = root / "evidence/evaluations"
-        unexpected_evidence = [
+        allowed_evidence = {
+            "drift-smoke/run-001/result.json",
+            "drift-smoke/run-001/runtime-package-manifest.json",
+            "drift-smoke/run-001/source-access.json",
+        }
+        actual_evidence = {
             path.relative_to(evaluation_evidence_root).as_posix()
             for path in sorted(evaluation_evidence_root.rglob("*"))
             if path.is_file() and path.name not in {"STATUS.md", "status.json"}
-        ]
+        }
+        unexpected_evidence = sorted(actual_evidence - allowed_evidence)
+        missing_evidence = sorted(allowed_evidence - actual_evidence)
+        if missing_evidence:
+            failures.append(
+                diagnostic(
+                    "EVALS_STATUS_DRIFT",
+                    "Bounded drift-smoke status is missing retained evidence: "
+                    + ", ".join(missing_evidence),
+                    evaluation_evidence_root.relative_to(root),
+                )
+            )
         if unexpected_evidence:
             failures.append(
                 diagnostic(
