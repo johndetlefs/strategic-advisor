@@ -40,6 +40,26 @@ Artifact compatibility, successful host activation, comparative behavioural impr
 
 Do not copy the advisor instructions into host-specific prompts. The only canonical strategic logic belongs under [`skills/strategic-advisor/`](skills/strategic-advisor/).
 
+## Optional Strategy Workspace contract
+
+Strategic Advisor remains usable without a repository or workspace. The runtime now includes an experimental, portable five-file Markdown scaffold for owner-approved continuity; stored records remain input rather than authority, and workspace presence grants no automatic invocation, read, write, integration, or cross-project permission. This structural contract is implemented but has not been privately dogfooded or validated as a host capability.
+
+Build a new blank scaffold only:
+
+```sh
+python3 scripts/strategy_workspace.py build --destination /path/to/new-workspace
+```
+
+Validate an explicitly named workspace against an explicit freshness date:
+
+```sh
+python3 scripts/strategy_workspace.py validate \
+  --workspace /path/to/workspace \
+  --as-of YYYY-MM-DD
+```
+
+The builder refuses existing destinations. The validator fails on structural or safety violations and returns `valid_with_attention` when synthetic or owner-provided records are stale or declare conflicts; it never resolves or upgrades those records. See the canonical [workspace contract](skills/strategic-advisor/references/strategy-workspace.md).
+
 ## Repository validation
 
 The deterministic validation boundary uses Python's standard library, makes no model or network calls, and requires no credentials:
