@@ -1,4 +1,9 @@
 {
+  "bounded_drift_smoke": "pass",
+  "bounded_drift_smoke_authority_commit": "c90bc473c1d7e0ac924159613b144693b28ba406",
+  "bounded_drift_smoke_model": "gpt-5.6-sol",
+  "bounded_drift_smoke_run": "run-001",
+  "bounded_drift_smoke_runtime_package_identity_sha256": "0d3c22bed94c05516cba38974e649046f0b35d05814875c87cb92692a491a77e",
   "schema_version": 1,
   "behavioral_comparison": "not-run",
   "frozen_iteration_manifest": "not-created",

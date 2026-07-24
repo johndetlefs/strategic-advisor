@@ -1,0 +1,118 @@
+{
+  "file_count": 21,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "5c1ac7672fef5eb75d7d264953e2f7d6c83e1cb0024c8072e55d82c2b7f2577f",
+      "size_bytes": 6937
+    },
+    {
+      "path": "agents/openai.yaml",
+      "sha256": "2f43e2f3234716b244a7e41faf49854e65dfb1e2280d78f86b1cbdec3fb5b55b",
+      "size_bytes": 242
+    },
+    {
+      "path": "references/action-policy.md",
+      "sha256": "e71267249de8ddb280c92cd20b203a5c8a145c584a2e8ddf500a8cf3628f8369",
+      "size_bytes": 2325
+    },
+    {
+      "path": "references/boundaries.md",
+      "sha256": "8c93821841d629b524fe783792ddb92e99098052e6c7c66672bf0c4821832b69",
+      "size_bytes": 2283
+    },
+    {
+      "path": "references/business-venture.md",
+      "sha256": "bc8175056595b9c634732bd37b0f888f37989cfce1ec23b12728ce21ff985a79",
+      "size_bytes": 6449
+    },
+    {
+      "path": "references/career.md",
+      "sha256": "ea1e2f1f1e18eae8a814f465819ca6eb26de4d7e7d707eb84a7b430fb5bfd488",
+      "size_bytes": 7618
+    },
+    {
+      "path": "references/competing-worlds.md",
+      "sha256": "243a7b6b022217b29a927b5ce00101912f559e777ddff429144b851e3fff8fe4",
+      "size_bytes": 1771
+    },
+    {
+      "path": "references/conversational-strategy.md",
+      "sha256": "23d5ddeb7f3f5bc79ce10678dbfd0fdf8e0607e6bedbaee8235cd9aaac1c7082",
+      "size_bytes": 4298
+    },
+    {
+      "path": "references/evidence.md",
+      "sha256": "87216b90c09c6790bf38c1bca9beb93ef9313680e1cbf9c2c8818c66819556df",
+      "size_bytes": 3751
+    },
+    {
+      "path": "references/marketing-growth.md",
+      "sha256": "337e9daaa470ed9723245b547f3b8d089771cc51a11eb2a64d81488e1a238172",
+      "size_bytes": 6331
+    },
+    {
+      "path": "references/organizational-influence.md",
+      "sha256": "2f67853d1775d0c13ccd52549b57ec8608c6ce7dceb22ec558dfc6353554f4d4",
+      "size_bytes": 8377
+    },
+    {
+      "path": "references/people-leadership.md",
+      "sha256": "c43ca6d7a2053fed597e3674cbcc05cec02565a1d7d524b08d315f9a8ae96310",
+      "size_bytes": 7831
+    },
+    {
+      "path": "references/project-product.md",
+      "sha256": "0cd36888396d4121c9b0a8ab7b606da3e637dec15b28a6524fc7f87dbb79c58f",
+      "size_bytes": 7018
+    },
+    {
+      "path": "references/readiness.md",
+      "sha256": "6203094d47a149a7b7f8ecff1f0e6751cde19e1d7960cadb25281f41be9685b9",
+      "size_bytes": 2770
+    },
+    {
+      "path": "references/response-contract.md",
+      "sha256": "9323cf17293990756f14cc5bec0d287427d36cb1d55aa953ba9b322ecb15f597",
+      "size_bytes": 2728
+    },
+    {
+      "path": "references/strategy-workspace.md",
+      "sha256": "3cbe8d87fff4b60e7adf55276c5998ce21b1792d533628c05500cd45a790326b",
+      "size_bytes": 2737
+    },
+    {
+      "path": "workspace-templates/CHANGELOG.md",
+      "sha256": "4990663aae4a59beb170b3a2986509d1f226e532e7b8f05cfa8d719d48908baa",
+      "size_bytes": 378
+    },
+    {
+      "path": "workspace-templates/CLAIMS.md",
+      "sha256": "502cd7aebfb876f463e5c0cf29b1708a6379daecdb905db1b22ed0dcb25bf8c7",
+      "size_bytes": 505
+    },
+    {
+      "path": "workspace-templates/DECISIONS.md",
+      "sha256": "e2bbe67b5b1e1e1fe08049de4c166fef25f714fcb38f8714bc65fd25202d1bfa",
+      "size_bytes": 385
+    },
+    {
+      "path": "workspace-templates/PORTFOLIO.md",
+      "sha256": "52c60f3e7e131281fa499b8c60d6e79421d27ce27052234774373fce172bf77c",
+      "size_bytes": 447
+    },
+    {
+      "path": "workspace-templates/WORKSPACE.md",
+      "sha256": "dba1bdd99b61f196891769c01f0ec69b37ef4e39cad5381fbe23fa722bffc50f",
+      "size_bytes": 838
+    }
+  ],
+  "identity_algorithm": "sha256-canonical-json-v1",
+  "package_identity_sha256": "0d3c22bed94c05516cba38974e649046f0b35d05814875c87cb92692a491a77e",
+  "package_root": "skills/strategic-advisor",
+  "schema_version": 1,
+  "source_allowlist": {
+    "path": "skills/strategic-advisor/runtime-manifest.json",
+    "sha256": "59c6915bf85b0ddb7ecc9b62c5564d736c00a7c9b2527bb0f57d9bd0ff121d88"
+  }
+}

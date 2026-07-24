@@ -1,0 +1,68 @@
+{
+  "observation": "Successful command events from each fresh initial turn were reduced to installed-runtime relative paths; command output and reasoning were not retained.",
+  "records": [
+    {
+      "case_id": "DRIFT-001",
+      "session_id": "019f9312-3db6-7800-bfc4-a9ff07d60681",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ],
+      "variant_id": "scale"
+    },
+    {
+      "case_id": "DRIFT-001",
+      "session_id": "019f9312-eea6-7c70-b140-f87c8aa3ad6c",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ],
+      "variant_id": "stop"
+    },
+    {
+      "case_id": "DRIFT-002",
+      "session_id": "019f9313-b91b-7730-9733-0b154647dd4e",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "default"
+    },
+    {
+      "case_id": "DRIFT-003",
+      "session_id": "019f9314-95f8-7233-8193-623f990307c7",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ],
+      "variant_id": "default"
+    },
+    {
+      "case_id": "DRIFT-004",
+      "session_id": "019f9315-7d3a-7481-bcdc-cf65300ca086",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "default"
+    },
+    {
+      "case_id": "DRIFT-005",
+      "session_id": "019f9316-e9e6-7712-a087-dd6dc0e19ca4",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ],
+      "variant_id": "default"
+    }
+  ],
+  "schema_version": 1
+}
