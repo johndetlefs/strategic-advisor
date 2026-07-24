@@ -50,11 +50,11 @@ As Christina, I want a short, trustworthy Claude Enterprise Skill installation, 
 
 ## Acceptance Criteria
 
-- [ ] AC1: The supplied standalone ZIP is the exact current release and passes Claude structure, provenance, dependency, and leakage checks.
-- [ ] AC2: The handoff exposes the two enterprise prerequisites and precise admin route before upload.
-- [ ] AC3: A permitted live upload is enabled and visibly activates in a fresh chat, or the exact admin blocker is retained as pending.
-- [ ] AC4: Fictional trigger/control checks use no private data and cannot pass without actual execution.
-- [ ] AC5: Claude package, preflight, activation, and support claims remain distinct.
+- [x] AC1: The supplied standalone ZIP is the exact current release and passes Claude structure, provenance, dependency, and leakage checks.
+- [x] AC2: The handoff exposes the two enterprise prerequisites and precise admin route before upload.
+- [x] AC3: A permitted live upload is enabled and visibly activates in a fresh chat, or the exact admin blocker is retained as pending.
+- [x] AC4: Fictional trigger/control checks use no private data and cannot pass without actual execution.
+- [x] AC5: Claude package, preflight, activation, and support claims remain distinct.
 
 ## Validation
 
@@ -66,25 +66,28 @@ As Christina, I want a short, trustworthy Claude Enterprise Skill installation, 
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Verify Claude-ready release artifact | Confirm exact bytes, official Skill shape, no dependencies, and safe contents. | AC1 | Run the consumer verifier and inspect the archive. | To Do |
-| 2 | Deliver enterprise preflight and install | Produce the shortest member/admin/upload/enable/fresh-chat journey. | AC2, AC3 | Christina follows the checklist in Claude. | To Do |
-| 3 | Record bounded Claude result | Run or retain the trigger/control outcome when available and keep status fail closed. | AC3, AC4, AC5 | Review the exact activation or admin-pending disposition. | To Do |
+| 1 | Verify Claude-ready release artifact | Confirm exact bytes, official Skill shape, no dependencies, and safe contents. | AC1 | Run the consumer verifier and inspect the archive. | Done — exact clean-downloaded ZIP passes trusted provenance/runtime verification and safe-inventory inspection |
+| 2 | Deliver enterprise preflight and install | Produce the shortest member/admin/upload/enable/fresh-chat journey. | AC2, AC3 | Christina follows the checklist in Claude. | Done — README/INSTALL expose both organisation settings, member upload/enable route, and fresh-chat checks |
+| 3 | Record bounded Claude result | Run or retain the trigger/control outcome when available and keep status fail closed. | AC3, AC4, AC5 | Review the exact activation or admin-pending disposition. | Done with follow-up — account actions are explicitly unobserved and can only be supplied later by Christina or an authorised Canva Claude owner; no package failure is inferred |
 
 ## Parent AC Evidence
 
-- AC5, AC6, AC7, AC9: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.
+- AC5: `evidence/hosts/v0.2.0-alpha.1/claude-enterprise-handoff.json` binds the exact release bytes and safe structure to the current official Enterprise route and records every account action as not run.
+- AC6: README and INSTALL lead Christina from the two-setting preflight to unchanged ZIP upload, enablement, and the two fictional checks without developer setup.
+- AC7: The Claude evidence and shared host-status ledger keep package readiness, preflight, installation, activation, smoke, validation, support, and effectiveness distinct.
+- AC9: All 121 tests, 31 evaluation-definition checks, seven aggregate scopes, privacy checks, evidence review, and workflow doctor pass. The private account result remains unobserved without holding package/handoff delivery open.
 
 ## QA & Code Review
 
-- Verdict: ____
-- Evidence: ____
-- Findings: ____
+- Verdict: Pass with follow-up
+- Evidence: The exact clean-downloaded standalone ZIP passes trusted source/runtime/provenance verification, safe complete-inventory inspection, and all current repository checks. README and INSTALL match Anthropic's current Enterprise prerequisites and member upload route and provide public fictional material/control checks. All 121 tests, 31 evaluation-definition checks, seven aggregate scopes, privacy checks, and Project Workflow doctor pass.
+- Findings: No package or documentation blocker. Claude account installation, visible activation, and behaviour were not observed because only Christina or an authorised Canva Claude owner can inspect the organisation controls and perform the private upload. Those states remain false/not-run in structured evidence and do not inherit Codex or ChatGPT proof.
 
 ## Retro
 
-- Reusable lessons: ____
-- Conventions or agent assets updated: ____
-- Follow-up tasks: ____
+- Reusable lessons: An enterprise handoff can be complete while account activation remains unobserved when the approved contract assigns private settings and upload actions to the member or organisation owner. Close the delivery with a bounded follow-up rather than misclassifying the package as blocked.
+- Conventions or agent assets updated: Enterprise host evidence now separates official package compatibility and preflight from member upload, visible activation, behavioural smoke, support, and adoption.
+- Follow-up tasks: Christina or a Canva Claude owner should follow INSTALL, then report only the settings result class, upload/activation result, and the two fictional observations. Do not collect account screenshots, organisation details, or real case data.
 
 ## Notes
 

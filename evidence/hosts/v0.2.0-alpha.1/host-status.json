@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "release_tag": "v0.2.0-alpha.1",
+  "source_revision": "fe834cd13f0fa4bcdcad0e5dd491c8bddbe92655",
+  "observed_at": "2026-07-24T09:01:13Z",
+  "hosts": [
+    {
+      "host": "John personal Codex",
+      "package": "strategic-advisor.zip",
+      "package_ready": true,
+      "installed": true,
+      "activated": true,
+      "fictional_material_smoke": "pass",
+      "selective_non_invocation_smoke": "not-run",
+      "supported": false,
+      "evidence": "codex-personal.json"
+    },
+    {
+      "host": "John paid personal ChatGPT Custom GPT",
+      "package": "strategic-advisor-chatgpt.zip",
+      "package_ready": true,
+      "configuration_applied": "all exposed fields applied; the current editor did not expose a separate Canvas control",
+      "knowledge_uploaded": true,
+      "created": true,
+      "activated": true,
+      "fictional_material_smoke": "pass",
+      "selective_non_invocation_smoke": "pass",
+      "supported": false,
+      "share_url": "https://chatgpt.com/g/g-6a632c0422688191b32d51fa147e441c-strategic-advisor",
+      "evidence": "chatgpt-custom-gpt.json"
+    },
+    {
+      "host": "Christina paid personal ChatGPT",
+      "package": "Share link or strategic-advisor-chatgpt.zip independent copy",
+      "package_ready": true,
+      "share_link_available": true,
+      "share_url": "https://chatgpt.com/g/g-6a632c0422688191b32d51fa147e441c-strategic-advisor",
+      "independent_copy_instructions_available": true,
+      "external_account_open_observed": false,
+      "supported": false,
+      "pending": "Christina has not yet opened the link from her separate account; the shared GPT and independent-copy fallback are ready."
+    },
+    {
+      "host": "Christina Canva Claude Enterprise",
+      "package": "strategic-advisor.zip",
+      "package_ready": true,
+      "official_structure_verified": true,
+      "enterprise_preflight_documented": true,
+      "installed": false,
+      "activated": false,
+      "fictional_material_smoke": "not-run",
+      "selective_non_invocation_smoke": "not-run",
+      "supported": false,
+      "pending": "Christina or a Canva Claude owner must confirm Skills and code execution/file creation are enabled, then perform the private account upload."
+    }
+  ],
+  "global_boundaries": {
+    "one_host_proves_another": false,
+    "package_readiness_equals_activation": false,
+    "activation_equals_effectiveness": false,
+    "strategy_workspace_required": false,
+    "non_public_case_material_retained": false
+  }
+}

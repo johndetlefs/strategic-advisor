@@ -52,12 +52,12 @@
 
 | Parent AC | Proof Owner | Required Evidence |
 | --- | --- | --- |
-| AC1 | Cross-host distribution child | Repeated clean build identity, exact provenance, safe inventories, and leakage scans. |
-| AC2 | Cross-host distribution child | Generated Instructions/source binding, exact Knowledge inventory/bytes, file-limit check, and negative drift tests. |
-| AC3 | Codex and ChatGPT child | Fresh neutral Codex discovery/activation trace tied to John's exact personal install and release identity. |
-| AC4 | Codex and ChatGPT child | Current Custom GPT configuration plus Preview trigger/non-trigger observations and link/copy handoff result. |
-| AC5 | Claude handoff child | Official-structure verification, enterprise preflight result, and live upload/activation evidence or explicit admin blocker. |
-| AC6 | Codex and ChatGPT child, Claude handoff child | Named-user first-use walkthroughs reaching a fictional activation check without developer setup. |
-| AC7 | All children | Structured and prose claim comparison against exact retained evidence. |
-| AC8 | Cross-host distribution child | Current lens/workspace runtime inventory plus no-workspace/no-connector first-use proof. |
-| AC9 | All children | Unit, aggregate, artifact, privacy, clean-checkout, QA, doctor, and closeout evidence. |
+| AC1 | TASK-013 | Repeated clean build identity, exact provenance, safe inventories, and leakage scans. |
+| AC2 | TASK-013 | Generated Instructions/source binding, exact Knowledge inventory/bytes, file-limit check, and negative drift tests. |
+| AC3 | TASK-014 | Fresh neutral Codex discovery/activation trace tied to John's exact personal install and release identity. |
+| AC4 | TASK-014 | Current Custom GPT configuration plus Preview trigger/non-trigger observations and link/copy handoff result. |
+| AC5 | TASK-015 | Official-structure verification, enterprise preflight result, and live upload/activation evidence or explicit admin blocker. |
+| AC6 | TASK-014, TASK-015 | Named-user first-use walkthroughs reaching a fictional activation check without developer setup. |
+| AC7 | TASK-013, TASK-014, TASK-015 | Structured and prose claim comparison against exact retained evidence. |
+| AC8 | TASK-013 | Current lens/workspace runtime inventory plus no-workspace/no-connector first-use proof. |
+| AC9 | TASK-013, TASK-014, TASK-015 | Unit, aggregate, artifact, privacy, clean-checkout, QA, doctor, and closeout evidence. |
