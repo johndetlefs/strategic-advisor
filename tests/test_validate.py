@@ -278,6 +278,20 @@ class ValidatorFixtureTests(unittest.TestCase):
         result = self.run_validator("evals")
         self.assert_named_failure(result, "EVALS_COVERAGE")
 
+    def test_drift_smoke_case_or_criterion_drift_fails_evals_scope(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "evals"
+            / "drift_smoke_cases.json"
+        )
+        value = json.loads(path.read_text(encoding="utf-8"))
+        value["cases"][2]["criteria"].pop()
+        path.write_text(json.dumps(value), encoding="utf-8")
+        result = self.run_validator("evals")
+        self.assert_named_failure(result, "DRIFT_SMOKE_INVALID")
+
     def test_noncanonical_lens_claim_status_fails_lenses_scope(self) -> None:
         path = (
             self.fixture_root
