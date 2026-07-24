@@ -151,6 +151,36 @@ class ValidatorFixtureTests(unittest.TestCase):
         result = self.run_validator("skill")
         self.assert_named_failure(result, "SKILL_CONVERSATIONAL_CONTRACT")
 
+    def test_missing_workspace_template_heading_fails_skill_scope(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "workspace-templates"
+            / "CLAIMS.md"
+        )
+        text = path.read_text(encoding="utf-8").replace(
+            "## Conflict and freshness attention",
+            "## Notes",
+            1,
+        )
+        path.write_text(text, encoding="utf-8")
+        result = self.run_validator("skill")
+        self.assert_named_failure(result, "SKILL_WORKSPACE_CONTRACT")
+
+    def test_missing_workspace_template_from_allowlist_fails_skill_scope(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "runtime-manifest.json"
+        )
+        manifest = json.loads(path.read_text(encoding="utf-8"))
+        manifest["include"].remove("workspace-templates/CLAIMS.md")
+        path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+        result = self.run_validator("skill")
+        self.assert_named_failure(result, "PACKAGING_MANIFEST_INCOMPLETE")
+
     def test_missing_implemented_commercial_lens_fails_lenses_scope(self) -> None:
         path = (
             self.fixture_root

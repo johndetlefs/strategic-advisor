@@ -12,5 +12,6 @@ Use this file for repo-specific workflow guidance that should survive project-wo
 - Before extending evaluation machinery, identify the exact live claim or promotion gate the new control protects. If no current claim depends on it, prefer existing deterministic checks plus a bounded representative review and defer the heavier proof work.
 - Use only synthetic, public, or irreversibly sanitised examples. Never commit employer, client, household, connector, credential, or other private case data.
 - Do not mark a domain, host, connector, or release ready based on placeholder files, happy-path examples, aggregate scores, or model self-assessment.
+- When a scaffolded child has no applicable visual, external-contract, deployed-artifact, runtime-target/source, or responsive proof recipe, keep child `EVIDENCE.json` claims empty; remove generated recipe placeholders instead of inventing irrelevant evidence.
 - Add dependencies and automation only when they enforce an approved invariant or proof obligation. Prefer portable Markdown and small transparent validators.
 - Use `./.project-workflow/cli/workflow doctor` after workflow-state changes. Record exact validation commands and artifacts in child evidence before review.

@@ -39,7 +39,44 @@ CORE_REFERENCES = (
     "references/boundaries.md",
     "references/response-contract.md",
     "references/conversational-strategy.md",
+    "references/strategy-workspace.md",
 )
+WORKSPACE_RUNTIME_FILES = (
+    "workspace-templates/WORKSPACE.md",
+    "workspace-templates/PORTFOLIO.md",
+    "workspace-templates/CLAIMS.md",
+    "workspace-templates/DECISIONS.md",
+    "workspace-templates/CHANGELOG.md",
+)
+WORKSPACE_REQUIRED_HEADINGS = {
+    "workspace-templates/WORKSPACE.md": {
+        "strategy workspace",
+        "authority",
+        "workspace scope",
+        "approved context",
+        "operating notes",
+    },
+    "workspace-templates/PORTFOLIO.md": {
+        "portfolio",
+        "portfolio roles",
+        "review notes",
+    },
+    "workspace-templates/CLAIMS.md": {
+        "material claims",
+        "claim ledger",
+        "conflict and freshness attention",
+    },
+    "workspace-templates/DECISIONS.md": {
+        "durable decisions",
+        "decision register",
+        "review queue",
+    },
+    "workspace-templates/CHANGELOG.md": {
+        "approved change history",
+        "write boundary",
+        "change register",
+    },
+}
 CONVERSATIONAL_HEADINGS = (
     "selective activation",
     "minimum sufficient altitude",
@@ -920,7 +957,12 @@ def check_skill(root: Path) -> list[Diagnostic]:
 
     includes, manifest_failures = manifest_includes(root)
     failures.extend(manifest_failures)
-    required_runtime = {"SKILL.md", "agents/openai.yaml", *CORE_REFERENCES}
+    required_runtime = {
+        "SKILL.md",
+        "agents/openai.yaml",
+        *CORE_REFERENCES,
+        *WORKSPACE_RUNTIME_FILES,
+    }
     if skill_required:
         for relative in sorted(required_runtime):
             path = root / SKILL_ROOT / relative
@@ -932,12 +974,28 @@ def check_skill(root: Path) -> list[Diagnostic]:
                         path.relative_to(root),
                     )
                 )
-            if relative.endswith(".md") and relative != "SKILL.md" and relative not in text:
+            if relative in CORE_REFERENCES and relative not in text:
                 failures.append(
                     diagnostic(
                         "SKILL_REFERENCE_UNDECLARED",
                         f"SKILL.md must directly reference {relative}.",
                         skill_path.relative_to(root),
+                    )
+                )
+        for relative, required_headings in WORKSPACE_REQUIRED_HEADINGS.items():
+            path = root / SKILL_ROOT / relative
+            if not path.is_file():
+                continue
+            headings = markdown_headings(read_text(path))
+            missing_headings = sorted(required_headings - headings)
+            if missing_headings:
+                failures.append(
+                    diagnostic(
+                        "SKILL_WORKSPACE_CONTRACT",
+                        "Workspace template is missing required headings: "
+                        + ", ".join(missing_headings)
+                        + ".",
+                        path.relative_to(root),
                     )
                 )
         omitted = required_runtime - includes

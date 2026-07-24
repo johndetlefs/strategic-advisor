@@ -11,12 +11,18 @@
     "references/boundaries.md",
     "references/response-contract.md",
     "references/conversational-strategy.md",
+    "references/strategy-workspace.md",
     "references/project-product.md",
     "references/career.md",
     "references/organizational-influence.md",
     "references/people-leadership.md",
     "references/business-venture.md",
-    "references/marketing-growth.md"
+    "references/marketing-growth.md",
+    "workspace-templates/WORKSPACE.md",
+    "workspace-templates/PORTFOLIO.md",
+    "workspace-templates/CLAIMS.md",
+    "workspace-templates/DECISIONS.md",
+    "workspace-templates/CHANGELOG.md"
   ],
   "excluded_roots": [
     "evals",
