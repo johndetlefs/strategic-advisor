@@ -7,4 +7,6 @@
 
 ## Review notes
 
-Record only commitments or opportunity costs that could change a decision. A listed project does not create a dependency, integration, or permission to read its files.
+Record only current projects, roles, capabilities, commitments, candidates, or opportunity costs that could change a decision. This list is not presumed exhaustive: a project being absent does not make an outside option irrelevant, and a project being present does not imply that it should be commercialised or preferred.
+
+A listed project does not create a dependency, integration, permission to read its files, or a portfolio-bounded search instruction.

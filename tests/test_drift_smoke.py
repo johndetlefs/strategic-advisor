@@ -131,7 +131,7 @@ class DriftSmokeTests(unittest.TestCase):
         )
 
     def test_approved_spec_and_complete_result_pass(self) -> None:
-        self.assertEqual(len(self.spec["cases"]), 5)
+        self.assertEqual(len(self.spec["cases"]), 6)
         self.assertTrue(self.verify(self.result))
 
     def test_missing_actual_turn_fails(self) -> None:

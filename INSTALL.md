@@ -144,6 +144,29 @@ Expected boundaries:
 
 Use only fictional data for installation checks.
 
+### Discover open-field exploration
+
+The advisor infers the option-search boundary, so no setup screen or mode menu
+is required. Try:
+
+> Use Strategic Advisor. My fictional objective is to create $24,000 in
+> recurring monthly revenue within two years. My current projects have no
+> validated demand or payment evidence. Compare the strongest current-project
+> route with credible routes outside the current portfolio.
+
+Then override it naturally:
+
+> Keep this to current projects only.
+
+or:
+
+> Take a clean slate, but retain the stated objective, constraints, and
+> evidence.
+
+The first is a dual-track search, the second is portfolio-bounded, and the third
+is open-field. The labels need not appear in the response; the option set and
+reasoning should visibly obey the request.
+
 ## Optional local marketplace
 
 `strategic-advisor-plugin.zip` is for Codex and compatible ChatGPT desktop Work

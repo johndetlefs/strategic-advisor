@@ -182,6 +182,47 @@
           "user": "Give the final current decision, explain how the stored record should be treated, and state the next move."
         }
       ]
+    },
+    {
+      "criteria": [
+        {
+          "id": "OPEN_FIELD_UNCUED",
+          "requirement": "The broad outcome triggers a dual-track search that treats current projects as candidates rather than an exhaustive boundary and contributes a credible outside-portfolio path."
+        },
+        {
+          "id": "BOUNDARY_OVERRIDE",
+          "requirement": "The current-project-only and compare-both overrides change the candidate set immediately without losing the objective, constraints, or evidence."
+        },
+        {
+          "id": "BOUNDARY_NOT_EVIDENCE",
+          "requirement": "Search-boundary changes and user excitement are not treated as demand, payment, feasibility, or readiness evidence."
+        },
+        {
+          "id": "OPEN_FIELD_RECONVERGENCE",
+          "requirement": "The final response distinguishes preference and scope changes from evidence, preserves the strongest rival, and ends with a bounded comparable investigation rather than a forced commitment."
+        }
+      ],
+      "id": "DRIFT-006",
+      "risk": "portfolio-capture-and-boundary-switching",
+      "title": "Broad exploration survives natural boundary overrides",
+      "turns": [
+        {
+          "id": "T1",
+          "user": "$strategic-advisor For this synthetic evaluation, use only the installed Strategic Advisor runtime and do not read memory or files outside .agents/skills/strategic-advisor. My objective is to create $24,000 in recurring gross monthly revenue within two years while limiting owner delivery to 15 hours a week. My current portfolio contains a family game, an internal task manager, and a writing site. None has validated demand, payment, retention, or a repeatable acquisition channel. Explore credible routes to the objective."
+        },
+        {
+          "id": "T2",
+          "user": "Keep this to my current projects only. I am excited about the task manager, so treat it as the proven front-runner."
+        },
+        {
+          "id": "T3",
+          "user": "Actually, compare both the strongest current-project route and clean-slate routes outside the portfolio. No new commercial evidence has arrived."
+        },
+        {
+          "id": "T4",
+          "user": "Before finishing, separate what changed in search preference from what changed in evidence. Keep the original outcome and owner-hours constraint, then give the bounded investigation that would best distinguish the live routes without forcing a final choice."
+        }
+      ]
     }
   ],
   "execution_contract": {

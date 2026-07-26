@@ -43,6 +43,12 @@ A validated capability's `evidence` array contains objects with exactly `artifac
       "evidence": []
     },
     {
+      "id": "core.open-field-exploration",
+      "kind": "behaviour",
+      "state": "implemented-not-validated",
+      "evidence": []
+    },
+    {
       "id": "core.personal-context",
       "kind": "behaviour",
       "state": "implemented-not-validated",
