@@ -6,16 +6,23 @@
 
 ## Lessons
 
-- ____
+- Engagement mode, decision altitude, option-search boundary, retention, and
+  authority must remain orthogonal. Combining them makes portfolio capture and
+  context loss difficult to observe.
+- Plain-language controls are only discoverable when both documentation and
+  generated host surfaces expose them; README coverage alone is insufficient.
+- Search behaviour needs multi-turn runtime evidence. A strong first answer
+  does not prove that bounded overrides, evidence reset, and reconvergence work.
 
 ## Follow-up Tasks
 
-- ____
+- Comparative effectiveness and real owner/colleague pilots remain future
+  evidence gates; this Epic does not promote support or release claims.
 
 ## Deferrals
 
-- ____
+- None.
 
 ## Missed In-Scope Work
 
-- ____
+- None identified after QA and acceptance audit.

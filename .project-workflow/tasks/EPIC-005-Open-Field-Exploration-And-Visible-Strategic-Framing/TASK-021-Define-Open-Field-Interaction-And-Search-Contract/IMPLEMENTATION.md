@@ -58,15 +58,21 @@ validators that fail on incomplete or conflated contracts.
 
 ## QA & Code Review
 
-- Verdict: Pending.
-- Evidence: Pending.
-- Findings: Pending.
+- Verdict: Pass — 2026-07-26.
+- Evidence: Reviewed the canonical skill, conversational and response
+  contracts, validator additions, CORE-023 through CORE-030, and run-003.
+  `build_evals.py --check`, the 125-test suite, all seven validation scopes,
+  and Workflow Doctor pass.
+- Findings: The axes remain orthogonal and ordinary-language controls do not
+  alter evidence or authority. No blocking source-contract finding remains.
 
 ## Retro
 
-- Reusable lessons: Pending.
-- Conventions or agent assets updated: Pending.
-- Follow-up tasks: Pending.
+- Reusable lessons: Treat engagement, altitude, option search, retention, and
+  authority as independent controls; conflating them creates hidden behaviour.
+- Conventions or agent assets updated: The validator now fails an incomplete
+  search-boundary contract and the core inventory requires all new probes.
+- Follow-up tasks: Real-pilot usefulness remains outside this task.
 
 ## Notes
 

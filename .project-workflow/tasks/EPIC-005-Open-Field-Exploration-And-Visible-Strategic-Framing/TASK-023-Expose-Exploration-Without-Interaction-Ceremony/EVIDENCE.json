@@ -1,4 +1,37 @@
 {
   "task_id": "TASK-023",
-  "claims": []
+  "claims": [
+    {
+      "id": "CLM-001",
+      "parent_ac": "AC9",
+      "claim": "Portable documentation and the generated ChatGPT host configuration expose compare-both, clean-slate, and current-project-only controls in ordinary language.",
+      "recipe": "runtime-target-source",
+      "status": "pass",
+      "commit": "429591297cc9b78b4a75a73cc56773982c7af9c5",
+      "timestamp": "2026-07-26T05:35:06Z",
+      "execution_target": "Two clean deterministic install-artifact builds and Custom GPT CONFIG.json inspection",
+      "source_artifact": "scripts/build_install_artifacts.py sha256:76a1c179274f03ba85000eb66ad41d034750ca89821a2ecc6de969bb7cd36e5b",
+      "observation_method": "Build and independently verify all three installation envelopes twice, compare identities, and inspect the generated conversation starters.",
+      "target_used_source_proof": "Both clean builds produced ChatGPT kit sha256:d9d51475ffbb468d46710853d63ef1b45a371636fe0f11dfeee625a58f63319d and provenance sha256:b49f7a5786561d5865945332f96910bfab87bbcdd322be6b86447cf8d8cf8e15 with all three controls present.",
+      "evidence_artifact": "../../../../scripts/build_install_artifacts.py",
+      "evidence_artifact_hash": "sha256:76a1c179274f03ba85000eb66ad41d034750ca89821a2ecc6de969bb7cd36e5b",
+      "invalid_substitutes": []
+    },
+    {
+      "id": "CLM-002",
+      "parent_ac": "AC4",
+      "claim": "The response contract surfaces framing only when material and forbids routine mode, altitude, boundary, or lens recital.",
+      "recipe": "runtime-target-source",
+      "status": "pass",
+      "commit": "b9acb84241fb0a3eec966fc21e03e2fdc127638e",
+      "timestamp": "2026-07-26T05:35:06Z",
+      "execution_target": "Canonical conversational contract, CORE-025 through CORE-028, and fail-closed source validation",
+      "source_artifact": "conversational-strategy.md sha256:7baa123ea024202a0c456e402dd755d461f0256cc5622f591cf43b037017adc1",
+      "observation_method": "Inspect source wording and run combined inventory, skill validator, and unit regressions.",
+      "target_used_source_proof": "The runtime contract gives one natural framing sentence only when material and CORE-028 forbids strategic ceremony for a routine edit.",
+      "evidence_artifact": "../../../../skills/strategic-advisor/references/conversational-strategy.md",
+      "evidence_artifact_hash": "sha256:7baa123ea024202a0c456e402dd755d461f0256cc5622f591cf43b037017adc1",
+      "invalid_substitutes": []
+    }
+  ]
 }

@@ -57,15 +57,21 @@ authority rules, and add deterministic contract checks and synthetic authority.
 
 ## QA & Code Review
 
-- Verdict: Pending.
-- Evidence: Pending.
-- Findings: Pending.
+- Verdict: Pass — 2026-07-26.
+- Evidence: Reviewed runtime search semantics, workspace read/write boundaries,
+  PORTFOLIO template meaning, synthetic assertions, run-003 source access, the
+  exact 25-file manifest, privacy scope, 125 tests, seven scopes, and Doctor.
+- Findings: Option generation remains separate from workspace access and
+  speculative options remain non-durable by default. No blocking finding
+  remains.
 
 ## Retro
 
-- Reusable lessons: Pending.
-- Conventions or agent assets updated: Pending.
-- Follow-up tasks: Pending.
+- Reusable lessons: A portfolio is useful current-state evidence only when the
+  product explicitly prevents it becoming an exhaustive option catalogue.
+- Conventions or agent assets updated: The portable PORTFOLIO template and
+  canonical workspace reference now encode non-exhaustiveness.
+- Follow-up tasks: No separate opportunity store is justified yet.
 
 ## Notes
 

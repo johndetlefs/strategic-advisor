@@ -1,4 +1,37 @@
 {
   "task_id": "TASK-022",
-  "claims": []
+  "claims": [
+    {
+      "id": "CLM-001",
+      "parent_ac": "AC5",
+      "claim": "The Strategy Workspace portfolio is explicitly a non-exhaustive record of current commitments and candidates, not an implicit option-search boundary.",
+      "recipe": "runtime-target-source",
+      "status": "pass",
+      "commit": "b9acb84241fb0a3eec966fc21e03e2fdc127638e",
+      "timestamp": "2026-07-26T05:35:06Z",
+      "execution_target": "Allowlisted workspace contract and portable PORTFOLIO template",
+      "source_artifact": "workspace-templates/PORTFOLIO.md sha256:f69ddca1330c83dc7eb029267abef09a77f53db25a940ff0d0aa4edf76f602d4",
+      "observation_method": "Inspect runtime workspace sources and run workspace, skill, package, and privacy validation.",
+      "target_used_source_proof": "The exact 25-file runtime package contains the amended strategy-workspace reference and PORTFOLIO template.",
+      "evidence_artifact": "../../../../skills/strategic-advisor/workspace-templates/PORTFOLIO.md",
+      "evidence_artifact_hash": "sha256:f69ddca1330c83dc7eb029267abef09a77f53db25a940ff0d0aa4edf76f602d4",
+      "invalid_substitutes": []
+    },
+    {
+      "id": "CLM-002",
+      "parent_ac": "AC6",
+      "claim": "The exact runtime compared current and outside pathways, rejected unsupported commercial bridges, obeyed a bounded override, and did not persist speculative options.",
+      "recipe": "runtime-target-source",
+      "status": "pass",
+      "commit": "b9acb84241fb0a3eec966fc21e03e2fdc127638e",
+      "timestamp": "2026-07-26T05:28:37Z",
+      "execution_target": "Run-003 DRIFT-006 on Codex CLI 0.145.0-alpha.30 / gpt-5.6-sol",
+      "source_artifact": "Runtime package sha256:fbe0b4f80d3af8c373f728549c1011e3e3d70212400fc3c4e7a7166c0691eaee",
+      "observation_method": "Review the four actual turns for uncued widening, current-only override, compare-both override, evidence reset, and bounded reconvergence.",
+      "target_used_source_proof": "The retained source-access artifact records only successful installed-runtime reads for the fresh session.",
+      "evidence_artifact": "../../../../evidence/evaluations/drift-smoke/run-003/result.json",
+      "evidence_artifact_hash": "sha256:069e052f83f4fd0ead3da30548a1312bb52138a4581284a68aec8138f17b1fb9",
+      "invalid_substitutes": []
+    }
+  ]
 }

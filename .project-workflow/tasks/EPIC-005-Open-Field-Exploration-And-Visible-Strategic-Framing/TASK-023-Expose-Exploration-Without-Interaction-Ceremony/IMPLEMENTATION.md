@@ -54,15 +54,23 @@ generated conversation starters while keeping strategic behaviour canonical.
 
 ## QA & Code Review
 
-- Verdict: Pending.
-- Evidence: Pending.
-- Findings: Pending.
+- Verdict: Pass — 2026-07-26.
+- Evidence: Reviewed README, installation guidance, architecture, response
+  contract, and two identical clean Custom GPT builds. Final packages expose
+  compare-both, clean-slate, and current-project-only starters; the focused
+  20-test install suite, full 125-test suite, validators, and Doctor pass.
+- Findings: Initial QA found that generated starters exposed compare-both and
+  clean-slate but not current-project-only. Commit `4295912` corrected the
+  omission and added a package regression. No blocking finding remains.
 
 ## Retro
 
-- Reusable lessons: Pending.
-- Conventions or agent assets updated: Pending.
-- Follow-up tasks: Pending.
+- Reusable lessons: Documentation discoverability does not prove host-surface
+  discoverability; generated configuration needs its own assertion.
+- Conventions or agent assets updated: Install-artifact tests now require all
+  three ordinary-language search controls in generated starters.
+- Follow-up tasks: Host-specific live activation remains separate from package
+  readiness.
 
 ## Notes
 
