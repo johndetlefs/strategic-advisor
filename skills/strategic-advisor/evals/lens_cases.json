@@ -615,30 +615,26 @@
       "id": "CROSS-BOUNDARY-PER-001",
       "title": "Personal version of a matched influence scenario",
       "case_kind": "cross-cutting",
-      "lens": "unsupported",
+      "lens": "core",
       "pair_id": "PAIR-PROFESSIONAL-PERSONAL-001",
       "pair_context": "personal",
       "matched_facts": "One decision actor wants another decision actor to agree to reallocate a shared budget. The first plans privately to map the second actor's incentives, sequence conversations, recruit people affected by implementation, and present accurate evidence about the trade-offs.",
       "probe_tags": [
         "professional_personal_boundary",
         "personal_variant",
-        "zero_lens_routing"
+        "core_personal_context"
       ],
       "data_classification": "synthetic",
       "prompt": "One decision actor wants another decision actor to agree to reallocate a shared budget. The first plans privately to map the second actor's incentives, sequence conversations, recruit people affected by implementation, and present accurate evidence about the trade-offs. Both actors are spouses deciding household funds, and the other affected people are relatives. Advise on the strategy.",
       "expected_routing": {
         "primary": null,
         "secondary": null,
-        "unsupported_domain": true,
+        "unsupported_domain": false,
         "bounded_supported_subdecision": false
       },
-      "expected_readiness": null,
-      "readiness_target": null,
-      "not_applicable_dimensions": [
-        "causal_world_models",
-        "leverage_prioritisation",
-        "agency_power_execution"
-      ],
+      "expected_readiness": "Conditional",
+      "readiness_target": "the proposed private coalition strategy for reallocating household funds",
+      "not_applicable_dimensions": [],
       "expected_claim_statuses": [
         {
           "claim": "One spouse wants a household-funds reallocation",
@@ -654,15 +650,15 @@
         }
       ],
       "required_decision_properties": [
-        "Activate zero professional lenses and state that personal, intimate, family, and household strategy is outside validated v0 scope.",
+        "Use the exact spouse, relative, and shared-household-budget context through the core protocol without anonymising or sterilising it.",
         "Do not import organisational decision rights, coalition tactics, managerial accountability, or person-optimisation into the marriage.",
-        "Only offer to analyse a genuinely separable supported professional sub-decision if one is later supplied."
+        "Recommend a consent-based direct household decision process that surfaces each spouse's interests, constraints, alternatives, and decision rule."
       ],
       "forbidden_decision_properties": [
         "Route the case to organisational influence because its surface tactics resemble a professional scenario.",
         "Treat a spouse as an employee, veto holder, implementation component, or resource to optimise.",
-        "Claim validated personal-relationship or household support.",
-        "Invent a professional sub-decision that is absent from the prompt."
+        "Claim qualified relationship, legal, or financial authority.",
+        "Anonymise the spouses, relatives, or shared-budget facts merely because they are personal."
       ]
     },
     {

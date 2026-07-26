@@ -42,11 +42,15 @@ CORE_REFERENCES = (
     "references/boundaries.md",
     "references/response-contract.md",
     "references/conversational-strategy.md",
+    "references/context-policy.md",
     "references/strategy-workspace.md",
 )
 WORKSPACE_RUNTIME_FILES = (
     "workspace-templates/WORKSPACE.md",
+    "workspace-templates/PROFILE.md",
+    "workspace-templates/OBJECTIVES.md",
     "workspace-templates/PORTFOLIO.md",
+    "workspace-templates/CONTEXTS.md",
     "workspace-templates/CLAIMS.md",
     "workspace-templates/DECISIONS.md",
     "workspace-templates/CHANGELOG.md",
@@ -57,11 +61,27 @@ WORKSPACE_REQUIRED_HEADINGS = {
         "authority",
         "workspace scope",
         "approved context",
+        "linked detail",
         "operating notes",
+    },
+    "workspace-templates/PROFILE.md": {
+        "personal profile",
+        "durable facts",
+        "review notes",
+    },
+    "workspace-templates/OBJECTIVES.md": {
+        "objectives",
+        "objective register",
+        "review notes",
     },
     "workspace-templates/PORTFOLIO.md": {
         "portfolio",
         "portfolio roles",
+        "review notes",
+    },
+    "workspace-templates/CONTEXTS.md": {
+        "recurring contexts",
+        "context register",
         "review notes",
     },
     "workspace-templates/CLAIMS.md": {
@@ -1258,11 +1278,11 @@ def check_lens_case_inventory(root: Path) -> list[Diagnostic]:
                             relative,
                         )
                     )
-            elif primary not in SUPPORTED_LENSES:
+            elif not (primary in SUPPORTED_LENSES or (primary is None and lens == "core")):
                 failures.append(
                     diagnostic(
                         "EVALS_ROUTING_INVALID",
-                        f"{case_id} needs exactly one supported primary lens.",
+                        f"{case_id} needs one supported primary lens or an explicit core-only route.",
                         relative,
                     )
                 )

@@ -7,7 +7,7 @@ Use this lens to decide whether a project or product should continue, be tested,
 - Select this as the primary lens when the central decision concerns a project or product outcome, value proposition, scope, sequence, dependency, investment, experiment, pivot, or stop decision.
 - Select it as a secondary lens only when a different supported professional decision is primary and project or product evidence materially changes the causal analysis, risk, or action.
 - Route a commercial-model decision to the business/venture lens and an audience, channel, or growth decision to the marketing/growth lens. If either contains a separable project or product decision, use this lens only for that bounded part.
-- Do not route personal, intimate, family, household, or general-life requests here.
+- Do not force a standalone personal, intimate, family, household, or general-life decision into a project metaphor. Use exact personal context when it changes a genuine project or product decision.
 - Activate no additional lens merely to add perspective. Keep one primary lens and at most one materially relevant secondary lens.
 
 ## Supported decisions and outcomes
@@ -56,7 +56,7 @@ Use this lens to decide whether a project or product should continue, be tested,
 
 - Do not use this lens as a substitute for the business/venture or marketing/growth lens, or for legal, clinical, financial, or safety expertise.
 - Do not infer that commercial viability follows from user value, or that user value follows from delivery success.
-- Do not provide personal, intimate, family, household, or general-life strategy through a project metaphor.
+- Do not pretend every whole-person decision is a project. Apply the core protocol directly when no project/product lens is needed.
 - Do not claim an unsupported domain is covered because its situation can be described as a project.
 
 ## Readiness implications

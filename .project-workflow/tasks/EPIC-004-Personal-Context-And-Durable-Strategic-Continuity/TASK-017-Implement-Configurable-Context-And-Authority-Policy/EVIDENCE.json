@@ -1,0 +1,50 @@
+{
+  "task_id": "TASK-017",
+  "claims": [
+    {
+      "id": "CLM-001",
+      "parent_ac": "AC2",
+      "claim": "____",
+      "recipe": "visual-reference-fidelity",
+      "status": "pending",
+      "commit": "____",
+      "timestamp": "____",
+      "reference_artifact": "____",
+      "delivered_artifact": "____",
+      "comparison_method": "____",
+      "evidence_artifact": "____",
+      "evidence_artifact_hash": "____",
+      "invalid_substitutes": []
+    },
+    {
+      "id": "CLM-002",
+      "parent_ac": "AC3",
+      "claim": "____",
+      "recipe": "visual-reference-fidelity",
+      "status": "pending",
+      "commit": "____",
+      "timestamp": "____",
+      "reference_artifact": "____",
+      "delivered_artifact": "____",
+      "comparison_method": "____",
+      "evidence_artifact": "____",
+      "evidence_artifact_hash": "____",
+      "invalid_substitutes": []
+    },
+    {
+      "id": "CLM-003",
+      "parent_ac": "AC4",
+      "claim": "____",
+      "recipe": "visual-reference-fidelity",
+      "status": "pending",
+      "commit": "____",
+      "timestamp": "____",
+      "reference_artifact": "____",
+      "delivered_artifact": "____",
+      "comparison_method": "____",
+      "evidence_artifact": "____",
+      "evidence_artifact_hash": "____",
+      "invalid_substitutes": []
+    }
+  ]
+}
