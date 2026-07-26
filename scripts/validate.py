@@ -564,7 +564,7 @@ def check_claims(root: Path) -> list[Diagnostic]:
                 "PRODUCT-CONTRACT.md",
             )
         )
-    if contract.get("early_access_distribution_version") != "0.2.0-alpha.1":
+    if contract.get("early_access_distribution_version") != "0.2.0-alpha.2":
         failures.append(
             diagnostic(
                 "CLAIMS_PUBLIC_DRIFT",

@@ -37,7 +37,7 @@ stored content current evidence or truth.
 ## Download the current alpha
 
 Download these four files together from the current
-[`v0.2.0-alpha.1` prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.1):
+[`v0.2.0-alpha.2` prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.2):
 
 - `strategic-advisor.zip`
 - `strategic-advisor-plugin.zip`
