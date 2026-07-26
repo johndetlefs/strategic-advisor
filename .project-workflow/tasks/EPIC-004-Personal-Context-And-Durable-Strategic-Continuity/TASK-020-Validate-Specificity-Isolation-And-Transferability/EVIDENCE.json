@@ -96,6 +96,22 @@
       "evidence_artifact": "../../../../scripts/strategy_workspace.py",
       "evidence_artifact_hash": "sha256:d8652ffc088f1048cfed0f1a4c71e920f2c2393f87d64f33cc9782db0bcc440b",
       "invalid_substitutes": ["A real private workspace or owner case"]
+    },
+    {
+      "id": "CLM-007",
+      "parent_ac": "AC11",
+      "claim": "The expanded eight-file workspace remains distributable through the enforced Custom GPT Knowledge inventory limit.",
+      "recipe": "runtime-target-source",
+      "status": "pass",
+      "commit": "940850f72660ac50e8be96bc57066bebc96bb8d1",
+      "timestamp": "2026-07-26T04:15:00Z",
+      "execution_target": "Current-source build_install_artifacts.py exploratory build and independent archive verification",
+      "source_artifact": "scripts/build_install_artifacts.py sha256:12a4e693d1c31e36a9815ce090fa2726864c629f420a4f48bd8c037ed441c073 at commit 940850f72660ac50e8be96bc57066bebc96bb8d1",
+      "observation_method": "Build all three install artifacts from the 25-file runtime, inspect the Custom GPT archive and provenance, and run the complete 124-test repository suite.",
+      "target_used_source_proof": "The generated Custom GPT kit contains 16 Knowledge uploads, including one deterministic WORKSPACE-TEMPLATES.md bundle whose manifest maps and hashes all eight canonical template sources; the build verifier and all tests pass.",
+      "evidence_artifact": "../../../../scripts/build_install_artifacts.py",
+      "evidence_artifact_hash": "sha256:12a4e693d1c31e36a9815ce090fa2726864c629f420a4f48bd8c037ed441c073",
+      "invalid_substitutes": ["Raising the 20-file limit or omitting canonical workspace templates"]
     }
   ]
 }

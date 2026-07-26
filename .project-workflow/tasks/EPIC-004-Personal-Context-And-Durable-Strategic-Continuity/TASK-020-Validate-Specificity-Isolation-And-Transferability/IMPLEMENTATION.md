@@ -116,8 +116,8 @@ temporary workspace journey.
 ## QA & Code Review
 
 - Verdict: Pass.
-- Evidence: Run-002 passes all 15 frozen actual-turn drift criteria; the six-case exact-runtime personal-context smoke passes every specificity, retention, correction, deletion, isolation, and specialist-boundary assertion; 37 cases, 15 focused workspace tests, the full suite, seven scopes, and Doctor pass.
-- Findings: The first attempted run exposed ambient memory access and was discarded. Frozen run-002 prohibited memory and non-runtime source access. No blocking issue remains.
+- Evidence: Run-002 passes all 15 frozen actual-turn drift criteria; the six-case exact-runtime personal-context smoke passes every specificity, retention, correction, deletion, isolation, and specialist-boundary assertion; 37 cases, 15 focused workspace tests, all 124 repository tests, seven validation scopes, and Doctor pass. A fresh exploratory installation build produced a 16-file ChatGPT Knowledge inventory and verified all eight canonical workspace templates inside one deterministic `WORKSPACE-TEMPLATES.md` host bundle.
+- Findings: The first attempted behavioural run exposed ambient memory access and was discarded. Frozen run-002 prohibited memory and non-runtime source access. Final closeout QA also found that the expanded eight-file workspace had increased the Custom GPT Knowledge inventory from 19 to 23 files, beyond the enforced 20-file limit. The installer now groups the eight exact template sources into one deterministic, hashed host bundle; focused artifact tests, the full suite, and a current-source build pass. No blocking issue remains.
 
 ## Retro
 

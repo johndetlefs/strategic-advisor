@@ -93,15 +93,15 @@
 
 | Parent AC | Proof Owner | Required Evidence |
 | --- | --- | --- |
-| AC1 | Correct The Personal-Context Product Contract | Current contract and product-facing comparison with generic individual positioning. |
-| AC2 | Correct The Personal-Context Product Contract; Implement Configurable Context And Authority Policy | Explicit context-versus-advice/action/disclosure contract across product and runtime. |
-| AC3 | Implement Configurable Context And Authority Policy | Deterministic positive and negative validation for exactly three modes. |
-| AC4 | Implement Configurable Context And Authority Policy; Validate Specificity, Isolation And Transferability | Mode and authority matrix tests plus exact-runtime isolation/disclosure results. |
-| AC5 | Expand The Strategy Workspace And Migration Contract | Repeated generic scaffold identity and exact-value workspace fixtures. |
-| AC6 | Expand The Strategy Workspace And Migration Contract | Copy-based migration tests, overwrite refusal, extension validation, and negative leakage fixtures. |
-| AC7 | Implement Decision-Relevant Specificity And Durable Capture | Canonical runtime diff and structured capture/correction contract tests. |
-| AC8 | Implement Decision-Relevant Specificity And Durable Capture; Validate Specificity, Isolation And Transferability | Matched causally relevant and irrelevant exact-detail results. |
-| AC9 | Validate Specificity, Isolation And Transferability | Exact-runtime mode, persistence, correction, deletion, isolation, disclosure, and staleness hard-gate results. |
-| AC10 | Implement Decision-Relevant Specificity And Durable Capture; Validate Specificity, Isolation And Transferability | Exact-context specialist-boundary source and behavioural results. |
-| AC11 | Correct The Personal-Context Product Contract; Expand The Strategy Workspace And Migration Contract; Validate Specificity, Isolation And Transferability | Repeated runtime/install identity, generic inventories, privacy/secret checks, and current positioning scan. |
-| AC12 | Validate Specificity, Isolation And Transferability | Fresh generic create/select, capture, retrieve, correct/delete journey bound to exact runtime/tooling. |
+| AC1 | TASK-016 | Current contract and product-facing comparison with generic individual positioning. |
+| AC2 | TASK-016; TASK-017 | Explicit context-versus-advice/action/disclosure contract across product and runtime. |
+| AC3 | TASK-017 | Deterministic positive and negative validation for exactly three modes. |
+| AC4 | TASK-017; TASK-020 | Mode and authority matrix tests plus exact-runtime isolation/disclosure results. |
+| AC5 | TASK-018 | Repeated generic scaffold identity and exact-value workspace fixtures. |
+| AC6 | TASK-018 | Copy-based migration tests, overwrite refusal, extension validation, and negative leakage fixtures. |
+| AC7 | TASK-019 | Canonical runtime diff and structured capture/correction contract tests. |
+| AC8 | TASK-019; TASK-020 | Matched causally relevant and irrelevant exact-detail results. |
+| AC9 | TASK-020 | Exact-runtime mode, persistence, correction, deletion, isolation, disclosure, and staleness hard-gate results. |
+| AC10 | TASK-019; TASK-020 | Exact-context specialist-boundary source and behavioural results. |
+| AC11 | TASK-016; TASK-018; TASK-020 | Repeated runtime/install identity, generic inventories, privacy/secret checks, and current positioning scan. |
+| AC12 | TASK-020 | Fresh generic create/select, capture, retrieve, correct/delete journey bound to exact runtime/tooling. |
