@@ -7,4 +7,4 @@
 | EPIC-003 | Cross-Host Personal Installation And Distribution | Complete | `tasks/EPIC-003-Cross-Host-Personal-Installation-And-Distribution/REQUIREMENTS.md` |
 | EPIC-004 | Personal Context And Durable Strategic Continuity | Complete | `tasks/EPIC-004-Personal-Context-And-Durable-Strategic-Continuity/REQUIREMENTS.md` |
 | EPIC-005 | Open-Field Exploration And Visible Strategic Framing | Complete | `tasks/EPIC-005-Open-Field-Exploration-And-Visible-Strategic-Framing/REQUIREMENTS.md` |
-| FIX-001 | Publish Current Claude Distribution | In Progress | `tasks/FIX-001-Publish-Current-Claude-Distribution/FIX.md` |
+| FIX-001 | Publish Current Claude Distribution | Complete | `tasks/FIX-001-Publish-Current-Claude-Distribution/FIX.md` |
