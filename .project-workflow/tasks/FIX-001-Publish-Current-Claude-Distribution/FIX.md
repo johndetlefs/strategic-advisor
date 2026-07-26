@@ -4,7 +4,7 @@
 
 - Fix: FIX-001
 - Title: Publish Current Claude Distribution
-- Status: In Progress
+- Status: Complete
 - Created: 2026-07-26
 
 ## Report
@@ -76,10 +76,12 @@
   `strategic-advisor.zip` used by Claude and Codex.
 - Primary repo: .
 - Repos touched: .
-- Branch, PR, and evidence links: `agent/fix-001-current-claude-release`;
-  public release evidence will be retained in
-  `evidence/releases/v0.2.0-alpha.2.json`, with the PR and release URLs added
-  after publication.
+- Branch, PR, and evidence links: Preparation branch
+  `agent/fix-001-current-claude-release`; closeout branch
+  `agent/fix-001-release-closeout`; PR
+  https://github.com/johndetlefs/strategic-advisor/pull/14; release
+  https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.2;
+  evidence `evidence/releases/v0.2.0-alpha.2.json`.
 - Verification plan: Run the full unit suite, aggregate validator, workflow
   Doctor, two clean deterministic builds from the exact merged source, artifact
   verifier, byte comparisons, archive inventory and sensitive-path checks,
@@ -90,21 +92,33 @@
 
 | Repo | Branch | PR | Evidence |
 |---|---|---|---|
-| . | `agent/fix-001-current-claude-release` | Pending | Pending |
+| . | `agent/fix-001-current-claude-release` and `agent/fix-001-release-closeout` | [#14](https://github.com/johndetlefs/strategic-advisor/pull/14) | [`v0.2.0-alpha.2`](../../../evidence/releases/v0.2.0-alpha.2.json) |
 
 ## Verification
 
-- Delivered scope: ____
-- Verification result: ____
-- Adjacent behavior checked: ____
-- Original acceptance criteria result: Not applicable
-- Regression evidence: ____
-- Residual risk: ____
+- Delivered scope: Published `v0.2.0-alpha.2` from exact clean source
+  `582ff0e961c128fdab54c953b3c394543d8030d2`, updated the current download
+  references, and retained the public asset identities and package boundaries.
+- Verification result: Pass. Two clean builds were byte-identical; both local
+  verifications passed; all four freshly downloaded public assets matched the
+  local build byte-for-byte and passed the trusted provenance/runtime verifier.
+- Adjacent behavior checked: 125 unit tests, all seven aggregate validation
+  scopes, PR #14 GitHub CI, workflow Doctor, archive inventory, and public
+  release metadata passed.
+- Original acceptance criteria result: Not applicable because FIX-001 corrects
+  release freshness after the originating work was accepted; it does not reopen
+  or alter any originating acceptance criterion.
+- Regression evidence: Historical `v0.2.0-alpha.1` evidence and exact-host
+  activation records were not changed or promoted. The new evidence explicitly
+  keeps account activation, parity, effectiveness, and support unproven.
+- Residual risk: The ZIP has not been uploaded to or activated in the owner's
+  Claude account. Host eligibility and UI remain externally controlled and must
+  be observed separately when that installation occurs.
 
 ## Outcome
 
-- Disposition: Pending
-- Decision: ____
-- Closed by: ____
-- Closed date: ____
+- Disposition: Fixed
+- Decision: Published and independently verified v0.2.0-alpha.2 from the current canonical runtime; retained Claude activation as unobserved.
+- Closed by: Codex
+- Closed date: 2026-07-26
 - Promoted to: None

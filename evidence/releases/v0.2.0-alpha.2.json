@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "release": {
+    "tag": "v0.2.0-alpha.2",
+    "status": "prerelease",
+    "published_at": "2026-07-26T08:12:53Z",
+    "url": "https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.2",
+    "source_revision": "582ff0e961c128fdab54c953b3c394543d8030d2",
+    "runtime_package_identity_sha256": "fbe0b4f80d3af8c373f728549c1011e3e3d70212400fc3c4e7a7166c0691eaee",
+    "assets": [
+      {
+        "name": "install-artifacts.json",
+        "sha256": "a256b6c053a0c932479b7b6325248c8676647aeb2d4e76ad26bc2ba7dbb67e8d",
+        "size_bytes": 47784
+      },
+      {
+        "name": "strategic-advisor.zip",
+        "sha256": "c6a895ccbb804d3745aedeb58a19c17fa8443ed121071d9cb42f1aac26dcf974",
+        "size_bytes": 105311
+      },
+      {
+        "name": "strategic-advisor-plugin.zip",
+        "sha256": "5eafb4eb772aa70f4569fddc5595ac628a36d3d27497e3a559f820a09c57e0fc",
+        "size_bytes": 109466
+      },
+      {
+        "name": "strategic-advisor-chatgpt.zip",
+        "sha256": "d9d51475ffbb468d46710853d63ef1b45a371636fe0f11dfeee625a58f63319d",
+        "size_bytes": 114006
+      }
+    ]
+  },
+  "reproduction": {
+    "two_clean_builds_byte_identical": true,
+    "clean_download_consumer_verification": "pass",
+    "public_asset_digests_match_local_build": true,
+    "archive_paths_safe": true,
+    "unexpected_files_rejected": true,
+    "evaluation_or_workflow_files_in_artifacts": false,
+    "credential_or_non_public_case_material_in_artifacts": false
+  },
+  "chatgpt_projection": {
+    "canonical_skill_body_exact": true,
+    "knowledge_file_count": 16,
+    "host_file_limit": 20,
+    "knowledge_bytes_match_runtime": true,
+    "apps": [],
+    "actions": []
+  },
+  "runtime_inventory": {
+    "personal_context_contract_present": true,
+    "durable_context_templates_present": true,
+    "open_field_exploration_present": true,
+    "strategy_workspace_method_present": true,
+    "strategy_workspace_templates_present": true,
+    "strategy_workspace_required_for_first_use": false,
+    "connector_required_for_first_use": false
+  },
+  "validation": {
+    "unit_tests": {
+      "result": "pass",
+      "tests": 125
+    },
+    "aggregate_validation": {
+      "result": "pass",
+      "scopes": 7
+    },
+    "pull_request": "https://github.com/johndetlefs/strategic-advisor/pull/14",
+    "pull_request_ci": "pass",
+    "project_workflow_doctor": "pass"
+  },
+  "proof_boundary": {
+    "package_and_release_alignment_proven": true,
+    "clean_public_download_proven": true,
+    "claude_package_structure_proven": true,
+    "codex_account_activation_proven_here": false,
+    "chatgpt_account_activation_proven_here": false,
+    "claude_account_activation_proven_here": false,
+    "cross_host_parity_proven": false,
+    "strategic_effectiveness_proven": false,
+    "supported_capability_claimed": false
+  }
+}
