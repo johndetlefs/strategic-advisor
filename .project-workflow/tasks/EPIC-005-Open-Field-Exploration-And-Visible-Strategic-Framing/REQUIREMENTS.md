@@ -8,15 +8,15 @@
 
 ## Owner Approval
 
-- Requirements reviewed by owner: No
-- Acceptance criteria reviewed by owner: No
-- Approved for decomposition: No
+- Requirements reviewed by owner: Yes
+- Acceptance criteria reviewed by owner: Yes
+- Approved for decomposition: Yes
 - Approved for implementation: No
-- Approved scope envelope: No
-- Approved by: Not approved
-- Approval date: Not approved
-- Approval note / source: Not approved
-- Approved artifact identity: Not approved
+- Approved scope envelope: Yes
+- Approved by: John Detlefs
+- Approval date: 2026-07-26
+- Approval note / source: Owner message in current Codex task on 2026-07-26: Yes, approved, let's go for it.
+- Approved artifact identity: sha256:0184c413790235886f4e5e95caac6d9336a7bbfaf3dab06d78b7223bf5df8340
 
 ## Goal
 

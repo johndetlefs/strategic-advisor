@@ -6,4 +6,4 @@
 | EPIC-002 | Interactive Strategic Continuity And Owner Workspace | In Progress | `tasks/EPIC-002-Interactive-Strategic-Continuity-And-Owner-Workspace/REQUIREMENTS.md` |
 | EPIC-003 | Cross-Host Personal Installation And Distribution | Complete | `tasks/EPIC-003-Cross-Host-Personal-Installation-And-Distribution/REQUIREMENTS.md` |
 | EPIC-004 | Personal Context And Durable Strategic Continuity | Complete | `tasks/EPIC-004-Personal-Context-And-Durable-Strategic-Continuity/REQUIREMENTS.md` |
-| EPIC-005 | Open-Field Exploration And Visible Strategic Framing | To Do | `tasks/EPIC-005-Open-Field-Exploration-And-Visible-Strategic-Framing/REQUIREMENTS.md` |
+| EPIC-005 | Open-Field Exploration And Visible Strategic Framing | In Progress | `tasks/EPIC-005-Open-Field-Exploration-And-Visible-Strategic-Framing/REQUIREMENTS.md` |
