@@ -1,0 +1,50 @@
+{
+  "task_id": "TASK-017",
+  "claims": [
+    {
+      "id": "CLM-001",
+      "parent_ac": "AC2",
+      "claim": "The canonical runtime separates retention, read, durable-write, disclosure, external-action, and cross-workspace authority.",
+      "recipe": "external-contract-alignment",
+      "status": "pass",
+      "commit": "ca8145828535f650359210ff7b94e49a9eeaebed",
+      "timestamp": "2026-07-26T02:10:00Z",
+      "contract_artifact": "Approved EPIC-004 AC2 and authority invariants",
+      "implementation_artifact": "skills/strategic-advisor/references/context-policy.md",
+      "comparison_method": "Compare every declared authority row with its permitted and forbidden effects and verify that no authority implies another.",
+      "evidence_artifact": "../../../../skills/strategic-advisor/references/context-policy.md",
+      "evidence_artifact_hash": "sha256:8166d90274ff40a2fa104d5f993348593ca03624fcede1cf516c5477cb4fc5db",
+      "invalid_substitutes": ["Account type or workspace presence"]
+    },
+    {
+      "id": "CLM-002",
+      "parent_ac": "AC3",
+      "claim": "Exactly durable-full, durable-bounded, and session-only are accepted retention modes, and invalid values fail.",
+      "recipe": "external-contract-alignment",
+      "status": "pass",
+      "commit": "ca8145828535f650359210ff7b94e49a9eeaebed",
+      "timestamp": "2026-07-26T02:10:00Z",
+      "contract_artifact": "Approved EPIC-004 AC3",
+      "implementation_artifact": "context-policy.md, WORKSPACE.md template, strategy_workspace.py, and focused positive/negative unit tests",
+      "comparison_method": "Build and validate the default session-only workspace, then mutate the mode to an invalid value and require WORKSPACE_RETENTION_MODE.",
+      "evidence_artifact": "../../../../scripts/strategy_workspace.py",
+      "evidence_artifact_hash": "sha256:d8652ffc088f1048cfed0f1a4c71e920f2c2393f87d64f33cc9782db0bcc440b",
+      "invalid_substitutes": ["A personal-versus-work account label"]
+    },
+    {
+      "id": "CLM-003",
+      "parent_ac": "AC4",
+      "claim": "Authority-schema tests reject missing disclosure or other authority declarations and runtime policy forbids implied copying or action.",
+      "recipe": "external-contract-alignment",
+      "status": "pass",
+      "commit": "ca8145828535f650359210ff7b94e49a9eeaebed",
+      "timestamp": "2026-07-26T02:10:00Z",
+      "contract_artifact": "Approved EPIC-004 AC4",
+      "implementation_artifact": "strategy_workspace.py authority validation and context-policy authority matrix",
+      "comparison_method": "Mutate the disclosure declaration, require WORKSPACE_AUTHORITY_SCHEMA, and inspect the runtime matrix for non-implication.",
+      "evidence_artifact": "../../../../scripts/strategy_workspace.py",
+      "evidence_artifact_hash": "sha256:d8652ffc088f1048cfed0f1a4c71e920f2c2393f87d64f33cc9782db0bcc440b",
+      "invalid_substitutes": ["Read access treated as write or disclosure authority"]
+    }
+  ]
+}

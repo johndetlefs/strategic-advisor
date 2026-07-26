@@ -23,7 +23,7 @@ import sys
 import zipfile
 from dataclasses import dataclass
 from pathlib import Path, PurePosixPath
-from typing import Sequence
+from typing import Mapping, Sequence
 
 
 SCRIPT_DIRECTORY = Path(__file__).resolve().parent
@@ -65,6 +65,8 @@ MAX_PROVENANCE_BYTES = 4 * 1024 * 1024
 CHATGPT_KIT_ROOT = "strategic-advisor-chatgpt"
 CHATGPT_KNOWLEDGE_LIMIT = 20
 CHATGPT_EXCLUDED_RUNTIME_PATHS = {"SKILL.md", "agents/openai.yaml"}
+CHATGPT_WORKSPACE_TEMPLATE_PREFIX = "workspace-templates/"
+CHATGPT_WORKSPACE_TEMPLATE_BUNDLE = "WORKSPACE-TEMPLATES.md"
 CHATGPT_CONVERSATION_STARTERS = [
     "Reality-test a consequential decision I am considering.",
     "Help me distinguish what we know from what we are assuming.",
@@ -343,16 +345,22 @@ def marketplace_manifest_bytes() -> bytes:
     )
 
 
-def _chatgpt_knowledge_records(runtime_files: Sequence[dict]) -> list[dict]:
-    """Map runtime references/templates to flat Custom GPT Knowledge names."""
+def _chatgpt_knowledge_sources(
+    runtime_files: Sequence[dict],
+) -> list[tuple[str, tuple[str, ...]]]:
+    """Group runtime files into the Custom GPT Knowledge upload inventory."""
 
-    records: list[dict] = []
+    sources: list[tuple[str, tuple[str, ...]]] = []
     seen_names: set[str] = set()
+    workspace_templates: list[str] = []
     for entry in runtime_files:
         source_path = runtime_package.normalized_relative_path(
             entry["path"], "ChatGPT Knowledge source path"
         ).as_posix()
         if source_path in CHATGPT_EXCLUDED_RUNTIME_PATHS:
+            continue
+        if source_path.startswith(CHATGPT_WORKSPACE_TEMPLATE_PREFIX):
+            workspace_templates.append(source_path)
             continue
         name = PurePosixPath(source_path).name
         if name in seen_names:
@@ -360,22 +368,88 @@ def _chatgpt_knowledge_records(runtime_files: Sequence[dict]) -> list[dict]:
                 f"ChatGPT Knowledge filename collision after flattening: {name}"
             )
         seen_names.add(name)
-        records.append(
-            {
-                "archive_path": f"{CHATGPT_KIT_ROOT}/KNOWLEDGE/{name}",
-                "sha256": entry["sha256"],
-                "size_bytes": entry["size_bytes"],
-                "source_path": source_path,
-                "upload_name": name,
-            }
+        sources.append((name, (source_path,)))
+    if workspace_templates:
+        if CHATGPT_WORKSPACE_TEMPLATE_BUNDLE in seen_names:
+            raise InstallArtifactError(
+                "ChatGPT Knowledge filename collision after bundling workspace "
+                f"templates: {CHATGPT_WORKSPACE_TEMPLATE_BUNDLE}"
+            )
+        sources.append(
+            (
+                CHATGPT_WORKSPACE_TEMPLATE_BUNDLE,
+                tuple(sorted(workspace_templates)),
+            )
         )
-    records.sort(key=lambda record: record["upload_name"])
-    if not records:
+    sources.sort(key=lambda item: item[0])
+    if not sources:
         raise InstallArtifactError("ChatGPT Custom GPT kit has no Knowledge files")
-    if len(records) > CHATGPT_KNOWLEDGE_LIMIT:
+    if len(sources) > CHATGPT_KNOWLEDGE_LIMIT:
         raise InstallArtifactError(
             "ChatGPT Custom GPT Knowledge inventory exceeds the official "
             f"{CHATGPT_KNOWLEDGE_LIMIT}-file limit"
+        )
+    return sources
+
+
+def _chatgpt_workspace_template_bundle_bytes(
+    source_paths: Sequence[str],
+    runtime_by_path: Mapping[str, bytes],
+) -> bytes:
+    """Render exact workspace template bytes into one deterministic host bundle."""
+
+    sections = [
+        "# Strategic Advisor Workspace Templates\n\n",
+        "This generated Knowledge file groups the canonical blank workspace "
+        "templates so the Custom GPT kit remains within its upload-file limit. "
+        "Use the section whose heading matches the requested runtime path.\n\n",
+    ]
+    for source_path in source_paths:
+        try:
+            template = runtime_by_path[source_path].decode("utf-8")
+        except KeyError as error:
+            raise InstallArtifactError(
+                f"ChatGPT Knowledge source is missing: {source_path}"
+            ) from error
+        except UnicodeDecodeError as error:
+            raise InstallArtifactError(
+                f"ChatGPT workspace template is not UTF-8: {source_path}"
+            ) from error
+        sections.append(f"## `{source_path}`\n\n")
+        sections.append(template)
+        if not template.endswith("\n"):
+            sections.append("\n")
+        sections.append("\n")
+    return "".join(sections).encode("utf-8")
+
+
+def _chatgpt_knowledge_records(
+    runtime_files: Sequence[dict],
+    runtime_by_path: Mapping[str, bytes],
+) -> list[dict]:
+    """Map runtime files to deterministic Custom GPT Knowledge records."""
+
+    records: list[dict] = []
+    for name, source_paths in _chatgpt_knowledge_sources(runtime_files):
+        if len(source_paths) == 1:
+            try:
+                content = runtime_by_path[source_paths[0]]
+            except KeyError as error:
+                raise InstallArtifactError(
+                    f"ChatGPT Knowledge source is missing: {source_paths[0]}"
+                ) from error
+        else:
+            content = _chatgpt_workspace_template_bundle_bytes(
+                source_paths, runtime_by_path
+            )
+        records.append(
+            {
+                "archive_path": f"{CHATGPT_KIT_ROOT}/KNOWLEDGE/{name}",
+                "sha256": runtime_package.sha256_bytes(content),
+                "size_bytes": len(content),
+                "source_paths": list(source_paths),
+                "upload_name": name,
+            }
         )
     return records
 
@@ -392,11 +466,12 @@ def chatgpt_instructions_bytes(skill_bytes: bytes) -> bytes:
         "This configuration is a generated host adapter. The canonical Strategic "
         "Advisor instructions follow verbatim below. Apply them as the governing "
         "behaviour for this GPT.\n\n"
-        "When those instructions reference a file under `references/` or "
-        "`workspace-templates/`, retrieve the uploaded Knowledge file with the "
-        "same basename. Do not invent a missing file or claim to have read one "
-        "unless it is available. Knowledge files are method resources, not "
-        "evidence that a user's real-world claim is true.\n\n"
+        "When those instructions reference a file under `references/`, retrieve "
+        "the uploaded Knowledge file with the same basename. Workspace templates "
+        "are grouped in `WORKSPACE-TEMPLATES.md`; retrieve the section whose "
+        "heading matches the requested runtime path. Do not invent a missing file "
+        "or claim to have read one unless it is available. Knowledge files are "
+        "method resources, not evidence that a user's real-world claim is true.\n\n"
         "Do not require a Strategy Workspace for first use. Do not use apps or "
         "actions. Web search, when enabled by the user, is optional evidence "
         "access and remains subject to the canonical provenance and relevance "
@@ -406,8 +481,13 @@ def chatgpt_instructions_bytes(skill_bytes: bytes) -> bytes:
     return (bootstrap + skill_text).encode("utf-8")
 
 
-def chatgpt_config_bytes(runtime_manifest: dict) -> bytes:
-    records = _chatgpt_knowledge_records(runtime_manifest["files"])
+def chatgpt_config_bytes(
+    runtime_manifest: dict,
+    runtime_by_path: Mapping[str, bytes],
+) -> bytes:
+    records = _chatgpt_knowledge_records(
+        runtime_manifest["files"], runtime_by_path
+    )
     return runtime_package.rendered_json_bytes(
         {
             "apps": [],
@@ -434,8 +514,14 @@ def chatgpt_config_bytes(runtime_manifest: dict) -> bytes:
     )
 
 
-def chatgpt_manifest_bytes(runtime_manifest: dict, skill_bytes: bytes) -> bytes:
-    records = _chatgpt_knowledge_records(runtime_manifest["files"])
+def chatgpt_manifest_bytes(
+    runtime_manifest: dict,
+    skill_bytes: bytes,
+    runtime_by_path: Mapping[str, bytes],
+) -> bytes:
+    records = _chatgpt_knowledge_records(
+        runtime_manifest["files"], runtime_by_path
+    )
     instructions = chatgpt_instructions_bytes(skill_bytes)
     return runtime_package.rendered_json_bytes(
         {
@@ -451,8 +537,13 @@ def chatgpt_manifest_bytes(runtime_manifest: dict, skill_bytes: bytes) -> bytes:
     )
 
 
-def chatgpt_readme_bytes(runtime_manifest: dict) -> bytes:
-    records = _chatgpt_knowledge_records(runtime_manifest["files"])
+def chatgpt_readme_bytes(
+    runtime_manifest: dict,
+    runtime_by_path: Mapping[str, bytes],
+) -> bytes:
+    records = _chatgpt_knowledge_records(
+        runtime_manifest["files"], runtime_by_path
+    )
     names = "\n".join(f"- `{record['upload_name']}`" for record in records)
     text = f"""# Install the Strategic Advisor Custom GPT
 
@@ -737,10 +828,12 @@ def _chatgpt_files(source: SourcePackage) -> tuple[list[ArchiveEntry], dict[str,
     skill_bytes = runtime_by_path.get("SKILL.md")
     if skill_bytes is None:
         raise InstallArtifactError("canonical runtime lacks SKILL.md")
-    records = _chatgpt_knowledge_records(source.runtime_manifest["files"])
+    records = _chatgpt_knowledge_records(
+        source.runtime_manifest["files"], runtime_by_path
+    )
     generated = {
         f"{CHATGPT_KIT_ROOT}/CONFIG.json": (
-            chatgpt_config_bytes(source.runtime_manifest),
+            chatgpt_config_bytes(source.runtime_manifest, runtime_by_path),
             "chatgpt-config",
         ),
         f"{CHATGPT_KIT_ROOT}/INSTRUCTIONS.md": (
@@ -749,11 +842,13 @@ def _chatgpt_files(source: SourcePackage) -> tuple[list[ArchiveEntry], dict[str,
         ),
         f"{CHATGPT_KIT_ROOT}/LICENSE": (source.license_bytes, "license"),
         f"{CHATGPT_KIT_ROOT}/MANIFEST.json": (
-            chatgpt_manifest_bytes(source.runtime_manifest, skill_bytes),
+            chatgpt_manifest_bytes(
+                source.runtime_manifest, skill_bytes, runtime_by_path
+            ),
             "chatgpt-manifest",
         ),
         f"{CHATGPT_KIT_ROOT}/README.md": (
-            chatgpt_readme_bytes(source.runtime_manifest),
+            chatgpt_readme_bytes(source.runtime_manifest, runtime_by_path),
             "chatgpt-readme",
         ),
     }
@@ -763,7 +858,14 @@ def _chatgpt_files(source: SourcePackage) -> tuple[list[ArchiveEntry], dict[str,
     ]
     roles = {path: role for path, (_, role) in generated.items()}
     for record in records:
-        content = runtime_by_path[record["source_path"]]
+        source_paths = record["source_paths"]
+        content = (
+            runtime_by_path[source_paths[0]]
+            if len(source_paths) == 1
+            else _chatgpt_workspace_template_bundle_bytes(
+                source_paths, runtime_by_path
+            )
+        )
         path = record["archive_path"]
         files.append(_file_entry(path, content, "runtime-knowledge"))
         roles[path] = "runtime-knowledge"
@@ -916,7 +1018,7 @@ def build(
                 ),
                 "inventory": chatgpt_inventory,
                 "knowledge_file_count": len(
-                    _chatgpt_knowledge_records(source.runtime_manifest["files"])
+                    _chatgpt_knowledge_sources(source.runtime_manifest["files"])
                 ),
                 "sha256": runtime_package.sha256_bytes(chatgpt_kit_bytes),
                 "size_bytes": len(chatgpt_kit_bytes),
@@ -1262,7 +1364,7 @@ def _verify_chatgpt_artifact_record(
     )
     if skill_entry is None:
         raise InstallArtifactError("runtime_package lacks canonical SKILL.md")
-    expected_count = len(_chatgpt_knowledge_records(runtime_manifest["files"]))
+    expected_count = len(_chatgpt_knowledge_sources(runtime_manifest["files"]))
     if (
         record["distribution"] != "chatgpt-custom-gpt-kit"
         or record["format"] != "zip"
@@ -1355,11 +1457,12 @@ def _plugin_expectations(runtime_manifest: dict) -> dict[str, ExpectedArchiveFil
 def _chatgpt_expectations(
     runtime_manifest: dict,
     skill_bytes: bytes,
+    runtime_by_path: Mapping[str, bytes],
 ) -> dict[str, ExpectedArchiveFile]:
     expected: dict[str, ExpectedArchiveFile] = {}
     generated = {
         f"{CHATGPT_KIT_ROOT}/CONFIG.json": (
-            chatgpt_config_bytes(runtime_manifest),
+            chatgpt_config_bytes(runtime_manifest, runtime_by_path),
             "chatgpt-config",
         ),
         f"{CHATGPT_KIT_ROOT}/INSTRUCTIONS.md": (
@@ -1371,11 +1474,13 @@ def _chatgpt_expectations(
             "license",
         ),
         f"{CHATGPT_KIT_ROOT}/MANIFEST.json": (
-            chatgpt_manifest_bytes(runtime_manifest, skill_bytes),
+            chatgpt_manifest_bytes(
+                runtime_manifest, skill_bytes, runtime_by_path
+            ),
             "chatgpt-manifest",
         ),
         f"{CHATGPT_KIT_ROOT}/README.md": (
-            chatgpt_readme_bytes(runtime_manifest),
+            chatgpt_readme_bytes(runtime_manifest, runtime_by_path),
             "chatgpt-readme",
         ),
     }
@@ -1393,13 +1498,13 @@ def _chatgpt_expectations(
                 size_bytes=len(content),
                 content=content,
             )
-    runtime_by_path = {entry["path"]: entry for entry in runtime_manifest["files"]}
-    for record in _chatgpt_knowledge_records(runtime_manifest["files"]):
-        entry = runtime_by_path[record["source_path"]]
+    for record in _chatgpt_knowledge_records(
+        runtime_manifest["files"], runtime_by_path
+    ):
         expected[record["archive_path"]] = ExpectedArchiveFile(
             role="runtime-knowledge",
-            sha256=entry["sha256"],
-            size_bytes=entry["size_bytes"],
+            sha256=record["sha256"],
+            size_bytes=record["size_bytes"],
         )
     return expected
 
@@ -1645,10 +1750,18 @@ def verify(
         _plugin_expectations(runtime_manifest),
     )
     skill_bytes = skill_files[f"{SKILL_NAME}/SKILL.md"]
+    standalone_skill_files = {
+        path.removeprefix(f"{SKILL_NAME}/"): content
+        for path, content in skill_files.items()
+    }
+    runtime_by_path = {
+        entry["path"]: standalone_skill_files[entry["path"]]
+        for entry in runtime_manifest["files"]
+    }
     chatgpt_kit_bytes, chatgpt_inventory, chatgpt_files = _verify_archive(
         chatgpt_kit,
         "ChatGPT Custom GPT kit",
-        _chatgpt_expectations(runtime_manifest, skill_bytes),
+        _chatgpt_expectations(runtime_manifest, skill_bytes, runtime_by_path),
     )
 
     plugin_manifest_path = "plugins/strategic-advisor/.codex-plugin/plugin.json"
@@ -1663,10 +1776,6 @@ def verify(
     _reject_consumer_visible_evaluation_content(
         runtime_manifest, plugin_files, plugin_prefix
     )
-    standalone_skill_files = {
-        path.removeprefix(f"{SKILL_NAME}/"): content
-        for path, content in skill_files.items()
-    }
     plugin_skill_files = {
         path.removeprefix(f"{plugin_prefix}/"): content
         for path, content in plugin_files.items()
@@ -1676,17 +1785,21 @@ def verify(
         raise InstallArtifactError(
             "OpenAI marketplace plugin skill bytes differ from standalone skill bytes"
         )
-    runtime_by_path = {
-        entry["path"]: standalone_skill_files[entry["path"]]
-        for entry in runtime_manifest["files"]
-    }
-    for record in _chatgpt_knowledge_records(runtime_manifest["files"]):
-        if chatgpt_files[record["archive_path"]] != runtime_by_path[
-            record["source_path"]
-        ]:
+    for record in _chatgpt_knowledge_records(
+        runtime_manifest["files"], runtime_by_path
+    ):
+        source_paths = record["source_paths"]
+        expected_content = (
+            runtime_by_path[source_paths[0]]
+            if len(source_paths) == 1
+            else _chatgpt_workspace_template_bundle_bytes(
+                source_paths, runtime_by_path
+            )
+        )
+        if chatgpt_files[record["archive_path"]] != expected_content:
             raise InstallArtifactError(
-                "ChatGPT Knowledge bytes differ from standalone runtime bytes: "
-                f"{record['source_path']}"
+                "ChatGPT Knowledge bytes differ from the deterministic runtime "
+                f"source mapping: {', '.join(source_paths)}"
             )
 
     artifacts = _require_keys(

@@ -543,13 +543,52 @@ class InstallArtifactTests(unittest.TestCase):
                 / "runtime-manifest.json"
             ).read_text(encoding="utf-8")
         )
-        knowledge = [
+        builder = load_module(
+            f"install_builder_inventory_{id(self)}", INSTALL_BUILDER
+        )
+        runtime_by_path = {
+            path: (
+                REPOSITORY_ROOT / "skills" / "strategic-advisor" / path
+            ).read_bytes()
+            for path in allowlist["include"]
+        }
+        runtime_files = [
+            {
+                "path": path,
+                "sha256": sha256_bytes(runtime_by_path[path]),
+                "size_bytes": len(runtime_by_path[path]),
+            }
+            for path in allowlist["include"]
+        ]
+        records = builder._chatgpt_knowledge_records(
+            runtime_files, runtime_by_path
+        )
+        self.assertEqual(len(records), 16)
+        self.assertLessEqual(len(records), builder.CHATGPT_KNOWLEDGE_LIMIT)
+        self.assertEqual(
+            len({record["upload_name"] for record in records}), len(records)
+        )
+
+        bundle = next(
+            record
+            for record in records
+            if record["upload_name"]
+            == builder.CHATGPT_WORKSPACE_TEMPLATE_BUNDLE
+        )
+        expected_templates = sorted(
             path
             for path in allowlist["include"]
-            if path not in {"SKILL.md", "agents/openai.yaml"}
-        ]
-        self.assertEqual(len(knowledge), 19)
-        self.assertEqual(len({Path(path).name for path in knowledge}), 19)
+            if path.startswith(builder.CHATGPT_WORKSPACE_TEMPLATE_PREFIX)
+        )
+        self.assertEqual(bundle["source_paths"], expected_templates)
+        bundle_bytes = builder._chatgpt_workspace_template_bundle_bytes(
+            bundle["source_paths"], runtime_by_path
+        )
+        self.assertEqual(bundle["sha256"], sha256_bytes(bundle_bytes))
+        self.assertEqual(bundle["size_bytes"], len(bundle_bytes))
+        for path in expected_templates:
+            self.assertIn(f"## `{path}`\n".encode("utf-8"), bundle_bytes)
+            self.assertIn(runtime_by_path[path], bundle_bytes)
 
     def test_root_license_is_mandatory_exact_and_not_substitutable(self) -> None:
         license_path = self.source_root / "LICENSE"

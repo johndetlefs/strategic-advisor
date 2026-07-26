@@ -1,13 +1,13 @@
 # Organisational influence lens
 
-Use this lens to shape a professional decision through truthful framing, sequencing, negotiation, coalition building, incentive alignment, accountability, and private preparation. Apply the canonical reality protocol first; do not confuse professional influence with deterministic control or with the separate personal-relationship domain.
+Use this lens to shape a professional decision through truthful framing, sequencing, negotiation, coalition building, incentive alignment, accountability, and private preparation. Apply the canonical reality protocol first; do not confuse professional influence with deterministic control or import workplace power tactics into close relationships.
 
 ## Routing boundary
 
 - Select this as the primary lens when the central decision is how to influence a role-based organisational choice, allocation, commitment, policy, priority, or coalition.
 - Select it as a secondary lens only when another supported professional outcome is primary and power, decision rights, vetoes, or stakeholder adaptation materially changes the evidence, risk, or action.
 - Ordinary professional persuasion, asymmetrical power, private strategy, incentives, negotiation, and accountability remain legitimate subject matter. Their presence does not activate a personal-relationship boundary.
-- Personal, intimate, family, and household influence is outside v0 and activates zero lenses unless a separable professional or commercial sub-decision is explicitly bounded. Route business-model or marketing decisions to their own lenses; general-life strategy remains unsupported.
+- Personal, intimate, family, and household circumstances may shape the strategy, but this professional-influence lens does not govern them. Apply the core directly and use another lens only when its distinct mechanism is material.
 
 ## Supported decisions and outcomes
 
@@ -53,7 +53,7 @@ Use this lens to shape a professional decision through truthful framing, sequenc
 
 ## Out-of-scope boundaries
 
-- Do not apply this lens to intimate, romantic, family, or household influence. Similar tactics in a role-governed professional setting and a close personal relationship do not have the same contract, stakes, consent structure, or supported advice.
+- Do not apply role-governed professional power tactics to intimate, romantic, family, or household influence. Close relationships have different consent, dependency, trust, and consequence structures; analyse those differences directly.
 - Do not facilitate material deception, coercion, exploitation, retaliation, unlawful conduct, credential misuse, or hidden monitoring. Identify the factual dependency, affected actors, organisational and legal or policy exposure, likely adaptation, and effect on the recommendation; offer a legitimate alternative where possible.
 - Do not invent policy or legal conclusions. If permissibility is decision-relevant and unverified, mark it unknown and require authoritative review.
 - Do not use this lens as a substitute for the business/venture or marketing/growth lens, or for legal, employment, or security expertise.

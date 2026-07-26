@@ -24,7 +24,7 @@ class EvalBuilderTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("PASS [EVALS_COMBINED_CURRENT]", result.stdout)
 
-    def test_unsupported_boundary_does_not_require_out_of_scope_claim_analysis(self) -> None:
+    def test_personal_boundary_uses_core_without_professional_lens(self) -> None:
         inventory = json.loads(
             (REPOSITORY_ROOT / "skills/strategic-advisor/evals/evals.json").read_text(
                 encoding="utf-8"
@@ -33,11 +33,13 @@ class EvalBuilderTests(unittest.TestCase):
         boundary = next(
             item for item in inventory["evals"] if item["id"] == "CROSS-BOUNDARY-PER-001"
         )
-        self.assertFalse(
+        self.assertTrue(
             any("One spouse" in assertion for assertion in boundary["assertions"])
         )
+        self.assertEqual(boundary["metadata"]["expected_routing"]["primary"], None)
+        self.assertFalse(boundary["metadata"]["expected_routing"]["unsupported_domain"])
         self.assertTrue(
-            any("zero professional lenses" in assertion for assertion in boundary["assertions"])
+            any("exact spouse" in assertion.lower() for assertion in boundary["assertions"])
         )
 
 

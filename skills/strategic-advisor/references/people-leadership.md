@@ -7,7 +7,7 @@ Use this lens for decisions about team or individual outcomes, role clarity, cap
 - Select this as the primary lens when the central decision concerns leading a team or managing an individual's work outcomes, development, performance, role, or accountability.
 - Select it as a secondary lens only when another supported professional decision is primary and team capability, operating conditions, or leadership consequences materially change the evidence, risk, or action.
 - Do not route a manager's own advancement question here unless a distinct team decision is material; use the career lens for the personal career outcome.
-- Personal, intimate, family, household, and general-life requests activate zero lenses unless a supported people-leadership sub-decision is separable and explicitly bounded. Route business-model and marketing decisions to their own lenses.
+- Personal, intimate, family, household, and whole-life circumstances may shape a leadership decision, but this lens governs role-based leadership mechanisms only. Apply the core directly to the wider circumstances.
 
 ## Supported decisions and outcomes
 
@@ -57,7 +57,7 @@ Use this lens for decisions about team or individual outcomes, role clarity, cap
 - Do not diagnose medical, psychological, neurodevelopmental, or personality conditions; do not infer protected or private characteristics.
 - Do not provide jurisdiction-specific employment, legal, clinical, or safety conclusions without authoritative current evidence.
 - Do not facilitate material deception, coercion, exploitation, retaliation, credential misuse, or hidden monitoring. Name the conduct and use legitimate evidence, authority, and process.
-- Do not apply managerial optimisation to intimate, family, or household relationships, even when one person describes goals, incentives, or accountability.
+- Do not apply managerial optimisation to intimate, family, or household relationships. Analyse their distinct consent, care, trust, dependency, and autonomy conditions directly.
 - Do not claim a performance outcome proves character, motive, future compliance, or general worth.
 
 ## Readiness implications

@@ -42,11 +42,15 @@ CORE_REFERENCES = (
     "references/boundaries.md",
     "references/response-contract.md",
     "references/conversational-strategy.md",
+    "references/context-policy.md",
     "references/strategy-workspace.md",
 )
 WORKSPACE_RUNTIME_FILES = (
     "workspace-templates/WORKSPACE.md",
+    "workspace-templates/PROFILE.md",
+    "workspace-templates/OBJECTIVES.md",
     "workspace-templates/PORTFOLIO.md",
+    "workspace-templates/CONTEXTS.md",
     "workspace-templates/CLAIMS.md",
     "workspace-templates/DECISIONS.md",
     "workspace-templates/CHANGELOG.md",
@@ -57,11 +61,27 @@ WORKSPACE_REQUIRED_HEADINGS = {
         "authority",
         "workspace scope",
         "approved context",
+        "linked detail",
         "operating notes",
+    },
+    "workspace-templates/PROFILE.md": {
+        "personal profile",
+        "durable facts",
+        "review notes",
+    },
+    "workspace-templates/OBJECTIVES.md": {
+        "objectives",
+        "objective register",
+        "review notes",
     },
     "workspace-templates/PORTFOLIO.md": {
         "portfolio",
         "portfolio roles",
+        "review notes",
+    },
+    "workspace-templates/CONTEXTS.md": {
+        "recurring contexts",
+        "context register",
         "review notes",
     },
     "workspace-templates/CLAIMS.md": {
@@ -1258,11 +1278,11 @@ def check_lens_case_inventory(root: Path) -> list[Diagnostic]:
                             relative,
                         )
                     )
-            elif primary not in SUPPORTED_LENSES:
+            elif not (primary in SUPPORTED_LENSES or (primary is None and lens == "core")):
                 failures.append(
                     diagnostic(
                         "EVALS_ROUTING_INVALID",
-                        f"{case_id} needs exactly one supported primary lens.",
+                        f"{case_id} needs one supported primary lens or an explicit core-only route.",
                         relative,
                     )
                 )
@@ -1908,7 +1928,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
             / "evidence"
             / "evaluations"
             / "drift-smoke"
-            / "run-001"
+            / "run-002"
             / "result.json"
         )
         drift_result, drift_result_failures = load_json_object(drift_result_path, root)
@@ -1954,7 +1974,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "executable_case_count": combined_case_count,
             "trigger_query_count": trigger_query_count,
             "bounded_drift_smoke": "pass",
-            "bounded_drift_smoke_run": "run-001",
+            "bounded_drift_smoke_run": "run-002",
             "bounded_drift_smoke_authority_commit": (
                 drift_result.get("authority_commit", "")
                 if isinstance(drift_result, dict)
@@ -1986,7 +2006,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
             f"Executable synthetic inventory: **{combined_case_count} cases**",
             f"Trigger inventory: **{trigger_query_count} queries**",
             "Bounded current-source drift smoke: **Pass**",
-            "Drift-smoke execution: **Codex CLI / gpt-5.6-sol / run-001**",
+            "Drift-smoke execution: **Codex CLI / gpt-5.6-sol / run-002**",
         )
         if not status_markdown.is_file() or any(
             line not in read_text(status_markdown) for line in required_status_lines
@@ -2003,6 +2023,9 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "drift-smoke/run-001/result.json",
             "drift-smoke/run-001/runtime-package-manifest.json",
             "drift-smoke/run-001/source-access.json",
+            "drift-smoke/run-002/result.json",
+            "drift-smoke/run-002/runtime-package-manifest.json",
+            "drift-smoke/run-002/source-access.json",
         }
         actual_evidence = {
             path.relative_to(evaluation_evidence_root).as_posix()

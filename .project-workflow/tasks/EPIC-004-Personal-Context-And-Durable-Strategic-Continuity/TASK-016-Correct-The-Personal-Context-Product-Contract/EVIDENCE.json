@@ -1,0 +1,50 @@
+{
+  "task_id": "TASK-016",
+  "claims": [
+    {
+      "id": "CLM-001",
+      "parent_ac": "AC1",
+      "claim": "Current product authority targets generic individual users and treats exact whole-person context as a first-class strategic input.",
+      "recipe": "external-contract-alignment",
+      "status": "pass",
+      "commit": "ca8145828535f650359210ff7b94e49a9eeaebed",
+      "timestamp": "2026-07-26T02:10:00Z",
+      "contract_artifact": "Approved EPIC-004 requirements AC1 and generic-individual product invariant",
+      "implementation_artifact": "CONSTITUTION.md, PRODUCT-CONTRACT.md, README.md, INSTALL.md, and ARCHITECTURE.md",
+      "comparison_method": "Compare every current product-facing source with the approved generic-individual and exact-context contract; scan current sources for named initial-user positioning and obsolete personal-context exclusions.",
+      "evidence_artifact": "../../../../PRODUCT-CONTRACT.md",
+      "evidence_artifact_hash": "sha256:fee83c4fa84805a3fae53836c0181631dafed0aa0ba4b8db4c3bf6b017a6c17f",
+      "invalid_substitutes": ["Historical host evidence or one private workspace"]
+    },
+    {
+      "id": "CLM-002",
+      "parent_ac": "AC2",
+      "claim": "The product contract distinguishes using personal context from specialist authority, disclosure, and external action.",
+      "recipe": "external-contract-alignment",
+      "status": "pass",
+      "commit": "ca8145828535f650359210ff7b94e49a9eeaebed",
+      "timestamp": "2026-07-26T02:10:00Z",
+      "contract_artifact": "Approved EPIC-004 requirements AC2",
+      "implementation_artifact": "PRODUCT-CONTRACT.md and ARCHITECTURE.md",
+      "comparison_method": "Review the current capability and specialist-boundary language against the approved separation of context, advice, disclosure, and action.",
+      "evidence_artifact": "../../../../PRODUCT-CONTRACT.md",
+      "evidence_artifact_hash": "sha256:fee83c4fa84805a3fae53836c0181631dafed0aa0ba4b8db4c3bf6b017a6c17f",
+      "invalid_substitutes": ["A generic privacy warning"]
+    },
+    {
+      "id": "CLM-003",
+      "parent_ac": "AC11",
+      "claim": "All seven repository validation scopes pass while the new capabilities remain implemented-not-validated rather than supported.",
+      "recipe": "external-contract-alignment",
+      "status": "pass",
+      "commit": "ca8145828535f650359210ff7b94e49a9eeaebed",
+      "timestamp": "2026-07-26T02:10:00Z",
+      "contract_artifact": "PRODUCT-CONTRACT capability-state rules and approved AC11",
+      "implementation_artifact": "Passing python3 scripts/validate.py result across skill, lenses, evals, pilots, privacy, claims, and links",
+      "comparison_method": "Run aggregate validation and confirm the structured registry has no newly supported capability.",
+      "evidence_artifact": "../../../../PRODUCT-CONTRACT.md",
+      "evidence_artifact_hash": "sha256:fee83c4fa84805a3fae53836c0181631dafed0aa0ba4b8db4c3bf6b017a6c17f",
+      "invalid_substitutes": ["Passing prose review without structured claims validation"]
+    }
+  ]
+}

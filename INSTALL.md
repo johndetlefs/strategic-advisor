@@ -8,9 +8,9 @@ environment is not required.
 
 | User and host | File | First action |
 | --- | --- | --- |
-| John — Codex | `strategic-advisor.zip` | Extract to personal `.agents/skills/` |
-| John or Christina — paid personal ChatGPT | `strategic-advisor-chatgpt.zip` | Build a Custom GPT from its Instructions and 19 Knowledge files |
-| Christina — Canva Claude Enterprise | `strategic-advisor.zip` | Confirm enterprise Skills settings, then upload unchanged |
+| Personal Codex | `strategic-advisor.zip` | Extract to personal `.agents/skills/` |
+| Paid personal ChatGPT | `strategic-advisor-chatgpt.zip` | Build a Custom GPT from its Instructions and Knowledge files |
+| Managed Claude Enterprise | `strategic-advisor.zip` | Confirm enterprise Skills settings, then upload unchanged |
 | Codex/ChatGPT desktop Work experiment | `strategic-advisor-plugin.zip` | Register the local marketplace bundle |
 
 These paths install the same canonical runtime but do not inherit one another's
@@ -43,7 +43,7 @@ This proves archive/provenance consistency and equality with the named release
 identities. It does not prove account installation, activation, advice quality,
 or publisher authenticity if every trusted reference has been replaced.
 
-## John: install in Codex
+## Install in Codex
 
 Extract `strategic-advisor.zip` so the final personal path is:
 
@@ -64,7 +64,7 @@ PROJECT_ROOT/.agents/skills/strategic-advisor/SKILL.md
 Do not use the development folder under `skills/strategic-advisor/` as an
 end-user package; it also contains evaluation authority.
 
-## John and Christina: install in paid personal ChatGPT
+## Install in paid personal ChatGPT
 
 Personal paid accounts use a **Custom GPT**. This is not a ChatGPT Personal
 Skill; Personal Skills are currently a managed-workspace feature.
@@ -72,16 +72,16 @@ Skill; Personal Skills are currently a managed-workspace feature.
 1. Extract `strategic-advisor-chatgpt.zip`.
 2. On the web, open `https://chatgpt.com/gpts/editor` and create a GPT.
 3. Copy all of `INSTRUCTIONS.md` into **Instructions**.
-4. Upload all 19 files under `KNOWLEDGE/` as **Knowledge**.
+4. Upload every file under `KNOWLEDGE/` as **Knowledge**.
 5. Apply `CONFIG.json`: name, description, starters, Web search on, Canvas on,
    Image generation off, Data Analysis off, and no Apps or Actions.
 6. Preview the fictional trigger and direct-assistance control below.
 7. Save privately first. After the check passes, choose **Share → Anyone with
    the link** when available.
 
-John can send that link to Christina for immediate use. Christina can instead
-create an independently owned copy by repeating the same seven steps with the
-same verified kit.
+The creator can share the link when the account permits it. Another user can
+instead create an independently owned copy by repeating the same seven steps
+with the same verified kit.
 
 The current owner-created early-access GPT is available at
 [Strategic Advisor in ChatGPT](https://chatgpt.com/g/g-6a632c0422688191b32d51fa147e441c-strategic-advisor).
@@ -93,7 +93,7 @@ Custom GPTs do not use saved memory, custom instructions, or previous
 conversations. Keep one coherent decision per chat and restate material current
 evidence when starting a new one.
 
-## Christina: install in Canva Claude Enterprise
+## Install in managed Claude Enterprise
 
 Before downloading or uploading anything, check:
 
@@ -101,7 +101,7 @@ Before downloading or uploading anything, check:
 2. **Organization settings → Skills:** Code execution and file creation is
    enabled.
 
-If Christina cannot see those settings or **Customize → Skills**, a Canva Claude
+If the user cannot see those settings or **Customize → Skills**, an organisation
 owner must enable them. Do not treat that administrator control as a package
 failure.
 
@@ -115,8 +115,8 @@ When enabled:
 6. Confirm Claude shows a visible Skill activation/source event before treating
    the path as activated.
 
-The upload is private to Christina unless her organisation separately permits
-sharing. Organisation-wide provisioning is outside this alpha.
+The upload remains subject to the organisation's account, retention, and sharing
+controls. Organisation-wide provisioning is outside this alpha.
 
 ## Fictional first-use checks
 

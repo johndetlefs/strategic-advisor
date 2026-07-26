@@ -19,7 +19,10 @@ TEMPLATES = (
 )
 FILES = {
     "WORKSPACE.md",
+    "PROFILE.md",
+    "OBJECTIVES.md",
     "PORTFOLIO.md",
+    "CONTEXTS.md",
     "CLAIMS.md",
     "DECISIONS.md",
     "CHANGELOG.md",
@@ -88,8 +91,23 @@ class StrategyWorkspaceTests(unittest.TestCase):
         )
         self.insert_row(
             workspace,
+            "PROFILE.md",
+            "| PRO-001 | Age | 52 | Changes recovery and planning horizon | Report | Synthetic fixture | 2026-07-01 | 2027-07-01 | None declared | Approved 2026-07-02 |",
+        )
+        self.insert_row(
+            workspace,
+            "OBJECTIVES.md",
+            "| OBJ-001 | Improve health and fitness | 12 months | High | Sustainable weekly cadence | Existing injury constraint | Preference | Owner statement | 2026-07-01 | 2026-10-01 | Approved 2026-07-02 |",
+        )
+        self.insert_row(
+            workspace,
             "PORTFOLIO.md",
             "| PORT-001 | Synthetic project | Test outcome | Option | One bounded test | Preference | Owner statement | 2026-07-01 | 2026-12-31 | Approved 2026-07-02 |",
+        )
+        self.insert_row(
+            workspace,
+            "CONTEXTS.md",
+            "| RCTX-001 | Person | Maya | Eight years old | Product audience for a game | Report | Synthetic fixture | 2026-07-01 | 2027-07-01 | None declared | Approved 2026-07-02 |",
         )
         self.insert_row(
             workspace,
@@ -172,6 +190,92 @@ class StrategyWorkspaceTests(unittest.TestCase):
         self.add_valid_rows(synthetic)
         result, payload = self.validate(synthetic)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(payload["status"], "valid")
+
+    def test_retention_mode_and_authority_schema_are_required(self) -> None:
+        workspace, _ = self.build()
+        path = workspace / "WORKSPACE.md"
+        text = path.read_text(encoding="utf-8")
+        text = text.replace("- Retention mode: session-only", "- Retention mode: anonymous")
+        text = text.replace("- Disclosure:", "- Sharing:")
+        path.write_text(text, encoding="utf-8")
+        result, payload = self.validate(workspace)
+        self.assertNotEqual(result.returncode, 0)
+        codes = {item["code"] for item in payload["errors"]}
+        self.assertIn("WORKSPACE_RETENTION_MODE", codes)
+        self.assertIn("WORKSPACE_AUTHORITY_SCHEMA", codes)
+
+    def test_declared_linked_detail_validates_and_undeclared_detail_fails(self) -> None:
+        workspace, _ = self.build()
+        projects = workspace / "projects"
+        projects.mkdir()
+        detail = projects / "game.md"
+        detail.write_text("# Synthetic game\n\nExact audience age: 8.\n", encoding="utf-8")
+        workspace_path = workspace / "WORKSPACE.md"
+        workspace_text = workspace_path.read_text(encoding="utf-8")
+        workspace_text = workspace_text.replace(
+            "| Link ID | Path | Purpose | Owner approval |\n"
+            "| --- | --- | --- | --- |",
+            "| Link ID | Path | Purpose | Owner approval |\n"
+            "| --- | --- | --- | --- |\n"
+            "| LINK-001 | projects/game.md | Synthetic project detail | Approved 2026-07-02 |",
+            1,
+        )
+        workspace_path.write_text(workspace_text, encoding="utf-8")
+        result, payload = self.validate(workspace)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(payload["status"], "valid")
+
+        (projects / "undeclared.md").write_text("# Undeclared\n", encoding="utf-8")
+        result, payload = self.validate(workspace)
+        self.assertNotEqual(result.returncode, 0)
+        self.assert_error(payload, "WORKSPACE_LINK_UNDECLARED")
+
+    def test_migration_copies_legacy_source_without_mutation(self) -> None:
+        source, _ = self.build("source-eight")
+        for name in FILES - {
+            "WORKSPACE.md",
+            "PORTFOLIO.md",
+            "CLAIMS.md",
+            "DECISIONS.md",
+            "CHANGELOG.md",
+        }:
+            (source / name).unlink()
+        workspace_path = source / "WORKSPACE.md"
+        legacy_text = workspace_path.read_text(encoding="utf-8")
+        legacy_text = legacy_text.replace("- Retention mode: session-only\n", "")
+        legacy_text = legacy_text.replace("- Durable boundary:\n", "")
+        legacy_text = legacy_text.replace(
+            "## Linked detail\n\n"
+            "| Link ID | Path | Purpose | Owner approval |\n"
+            "| --- | --- | --- | --- |\n\n",
+            "",
+        )
+        workspace_path.write_text(legacy_text, encoding="utf-8")
+        before = {
+            path.name: path.read_bytes()
+            for path in source.iterdir()
+        }
+        destination = self.base / "migrated"
+        result = self.run_tool(
+            "migrate",
+            "--source",
+            str(source),
+            "--destination",
+            str(destination),
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual(set(path.name for path in destination.iterdir()), FILES)
+        self.assertEqual(
+            before,
+            {path.name: path.read_bytes() for path in source.iterdir()},
+        )
+        validate_result, payload = self.validate(destination)
+        self.assertEqual(
+            validate_result.returncode,
+            0,
+            validate_result.stdout + validate_result.stderr,
+        )
         self.assertEqual(payload["status"], "valid")
 
     def test_missing_and_extra_files_fail(self) -> None:

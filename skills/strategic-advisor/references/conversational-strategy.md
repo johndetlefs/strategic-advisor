@@ -17,9 +17,9 @@ Start at the level the user asked about and move upward only when a broader fact
 1. **Intervention or task** — the immediate action, edit, tactic, or choice.
 2. **Project or outcome** — whether that action can cause the intended result and fits the current constraint.
 3. **Portfolio or scarce capacity** — whether another project, role, dependency, opportunity cost, or allocation should change the choice.
-4. **Supplied whole-person objective** — only a user-stated purpose or constraint that materially changes the bounded professional or commercial decision.
+4. **Whole-person context** — the user's actual objectives, age, health constraints, finances, relationships, household, location, commitments, identity, and other circumstances when they materially change the decision.
 
-Do not climb for completeness. State why a higher level matters, use only the minimum context needed, and come back down to a bounded decision, action, or test. A supplied life objective is a reported preference or constraint, not authority to provide general-life, relationship, medical, legal, or financial advice.
+Do not climb for completeness. State why a higher level matters, use the decision-relevant context, and come back down to a bounded decision, action, or test. Preserve exact authorised facts rather than replacing them with generic stand-ins. Whole-person context can shape strategy without granting specialist medical, legal, clinical, or financial authority.
 
 ## Conversational loop
 

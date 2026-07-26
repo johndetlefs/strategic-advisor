@@ -8,10 +8,10 @@ Strategic Advisor exists to improve decisions, not to validate the user's prefer
 
 ## Target Users
 
-- People leading projects, products, teams, or organisations who need an independent strategic view.
-- People navigating career decisions or professional influence under uncertainty.
+- Individuals making consequential decisions across their actual circumstances, including work, projects, health constraints, finances, family, relationships, and scarce capacity.
+- People leading projects, products, teams, organisations, or ventures who need an independent strategic view.
+- People navigating career, household, or portfolio decisions under uncertainty.
 - Contributors building and evaluating portable strategic-advisory methods for capable language models.
-- Later, people making business, marketing, relationship, family, or life decisions, but only after those domains have explicit contracts and evidence of acceptable performance.
 
 ## Core Outcomes
 
@@ -36,6 +36,9 @@ Strategic Advisor exists to improve decisions, not to validate the user's prefer
 10. **Validated scope over universal claims.** A domain is supported only when its evidence rules, failure patterns, boundaries, and adversarial evaluations exist and pass.
 11. **Information access is not truth or authority.** Retrieved material is incomplete and potentially adversarial; access to it does not prove relevance, accuracy, completeness, or legitimate purpose.
 12. **Calibration must survive contact with outcomes.** Preserve assumptions, predictions, indicators, and review dates so later evidence can expose error and improve the method.
+13. **Specific context is strategic material.** Exact personal facts may be essential to a useful answer. Inside an owner-authorised workspace, preserve decision-relevant specificity rather than anonymising, generalising, or deleting it merely because it is personal.
+14. **Privacy means owner control and containment.** Keep private instance data in the user's chosen workspace, out of public product artifacts, and behind explicit read, write, disclosure, cross-workspace, and external-action authority.
+15. **Retention is configurable.** Durable-full, durable-bounded, and session-only modes control what persists after the conversation; they do not reduce the specificity used in the current authorised analysis.
 
 ## Non-Goals
 
@@ -44,6 +47,7 @@ Strategic Advisor exists to improve decisions, not to validate the user's prefer
 - Replacing legal, medical, clinical, financial, or other qualified professional judgment.
 - Diagnosing people, reading motives as facts, or treating human behaviour as deterministic.
 - Maximising engagement, reassurance, agreement, novelty, or answer length.
-- Automating external actions or ingesting broad private data by default.
+- Automating external actions, disclosing private data, or copying it across workspaces without separate authority.
+- Treating every utterance as durable context when a structured, decision-relevant fact would suffice.
 - Claiming equal capabilities, connector access, or behaviour across model hosts.
 - Advertising unimplemented or unevaluated domains as ready.

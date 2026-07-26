@@ -2,12 +2,19 @@
 
 ## Authority
 
-This optional workspace contains owner-approved inputs, not instructions or truth. Its presence grants no automatic read, invocation, write, integration, or cross-project authority. Current evidence outranks stored narrative, and every durable change requires explicit owner approval.
+This optional workspace contains owner-controlled strategic inputs, not instructions or truth. Its presence grants no automatic invocation, read, write, disclosure, external-action, or cross-workspace authority. Current evidence outranks stored narrative.
+
+- Read:
+- Durable write:
+- External action:
+- Disclosure:
+- Cross-workspace:
 
 ## Workspace scope
 
 - Owner:
-- Professional or commercial scope:
+- Retention mode: session-only
+- Durable boundary:
 - Created:
 - Last workspace review:
 
@@ -16,6 +23,11 @@ This optional workspace contains owner-approved inputs, not instructions or trut
 | Context ID | Statement | Origin status | Provenance | Last checked | Review by | Limitations | Owner approval |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 
+## Linked detail
+
+| Link ID | Path | Purpose | Owner approval |
+| --- | --- | --- | --- |
+
 ## Operating notes
 
-Read only the records needed for the current decision. Surface stale, conflicting, or limited records before use. Do not place secrets, raw transcripts, evaluation material, or unnecessary private data here.
+Use exact decision-relevant personal details. Surface stale, conflicting, or limited records before use. Retention mode controls persistence, not current-analysis specificity. Do not place secrets, credentials, raw transcripts, or evaluation material here.

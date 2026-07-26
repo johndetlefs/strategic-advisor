@@ -11,6 +11,7 @@
     "references/boundaries.md",
     "references/response-contract.md",
     "references/conversational-strategy.md",
+    "references/context-policy.md",
     "references/strategy-workspace.md",
     "references/project-product.md",
     "references/career.md",
@@ -19,7 +20,10 @@
     "references/business-venture.md",
     "references/marketing-growth.md",
     "workspace-templates/WORKSPACE.md",
+    "workspace-templates/PROFILE.md",
+    "workspace-templates/OBJECTIVES.md",
     "workspace-templates/PORTFOLIO.md",
+    "workspace-templates/CONTEXTS.md",
     "workspace-templates/CLAIMS.md",
     "workspace-templates/DECISIONS.md",
     "workspace-templates/CHANGELOG.md"

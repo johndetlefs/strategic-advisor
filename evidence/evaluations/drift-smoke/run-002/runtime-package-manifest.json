@@ -1,0 +1,138 @@
+{
+  "file_count": 25,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "06a39f651957bbd8a61837e748f88180793818b0e56b79ddafa55413120e29ba",
+      "size_bytes": 7113
+    },
+    {
+      "path": "agents/openai.yaml",
+      "sha256": "2f43e2f3234716b244a7e41faf49854e65dfb1e2280d78f86b1cbdec3fb5b55b",
+      "size_bytes": 242
+    },
+    {
+      "path": "references/action-policy.md",
+      "sha256": "e71267249de8ddb280c92cd20b203a5c8a145c584a2e8ddf500a8cf3628f8369",
+      "size_bytes": 2325
+    },
+    {
+      "path": "references/boundaries.md",
+      "sha256": "e806feb4fa266803cd12976b7b335a51c12f917acd580edce4d0958cd39ec213",
+      "size_bytes": 2773
+    },
+    {
+      "path": "references/business-venture.md",
+      "sha256": "bc8175056595b9c634732bd37b0f888f37989cfce1ec23b12728ce21ff985a79",
+      "size_bytes": 6449
+    },
+    {
+      "path": "references/career.md",
+      "sha256": "61ed321ecfb105ff6c8db921c252d9d9830940c3ad1c062174ce1ecd53681c37",
+      "size_bytes": 7560
+    },
+    {
+      "path": "references/competing-worlds.md",
+      "sha256": "243a7b6b022217b29a927b5ce00101912f559e777ddff429144b851e3fff8fe4",
+      "size_bytes": 1771
+    },
+    {
+      "path": "references/context-policy.md",
+      "sha256": "8166d90274ff40a2fa104d5f993348593ca03624fcede1cf516c5477cb4fc5db",
+      "size_bytes": 4273
+    },
+    {
+      "path": "references/conversational-strategy.md",
+      "sha256": "0348ffa75fd8bed5de5e27d715a4d93ef7adcb16db0fd37b700c6f387122ed06",
+      "size_bytes": 4406
+    },
+    {
+      "path": "references/evidence.md",
+      "sha256": "87216b90c09c6790bf38c1bca9beb93ef9313680e1cbf9c2c8818c66819556df",
+      "size_bytes": 3751
+    },
+    {
+      "path": "references/marketing-growth.md",
+      "sha256": "337e9daaa470ed9723245b547f3b8d089771cc51a11eb2a64d81488e1a238172",
+      "size_bytes": 6331
+    },
+    {
+      "path": "references/organizational-influence.md",
+      "sha256": "50baeef98d11985f0f3401a4b48c47f34cf7c5e29c79f39be87be20ff370a481",
+      "size_bytes": 8323
+    },
+    {
+      "path": "references/people-leadership.md",
+      "sha256": "601129a909460469b539231c4d8d02a637226e37d83206e94339319ce52c9151",
+      "size_bytes": 7828
+    },
+    {
+      "path": "references/project-product.md",
+      "sha256": "24cc98f9f07e1107808f8f1dc78f235df1f1bf9a216f574fa04df3e70c167fda",
+      "size_bytes": 7155
+    },
+    {
+      "path": "references/readiness.md",
+      "sha256": "6203094d47a149a7b7f8ecff1f0e6751cde19e1d7960cadb25281f41be9685b9",
+      "size_bytes": 2770
+    },
+    {
+      "path": "references/response-contract.md",
+      "sha256": "6c51b55e6a902a1aa62d8b0d19ebb008f54babe26976960cd98311badb9385d1",
+      "size_bytes": 2701
+    },
+    {
+      "path": "references/strategy-workspace.md",
+      "sha256": "79ded88eefd61c9faed287b06bafee8ed1a7ab8fa7fd672122b3ac8f0bfc4ab3",
+      "size_bytes": 3997
+    },
+    {
+      "path": "workspace-templates/CHANGELOG.md",
+      "sha256": "4990663aae4a59beb170b3a2986509d1f226e532e7b8f05cfa8d719d48908baa",
+      "size_bytes": 378
+    },
+    {
+      "path": "workspace-templates/CLAIMS.md",
+      "sha256": "502cd7aebfb876f463e5c0cf29b1708a6379daecdb905db1b22ed0dcb25bf8c7",
+      "size_bytes": 505
+    },
+    {
+      "path": "workspace-templates/CONTEXTS.md",
+      "sha256": "fbe8d54b814907571009c7ff5bb267bc30132fd704877ad9609ba168b61980cf",
+      "size_bytes": 449
+    },
+    {
+      "path": "workspace-templates/DECISIONS.md",
+      "sha256": "e2bbe67b5b1e1e1fe08049de4c166fef25f714fcb38f8714bc65fd25202d1bfa",
+      "size_bytes": 385
+    },
+    {
+      "path": "workspace-templates/OBJECTIVES.md",
+      "sha256": "55c6d1df7e7f8535a34060218d00c99be514c49c93c019e0494f0cfd2500c0d3",
+      "size_bytes": 413
+    },
+    {
+      "path": "workspace-templates/PORTFOLIO.md",
+      "sha256": "52c60f3e7e131281fa499b8c60d6e79421d27ce27052234774373fce172bf77c",
+      "size_bytes": 447
+    },
+    {
+      "path": "workspace-templates/PROFILE.md",
+      "sha256": "51d90612c1e3575e910e3ef4158ad9a6463cfbfa73f7dcb539c7d57d9969c3fc",
+      "size_bytes": 444
+    },
+    {
+      "path": "workspace-templates/WORKSPACE.md",
+      "sha256": "77173f15f97b36d312abf8811773ce2d7899973169ba9ffb1d56c490777ace18",
+      "size_bytes": 1042
+    }
+  ],
+  "identity_algorithm": "sha256-canonical-json-v1",
+  "package_identity_sha256": "df033171c48e50732336e75f1a17776f29157619ba1ce53a2c2d7a40bbf50cf2",
+  "package_root": "skills/strategic-advisor",
+  "schema_version": 1,
+  "source_allowlist": {
+    "path": "skills/strategic-advisor/runtime-manifest.json",
+    "sha256": "7a4e0c048f12f841d3df864b47bfc04bc4557b9c635e93e77f5884c963ef1098"
+  }
+}
