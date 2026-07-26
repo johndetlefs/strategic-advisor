@@ -10,9 +10,9 @@ evidence reset, and reconvergence are actually observed.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC6, AC7, AC8, and AC10 — all eight synthetic scenario
+- [x] AC1: Parent AC6, AC7, AC8, and AC10 — all eight synthetic scenario
   families have deterministic required and forbidden assertions.
-- [ ] AC2: Parent AC11 — a fresh exact-runtime multi-turn smoke passes the
+- [x] AC2: Parent AC11 — a fresh exact-runtime multi-turn smoke passes the
   frozen open-field, override, reset, and convergence criteria.
 - [ ] AC3: Parent AC12 — all repository, package, privacy, workspace,
   personal-context, and workflow regressions pass.
@@ -45,14 +45,17 @@ source/target identities, and execute full regression.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Freeze synthetic authority | Add eight fictional scenario families and required/forbidden assertions before model execution. | AC1 | Run evaluation builder and inspect coverage. | To Do |
-| 2 | Freeze runtime smoke | Bind source, package, host/model, access, turns, criteria, and failure handling. | AC2 | Validate smoke specification before outputs. | To Do |
-| 3 | Execute and review smoke | Run fresh isolated turns and review every binary criterion. | AC2 | Verify retained result and source identity. | To Do |
+| 1 | Freeze synthetic authority | Add eight fictional scenario families and required/forbidden assertions before model execution. | AC1 | Run evaluation builder and inspect coverage. | Done |
+| 2 | Freeze runtime smoke | Bind source, package, host/model, access, turns, criteria, and failure handling. | AC2 | Validate smoke specification before outputs. | Done |
+| 3 | Execute and review smoke | Run fresh isolated turns and review every binary criterion. | AC2 | Verify retained result and source identity. | Done |
 | 4 | Run complete regression | Execute tests, validators, repeated packages, privacy, and workflow checks. | AC3 | Review command outputs and hashes. | To Do |
 
 ## Parent AC Evidence
 
-- AC6, AC7, AC8, AC10, AC11, AC12: Pending retained exact-source evidence.
+- AC6, AC7, AC8, AC10, AC11: Frozen synthetic authority and exact-runtime
+  `run-003` pass against source `b9acb84` and runtime identity
+  `fbe0b4f80d3af8c373f728549c1011e3e3d70212400fc3c4e7a7166c0691eaee`.
+- AC12: Final clean-source package reproduction and closeout QA pending.
 
 ## QA & Code Review
 

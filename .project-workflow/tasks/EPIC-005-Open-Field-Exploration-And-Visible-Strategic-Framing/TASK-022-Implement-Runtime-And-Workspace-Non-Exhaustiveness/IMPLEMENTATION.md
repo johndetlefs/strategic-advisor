@@ -10,13 +10,13 @@ advisor can identify a better outside path when evidence warrants it.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC1 and AC2 — canonical runtime implements the approved search
+- [x] AC1: Parent AC1 and AC2 — canonical runtime implements the approved search
   and Explore contract.
-- [ ] AC2: Parent AC5 — workspace portfolio semantics are explicitly
+- [x] AC2: Parent AC5 — workspace portfolio semantics are explicitly
   non-exhaustive.
-- [ ] AC3: Parent AC6 — broad outcomes can compare current, adjacent, and
+- [x] AC3: Parent AC6 — broad outcomes can compare current, adjacent, and
   outside hypotheses and reject unsupported bridges.
-- [ ] AC4: Parent AC7 and AC8 — bounded requests, overrides, context, and
+- [x] AC4: Parent AC7 and AC8 — bounded requests, overrides, context, and
   non-persistence remain intact.
 
 ## Goal
@@ -44,15 +44,16 @@ authority rules, and add deterministic contract checks and synthetic authority.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Implement search boundaries | Add portfolio-bounded, open-field, and dual-track behaviour to canonical runtime. | AC1, AC3, AC4 | Inspect source and run validator. | To Do |
-| 2 | Correct portfolio semantics | State that portfolio records are current commitments and candidates, not an exhaustive set. | AC2 | Run workspace template and schema tests. | To Do |
-| 3 | Protect evidence and persistence | Keep new paths hypothetical and non-durable until evidence and authority justify capture. | AC3, AC4 | Run source-contract and workspace checks. | To Do |
-| 4 | Freeze broad/bounded cases | Add synthetic required/forbidden assertions for outcome-led widening and no-forced-novelty. | AC3, AC4 | Run evaluation inventory validation. | To Do |
+| 1 | Implement search boundaries | Add portfolio-bounded, open-field, and dual-track behaviour to canonical runtime. | AC1, AC3, AC4 | Inspect source and run validator. | Done |
+| 2 | Correct portfolio semantics | State that portfolio records are current commitments and candidates, not an exhaustive set. | AC2 | Run workspace template and schema tests. | Done |
+| 3 | Protect evidence and persistence | Keep new paths hypothetical and non-durable until evidence and authority justify capture. | AC3, AC4 | Run source-contract and workspace checks. | Done |
+| 4 | Freeze broad/bounded cases | Add synthetic required/forbidden assertions for outcome-led widening and no-forced-novelty. | AC3, AC4 | Run evaluation inventory validation. | Done |
 
 ## Parent AC Evidence
 
-- AC1, AC2, AC5, AC6, AC7, AC8: Pending source and TASK-024 behavioural
-  evidence.
+- AC1, AC2, AC5, AC6, AC7, AC8: Runtime, workspace semantics, and eight
+  synthetic scenario families implemented at `b9acb84`; exact-runtime evidence
+  remains owned by TASK-024.
 
 ## QA & Code Review
 

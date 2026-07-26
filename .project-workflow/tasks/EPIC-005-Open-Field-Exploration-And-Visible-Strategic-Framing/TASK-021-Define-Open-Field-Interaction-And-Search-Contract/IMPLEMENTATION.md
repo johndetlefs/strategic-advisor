@@ -10,14 +10,14 @@ without learning internal modes or being trapped inside my current projects.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC1 and AC2 — the canonical contract separates engagement,
+- [x] AC1: Parent AC1 and AC2 — the canonical contract separates engagement,
   altitude, search boundary, retention, and authority and makes Explore
   behavioural.
-- [ ] AC2: Parent AC3 — autonomous inference and clarification use the approved
+- [x] AC2: Parent AC3 — autonomous inference and clarification use the approved
   material-ambiguity decision rule.
-- [ ] AC3: Parent AC4 and AC8 — material framing and all three ordinary-language
+- [x] AC3: Parent AC4 and AC8 — material framing and all three ordinary-language
   overrides are explicit and preserve context.
-- [ ] AC4: Parent AC7 — bounded requests remain bounded and novelty is not
+- [x] AC4: Parent AC7 — bounded requests remain bounded and novelty is not
   forced.
 
 ## Goal
@@ -46,15 +46,15 @@ validators that fail on incomplete or conflated contracts.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Define orthogonal controls | Add engagement, altitude, search, retention, and authority separation plus Explore behaviour. | AC1 | Inspect canonical runtime and run source validation. | To Do |
-| 2 | Define inference and clarification | Encode broad/ bounded defaults and the material-ambiguity question gate. | AC2, AC4 | Run matched source-contract checks. | To Do |
-| 3 | Define visible overrides | Encode one-sentence material framing and ordinary-language boundary changes without losing context. | AC3 | Inspect response contract and run validation. | To Do |
-| 4 | Add contract regressions | Extend deterministic validators to fail incomplete, ceremonial, or novelty-forcing variants. | AC1, AC2, AC3, AC4 | Run focused and aggregate validation. | To Do |
+| 1 | Define orthogonal controls | Add engagement, altitude, search, retention, and authority separation plus Explore behaviour. | AC1 | Inspect canonical runtime and run source validation. | Done |
+| 2 | Define inference and clarification | Encode broad/ bounded defaults and the material-ambiguity question gate. | AC2, AC4 | Run matched source-contract checks. | Done |
+| 3 | Define visible overrides | Encode one-sentence material framing and ordinary-language boundary changes without losing context. | AC3 | Inspect response contract and run validation. | Done |
+| 4 | Add contract regressions | Extend deterministic validators to fail incomplete, ceremonial, or novelty-forcing variants. | AC1, AC2, AC3, AC4 | Run focused and aggregate validation. | Done |
 
 ## Parent AC Evidence
 
-- AC1, AC2, AC3, AC4, AC7, AC8: Pending implementation and TASK-024
-  behavioural evidence.
+- AC1, AC2, AC3, AC4, AC7, AC8: Canonical source and fail-closed validation
+  implemented at `b9acb84`; behavioural evidence remains owned by TASK-024.
 
 ## QA & Code Review
 

@@ -200,7 +200,7 @@ The builder refuses a dirty release source and existing output paths. Use
 
 - Deterministic package verification proves selected bytes and archive safety.
 - Exact-host evidence proves only the installation/activation actually observed.
-- The bounded Codex drift smoke proves only its five recorded public-synthetic
+- The bounded Codex drift smoke proves only its six recorded public-synthetic
   scenarios on its exact model/runtime/date.
 - No current artifact proves cross-host parity, comparative improvement,
   universal drift resistance, supported professional domains, or suitability
