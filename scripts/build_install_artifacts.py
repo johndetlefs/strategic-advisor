@@ -34,7 +34,7 @@ import build_runtime_package as runtime_package  # noqa: E402
 
 
 SKILL_NAME = "strategic-advisor"
-PLUGIN_VERSION = "0.2.0-alpha.1"
+PLUGIN_VERSION = "0.2.0-alpha.2"
 PLUGIN_DESCRIPTION = (
     "Reality-tested strategic analysis for consequential professional decisions."
 )
