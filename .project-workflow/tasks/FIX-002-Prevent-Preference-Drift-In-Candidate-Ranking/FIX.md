@@ -4,7 +4,7 @@
 
 - Fix: FIX-002
 - Title: Prevent Preference Drift In Candidate Ranking
-- Status: In Progress
+- Status: Complete
 - Created: 2026-07-26
 
 ## Report
@@ -106,17 +106,37 @@
 
 ## Verification
 
-- Delivered scope: ____
-- Verification result: ____
-- Adjacent behavior checked: ____
-- Original acceptance criteria result: Not applicable
-- Regression evidence: ____
-- Residual risk: ____
+- Delivered scope: Added the canonical three-axis ranking rule, reserved
+  economic-front-runner language for qualifying comparative evidence, added
+  DRIFT-007 and its fail-closed verifier envelope, and retained current-source
+  `run-004`.
+- Verification result: Pass. `run-004` exercised 25 actual turns in eight
+  unique fresh/resumed Codex CLI sessions against authority commit
+  `57d42e3c5b5f398a3f0c2a685b8301102d115bec` and runtime identity
+  `200a91f4a988a55450ae7859541ca12b2169a08ba192f0dbd7a8f905c903e590`;
+  all 23 precommitted criteria passed. Manual QA found no blocking or
+  non-blocking defect in the bounded change.
+- Adjacent behavior checked: The six pre-existing drift scenarios all passed
+  again; the full 126-test suite, all seven aggregate validation scopes,
+  deterministic evaluation-source check, Python compilation, diff hygiene,
+  privacy/claim gates, and workflow Doctor passed.
+- Original acceptance criteria result: Not applicable because this correction
+  refines canonical ranking language and adds regression coverage without
+  reopening an originating acceptance criterion.
+- Regression evidence: `evidence/evaluations/drift-smoke/run-004/result.json`
+  records DRIFT-007 refusing the requested economic-engine rank, preserving
+  owner fit as decision-relevant, treating rival removal only as a
+  validation-path change, restoring the rival when reopened, and ending with no
+  unsupported commercial winner.
+- Residual risk: This is maintainer-reviewed public-synthetic smoke on one exact
+  model, runtime, host, and date. It does not prove universal drift resistance,
+  comparative improvement, independent human validation, future hosted
+  behaviour, or that every owner-specific conversation will remain calibrated.
 
 ## Outcome
 
-- Disposition: Pending
-- Decision: ____
-- Closed by: ____
-- Closed date: ____
+- Disposition: Fixed
+- Decision: Separate owner fit, validation priority, and commercial readiness in canonical candidate ranking, with fresh current-source regression proof.
+- Closed by: Codex
+- Closed date: 2026-07-26
 - Promoted to: None

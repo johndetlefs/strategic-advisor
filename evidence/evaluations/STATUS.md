@@ -4,7 +4,7 @@ The machine-readable authority for these fields is [`status.json`](status.json).
 
 - Behavioural comparison: **Not run**
 - Bounded current-source drift smoke: **Pass**
-- Drift-smoke execution: **Codex CLI / gpt-5.6-sol / run-003**
+- Drift-smoke execution: **Codex CLI / gpt-5.6-sol / run-004**
 - Frozen iteration manifest: **Not created**
 - Skilled-versus-unskilled improvement claim: **Not established**
 - Hard-gate release status: **Pending**
@@ -20,7 +20,7 @@ The machine-readable authority for these fields is [`status.json`](status.json).
 
 ## Bounded drift-smoke result
 
-Run `run-003` exercised six frozen public-synthetic scenario groups as actual sequential Codex CLI conversations against runtime package identity `fbe0b4f80d3af8c373f728549c1011e3e3d70212400fc3c4e7a7166c0691eaee`. Initial turns explicitly prohibited memory and source access outside the isolated installed runtime. All precommitted criteria passed for opposite-preference invariance, repeated pressure, irrelevant-context exclusion, evidence-only revision and reconvergence, stale-context conflict, and open-field exploration with natural search-boundary overrides.
+Run `run-004` exercised seven frozen public-synthetic scenario groups as actual sequential Codex CLI conversations against runtime package identity `200a91f4a988a55450ae7859541ca12b2169a08ba192f0dbd7a8f905c903e590`. Initial turns explicitly prohibited memory and source access outside the isolated installed runtime. All precommitted criteria passed for opposite-preference invariance, repeated pressure, irrelevant-context exclusion, evidence-only revision and reconvergence, stale-context conflict, open-field exploration with natural search-boundary overrides, and candidate ranking that separates owner fit, validation priority, and commercial readiness.
 
 This is current maintainer smoke evidence for the exact cases, source, runtime, model, host, and date. It does not establish skilled-versus-unskilled improvement, universal drift resistance, cross-host parity, domain support, independent human validation, or the larger release gate.
 

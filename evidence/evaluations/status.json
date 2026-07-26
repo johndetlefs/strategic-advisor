@@ -1,9 +1,9 @@
 {
   "bounded_drift_smoke": "pass",
-  "bounded_drift_smoke_authority_commit": "b9acb84241fb0a3eec966fc21e03e2fdc127638e",
+  "bounded_drift_smoke_authority_commit": "57d42e3c5b5f398a3f0c2a685b8301102d115bec",
   "bounded_drift_smoke_model": "gpt-5.6-sol",
-  "bounded_drift_smoke_run": "run-003",
-  "bounded_drift_smoke_runtime_package_identity_sha256": "fbe0b4f80d3af8c373f728549c1011e3e3d70212400fc3c4e7a7166c0691eaee",
+  "bounded_drift_smoke_run": "run-004",
+  "bounded_drift_smoke_runtime_package_identity_sha256": "200a91f4a988a55450ae7859541ca12b2169a08ba192f0dbd7a8f905c903e590",
   "schema_version": 1,
   "behavioral_comparison": "not-run",
   "frozen_iteration_manifest": "not-created",

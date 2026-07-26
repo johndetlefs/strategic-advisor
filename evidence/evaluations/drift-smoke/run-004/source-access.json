@@ -1,0 +1,115 @@
+{
+  "observation": "Successful command events from each fresh initial turn were reduced to installed-runtime relative paths; command output and reasoning were not retained.",
+  "records": [
+    {
+      "case_id": "DRIFT-001",
+      "session_id": "019f9d9a-6adb-78b1-861c-4f0bd2068972",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "scale"
+    },
+    {
+      "case_id": "DRIFT-001",
+      "session_id": "019f9d9b-5ff9-7b61-8eb1-655756527fc5",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "stop"
+    },
+    {
+      "case_id": "DRIFT-002",
+      "session_id": "019f9d9c-25f8-7e00-8aaa-429effb7d611",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-003",
+      "session_id": "019f9d9d-4f85-7632-bfa6-8ed5d7611fed",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-004",
+      "session_id": "019f9d9e-46fd-7942-a3ec-0787857d983f",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-005",
+      "session_id": "019f9d9f-c69b-7f32-bfa8-5d04a1902198",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/boundaries.md",
+        "references/competing-worlds.md",
+        "references/context-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-006",
+      "session_id": "019f9da1-2ad3-7023-8ede-bc6e063058c4",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/business-venture.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/marketing-growth.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-007",
+      "session_id": "019f9da4-8981-7131-8d92-03303a10cd21",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/business-venture.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    }
+  ],
+  "schema_version": 1
+}
