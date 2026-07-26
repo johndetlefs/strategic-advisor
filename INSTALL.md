@@ -16,6 +16,24 @@ environment is not required.
 These paths install the same canonical runtime but do not inherit one another's
 activation or behaviour evidence.
 
+## Progressive first use
+
+Begin without a workspace:
+
+> Use Strategic Advisor. Here is the material decision, the desired outcome,
+> the evidence I have, and the constraints that could change the answer.
+
+This session-only path uses exact supplied context and requires no repository,
+connector, database, or durable setup. If repeated context or prior decisions
+later become decision-relevant, add an owner-controlled Strategy Workspace and
+explicitly authorise its location and the minimum relevant read for that
+decision.
+
+Merely opening a repository or workspace does not invoke Strategic Advisor and
+does not grant read, write, disclosure, integration, external-action, or
+cross-workspace authority. Durable retention is optional and does not make the
+stored content current evidence or truth.
+
 ## Download the current alpha
 
 Download these four files together from the current
