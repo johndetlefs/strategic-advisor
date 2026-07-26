@@ -37,6 +37,22 @@ Use the generated files described in [INSTALL.md](INSTALL.md):
 
 No repository, Strategy Workspace, connector, database, or virtual environment is required for session-only use. The optional Strategy Workspace provides portable, owner-controlled durable continuity when the user wants it.
 
+### Progressive onboarding
+
+1. **Start with one material decision.** Install the current artifact for your
+   host, invoke Strategic Advisor explicitly, and provide the exact current
+   facts and constraints that could change the decision. No repository or
+   Strategy Workspace is required.
+2. **Add continuity only when it earns its place.** If recurring context or
+   prior decisions would materially improve later work, create or name an
+   owner-controlled Strategy Workspace and authorise the minimum relevant read
+   for that decision.
+
+Workspace or repository presence never invokes Strategic Advisor by itself and
+grants no read, write, disclosure, integration, external-action, or
+cross-workspace authority. The retention mode controls persistence; each other
+authority remains separate. See the [optional workspace contract](#optional-strategy-workspace-contract).
+
 Package compatibility, successful host activation, behavioural smoke results, comparative improvement, and useful real-world outcomes are separate claims. The product remains pre-release and unsupported until the relevant gates are promoted with current structured evidence.
 
 ### Exact current host status
