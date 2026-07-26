@@ -61,11 +61,11 @@ external disclosure match the environment I chose.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC2 — context, retention, advice, action, disclosure, and
+- [x] AC1: Parent AC2 — context, retention, advice, action, disclosure, and
   cross-workspace authority are distinct.
-- [ ] AC2: Parent AC3 — exactly three modes have deterministic valid and invalid
+- [x] AC2: Parent AC3 — exactly three modes have deterministic valid and invalid
   contracts.
-- [ ] AC3: Parent AC4 — mode and authority matrix tests prevent implied action,
+- [x] AC3: Parent AC4 — mode and authority matrix tests prevent implied action,
   disclosure, copying, or operational anonymisation.
 
 ## Goal
@@ -95,25 +95,25 @@ identity or compliance system.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Define context modes | Add the canonical context-policy reference with exact retention and authority semantics for all three modes. | AC1, AC2 | Inspect the normative mode and authority tables. | To Do |
-| 2 | Route workspace behaviour | Update the canonical skill and workspace contract to consume the policy without treating account type as authority. | AC1, AC3 | Review runtime instructions for exact-context and authority separation. | To Do |
-| 3 | Validate policy contracts | Add deterministic valid/invalid fixtures and authority-matrix checks. | AC2, AC3 | Run focused workspace/policy tests and aggregate validation. | To Do |
+| 1 | Define context modes | Add the canonical context-policy reference with exact retention and authority semantics for all three modes. | AC1, AC2 | Inspect the normative mode and authority tables. | Done |
+| 2 | Route workspace behaviour | Update the canonical skill and workspace contract to consume the policy without treating account type as authority. | AC1, AC3 | Review runtime instructions for exact-context and authority separation. | Done |
+| 3 | Validate policy contracts | Add deterministic valid/invalid fixtures and authority-matrix checks. | AC2, AC3 | Run focused workspace/policy tests and aggregate validation. | Done |
 
 ## Parent AC Evidence
 
-- AC2, AC3, AC4: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.
+- AC2, AC3, AC4: Canonical policy and focused negative tests prove the three modes and separate authorities; structured proof is in `EVIDENCE.json`.
 
 ## QA & Code Review
 
-- Verdict: Pending implementation and review.
-- Evidence: Pending.
-- Findings: Pending.
+- Verdict: Pass.
+- Evidence: Mode and authority mutation tests, skill packaging, full tests, and aggregate validation pass.
+- Findings: No blocking policy ambiguity remains.
 
 ## Retro
 
-- Reusable lessons: Pending.
-- Conventions or agent assets updated: Pending.
-- Follow-up tasks: Pending.
+- Reusable lessons: Retention mode and operational authority must remain orthogonal.
+- Conventions or agent assets updated: Added canonical `context-policy.md`.
+- Follow-up tasks: None inside this child.
 
 ## Notes
 

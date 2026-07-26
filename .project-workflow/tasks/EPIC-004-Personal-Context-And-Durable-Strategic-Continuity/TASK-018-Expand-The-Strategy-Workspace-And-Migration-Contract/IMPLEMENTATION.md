@@ -61,13 +61,13 @@ flattening everything into one file or modifying my existing workspace.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC5 — deterministic eight-file scaffold accepts exact
+- [x] AC1: Parent AC5 — deterministic eight-file scaffold accepts exact
   personal values.
-- [ ] AC2: Parent AC5 — declared project/context details validate and unsafe or
+- [x] AC2: Parent AC5 — declared project/context details validate and unsafe or
   broken links fail.
-- [ ] AC3: Parent AC6 — copy-based migration preserves source bytes and exact
+- [x] AC3: Parent AC6 — copy-based migration preserves source bytes and exact
   records while producing a review report.
-- [ ] AC4: Parent AC6 and AC11 — negative leakage, secret, schema, authority,
+- [x] AC4: Parent AC6 and AC11 — negative leakage, secret, schema, authority,
   path, and extension tests plus package validation pass.
 
 ## Goal
@@ -99,26 +99,26 @@ private-data-shaped tests.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Expand the portable schema | Add profile, objective, and context indexes; update existing templates for policy and exact personal context. | AC1 | Build twice and inspect the eight-file inventory. | To Do |
-| 2 | Validate owner extensions | Permit declared project/context Markdown details and reject broken, escaping, or undeclared paths. | AC2, AC4 | Run positive and negative extension/link fixtures. | To Do |
-| 3 | Implement safe migration | Add copy-based five-to-eight-file migration with source preservation, exact-record transfer, overwrite refusal, and review report. | AC3 | Run temporary migration fixtures and compare source hashes. | To Do |
-| 4 | Preserve package integrity | Update runtime allowlist, builders, tests, and aggregate validation for the expanded generic contract. | AC4 | Run full workspace, runtime, install, aggregate, and diff checks. | To Do |
+| 1 | Expand the portable schema | Add profile, objective, and context indexes; update existing templates for policy and exact personal context. | AC1 | Build twice and inspect the eight-file inventory. | Done |
+| 2 | Validate owner extensions | Permit declared project/context Markdown details and reject broken, escaping, or undeclared paths. | AC2, AC4 | Run positive and negative extension/link fixtures. | Done |
+| 3 | Implement safe migration | Add copy-based five-to-eight-file migration with source preservation, exact-record transfer, overwrite refusal, and review report. | AC3 | Run temporary migration fixtures and compare source hashes. | Done |
+| 4 | Preserve package integrity | Update runtime allowlist, builders, tests, and aggregate validation for the expanded generic contract. | AC4 | Run full workspace, runtime, install, aggregate, and diff checks. | Done |
 
 ## Parent AC Evidence
 
-- AC5, AC6, AC11: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.
+- AC5, AC6, AC11: Repeated build, exact-value, linked-detail, copy-migration, source-preservation, and containment tests pass; structured proof is in `EVIDENCE.json`.
 
 ## QA & Code Review
 
-- Verdict: Pending implementation and review.
-- Evidence: Pending.
-- Findings: Pending.
+- Verdict: Pass.
+- Evidence: All 15 focused workspace tests, full suite, runtime packaging, privacy, links, and aggregate validation pass.
+- Findings: No blocking schema, migration, overwrite, symlink, path, secret, or undeclared-detail issue remains.
 
 ## Retro
 
-- Reusable lessons: Pending.
-- Conventions or agent assets updated: Pending.
-- Follow-up tasks: Pending.
+- Reusable lessons: A compact root index plus declared Markdown detail preserves portability and specificity.
+- Conventions or agent assets updated: Eight-file workspace and copy migration are canonical.
+- Follow-up tasks: None inside this child.
 
 ## Notes
 

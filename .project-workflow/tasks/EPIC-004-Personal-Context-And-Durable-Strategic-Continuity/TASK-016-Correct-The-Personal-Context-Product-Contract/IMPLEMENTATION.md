@@ -62,11 +62,11 @@ details.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC1 — all current product-facing sources target generic
+- [x] AC1: Parent AC1 — all current product-facing sources target generic
   individual users and whole-person context.
-- [ ] AC2: Parent AC2 — exact context use is explicitly distinct from
+- [x] AC2: Parent AC2 — exact context use is explicitly distinct from
   specialist advice, disclosure, and action authority.
-- [ ] AC3: Parent AC11 — current positioning scan and aggregate validation pass
+- [x] AC3: Parent AC11 — current positioning scan and aggregate validation pass
   without promoting unsupported capability.
 
 ## Goal
@@ -98,25 +98,25 @@ otherwise recur.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Correct stable product authority | Update Constitution and PRODUCT-CONTRACT so generic individual use and whole-person exact context are canonical without claiming validation. | AC1, AC2 | Inspect the current mission, target users, capabilities, and limits. | To Do |
-| 2 | Align current product-facing guidance | Update README, INSTALL, ARCHITECTURE, and canonical description; remove initial-user product positioning while retaining historical evidence boundaries. | AC1, AC2 | Run the current-artifact positioning scan and review first-use paths. | To Do |
-| 3 | Prevent positioning drift | Extend deterministic claim validation where needed and run all current public-surface checks. | AC3 | Run aggregate validation, unit tests, links, and diff checks. | To Do |
+| 1 | Correct stable product authority | Update Constitution and PRODUCT-CONTRACT so generic individual use and whole-person exact context are canonical without claiming validation. | AC1, AC2 | Inspect the current mission, target users, capabilities, and limits. | Done |
+| 2 | Align current product-facing guidance | Update README, INSTALL, ARCHITECTURE, and canonical description; remove initial-user product positioning while retaining historical evidence boundaries. | AC1, AC2 | Run the current-artifact positioning scan and review first-use paths. | Done |
+| 3 | Prevent positioning drift | Extend deterministic claim validation where needed and run all current public-surface checks. | AC3 | Run aggregate validation, unit tests, links, and diff checks. | Done |
 
 ## Parent AC Evidence
 
-- AC1, AC2, AC11: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.
+- AC1, AC2, AC11: Generic current positioning, exact-context boundaries, and all seven validation scopes pass; structured proof is in `EVIDENCE.json`.
 
 ## QA & Code Review
 
-- Verdict: Pending implementation and review.
-- Evidence: Pending.
-- Findings: Pending.
+- Verdict: Pass.
+- Evidence: Product-contract comparison, current-source scan, full tests, links, and aggregate validation pass.
+- Findings: No blocking contract or claim-drift issue remains.
 
 ## Retro
 
-- Reusable lessons: Pending.
-- Conventions or agent assets updated: Pending.
-- Follow-up tasks: Pending.
+- Reusable lessons: User-instance specificity and public-product genericity are complementary boundaries.
+- Conventions or agent assets updated: Generic-individual and exact-context principles are now canonical.
+- Follow-up tasks: None inside this child.
 
 ## Notes
 

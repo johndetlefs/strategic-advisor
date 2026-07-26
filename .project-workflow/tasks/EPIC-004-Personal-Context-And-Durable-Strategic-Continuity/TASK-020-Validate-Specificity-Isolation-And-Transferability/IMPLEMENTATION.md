@@ -65,13 +65,13 @@ behaviour.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC4 and AC9 — exact-runtime mode and durable-context hard
+- [x] AC1: Parent AC4 and AC9 — exact-runtime mode and durable-context hard
   gates pass with current identities.
-- [ ] AC2: Parent AC8 and AC10 — matched specificity/relevance and specialist
+- [x] AC2: Parent AC8 and AC10 — matched specificity/relevance and specialist
   boundary results pass.
-- [ ] AC3: Parent AC11 — repeated generic runtime/install artifacts match and
+- [x] AC3: Parent AC11 — repeated generic runtime/install artifacts match and
   leakage checks pass.
-- [ ] AC4: Parent AC12 — fresh generic create/select, capture, retrieve,
+- [x] AC4: Parent AC12 — fresh generic create/select, capture, retrieve,
   correct/delete, and isolation journey passes.
 
 ## Goal
@@ -104,26 +104,26 @@ temporary workspace journey.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Freeze personal-context authority | Add synthetic cases and required/forbidden assertions for modes, specificity, relevance, persistence, correction, deletion, isolation, staleness, and specialist boundaries. | AC1, AC2 | Run deterministic authority validation and inspect case coverage. | To Do |
-| 2 | Run exact-runtime smoke | Execute fresh current-source cases, review every hard gate, and retain bounded complete result artifacts. | AC1, AC2 | Verify source/runtime/host identities and binary hard-gate results. | To Do |
-| 3 | Reproduce generic packages | Build runtime and install artifacts twice; compare hashes/inventories and run leakage checks. | AC3 | Run artifact reproduction and aggregate validation. | To Do |
-| 4 | Prove generic first use | Build a temporary workspace, select a mode, capture/retrieve an exact fact, correct or delete it, and verify isolation. | AC4 | Inspect the bounded journey artifact and rerun its deterministic verifier. | To Do |
+| 1 | Freeze personal-context authority | Add synthetic cases and required/forbidden assertions for modes, specificity, relevance, persistence, correction, deletion, isolation, staleness, and specialist boundaries. | AC1, AC2 | Run deterministic authority validation and inspect case coverage. | Done |
+| 2 | Run exact-runtime smoke | Execute fresh current-source cases, review every hard gate, and retain bounded complete result artifacts. | AC1, AC2 | Verify source/runtime/host identities and binary hard-gate results. | Done |
+| 3 | Reproduce generic packages | Build runtime and install artifacts twice; compare hashes/inventories and run leakage checks. | AC3 | Run artifact reproduction and aggregate validation. | Done |
+| 4 | Prove generic first use | Build a temporary workspace, select a mode, capture/retrieve an exact fact, correct or delete it, and verify isolation. | AC4 | Inspect the bounded journey artifact and rerun its deterministic verifier. | Done |
 
 ## Parent AC Evidence
 
-- AC4, AC8, AC9, AC10, AC11, AC12: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.
+- AC4, AC8, AC9, AC10, AC11, AC12: Run-002, 37 synthetic cases, deterministic workspace journeys, package identity, and containment checks pass; structured proof is in `EVIDENCE.json`.
 
 ## QA & Code Review
 
-- Verdict: Pending implementation and review.
-- Evidence: Pending.
-- Findings: Pending.
+- Verdict: Pass.
+- Evidence: Run-002 passes all 15 frozen actual-turn criteria; 37 cases, 15 focused workspace tests, the full suite, seven scopes, and Doctor pass.
+- Findings: The first attempted run exposed ambient memory access and was discarded. Frozen run-002 prohibited memory and non-runtime source access. No blocking issue remains.
 
 ## Retro
 
-- Reusable lessons: Pending.
-- Conventions or agent assets updated: Pending.
-- Follow-up tasks: Pending.
+- Reusable lessons: Behavioural proof must freeze source-access boundaries when a host can expose ambient memory.
+- Conventions or agent assets updated: Drift-smoke authority now carries an explicit runtime-only access rule.
+- Follow-up tasks: Real private dogfood and broader effectiveness remain separate claims.
 
 ## Notes
 

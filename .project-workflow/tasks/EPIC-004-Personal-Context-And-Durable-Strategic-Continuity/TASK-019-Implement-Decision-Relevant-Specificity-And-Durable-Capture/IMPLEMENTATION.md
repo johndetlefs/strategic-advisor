@@ -61,11 +61,11 @@ without exposing irrelevant details or pretending to be a specialist.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC7 — canonical runtime implements exact retrieval,
+- [x] AC1: Parent AC7 — canonical runtime implements exact retrieval,
   structured capture, provenance, freshness, correction, and supersession.
-- [ ] AC2: Parent AC8 — matched relevant/irrelevant detail authority forbids
+- [x] AC2: Parent AC8 — matched relevant/irrelevant detail authority forbids
   anonymisation and gratuitous recital.
-- [ ] AC3: Parent AC10 — exact whole-person context is usable while specialist
+- [x] AC3: Parent AC10 — exact whole-person context is usable while specialist
   diagnosis, prescription, transaction, and substitution remain forbidden.
 
 ## Goal
@@ -94,26 +94,26 @@ until TASK-020 executes the exact runtime.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Implement decision-relevant specificity | Update canonical skill, conversational altitude, workspace retrieval, and data boundaries to preserve exact causally relevant details. | AC1, AC2 | Inspect canonical runtime and run source-contract validation. | To Do |
-| 2 | Implement durable capture and correction | Define structured standing-authority writes, provenance, freshness, correction, supersession, deletion, and no-default-transcript behaviour. | AC1 | Review the complete durable-context lifecycle in runtime instructions. | To Do |
-| 3 | Separate context from specialist authority | Allow exact whole-person facts to shape strategy while preserving consequence-based professional boundaries. | AC3 | Validate source contracts and specialist-boundary case authority. | To Do |
-| 4 | Freeze matched behavioural authority | Add relevant/irrelevant, specificity, and specialist-boundary synthetic cases bound to current source. | AC2, AC3 | Run deterministic case inventory validation before TASK-020. | To Do |
+| 1 | Implement decision-relevant specificity | Update canonical skill, conversational altitude, workspace retrieval, and data boundaries to preserve exact causally relevant details. | AC1, AC2 | Inspect canonical runtime and run source-contract validation. | Done |
+| 2 | Implement durable capture and correction | Define structured standing-authority writes, provenance, freshness, correction, supersession, deletion, and no-default-transcript behaviour. | AC1 | Review the complete durable-context lifecycle in runtime instructions. | Done |
+| 3 | Separate context from specialist authority | Allow exact whole-person facts to shape strategy while preserving consequence-based professional boundaries. | AC3 | Validate source contracts and specialist-boundary case authority. | Done |
+| 4 | Freeze matched behavioural authority | Add relevant/irrelevant, specificity, and specialist-boundary synthetic cases bound to current source. | AC2, AC3 | Run deterministic case inventory validation before TASK-020. | Done |
 
 ## Parent AC Evidence
 
-- AC7, AC8, AC10: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.
+- AC7, AC8, AC10: Canonical lifecycle instructions and exact-context synthetic authority are current and packaged; structured proof is in `EVIDENCE.json`.
 
 ## QA & Code Review
 
-- Verdict: Pending implementation and review.
-- Evidence: Pending.
-- Findings: Pending.
+- Verdict: Pass.
+- Evidence: Runtime-source review, 37-case inventory, skill packaging, full tests, and aggregate validation pass.
+- Findings: No blocking anonymisation, transcript-retention, or specialist-authority regression remains.
 
 ## Retro
 
-- Reusable lessons: Pending.
-- Conventions or agent assets updated: Pending.
-- Follow-up tasks: Pending.
+- Reusable lessons: Relevance, not sensitivity, determines whether an authorised fact belongs in analysis.
+- Conventions or agent assets updated: Whole-person altitude and structured capture are canonical.
+- Follow-up tasks: Behavioural claims remain bounded to retained evidence.
 
 ## Notes
 
