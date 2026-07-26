@@ -479,6 +479,14 @@ class InstallArtifactTests(unittest.TestCase):
             self.assertEqual(config["apps"], [])
             self.assertEqual(config["actions"], [])
             self.assertEqual(config["knowledge_upload_order"], ["one.md"])
+            starters = config["conversation_starters"]
+            self.assertTrue(
+                any("outside my portfolio" in starter for starter in starters)
+            )
+            self.assertTrue(any("clean slate" in starter for starter in starters))
+            self.assertTrue(
+                any("within my current projects" in starter for starter in starters)
+            )
 
         self.assert_zip_policy(skill_archive)
         self.assert_zip_policy(plugin_archive)
