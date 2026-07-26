@@ -116,7 +116,7 @@ temporary workspace journey.
 ## QA & Code Review
 
 - Verdict: Pass.
-- Evidence: Run-002 passes all 15 frozen actual-turn criteria; 37 cases, 15 focused workspace tests, the full suite, seven scopes, and Doctor pass.
+- Evidence: Run-002 passes all 15 frozen actual-turn drift criteria; the six-case exact-runtime personal-context smoke passes every specificity, retention, correction, deletion, isolation, and specialist-boundary assertion; 37 cases, 15 focused workspace tests, the full suite, seven scopes, and Doctor pass.
 - Findings: The first attempted run exposed ambient memory access and was discarded. Frozen run-002 prohibited memory and non-runtime source access. No blocking issue remains.
 
 ## Retro
