@@ -9,7 +9,7 @@ flowchart LR
     A --> S["Canonical Strategic Advisor skill"]
     S --> C["Reality protocol"]
     W["Authorised private workspace"] -->|"specific context under declared authority"| C
-    C --> Q["Selective dialogue and minimum sufficient altitude"]
+    C --> Q["Engagement mode, decision altitude, and search boundary"]
     Q --> L["One primary lens; optional material secondary"]
     X["Authorised connector or tool"] -->|"bounded evidence access"| C
     E["Evaluation authority"] --> P["Allowlisted runtime package"]
@@ -24,9 +24,11 @@ The reality protocol is domain-independent: claim provenance, contradiction hand
 
 The current six lenses are project/product, career, organisational influence, people leadership, business/venture, and marketing/growth. They reuse the core rather than redefining it. The conversational contract activates that core only for a material decision, climbs from tactic to outcome, portfolio, or whole-person context only when the higher level could change the answer, then returns to a bounded move.
 
+Engagement mode, decision altitude, and option-search boundary are separate controls. Mode describes the work being done: scan, explore, decide, review, or update. Altitude describes how far up the causal and personal context stack the analysis must climb. Search boundary describes whether candidate pathways are limited to the current portfolio, drawn from an open field, or compared across both. The model infers all three by default; ordinary-language overrides remain available, and only a materially consequential ambiguity should interrupt the conversation.
+
 Exact age, relationships, household circumstances, health constraints, finances, location, commitments, and other personal facts may be necessary strategic inputs. They are not anonymised merely because they are personal. This does not turn the product into a qualified legal, medical, clinical, or financial professional: it may reason about how those facts constrain or change strategy while naming where specialist evidence or judgment is required.
 
-Durable context belongs in a user-controlled Strategy Workspace, never in the generic product package. Retention mode controls persistence, while separate authorities control reading, durable writing, external action, disclosure, and cross-workspace access. A work or shared account can therefore use session-only or bounded retention without forcing personal users to sterilise their analysis.
+Durable context belongs in a user-controlled Strategy Workspace, never in the generic product package. Retention mode controls persistence, while separate authorities control reading, durable writing, external action, disclosure, and cross-workspace access. A work or shared account can therefore use session-only or bounded retention without forcing personal users to sterilise their analysis. A workspace portfolio records current commitments and candidates but is not an exhaustive option catalogue; read authority and option generation remain separate.
 
 Professional influence is treated as real strategy. Truthful framing, private preparation, sequencing, negotiation, coalition building, incentive alignment, accountability, credible alternatives, and proportionate consequences are legitimate subjects. Stakeholders remain autonomous and adaptive; the system does not make plans depend silently on obedience, inferred motives, material deception, coercion, exploitation, or hidden monitoring.
 

@@ -69,9 +69,9 @@ CHATGPT_WORKSPACE_TEMPLATE_PREFIX = "workspace-templates/"
 CHATGPT_WORKSPACE_TEMPLATE_BUNDLE = "WORKSPACE-TEMPLATES.md"
 CHATGPT_CONVERSATION_STARTERS = [
     "Reality-test a consequential decision I am considering.",
-    "Help me distinguish what we know from what we are assuming.",
-    "Pressure-test this business or marketing plan before I commit.",
-    "Review new evidence and tell me whether the decision should change.",
+    "Compare my strongest current route with credible options outside my portfolio.",
+    "Take a clean slate while retaining my actual objectives, evidence, and constraints.",
+    "Keep this decision within my current projects and pressure-test the strongest one.",
 ]
 
 

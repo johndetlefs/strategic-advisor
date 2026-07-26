@@ -151,6 +151,22 @@ class ValidatorFixtureTests(unittest.TestCase):
         result = self.run_validator("skill")
         self.assert_named_failure(result, "SKILL_CONVERSATIONAL_CONTRACT")
 
+    def test_incomplete_search_boundary_contract_fails_skill_scope(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "references"
+            / "conversational-strategy.md"
+        )
+        text = path.read_text(encoding="utf-8")
+        text = text.replace("Dual-track", "Combined search").replace(
+            "dual-track", "combined search"
+        )
+        path.write_text(text, encoding="utf-8")
+        result = self.run_validator("skill")
+        self.assert_named_failure(result, "SKILL_SEARCH_BOUNDARY_CONTRACT")
+
     def test_missing_workspace_template_heading_fails_skill_scope(self) -> None:
         path = (
             self.fixture_root

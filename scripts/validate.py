@@ -103,10 +103,19 @@ WORKSPACE_REQUIRED_HEADINGS = {
 CONVERSATIONAL_HEADINGS = (
     "selective activation",
     "minimum sufficient altitude",
+    "search boundary",
     "conversational loop",
     "evidence-only reality reset",
     "proportionate convergence",
     "response shape",
+)
+SEARCH_BOUNDARY_CONTRACT_FRAGMENTS = (
+    "portfolio-bounded",
+    "open-field",
+    "dual-track",
+    "clean slate",
+    "current-state map",
+    "do not routinely announce mode, altitude, or boundary labels",
 )
 LENS_REFERENCES = {
     "domain.project-product": "references/project-product.md",
@@ -187,6 +196,14 @@ REQUIRED_CORE_PROBES = {
     "failure_to_revise",
     "prompt_injection",
     "high_consequence_weak_evidence",
+    "open_field_search",
+    "portfolio_bounded",
+    "dual_track",
+    "boundary_override",
+    "framing_clarification",
+    "routine_no_ceremony",
+    "no_forced_novelty",
+    "exploration_reconvergence",
 }
 EVALUATION_AUTHORITY_FILES = (
     "RUBRIC.md",
@@ -1032,7 +1049,8 @@ def check_skill(root: Path) -> list[Diagnostic]:
             )
         conversational_path = root / SKILL_ROOT / "references/conversational-strategy.md"
         if conversational_path.is_file():
-            conversational_headings = markdown_headings(read_text(conversational_path))
+            conversational_text = read_text(conversational_path)
+            conversational_headings = markdown_headings(conversational_text)
             missing_headings = [
                 heading
                 for heading in CONVERSATIONAL_HEADINGS
@@ -1044,6 +1062,21 @@ def check_skill(root: Path) -> list[Diagnostic]:
                         "SKILL_CONVERSATIONAL_CONTRACT",
                         "Conversational strategy is missing required headings: "
                         + ", ".join(missing_headings)
+                        + ".",
+                        conversational_path.relative_to(root),
+                    )
+                )
+            missing_fragments = [
+                fragment
+                for fragment in SEARCH_BOUNDARY_CONTRACT_FRAGMENTS
+                if fragment not in conversational_text.lower()
+            ]
+            if missing_fragments:
+                failures.append(
+                    diagnostic(
+                        "SKILL_SEARCH_BOUNDARY_CONTRACT",
+                        "Conversational strategy is missing search-boundary guarantees: "
+                        + ", ".join(missing_fragments)
                         + ".",
                         conversational_path.relative_to(root),
                     )
@@ -1928,7 +1961,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
             / "evidence"
             / "evaluations"
             / "drift-smoke"
-            / "run-002"
+            / "run-003"
             / "result.json"
         )
         drift_result, drift_result_failures = load_json_object(drift_result_path, root)
@@ -1974,7 +2007,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "executable_case_count": combined_case_count,
             "trigger_query_count": trigger_query_count,
             "bounded_drift_smoke": "pass",
-            "bounded_drift_smoke_run": "run-002",
+            "bounded_drift_smoke_run": "run-003",
             "bounded_drift_smoke_authority_commit": (
                 drift_result.get("authority_commit", "")
                 if isinstance(drift_result, dict)
@@ -2006,7 +2039,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
             f"Executable synthetic inventory: **{combined_case_count} cases**",
             f"Trigger inventory: **{trigger_query_count} queries**",
             "Bounded current-source drift smoke: **Pass**",
-            "Drift-smoke execution: **Codex CLI / gpt-5.6-sol / run-002**",
+            "Drift-smoke execution: **Codex CLI / gpt-5.6-sol / run-003**",
         )
         if not status_markdown.is_file() or any(
             line not in read_text(status_markdown) for line in required_status_lines
@@ -2026,6 +2059,9 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "drift-smoke/run-002/result.json",
             "drift-smoke/run-002/runtime-package-manifest.json",
             "drift-smoke/run-002/source-access.json",
+            "drift-smoke/run-003/result.json",
+            "drift-smoke/run-003/runtime-package-manifest.json",
+            "drift-smoke/run-003/source-access.json",
         }
         actual_evidence = {
             path.relative_to(evaluation_evidence_root).as_posix()

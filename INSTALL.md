@@ -144,6 +144,29 @@ Expected boundaries:
 
 Use only fictional data for installation checks.
 
+### Discover open-field exploration
+
+The advisor infers the option-search boundary, so no setup screen or mode menu
+is required. Try:
+
+> Use Strategic Advisor. My fictional objective is to create $24,000 in
+> recurring monthly revenue within two years. My current projects have no
+> validated demand or payment evidence. Compare the strongest current-project
+> route with credible routes outside the current portfolio.
+
+Then override it naturally:
+
+> Keep this to current projects only.
+
+or:
+
+> Take a clean slate, but retain the stated objective, constraints, and
+> evidence.
+
+The first is a dual-track search, the second is portfolio-bounded, and the third
+is open-field. The labels need not appear in the response; the option set and
+reasoning should visibly obey the request.
+
 ## Optional local marketplace
 
 `strategic-advisor-plugin.zip` is for Codex and compatible ChatGPT desktop Work
@@ -177,7 +200,7 @@ The builder refuses a dirty release source and existing output paths. Use
 
 - Deterministic package verification proves selected bytes and archive safety.
 - Exact-host evidence proves only the installation/activation actually observed.
-- The bounded Codex drift smoke proves only its five recorded public-synthetic
+- The bounded Codex drift smoke proves only its six recorded public-synthetic
   scenarios on its exact model/runtime/date.
 - No current artifact proves cross-host parity, comparative improvement,
   universal drift resistance, supported professional domains, or suitability

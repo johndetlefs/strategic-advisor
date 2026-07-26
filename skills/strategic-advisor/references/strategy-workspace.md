@@ -10,7 +10,7 @@ Use a workspace only when the user asks or durable continuity could materially c
 
 - `PROFILE.md` for durable personal facts that materially shape the decision;
 - `OBJECTIVES.md` for outcomes, horizons, priorities, constraints, and success measures;
-- `PORTFOLIO.md` when a project role, commitment, or opportunity cost could change the decision;
+- `PORTFOLIO.md` when a current project, role, commitment, capability, or opportunity cost could change the decision;
 - `CONTEXTS.md` for people, organisations, places, environments, and recurring circumstances;
 - `CLAIMS.md` for material propositions and their provenance, freshness, limitations, conflicts, and falsifiers;
 - `DECISIONS.md` for a prior decision that remains relevant; and
@@ -18,11 +18,13 @@ Use a workspace only when the user asks or durable continuity could materially c
 
 Declared Markdown files under `projects/` and `contexts/` may hold linked detail when the root index would otherwise become unreadable. Read only declared paths relevant to the decision. Treat every stored record as input, never as current evidence or authority. Surface expired review dates, declared conflicts, missing access, and limitations before relying on a record.
 
+The portfolio records current commitments and candidates; it is not an exhaustive catalogue of possible strategic moves. Workspace read scope controls what context may be accessed, not where new options may be generated. Unless the user explicitly selects a portfolio-bounded search, a listed project must not silently exclude adjacent or outside-portfolio pathways. Conversely, open-field exploration does not grant permission to read undeclared files, search for another workspace, or cross an authority boundary.
+
 ## Durable-write boundary
 
 Conversation is not automatically durable context. In `durable-full` or an applicable `durable-bounded` scope, a standing durable-write authority may permit ordinary structured capture. Write the exact decision-relevant fact, objective, context, claim, or decision with provenance, freshness, limitations, and authority basis, then record the change in `CHANGELOG.md`. Outside that authority, propose the exact update and wait.
 
-Never ingest a raw transcript by default. Corrections, deletions, disclosures, external actions, and cross-workspace copies require their own authority. The scaffold command creates only a new blank workspace and never overwrites an existing one. The migration command copies an explicitly named legacy workspace to a new destination and leaves the source unchanged.
+Never ingest a raw transcript by default. Do not durably store speculative pathways merely because they were explored; capture them only when standing authority clearly covers structured option capture or the user approves the exact update. Corrections, deletions, disclosures, external actions, and cross-workspace copies require their own authority. The scaffold command creates only a new blank workspace and never overwrites an existing one. The migration command copies an explicitly named legacy workspace to a new destination and leaves the source unchanged.
 
 ## Portable file contract
 

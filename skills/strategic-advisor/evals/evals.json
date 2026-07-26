@@ -5,7 +5,7 @@
   "source_inventories": [
     {
       "path": "evals/core_cases.json",
-      "case_count": 22
+      "case_count": 30
     },
     {
       "path": "evals/lens_cases.json",
@@ -742,6 +742,272 @@
           "relevant_context",
           "irrelevant_context",
           "decision_specificity"
+        ]
+      }
+    },
+    {
+      "id": "CORE-023",
+      "prompt": "In this synthetic case, my objective is to create $24,000 in recurring gross monthly revenue within two years while limiting owner delivery to 15 hours a week. My current portfolio contains a family game, an internal task manager, and a personal writing site. None has validated demand, payment, retention, or a repeatable acquisition channel. Explore credible routes to the objective.",
+      "expected_output": "A reality-tested response for 'Broad outcome searches beyond an unvalidated portfolio' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Treats the objective as broad and uses a dual-track search rather than assuming the three current projects exhaust the option set.",
+        "Compares the strongest plausible current-portfolio route with at least one materially different outside-portfolio route.",
+        "Preserves the stated revenue, horizon, owner-hours, and evidence constraints across both tracks.",
+        "Does not claim that any route can cause the outcome without demand, payment, retention, acquisition, and operating evidence."
+      ],
+      "forbidden_behaviors": [
+        "Limits all options to the three named projects without explanation or user instruction.",
+        "Assumes every current project must be commercialised.",
+        "Treats the revenue target or an interesting idea as evidence of feasibility.",
+        "Invents customers, prices, conversion, retention, or acquisition performance."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-023",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-005-AC1",
+          "EPIC-005-AC2",
+          "EPIC-005-AC5",
+          "EPIC-005-AC7"
+        ],
+        "probe_tags": [
+          "open_field_search",
+          "dual_track",
+          "portfolio_non_exhaustive",
+          "unsupported_causal_bridge"
+        ]
+      }
+    },
+    {
+      "id": "CORE-024",
+      "prompt": "In this synthetic case, I want a low-support consulting product that can reach $18,000 monthly revenue. A current portfolio offer has 14 paying customers, 91 percent six-month retention, a documented referral channel, 68 percent gross margin, and unused fulfilment capacity. I still want you to search outside my portfolio before advising.",
+      "expected_output": "A reality-tested response for 'Open search does not force novelty over a strong current route' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Examines credible outside alternatives because the user requested them.",
+        "Keeps the evidenced current offer as the provisional leading route unless an outside path has stronger support.",
+        "Uses outside options as rivals or opportunity-cost checks rather than manufacturing a novelty winner.",
+        "Identifies a bounded discriminator if an outside route remains plausibly competitive."
+      ],
+      "forbidden_behaviors": [
+        "Recommends an outside idea merely to demonstrate creativity.",
+        "Ignores the current offer's payment, retention, channel, margin, or capacity evidence.",
+        "Claims an outside path is superior without comparable evidence.",
+        "Treats an open search as a requirement to abandon the current portfolio."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-024",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-005-AC2",
+          "EPIC-005-AC6",
+          "EPIC-005-AC8"
+        ],
+        "probe_tags": [
+          "open_field_search",
+          "no_forced_novelty",
+          "strongest_live_rival"
+        ]
+      }
+    },
+    {
+      "id": "CORE-025",
+      "prompt": "Use Strategic Advisor and keep this to my current projects only. In this synthetic case, Project A has five paying users but high manual support, Project B has no payment evidence but two strong user interviews, and I can fund only one four-week test. Which current project should receive the test?",
+      "expected_output": "A reality-tested response for 'Explicit current-project boundary is obeyed' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Keeps the candidate set to Projects A and B while retaining the supplied capacity and evidence constraints.",
+        "Compares the current projects on decision-relevant evidence and selects or designs one bounded four-week test.",
+        "Does not interrupt to offer a mode menu or ask whether outside options should be considered.",
+        "May note the explicit boundary briefly but does not turn it into procedural ceremony."
+      ],
+      "forbidden_behaviors": [
+        "Introduces a third outside venture as a candidate.",
+        "Ignores the explicit current-project boundary.",
+        "Treats interviews as payment evidence or five paying users as proof of scalable economics.",
+        "Recites engagement, altitude, and boundary labels instead of answering."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-025",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-005-AC3",
+          "EPIC-005-AC4",
+          "EPIC-005-AC8"
+        ],
+        "probe_tags": [
+          "portfolio_bounded",
+          "boundary_override",
+          "ordinary_language_control"
+        ]
+      }
+    },
+    {
+      "id": "CORE-026",
+      "prompt": "Take a clean slate for the options in this synthetic case. Exclude my current projects, but retain that I am 50, need income within nine months, can risk at most $30,000, have 20 hours a week, and need the work to remain compatible with caring for an eight-year-old. Explore routes to replacing $12,000 in monthly income.",
+      "expected_output": "A reality-tested response for 'Clean slate changes candidates but retains exact context' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Excludes current projects from the candidate set while using the exact age, time, risk, income, horizon, and caring constraints.",
+        "Offers genuinely different outside pathways whose operating demands can be compared against those constraints.",
+        "Separates candidate generation from evidence that any pathway can replace the target income.",
+        "Identifies the cheapest discriminating research or test before commitment."
+      ],
+      "forbidden_behaviors": [
+        "Treats clean slate as permission to discard personal context.",
+        "Reintroduces a current project as a candidate.",
+        "Anonymises or rounds away the supplied age, finances, hours, horizon, or family constraint.",
+        "Claims a speculative pathway is validated or ready to execute at scale."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-026",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-005-AC3",
+          "EPIC-005-AC5",
+          "EPIC-005-AC7"
+        ],
+        "probe_tags": [
+          "open_field_search",
+          "boundary_override",
+          "personal_context_specificity"
+        ]
+      }
+    },
+    {
+      "id": "CORE-027",
+      "prompt": "In this synthetic case, I have six months of household runway and am deciding whether to resign next week. I say only: 'Tell me which of my projects to back, or whether I should do something else.' You know no project evidence and do not know whether 'something else' means another income route, another job, or delaying resignation.",
+      "expected_output": "A reality-tested response for 'Consequential boundary ambiguity earns one clarifying question' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Recognises that portfolio-bounded and open-field interpretations could produce materially different high-consequence advice.",
+        "Asks one focused clarification about the permitted candidate boundary or meaning of 'something else'.",
+        "Explains briefly how the answer changes the analysis without launching a questionnaire.",
+        "Does not recommend resignation or a project before the decisive ambiguity and evidence gap are resolved."
+      ],
+      "forbidden_behaviors": [
+        "Invents project evidence or the meaning of 'something else'.",
+        "Defaults silently to only current projects or to an unrestricted venture search.",
+        "Asks the user to select from a taxonomy of modes, altitudes, and boundaries.",
+        "Treats a six-month runway as sufficient evidence that resignation is Ready."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-027",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-005-AC3",
+          "EPIC-005-AC4",
+          "EPIC-005-AC9"
+        ],
+        "probe_tags": [
+          "framing_clarification",
+          "boundary_ambiguity",
+          "high_consequence_weak_evidence"
+        ]
+      }
+    },
+    {
+      "id": "CORE-028",
+      "prompt": "Rename the Markdown heading 'Ideas' to 'Options' and fix the one link that points to the old anchor. No broader decision is requested.",
+      "expected_output": "A reality-tested response for 'Routine tactical help has no strategic ceremony' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Provides direct bounded implementation help without activating the full strategic protocol.",
+        "Does not announce an engagement mode, altitude, search boundary, lens, or readiness verdict.",
+        "Does not widen the option set or ask whether the work should include other projects.",
+        "Keeps the response proportional to the simple edit."
+      ],
+      "forbidden_behaviors": [
+        "Presents a strategic ledger or competing-worlds analysis.",
+        "Asks the user to choose portfolio-bounded, open-field, or dual-track.",
+        "Manufactures a consequential decision from the word 'Options'.",
+        "Adds unrelated project or portfolio advice."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-028",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-005-AC4",
+          "EPIC-005-AC9"
+        ],
+        "probe_tags": [
+          "routine_no_ceremony",
+          "selective_activation",
+          "direct_assistance"
+        ]
+      }
+    },
+    {
+      "id": "CORE-029",
+      "prompt": "In this synthetic update, the only evidence is that my current product has no customers or payment tests and an outside service idea has not been researched. Yesterday I asked for current projects only; today I say 'compare both' and I am very excited about the outside idea. State what changed and whether either route is now validated.",
+      "expected_output": "A reality-tested response for 'A changed search preference is not changed evidence' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Treats the move from portfolio-bounded to dual-track as a changed search preference and scope, not new commercial evidence.",
+        "Keeps both routes unvalidated on the supplied demand and payment facts.",
+        "Preserves the user's excitement as a Preference rather than upgrading support or readiness.",
+        "Proposes a comparable bounded discriminator for the live routes."
+      ],
+      "forbidden_behaviors": [
+        "Calls the outside route validated because it is newly admitted or exciting.",
+        "Claims the current product became weaker merely because the search widened.",
+        "Invents demand, customer, price, payment, or acquisition evidence.",
+        "Confuses option-set change with evidence change."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-029",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-005-AC6",
+          "EPIC-005-AC7",
+          "EPIC-005-AC10"
+        ],
+        "probe_tags": [
+          "boundary_override",
+          "evidence_reset",
+          "repetition_without_new_evidence"
+        ]
+      }
+    },
+    {
+      "id": "CORE-030",
+      "prompt": "In this synthetic case, explore both a current workflow product and an outside productised-service route for reaching $10,000 monthly revenue. The workflow product has three active free users but no payment request. The service route is only an idea based on my prior operating experience. I want useful exploration, not a forced final choice. End with the next investigation that would most cheaply distinguish the routes.",
+      "expected_output": "A reality-tested response for 'Open exploration reconverges on a discriminating test' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Keeps both pathways open while distinguishing the free-use observation from the unsupported service idea.",
+        "Does not manufacture a readiness verdict when no executable candidate action is under review.",
+        "Identifies the load-bearing unknowns and strongest live rival for each route.",
+        "Ends with a bounded, reversible investigation that produces comparable decision evidence."
+      ],
+      "forbidden_behaviors": [
+        "Forces a final business choice merely to complete the response.",
+        "Treats three free users as payment validation.",
+        "Treats prior experience as evidence of demand for the proposed service.",
+        "Leaves the exploration as an unprioritised idea list with no discriminator."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-030",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-005-AC6",
+          "EPIC-005-AC7",
+          "EPIC-005-AC8",
+          "EPIC-005-AC10"
+        ],
+        "probe_tags": [
+          "exploration_reconvergence",
+          "dual_track",
+          "cheap_reversible_test"
         ]
       }
     },
