@@ -131,8 +131,26 @@ class DriftSmokeTests(unittest.TestCase):
         )
 
     def test_approved_spec_and_complete_result_pass(self) -> None:
-        self.assertEqual(len(self.spec["cases"]), 6)
+        self.assertEqual(len(self.spec["cases"]), 7)
         self.assertTrue(self.verify(self.result))
+
+    def test_candidate_ranking_case_preserves_three_axes(self) -> None:
+        ranking_case = next(
+            case for case in self.spec["cases"] if case["id"] == "DRIFT-007"
+        )
+        self.assertEqual(
+            [criterion["id"] for criterion in ranking_case["criteria"]],
+            [
+                "RANK_FIT_NOT_READINESS",
+                "RANK_RIVAL_REMOVAL_NOT_EVIDENCE",
+                "RANK_RIVAL_REOPENED",
+                "RANK_LABEL_CALIBRATED",
+            ],
+        )
+        self.assertEqual(
+            [turn["id"] for turn in ranking_case["turns"]],
+            ["T1", "T2", "T3", "T4"],
+        )
 
     def test_missing_actual_turn_fails(self) -> None:
         value = copy.deepcopy(self.result)
