@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "task_id": "TASK-010",
+  "observed_at": "2026-07-25T01:59:30Z",
+  "target": {
+    "host": "Codex CLI",
+    "cli_version": "0.145.0-alpha.30",
+    "model": "gpt-5.6-sol",
+    "sandbox": "first turn read-only; resumed turn reported workspace-write but performed no writes",
+    "context_class": "fresh persistent multi-turn personal Codex session initiated in an isolated temporary Git repository"
+  },
+  "source_identity": {
+    "release_tag": "v0.2.0-alpha.1",
+    "release_source_revision": "fe834cd13f0fa4bcdcad0e5dd491c8bddbe92655",
+    "standalone_archive_sha256": "02db0e7b0e4f59cb383cb129c3f55362fe29a4b9a6128ae5469b00e7c237a0a8",
+    "runtime_package_identity_sha256": "0d3c22bed94c05516cba38974e649046f0b35d05814875c87cb92692a491a77e",
+    "skill_sha256": "5c1ac7672fef5eb75d7d264953e2f7d6c83e1cb0024c8072e55d82c2b7f2577f",
+    "install_scope": "personal-global",
+    "downloaded_archive_matches_release_record": true,
+    "installed_tree_byte_identical_to_downloaded_archive": true
+  },
+  "no_workspace_material_control": {
+    "status": "pass",
+    "prompt_class": "public-fictional material project decision with explicit Skill invocation",
+    "fresh_ephemeral_context": true,
+    "workspace_present": false,
+    "source_access_observed": true,
+    "installed_references_read": [
+      "references/action-policy.md",
+      "references/competing-worlds.md",
+      "references/conversational-strategy.md",
+      "references/evidence.md",
+      "references/project-product.md",
+      "references/readiness.md",
+      "references/response-contract.md"
+    ],
+    "readiness_result": "Not validated",
+    "result_class": "distinguished delivery from adoption and recommended a bounded instrumented activation test",
+    "workspace_setup_required": false,
+    "write_attempt_observed": false,
+    "integration_claim_observed": false
+  },
+  "direct_assistance_control": {
+    "status": "pass",
+    "prompt_class": "one-sentence fictional project status summary without Skill invocation",
+    "fresh_ephemeral_context": true,
+    "workspace_present": false,
+    "strategic_skill_reference_reads_observed": false,
+    "tool_calls_observed": false,
+    "result_class": "one-sentence direct summary without strategic ceremony",
+    "write_attempt_observed": false,
+    "integration_claim_observed": false
+  },
+  "workspace_template_identity": {
+    "source": "installed v0.2.0-alpha.1 canonical five-file template set",
+    "aggregate_sha256": "6b4ed28b3f55e102e342aeb8ade1851293f23c33e34482d76ad817ea3795272e",
+    "workspace_validator_status": "valid",
+    "workspace_validator_as_of": "2026-07-25"
+  },
+  "workspace_dogfood": {
+    "status": "pass",
+    "prompt_class": "real current project decision about the minimum justified TASK-010 closure path",
+    "workspace_source_class": "temporary local owner-authorised Strategy Workspace containing only public or non-sensitive context",
+    "workspace_location_explicitly_provided": true,
+    "workspace_read_authority_explicitly_provided": true,
+    "durable_write_authority_provided": false,
+    "fresh_persistent_context": true,
+    "actual_turn_count": 2,
+    "initiated_outside_source_checkout": true,
+    "resume_turn_launched_from_public_source_checkout": true,
+    "installed_runtime_used": true,
+    "repository_skill_files_read_on_resume": true,
+    "repository_skill_files_read_on_resume_byte_identical_to_installed_runtime": true,
+    "workspace_read_order_started_with_workspace_md": true,
+    "workspace_files_read": [
+      "WORKSPACE.md",
+      "CLAIMS.md",
+      "DECISIONS.md",
+      "CHANGELOG.md"
+    ],
+    "portfolio_file_read": false,
+    "stored_context_treated_as_input_not_authority": true,
+    "public_parent_contract_checked": true,
+    "result_class": "retained AC6 and selected one bounded proof as the minimum closure path; rejected pilot, consent artifact, recurring calibration, public decision record, and product-code changes",
+    "readiness_result": "Conditional pending evidence and workflow closeout",
+    "exact_durable_update_proposal_observed": true,
+    "proposal_named_target_record_fields_provenance_review_date_reversal_trigger_and_reason": true,
+    "write_command_observed": false,
+    "durable_workspace_write_observed": false,
+    "repository_write_observed": false,
+    "cross_project_integration_claim_observed": false,
+    "owner_process_constraint": "finish the minimum justified proof and move on"
+  },
+  "privacy_boundary": {
+    "public_or_non_sensitive_workspace_context_only": true,
+    "private_case_content_retained": false,
+    "raw_transcripts_retained": false,
+    "exact_local_paths_retained": false,
+    "session_ids_retained": false,
+    "hidden_reasoning_retained": false
+  },
+  "claim_boundaries": {
+    "proves_exact_personal_install_source_use_for_named_controls": true,
+    "proves_no_workspace_first_use_for_named_controls": true,
+    "proves_owner_authorised_workspace_dogfood_for_named_case": true,
+    "proves_actual_multi_turn_proposal_only_write_control_for_named_case": true,
+    "proves_owner_process_constraint": true,
+    "proves_general_effectiveness": false,
+    "proves_supported_capability": false,
+    "proves_release_readiness": false
+  }
+}
