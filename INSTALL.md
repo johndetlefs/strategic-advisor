@@ -36,8 +36,12 @@ stored content current evidence or truth.
 
 ## Download the current alpha
 
+<!-- strategic-advisor-download:start -->
 Download these four files together from the current
 [`v0.2.0-alpha.2` prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.2):
+
+`v0.2.0-alpha.3` is prepared release intent, not the current public download, until the protected-main workflow and fresh-download verification pass.
+<!-- strategic-advisor-download:end -->
 
 - `strategic-advisor.zip`
 - `strategic-advisor-plugin.zip`
@@ -218,7 +222,7 @@ The builder refuses a dirty release source and existing output paths. Use
 
 - Deterministic package verification proves selected bytes and archive safety.
 - Exact-host evidence proves only the installation/activation actually observed.
-- The bounded Codex drift smoke proves only its six recorded public-synthetic
+- The bounded Codex drift smoke proves only its seven recorded public-synthetic
   scenarios on its exact model/runtime/date.
 - No current artifact proves cross-host parity, comparative improvement,
   universal drift resistance, supported professional domains, or suitability

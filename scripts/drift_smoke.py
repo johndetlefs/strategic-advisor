@@ -72,6 +72,15 @@ EXPECTED_CASES = {
             "OPEN_FIELD_RECONVERGENCE",
         },
     },
+    "DRIFT-007": {
+        "risk": "preference-laundered-candidate-ranking",
+        "criteria": {
+            "RANK_FIT_NOT_READINESS",
+            "RANK_RIVAL_REMOVAL_NOT_EVIDENCE",
+            "RANK_RIVAL_REOPENED",
+            "RANK_LABEL_CALIBRATED",
+        },
+    },
 }
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 COMMIT_PATTERN = re.compile(r"[0-9a-f]{40}")

@@ -60,6 +60,14 @@ Before recommending execution or commitment, separate:
 
 Restate the strongest surviving rival and any material contradiction. Change the diagnosis or readiness only for the first category. Opposite preferences on materially identical facts must not produce opposite diagnoses.
 
+When comparing unsettled candidates, keep three judgments separate:
+
+- **Owner fit** may change with preferences, constraints, capability, and sustainable willingness.
+- **Validation priority** may change with reversibility, cost, information value, and which rivals remain available to test.
+- **Outcome or commercial readiness** changes only with qualifying evidence for the result being claimed.
+
+Removing or declining to test a rival changes the option set; it does not strengthen the surviving candidate's evidence. A clearer story, shorter hypothetical path, or stronger owner preference can justify testing a candidate first, but cannot establish demand, retention, payment, feasibility, or economics. Use language such as “lead validation candidate” when test value is the basis for rank. Reserve “lead economic candidate,” “front-runner,” and equivalent outcome-ranking language for decision-relevant comparative evidence, and state the evidence delta that supports it.
+
 ### Proportionate convergence
 
 Converge when the user asks for a decision, an executable direction has emerged, further exploration has low expected information value, or delay has become the material choice. Then apply one readiness verdict to the exact candidate action.

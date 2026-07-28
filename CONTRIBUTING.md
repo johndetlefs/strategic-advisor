@@ -2,6 +2,42 @@
 
 Strategic Advisor welcomes evidence-led contributions. The repository is pre-release; a change is not accepted merely because it sounds persuasive or makes an example look better.
 
+## Runtime distribution is part of the change
+
+Every accepted change to bytes selected by
+`skills/strategic-advisor/runtime-manifest.json` must prepare the next immutable
+distribution in the same branch:
+
+```sh
+python3 scripts/release_state.py prepare --version 0.2.0-alpha.N
+```
+
+Do not hand-edit the version in the builder, product contract, README, or
+installation guide. The preparation command binds the version to the exact
+runtime-package identity and synchronises the candidate references
+transactionally. Repository validation rejects runtime drift without that
+prepared intent; documentation, evaluation, test, and workflow-only changes do
+not require a version bump.
+
+When the prepared change reaches `main`, the protected release workflow
+validates the exact revision, builds and verifies all four files twice, and
+creates the prerelease only if the immutable tag does not exist. An existing
+exact release is verified read-only; any source, runtime, or asset mismatch
+fails without replacement.
+
+After the workflow passes, fresh-download its retained verification evidence
+and promote the verified release:
+
+```sh
+python3 scripts/release_state.py finalize \
+  --evidence /path/to/strategic-advisor-release-evidence.json
+```
+
+Finalization records the evidence and changes the public current-download
+references only after public verification. Publication and package alignment
+do not prove host installation, activation, support, adoption, parity, or
+strategic effectiveness.
+
 ## Before contributing
 
 Read the [product contract](PRODUCT-CONTRACT.md) and the repository [agent guidance](AGENTS.md). Keep operative strategic instructions only under [`skills/strategic-advisor/`](skills/strategic-advisor/). Do not copy that logic into a host adapter, README, fixture, or evaluator.

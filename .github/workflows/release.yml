@@ -1,0 +1,119 @@
+name: Publish prepared runtime
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: strategic-advisor-runtime-release
+  cancel-in-progress: false
+
+jobs:
+  publish-prepared-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out exact revision
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.11"
+      - name: Read prepared release intent
+        id: intent
+        shell: bash
+        run: |
+          python3 scripts/release_state.py check
+          state="$(python3 -c 'import json; print(json.load(open("distribution.json"))["state"])')"
+          version="$(python3 -c 'import json; print(json.load(open("distribution.json"))["distribution"]["version"])')"
+          echo "state=$state" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Validate exact source
+        if: steps.intent.outputs.state == 'prepared'
+        run: |
+          python3 scripts/validate.py
+          python3 scripts/build_evals.py --check
+          python3 -m unittest discover -s tests -v
+      - name: Build twice and independently verify
+        if: steps.intent.outputs.state == 'prepared'
+        run: |
+          mkdir -p /tmp/strategic-advisor-build-a /tmp/strategic-advisor-build-b
+          for build in a b; do
+            python3 scripts/build_install_artifacts.py build \
+              --skill-archive "/tmp/strategic-advisor-build-$build/strategic-advisor.zip" \
+              --plugin-archive "/tmp/strategic-advisor-build-$build/strategic-advisor-plugin.zip" \
+              --chatgpt-kit "/tmp/strategic-advisor-build-$build/strategic-advisor-chatgpt.zip" \
+              --provenance-out "/tmp/strategic-advisor-build-$build/install-artifacts.json"
+            python3 scripts/build_install_artifacts.py verify \
+              --skill-archive "/tmp/strategic-advisor-build-$build/strategic-advisor.zip" \
+              --plugin-archive "/tmp/strategic-advisor-build-$build/strategic-advisor-plugin.zip" \
+              --chatgpt-kit "/tmp/strategic-advisor-build-$build/strategic-advisor-chatgpt.zip" \
+              --provenance "/tmp/strategic-advisor-build-$build/install-artifacts.json"
+          done
+          for asset in install-artifacts.json strategic-advisor.zip strategic-advisor-plugin.zip strategic-advisor-chatgpt.zip; do
+            cmp "/tmp/strategic-advisor-build-a/$asset" "/tmp/strategic-advisor-build-b/$asset"
+          done
+          python3 scripts/publish_release.py notes \
+            --build-dir /tmp/strategic-advisor-build-a \
+            --source-revision "$GITHUB_SHA" > /tmp/strategic-advisor-release-notes.md
+      - name: Inspect existing immutable release
+        if: steps.intent.outputs.state == 'prepared'
+        id: existing
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ steps.intent.outputs.version }}
+        shell: bash
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish new immutable prerelease
+        if: steps.intent.outputs.state == 'prepared' && steps.existing.outputs.exists == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ steps.intent.outputs.version }}
+        run: |
+          gh release create "$TAG" \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "Strategic Advisor $TAG" \
+            --notes-file /tmp/strategic-advisor-release-notes.md \
+            /tmp/strategic-advisor-build-a/install-artifacts.json \
+            /tmp/strategic-advisor-build-a/strategic-advisor.zip \
+            /tmp/strategic-advisor-build-a/strategic-advisor-plugin.zip \
+            /tmp/strategic-advisor-build-a/strategic-advisor-chatgpt.zip
+      - name: Fresh-download and verify public release
+        if: steps.intent.outputs.state == 'prepared'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: v${{ steps.intent.outputs.version }}
+        run: |
+          mkdir -p /tmp/strategic-advisor-public
+          gh release view "$TAG" \
+            --json tagName,isPrerelease,targetCommitish,url,publishedAt,assets \
+            > /tmp/strategic-advisor-release-metadata.json
+          gh release download "$TAG" --dir /tmp/strategic-advisor-public
+          python3 scripts/publish_release.py verify-public \
+            --metadata /tmp/strategic-advisor-release-metadata.json \
+            --download-dir /tmp/strategic-advisor-public \
+            --local-build-dir /tmp/strategic-advisor-build-a \
+            --source-revision "$GITHUB_SHA" \
+            --evidence-out /tmp/strategic-advisor-release-evidence.json
+      - name: Retain public release verification
+        if: steps.intent.outputs.state == 'prepared'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: strategic-advisor-v${{ steps.intent.outputs.version }}-release-evidence
+          path: /tmp/strategic-advisor-release-evidence.json
+          if-no-files-found: error
+          retention-days: 90

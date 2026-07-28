@@ -1,0 +1,15 @@
+{
+  "current_public": {
+    "evidence": "evidence/releases/v0.2.0-alpha.2.json",
+    "runtime_package_identity_sha256": "fbe0b4f80d3af8c373f728549c1011e3e3d70212400fc3c4e7a7166c0691eaee",
+    "source_revision": "582ff0e961c128fdab54c953b3c394543d8030d2",
+    "tag": "v0.2.0-alpha.2",
+    "version": "0.2.0-alpha.2"
+  },
+  "distribution": {
+    "runtime_package_identity_sha256": "200a91f4a988a55450ae7859541ca12b2169a08ba192f0dbd7a8f905c903e590",
+    "version": "0.2.0-alpha.3"
+  },
+  "schema_version": 1,
+  "state": "prepared"
+}
