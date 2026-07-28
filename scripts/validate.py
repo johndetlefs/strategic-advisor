@@ -21,6 +21,7 @@ from build_evals import EvalBuildError, serialized_document
 from drift_smoke import SmokeError as DriftSmokeError
 from drift_smoke import validate_result as validate_drift_smoke_result
 from drift_smoke import validate_spec as validate_drift_smoke_spec
+from release_state import ReleaseStateError, validate as validate_release_state
 
 
 SCOPES = ("skill", "lenses", "evals", "pilots", "privacy", "claims", "links")
@@ -505,6 +506,17 @@ def validate_capability_evidence(
 
 def check_claims(root: Path) -> list[Diagnostic]:
     failures: list[Diagnostic] = []
+    release_authority = None
+    try:
+        release_authority = validate_release_state(root)
+    except (OSError, ReleaseStateError) as error:
+        failures.append(
+            diagnostic(
+                "DISTRIBUTION_STATE_INVALID",
+                str(error),
+                "distribution.json",
+            )
+        )
     for relative in PUBLIC_ARTIFACTS:
         if not (root / relative).is_file():
             failures.append(
@@ -564,11 +576,39 @@ def check_claims(root: Path) -> list[Diagnostic]:
                 "PRODUCT-CONTRACT.md",
             )
         )
-    if contract.get("early_access_distribution_version") != "0.2.0-alpha.2":
+    expected_public_version = (
+        release_authority["current_public"]["version"]
+        if release_authority is not None
+        else None
+    )
+    expected_prepared_version = (
+        release_authority["distribution"]["version"]
+        if release_authority is not None
+        and release_authority["state"] == "prepared"
+        else None
+    )
+    expected_prepared_runtime = (
+        release_authority["distribution"]["runtime_package_identity_sha256"]
+        if expected_prepared_version is not None
+        else None
+    )
+    if contract.get("early_access_distribution_version") != expected_public_version:
         failures.append(
             diagnostic(
                 "CLAIMS_PUBLIC_DRIFT",
-                "early_access_distribution_version must match the current pre-release plugin artifact version.",
+                "early_access_distribution_version must match current_public in distribution.json.",
+                "PRODUCT-CONTRACT.md",
+            )
+        )
+    if (
+        contract.get("prepared_distribution_version") != expected_prepared_version
+        or contract.get("prepared_runtime_package_identity_sha256")
+        != expected_prepared_runtime
+    ):
+        failures.append(
+            diagnostic(
+                "CLAIMS_PUBLIC_DRIFT",
+                "prepared distribution fields must match distribution.json.",
                 "PRODUCT-CONTRACT.md",
             )
         )

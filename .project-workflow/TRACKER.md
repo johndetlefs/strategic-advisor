@@ -9,3 +9,4 @@
 | EPIC-005 | Open-Field Exploration And Visible Strategic Framing | Complete | `tasks/EPIC-005-Open-Field-Exploration-And-Visible-Strategic-Framing/REQUIREMENTS.md` |
 | FIX-001 | Publish Current Claude Distribution | Complete | `tasks/FIX-001-Publish-Current-Claude-Distribution/FIX.md` |
 | FIX-002 | Prevent Preference Drift In Candidate Ranking | Complete | `tasks/FIX-002-Prevent-Preference-Drift-In-Candidate-Ranking/FIX.md` |
+| TASK-025 | Automate Current Runtime Distribution | In Progress | `tasks/TASK-025-Automate-Current-Runtime-Distribution/IMPLEMENTATION.md` |

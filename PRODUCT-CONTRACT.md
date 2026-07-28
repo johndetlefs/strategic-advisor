@@ -23,6 +23,8 @@ A validated capability's `evidence` array contains objects with exactly `artifac
   "schema_version": 1,
   "release_status": "pre-release",
   "early_access_distribution_version": "0.2.0-alpha.2",
+  "prepared_distribution_version": "0.2.0-alpha.3",
+  "prepared_runtime_package_identity_sha256": "200a91f4a988a55450ae7859541ca12b2169a08ba192f0dbd7a8f905c903e590",
   "capability_promotion_enabled": false,
   "canonical_product_path": "skills/strategic-advisor/",
   "supported_installation_available": false,

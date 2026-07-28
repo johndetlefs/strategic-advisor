@@ -57,6 +57,27 @@ class ValidatorFixtureTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("SUMMARY: PASS", result.stdout)
 
+    def test_runtime_drift_requires_prepared_distribution_but_docs_do_not(self) -> None:
+        contributing = self.fixture_root / "CONTRIBUTING.md"
+        contributing.write_text(
+            contributing.read_text(encoding="utf-8") + "\nDocumentation note.\n",
+            encoding="utf-8",
+        )
+        documentation = self.run_validator()
+        self.assertEqual(
+            documentation.returncode,
+            0,
+            documentation.stdout + documentation.stderr,
+        )
+        skill = self.fixture_root / "skills" / "strategic-advisor" / "SKILL.md"
+        skill.write_text(
+            skill.read_text(encoding="utf-8") + "\nUnprepared runtime drift.\n",
+            encoding="utf-8",
+        )
+        runtime = self.run_validator("claims")
+        self.assert_named_failure(runtime, "DISTRIBUTION_STATE_INVALID")
+        self.assertIn("canonical runtime bytes do not match", runtime.stdout)
+
     def test_private_case_and_secret_fixture_fails_privacy_scope(self) -> None:
         token = "gh" + "p_" + ("A" * 32)
         private_label = "PRIVATE_" + "CASE_DATA"

@@ -31,10 +31,10 @@ if str(SCRIPT_DIRECTORY) not in sys.path:
     sys.path.insert(0, str(SCRIPT_DIRECTORY))
 
 import build_runtime_package as runtime_package  # noqa: E402
+import release_state  # noqa: E402
 
 
 SKILL_NAME = "strategic-advisor"
-PLUGIN_VERSION = "0.2.0-alpha.2"
 PLUGIN_DESCRIPTION = (
     "Reality-tested strategic analysis for consequential professional decisions."
 )
@@ -101,6 +101,10 @@ class SourcePackage:
     package_root_relative: PurePosixPath
     runtime_files: tuple[tuple[PurePosixPath, bytes], ...]
     runtime_manifest: dict
+    release_authority: dict
+    release_authority_relative: PurePosixPath
+    release_authority_bytes: bytes
+    distribution_version: str
     license_bytes: bytes
     license_details: dict
 
@@ -291,7 +295,7 @@ def archive_inventory(archive_bytes: bytes, roles: dict[str, str]) -> list[dict]
     return inventory
 
 
-def plugin_manifest_bytes() -> bytes:
+def plugin_manifest_bytes(version: str) -> bytes:
     """Return a parser-valid, skills-only OpenAI plugin manifest."""
 
     return runtime_package.rendered_json_bytes(
@@ -315,7 +319,7 @@ def plugin_manifest_bytes() -> bytes:
             "license": "Apache-2.0",
             "name": SKILL_NAME,
             "skills": "./skills/",
-            "version": PLUGIN_VERSION,
+            "version": version,
         }
     )
 
@@ -730,6 +734,10 @@ def _collect_source_package(source_root: Path, allowlist_path: str) -> SourcePac
         package_root_relative,
         list(runtime_files),
     )
+    release_authority, release_authority_bytes = release_state.load_authority(
+        source_root
+    )
+    release_state.validate_runtime_binding(source_root, release_authority)
     license_bytes, license_details = _load_license(source_root, runtime_files)
     return SourcePackage(
         allowlist_relative=allowlist_relative,
@@ -737,6 +745,10 @@ def _collect_source_package(source_root: Path, allowlist_path: str) -> SourcePac
         package_root_relative=package_root_relative,
         runtime_files=runtime_files,
         runtime_manifest=runtime_manifest,
+        release_authority=release_authority,
+        release_authority_relative=release_state.AUTHORITY_PATH,
+        release_authority_bytes=release_authority_bytes,
+        distribution_version=release_authority["distribution"]["version"],
         license_bytes=license_bytes,
         license_details=license_details,
     )
@@ -744,6 +756,7 @@ def _collect_source_package(source_root: Path, allowlist_path: str) -> SourcePac
 
 def _source_input_map(source: SourcePackage) -> dict[PurePosixPath, bytes]:
     inputs = {source.allowlist_relative: source.allowlist_bytes}
+    inputs[source.release_authority_relative] = source.release_authority_bytes
     for relative, content in source.runtime_files:
         path = PurePosixPath(source.package_root_relative, relative)
         existing = inputs.get(path)
@@ -802,7 +815,11 @@ def _plugin_files(source: SourcePackage) -> tuple[list[ArchiveEntry], dict[str, 
         _file_entry(
             marketplace_path, marketplace_manifest_bytes(), "marketplace-metadata"
         ),
-        _file_entry(plugin_manifest_path, plugin_manifest_bytes(), "plugin-metadata"),
+        _file_entry(
+            plugin_manifest_path,
+            plugin_manifest_bytes(source.distribution_version),
+            "plugin-metadata",
+        ),
     ]
     roles = {
         marketplace_path: "marketplace-metadata",
@@ -1050,6 +1067,8 @@ def build(
         },
         "identity_algorithm": "sha256-install-artifacts-v3",
         "license": source.license_details,
+        "distribution_authority": source.release_authority,
+        "distribution_version": source.distribution_version,
         "runtime_package": source.runtime_manifest,
         "schema_version": PROVENANCE_SCHEMA_VERSION,
         "source_revision": initial_snapshot["revision"],
@@ -1387,12 +1406,18 @@ def _verify_chatgpt_artifact_record(
         )
 
 
-def _validate_plugin_metadata(content: bytes, marketplace: bool) -> None:
+def _validate_plugin_metadata(
+    content: bytes, marketplace: bool, distribution_version: str
+) -> None:
     label = "OpenAI marketplace metadata" if marketplace else "OpenAI plugin metadata"
     parsed = _strict_json_bytes(content, label)
     if not isinstance(parsed, dict):
         raise InstallArtifactError(f"{label} must be a JSON object")
-    expected = marketplace_manifest_bytes() if marketplace else plugin_manifest_bytes()
+    expected = (
+        marketplace_manifest_bytes()
+        if marketplace
+        else plugin_manifest_bytes(distribution_version)
+    )
     if content != expected:
         raise InstallArtifactError(f"{label} is not canonical")
 
@@ -1432,10 +1457,12 @@ def _standalone_expectations(runtime_manifest: dict) -> dict[str, ExpectedArchiv
     return _runtime_expectations(runtime_manifest, SKILL_NAME)
 
 
-def _plugin_expectations(runtime_manifest: dict) -> dict[str, ExpectedArchiveFile]:
+def _plugin_expectations(
+    runtime_manifest: dict, distribution_version: str
+) -> dict[str, ExpectedArchiveFile]:
     prefix = "plugins/strategic-advisor/skills/strategic-advisor"
     expected = _runtime_expectations(runtime_manifest, prefix)
-    plugin_content = plugin_manifest_bytes()
+    plugin_content = plugin_manifest_bytes(distribution_version)
     marketplace_content = marketplace_manifest_bytes()
     expected["plugins/strategic-advisor/.codex-plugin/plugin.json"] = (
         ExpectedArchiveFile(
@@ -1574,13 +1601,21 @@ def _valid_revision(value: object) -> bool:
     )
 
 
-def _expected_git_input_records(runtime_manifest: dict) -> dict[str, tuple[str, int | None]]:
+def _expected_git_input_records(
+    runtime_manifest: dict, distribution_authority: dict
+) -> dict[str, tuple[str, int | None]]:
     allowlist = runtime_manifest["source_allowlist"]
     expected: dict[str, tuple[str, int | None]] = {
         allowlist["path"]: (allowlist["sha256"], None),
         LICENSE_PATH.as_posix(): (
             APACHE_2_0_LICENSE_SHA256,
             APACHE_2_0_LICENSE_SIZE_BYTES,
+        ),
+        release_state.AUTHORITY_PATH.as_posix(): (
+            runtime_package.sha256_bytes(
+                release_state.rendered_json_bytes(distribution_authority)
+            ),
+            len(release_state.rendered_json_bytes(distribution_authority)),
         ),
     }
     package_root = PurePosixPath(runtime_manifest["package_root"])
@@ -1596,7 +1631,9 @@ def _expected_git_input_records(runtime_manifest: dict) -> dict[str, tuple[str, 
     return expected
 
 
-def _validate_git_provenance(provenance: dict, runtime_manifest: dict) -> None:
+def _validate_git_provenance(
+    provenance: dict, runtime_manifest: dict, distribution_authority: dict
+) -> None:
     git_verification = _require_keys(
         provenance["git_source_verification"],
         {"input_files", "performed", "revision", "status_rechecked_before_write"},
@@ -1669,7 +1706,7 @@ def _validate_git_provenance(provenance: dict, runtime_manifest: dict) -> None:
         actual[path] = (record["sha256"], record["size_bytes"])
     if ordered_paths != sorted(ordered_paths):
         raise InstallArtifactError("Git input provenance is not in canonical path order")
-    expected = _expected_git_input_records(runtime_manifest)
+    expected = _expected_git_input_records(runtime_manifest, distribution_authority)
     if set(actual) != set(expected):
         raise InstallArtifactError("Git input provenance path set mismatch")
     for path, (expected_sha256, expected_size) in expected.items():
@@ -1706,6 +1743,8 @@ def verify(
             "archive_policy",
             "artifacts",
             "build_mode",
+            "distribution_authority",
+            "distribution_version",
             "git_source_verification",
             "identity_algorithm",
             "license",
@@ -1725,6 +1764,17 @@ def verify(
         raise InstallArtifactError("install provenance identity algorithm mismatch")
     if provenance["archive_policy"] != _archive_policy():
         raise InstallArtifactError("install provenance archive policy mismatch")
+    try:
+        distribution_authority = release_state.validate_authority(
+            provenance["distribution_authority"]
+        )
+    except release_state.ReleaseStateError as error:
+        raise InstallArtifactError(
+            f"install provenance distribution authority is invalid: {error}"
+        ) from error
+    distribution_version = distribution_authority["distribution"]["version"]
+    if provenance["distribution_version"] != distribution_version:
+        raise InstallArtifactError("install provenance distribution version mismatch")
     runtime_manifest = _validate_runtime_manifest_identity(
         provenance["runtime_package"]
     )
@@ -1737,7 +1787,18 @@ def verify(
         raise InstallArtifactError(
             "license provenance does not identify the canonical root Apache-2.0 LICENSE"
         )
-    _validate_git_provenance(provenance, runtime_manifest)
+    if (
+        distribution_authority["distribution"][
+            "runtime_package_identity_sha256"
+        ]
+        != runtime_manifest["package_identity_sha256"]
+    ):
+        raise InstallArtifactError(
+            "install provenance distribution runtime identity mismatch"
+        )
+    _validate_git_provenance(
+        provenance, runtime_manifest, distribution_authority
+    )
 
     skill_archive_bytes, skill_inventory, skill_files = _verify_archive(
         skill_archive,
@@ -1747,7 +1808,7 @@ def verify(
     plugin_archive_bytes, plugin_inventory, plugin_files = _verify_archive(
         plugin_archive,
         "OpenAI local marketplace",
-        _plugin_expectations(runtime_manifest),
+        _plugin_expectations(runtime_manifest, distribution_version),
     )
     skill_bytes = skill_files[f"{SKILL_NAME}/SKILL.md"]
     standalone_skill_files = {
@@ -1766,8 +1827,16 @@ def verify(
 
     plugin_manifest_path = "plugins/strategic-advisor/.codex-plugin/plugin.json"
     marketplace_path = ".agents/plugins/marketplace.json"
-    _validate_plugin_metadata(plugin_files[plugin_manifest_path], marketplace=False)
-    _validate_plugin_metadata(plugin_files[marketplace_path], marketplace=True)
+    _validate_plugin_metadata(
+        plugin_files[plugin_manifest_path],
+        marketplace=False,
+        distribution_version=distribution_version,
+    )
+    _validate_plugin_metadata(
+        plugin_files[marketplace_path],
+        marketplace=True,
+        distribution_version=distribution_version,
+    )
 
     plugin_prefix = "plugins/strategic-advisor/skills/strategic-advisor"
     _reject_consumer_visible_evaluation_content(
@@ -1991,6 +2060,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     except (
         OSError,
         InstallArtifactError,
+        release_state.ReleaseStateError,
         runtime_package.PackagingError,
         zipfile.BadZipFile,
     ) as error:

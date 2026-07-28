@@ -97,6 +97,37 @@ class InstallArtifactTests(unittest.TestCase):
         self.runtime_builder = load_module(
             f"runtime_builder_for_install_{id(self)}", RUNTIME_BUILDER
         )
+        _, runtime_manifest = self.expected_runtime()
+        fixture_version = "0.0.0-alpha.1"
+        (self.source_root / "distribution.json").write_text(
+            json.dumps(
+                {
+                    "current_public": {
+                        "evidence": (
+                            f"evidence/releases/v{fixture_version}.json"
+                        ),
+                        "runtime_package_identity_sha256": runtime_manifest[
+                            "package_identity_sha256"
+                        ],
+                        "source_revision": "1" * 40,
+                        "tag": f"v{fixture_version}",
+                        "version": fixture_version,
+                    },
+                    "distribution": {
+                        "runtime_package_identity_sha256": runtime_manifest[
+                            "package_identity_sha256"
+                        ],
+                        "version": fixture_version,
+                    },
+                    "schema_version": 1,
+                    "state": "published",
+                },
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
 
     def tearDown(self) -> None:
         self.temporary_directory.cleanup()
@@ -533,13 +564,16 @@ class InstallArtifactTests(unittest.TestCase):
         )
         self.assertIsNotNone(match)
         contract = json.loads(match.group(1))
-        builder_text = INSTALL_BUILDER.read_text(encoding="utf-8")
-        version_match = re.search(
-            r'^PLUGIN_VERSION = "([^"]+)"$', builder_text, flags=re.MULTILINE
+        authority = json.loads(
+            (REPOSITORY_ROOT / "distribution.json").read_text(encoding="utf-8")
         )
-        self.assertIsNotNone(version_match)
         self.assertEqual(
-            version_match.group(1), contract["early_access_distribution_version"]
+            authority["current_public"]["version"],
+            contract["early_access_distribution_version"],
+        )
+        self.assertEqual(
+            authority["distribution"]["version"],
+            contract["prepared_distribution_version"],
         )
 
     def test_current_runtime_fits_chatgpt_knowledge_inventory(self) -> None:
@@ -683,6 +717,7 @@ class InstallArtifactTests(unittest.TestCase):
             sorted(
                 [
                     "LICENSE",
+                    "distribution.json",
                     "skills/strategic-advisor/SKILL.md",
                     "skills/strategic-advisor/agents/openai.yaml",
                     "skills/strategic-advisor/references/one.md",
@@ -723,7 +758,7 @@ class InstallArtifactTests(unittest.TestCase):
         skill.write_text(skill.read_text() + "\nHidden mutation.\n", encoding="utf-8")
         hidden = self.run_builder("hidden-release", allow_dirty=False)
         self.assertNotEqual(hidden[0].returncode, 0)
-        self.assertIn("source input differs from git show", hidden[0].stderr)
+        self.assertIn("canonical runtime bytes do not match", hidden[0].stderr)
         for path in hidden[1:]:
             self.assertFalse(path.exists())
 

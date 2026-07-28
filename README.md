@@ -10,10 +10,13 @@ The design is one canonical reality protocol, an owner-controlled personal-conte
 
 ## Current capability summary
 
+<!-- strategic-advisor-distribution:start -->
 | Field | Current state |
 | --- | --- |
 | Maturity | Pre-release |
 | Early-access distribution | [`v0.2.0-alpha.2` GitHub prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.2) |
+| Prepared distribution | `v0.2.0-alpha.3` is release intent only until the protected-main workflow publishes and a fresh public download verifies. |
+<!-- strategic-advisor-distribution:end -->
 | Canonical product | [`skills/strategic-advisor/`](skills/strategic-advisor/) |
 | Supported installation | None |
 | Early-access installation | Deterministic standalone Skill, OpenAI local-marketplace plugin, and paid-personal ChatGPT Custom GPT kit; see [INSTALL.md](INSTALL.md) |
