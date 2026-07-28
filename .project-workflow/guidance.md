@@ -21,4 +21,13 @@ Use this file for repo-specific workflow guidance that should survive project-wo
 - In an Epic contract, record parent acceptance proof owners as exact scaffolded child IDs such as `TASK-014`; descriptive role labels are not auditable ownership.
 - For cross-host distributions, retain one exact-host ledger that separates package readiness, installation, activation, behavioural smoke, sharing, validation, support, and adoption. Never promote one state or host from another.
 - Add dependencies and automation only when they enforce an approved invariant or proof obligation. Prefer portable Markdown and small transparent validators.
+- Treat an accepted change to bytes selected by
+  `skills/strategic-advisor/runtime-manifest.json` as incomplete until the same
+  change prepares the next immutable distribution with
+  `python3 scripts/release_state.py prepare --version <next-version>`. Do not
+  hand-edit duplicated version references or defer the ZIP to an owner
+  reminder. After protected-main publication and a fresh public verification,
+  use `release_state.py finalize --evidence <verified-evidence>` to retain the
+  proof and promote current-download references; publication never promotes
+  host activation, support, parity, adoption, or effectiveness.
 - Use `./.project-workflow/cli/workflow doctor` after workflow-state changes. Record exact validation commands and artifacts in child evidence before review.

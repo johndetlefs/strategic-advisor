@@ -1,0 +1,36 @@
+{
+  "task_id": "TASK-025",
+  "claims": [
+    {
+      "id": "CLM-001",
+      "parent_ac": "AC1",
+      "claim": "Public prerelease v0.2.0-alpha.3 and all four clean-downloaded assets match the exact merged FIX-002 source revision, trusted provenance, and runtime-package identity.",
+      "recipe": "deployed-artifact-alignment",
+      "status": "pass",
+      "commit": "cfacb3b16ba035996e732aa1680f2628b67446d3",
+      "timestamp": "2026-07-28T00:32:06Z",
+      "execution_target": "GitHub prerelease v0.2.0-alpha.3 and four assets downloaded independently after the protected-main workflow completed",
+      "source_artifact": "Merged main revision cfacb3b16ba035996e732aa1680f2628b67446d3, runtime identity sha256:200a91f4a988a55450ae7859541ca12b2169a08ba192f0dbd7a8f905c903e590, and deterministic install builder",
+      "artifact_identity": "install-artifacts.json sha256:e8eef12233dc6f5cfc7d2225202ac9d4dabe274f7f7a664d0e038ca7f4fd9abc; strategic-advisor.zip sha256:21c11f39bcf197631344f27b0aaf641765c8318ae4895368d405593f857eb1ea; strategic-advisor-plugin.zip sha256:4747f5883bd2933c331891b9b68b6b79b8b553a6ce97c308982cb219d9341400; strategic-advisor-chatgpt.zip sha256:604b62df80b73bea673e3a977a8e5984b2f6367a7fbd255415782fe1562a10e5",
+      "observation_method": "Inspect GitHub metadata, download all four assets into a fresh directory, match GitHub and retained hashes, run the independent verifier with trusted provenance/runtime identities, and compare all 25 standalone runtime files with canonical source bytes",
+      "evidence_artifact": "../../../evidence/releases/v0.2.0-alpha.3.json",
+      "evidence_artifact_hash": "sha256:45d1548f45741ecf649b656531405f0e55f04f7a47c2aed4cd0c6dec0dab865d",
+      "invalid_substitutes": []
+    },
+    {
+      "id": "CLM-002",
+      "parent_ac": "AC4",
+      "claim": "The protected-main release workflow executed the approved immutable publication contract at the exact merged revision with pinned actions, contents-only write permission, deterministic double builds, publish-once behavior, and fresh public verification.",
+      "recipe": "external-contract-alignment",
+      "status": "pass",
+      "commit": "cfacb3b16ba035996e732aa1680f2628b67446d3",
+      "timestamp": "2026-07-28T00:29:44Z",
+      "contract_artifact": "Approved TASK-025 AC4 and AC5, distribution.json prepared intent, immutable GitHub prerelease contract, and release workflow run 30317434367",
+      "implementation_artifact": ".github/workflows/release.yml sha256:89c3ae3a0cf4f9e949fa566f4d43267e69a49605e84ef452a9475023843eb4d8 plus successful exact-source GitHub run and retained release evidence artifact 8672677936",
+      "comparison_method": "Compare permissions, pinned action SHAs, checkout revision, prepared version/runtime, two clean build outputs, existing-release decision, release metadata, fresh-download verification, and non-overwrite behavior field by field with the approved contract",
+      "evidence_artifact": "../../../evidence/releases/v0.2.0-alpha.3.json",
+      "evidence_artifact_hash": "sha256:45d1548f45741ecf649b656531405f0e55f04f7a47c2aed4cd0c6dec0dab865d",
+      "invalid_substitutes": []
+    }
+  ]
+}
