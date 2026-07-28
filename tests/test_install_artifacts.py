@@ -572,7 +572,11 @@ class InstallArtifactTests(unittest.TestCase):
             contract["early_access_distribution_version"],
         )
         self.assertEqual(
-            authority["distribution"]["version"],
+            (
+                authority["distribution"]["version"]
+                if authority["state"] == "prepared"
+                else None
+            ),
             contract["prepared_distribution_version"],
         )
 

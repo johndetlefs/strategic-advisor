@@ -45,6 +45,22 @@ class PublishReleaseTests(unittest.TestCase):
                 "tests",
             ),
         )
+        self.module = load_module(
+            f"publish_release_fixture_{id(self)}", PUBLISH_RELEASE
+        )
+        authority, _ = self.module.release_state.load_authority(self.root)
+        authority["state"] = "prepared"
+        authority["distribution"]["version"] = "0.2.0-alpha.4"
+        changes = {
+            self.root / "distribution.json": (
+                self.module.release_state.rendered_json_bytes(authority)
+            ),
+            **self.module.release_state.synchronized_documents(
+                self.root, authority
+            ),
+        }
+        for path, content in changes.items():
+            path.write_bytes(content)
         for command in (
             ["git", "init", str(self.root)],
             ["git", "-C", str(self.root), "config", "user.name", "Fixture"],
@@ -108,9 +124,6 @@ class PublishReleaseTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
         shutil.copytree(self.build, self.download)
-        self.module = load_module(
-            f"publish_release_fixture_{id(self)}", PUBLISH_RELEASE
-        )
         authority, _ = self.module.release_state.load_authority(self.root)
         self.version = authority["distribution"]["version"]
         self.metadata = {

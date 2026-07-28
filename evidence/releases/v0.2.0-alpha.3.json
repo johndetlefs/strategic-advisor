@@ -1,0 +1,87 @@
+{
+  "proof_boundary": {
+    "chatgpt_account_activation_proven_here": false,
+    "claude_account_activation_proven_here": false,
+    "clean_public_download_proven": true,
+    "codex_account_activation_proven_here": false,
+    "cross_host_parity_proven": false,
+    "package_and_release_alignment_proven": true,
+    "strategic_effectiveness_proven": false,
+    "supported_capability_claimed": false
+  },
+  "release": {
+    "assets": [
+      {
+        "name": "install-artifacts.json",
+        "sha256": "e8eef12233dc6f5cfc7d2225202ac9d4dabe274f7f7a664d0e038ca7f4fd9abc",
+        "size_bytes": 48580
+      },
+      {
+        "name": "strategic-advisor-chatgpt.zip",
+        "sha256": "604b62df80b73bea673e3a977a8e5984b2f6367a7fbd255415782fe1562a10e5",
+        "size_bytes": 114998
+      },
+      {
+        "name": "strategic-advisor-plugin.zip",
+        "sha256": "4747f5883bd2933c331891b9b68b6b79b8b553a6ce97c308982cb219d9341400",
+        "size_bytes": 110458
+      },
+      {
+        "name": "strategic-advisor.zip",
+        "sha256": "21c11f39bcf197631344f27b0aaf641765c8318ae4895368d405593f857eb1ea",
+        "size_bytes": 106303
+      }
+    ],
+    "published_at": "2026-07-28T00:29:39Z",
+    "runtime_package_identity_sha256": "200a91f4a988a55450ae7859541ca12b2169a08ba192f0dbd7a8f905c903e590",
+    "source_revision": "cfacb3b16ba035996e732aa1680f2628b67446d3",
+    "status": "prerelease",
+    "tag": "v0.2.0-alpha.3",
+    "url": "https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.3",
+    "version": "0.2.0-alpha.3"
+  },
+  "reproduction": {
+    "clean_download_consumer_verification": "pass",
+    "independent_closeout_download_verified_at": "2026-07-28T00:32:06Z",
+    "independent_runtime_files_matched": 25,
+    "public_asset_digests_match_local_build": true,
+    "trusted_provenance_matched": true,
+    "trusted_runtime_identity_matched": true
+  },
+  "schema_version": 1,
+  "validation": {
+    "aggregate_validation": {
+      "result": "pass",
+      "scopes": 7
+    },
+    "evaluation_inventory": {
+      "cases": 45,
+      "result": "pass"
+    },
+    "idempotent_rerun": {
+      "assets_mutated": false,
+      "existing_release_detected": true,
+      "fresh_download_verification": "pass",
+      "publish_step_skipped": true,
+      "result": "pass",
+      "run": "https://github.com/johndetlefs/strategic-advisor/actions/runs/30317826554"
+    },
+    "main_ci": {
+      "result": "pass",
+      "run": "https://github.com/johndetlefs/strategic-advisor/actions/runs/30317434382"
+    },
+    "project_workflow_doctor": "pass",
+    "pull_request": "https://github.com/johndetlefs/strategic-advisor/pull/16",
+    "pull_request_ci": "pass",
+    "release_workflow": {
+      "completed_at": "2026-07-28T00:29:44Z",
+      "result": "pass",
+      "run": "https://github.com/johndetlefs/strategic-advisor/actions/runs/30317434367",
+      "workflow_sha256": "89c3ae3a0cf4f9e949fa566f4d43267e69a49605e84ef452a9475023843eb4d8"
+    },
+    "unit_tests": {
+      "result": "pass",
+      "tests": 134
+    }
+  }
+}
