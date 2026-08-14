@@ -22,8 +22,8 @@ The design is one canonical reality protocol, an owner-controlled personal-conte
 | Early-access installation | Deterministic standalone Skill, OpenAI local-marketplace plugin, and paid-personal ChatGPT Custom GPT kit; see [INSTALL.md](INSTALL.md) |
 | Validated domains | None |
 | Supported connectors | None |
-| Alpha candidates, implemented but not validated | Selective interactive strategy; open-field and portfolio-bounded exploration; exact personal context; configurable durable continuity; project/product, career, organisational influence, people leadership, business/venture, marketing/growth |
-| Evaluation | Bounded seven-scenario Codex drift smoke passed; no passing comparative run, improvement result, independent human validation, or release verdict |
+| Alpha candidates, implemented but not validated | Selective interactive strategy; open-field and portfolio-bounded exploration; exact personal context; configurable durable continuity; lenses: Project / Product, Career, Organisational influence, People leadership, Business / Venture, Marketing / Growth, Technical architecture |
+| Evaluation | Bounded 12-scenario-group Codex drift smoke (run-005) passed; no passing comparative run, improvement result, independent human validation, or release verdict |
 | Specialist boundary | Personal context may shape strategy; the product does not replace legal, medical, clinical, financial, or other qualified professional judgment |
 
 “Implemented but not validated” means reviewable source exists and structural checks can inspect it. It does not mean the model behaves as intended, improves decisions, or works in a particular host. The current evaluation definitions are likewise not evidence that an evaluation ran or passed.

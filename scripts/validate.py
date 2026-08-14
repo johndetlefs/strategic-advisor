@@ -25,6 +25,7 @@ from release_state import ReleaseStateError, validate as validate_release_state
 
 
 SCOPES = ("skill", "lenses", "evals", "pilots", "privacy", "claims", "links")
+CURRENT_DRIFT_RUN = "run-005"
 PUBLIC_ARTIFACTS = (
     "README.md",
     "INSTALL.md",
@@ -420,6 +421,76 @@ def is_implemented(capability: dict | None) -> bool:
     )
 
 
+def authoritative_lens_names(root: Path, contract: dict) -> list[str]:
+    """Return public lens names from implemented capabilities and lens titles."""
+    capabilities, map_failures = capability_map(contract)
+    if map_failures:
+        raise ValueError("the capability registry is invalid")
+
+    implemented_domain_ids = [
+        capability_id
+        for capability_id, capability in capabilities.items()
+        if capability.get("kind") == "domain" and is_implemented(capability)
+    ]
+    missing_references = [
+        capability_id
+        for capability_id in implemented_domain_ids
+        if capability_id not in LENS_REFERENCES
+    ]
+    if missing_references:
+        raise ValueError(
+            "implemented domain is missing canonical lens authority: "
+            + ", ".join(missing_references)
+        )
+
+    lens_names: list[str] = []
+    for capability_id in implemented_domain_ids:
+        relative = LENS_REFERENCES[capability_id]
+        lens_path = root / SKILL_ROOT / relative
+        if lens_path.is_symlink() or not lens_path.is_file():
+            raise ValueError(f"implemented lens authority is missing: {relative}")
+        heading = next(
+            (
+                line[2:].strip()
+                for line in read_text(lens_path).splitlines()
+                if line.startswith("# ")
+            ),
+            "",
+        )
+        if not heading.endswith(" lens") or len(heading) <= len(" lens"):
+            raise ValueError(f"implemented lens needs a canonical title: {relative}")
+        lens_names.append(heading[: -len(" lens")])
+    return lens_names
+
+
+def authoritative_drift_status(root: Path) -> tuple[int, str]:
+    """Return public smoke status from the validated frozen spec and current result."""
+    drift_spec, drift_spec_sha256 = validate_drift_smoke_spec(
+        root, root / SKILL_ROOT / "evals" / "drift_smoke_cases.json"
+    )
+    result_path = (
+        root
+        / "evidence"
+        / "evaluations"
+        / "drift-smoke"
+        / CURRENT_DRIFT_RUN
+        / "result.json"
+    )
+    if not validate_drift_smoke_result(
+        root, drift_spec, drift_spec_sha256, result_path
+    ):
+        raise ValueError("the current bounded drift smoke did not pass")
+    return len(drift_spec["cases"]), CURRENT_DRIFT_RUN
+
+
+def readme_table_value(readme: str, field: str) -> str | None:
+    prefix = f"| {field} | "
+    for line in readme.splitlines():
+        if line.startswith(prefix) and line.endswith(" |"):
+            return line[len(prefix) : -2]
+    return None
+
+
 def validate_capability_evidence(
     root: Path, capability_id: str, kind: str, evidence: object
 ) -> tuple[bool, list[Diagnostic]]:
@@ -785,6 +856,63 @@ def check_claims(root: Path) -> list[Diagnostic]:
                     "README.md",
                 )
             )
+        try:
+            lens_names = authoritative_lens_names(root, contract)
+        except (OSError, ValueError, DriftSmokeError) as error:
+            failures.append(
+                diagnostic(
+                    "CLAIMS_PUBLIC_STATUS_AUTHORITY",
+                    f"README status authority is invalid: {error}",
+                    "README.md",
+                )
+            )
+        else:
+            alpha_candidates = readme_table_value(
+                readme, "Alpha candidates, implemented but not validated"
+            )
+            _, separator, actual_lenses = (alpha_candidates or "").partition(
+                "; lenses: "
+            )
+            expected_lenses = ", ".join(lens_names)
+            if not separator or actual_lenses != expected_lenses:
+                failures.append(
+                    diagnostic(
+                        "CLAIMS_PUBLIC_STATUS_DRIFT",
+                        "README implemented lens summary must exactly match the canonical "
+                        f"implemented lens authority: {expected_lenses}.",
+                        "README.md",
+                    )
+                )
+        try:
+            scenario_group_count, current_drift_run = authoritative_drift_status(root)
+        except (OSError, ValueError, DriftSmokeError) as error:
+            failures.append(
+                diagnostic(
+                    "CLAIMS_PUBLIC_STATUS_AUTHORITY",
+                    f"README drift-smoke authority is invalid: {error}",
+                    "README.md",
+                )
+            )
+        else:
+            evaluation = readme_table_value(readme, "Evaluation") or ""
+            evaluation_match = re.match(
+                r"^Bounded (?P<count>\d+)-scenario-group Codex drift smoke "
+                r"\((?P<run>run-\d+)\) passed;",
+                evaluation,
+            )
+            if not evaluation_match or (
+                int(evaluation_match.group("count")) != scenario_group_count
+                or evaluation_match.group("run") != current_drift_run
+            ):
+                failures.append(
+                    diagnostic(
+                        "CLAIMS_PUBLIC_STATUS_DRIFT",
+                        "README evaluation summary must match the validated current "
+                        f"drift-smoke authority: {scenario_group_count} scenario groups "
+                        f"in {current_drift_run}.",
+                        "README.md",
+                    )
+                )
     return failures
 
 
@@ -2036,7 +2164,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
                 )
             )
 
-        current_drift_run = "run-005"
+        current_drift_run = CURRENT_DRIFT_RUN
         drift_result_path = (
             root
             / "evidence"

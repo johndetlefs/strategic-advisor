@@ -101,6 +101,77 @@ class ValidatorFixtureTests(unittest.TestCase):
         result = self.run_validator("claims")
         self.assert_named_failure(result, "CLAIMS_UNSUPPORTED")
 
+    def test_readme_lens_summary_cannot_omit_implemented_lens(self) -> None:
+        path = self.fixture_root / "README.md"
+        path.write_text(
+            path.read_text(encoding="utf-8").replace(
+                ", Technical architecture |", " |", 1
+            ),
+            encoding="utf-8",
+        )
+        result = self.run_validator("claims")
+        self.assert_named_failure(result, "CLAIMS_PUBLIC_STATUS_DRIFT")
+        self.assertIn("Technical architecture", result.stdout)
+
+    def test_readme_drift_summary_cannot_retain_old_scenario_count(self) -> None:
+        path = self.fixture_root / "README.md"
+        path.write_text(
+            path.read_text(encoding="utf-8").replace(
+                "Bounded 12-scenario-group Codex drift smoke (run-005) passed",
+                "Bounded 7-scenario-group Codex drift smoke (run-004) passed",
+                1,
+            ),
+            encoding="utf-8",
+        )
+        result = self.run_validator("claims")
+        self.assert_named_failure(result, "CLAIMS_PUBLIC_STATUS_DRIFT")
+        self.assertIn("12 scenario groups in run-005", result.stdout)
+
+    def test_readme_lens_summary_follows_canonical_lens_title(self) -> None:
+        lens = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "references"
+            / "technical-architecture.md"
+        )
+        lens.write_text(
+            lens.read_text(encoding="utf-8").replace(
+                "# Technical architecture lens",
+                "# Systems architecture lens",
+                1,
+            ),
+            encoding="utf-8",
+        )
+        result = self.run_validator("claims")
+        self.assert_named_failure(result, "CLAIMS_PUBLIC_STATUS_DRIFT")
+        self.assertIn("Systems architecture", result.stdout)
+
+    def test_readme_lens_authority_follows_implemented_domain_registry(self) -> None:
+        path = self.fixture_root / "PRODUCT-CONTRACT.md"
+        text = path.read_text(encoding="utf-8")
+        anchor = (
+            '    {\n'
+            '      "id": "domain.technical-architecture",\n'
+            '      "kind": "domain",\n'
+            '      "state": "implemented-not-validated",\n'
+            '      "evidence": []\n'
+            '    },\n'
+        )
+        injected = anchor + (
+            '    {\n'
+            '      "id": "domain.synthetic-fixture",\n'
+            '      "kind": "domain",\n'
+            '      "state": "implemented-not-validated",\n'
+            '      "evidence": []\n'
+            '    },\n'
+        )
+        self.assertIn(anchor, text)
+        path.write_text(text.replace(anchor, injected, 1), encoding="utf-8")
+        result = self.run_validator("claims")
+        self.assert_named_failure(result, "CLAIMS_PUBLIC_STATUS_AUTHORITY")
+        self.assertIn("domain.synthetic-fixture", result.stdout)
+
     def test_forged_capability_evidence_string_fails_claims_scope(self) -> None:
         path = self.fixture_root / "PRODUCT-CONTRACT.md"
         text = path.read_text(encoding="utf-8")

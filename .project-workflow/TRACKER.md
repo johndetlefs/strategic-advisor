@@ -11,3 +11,4 @@
 | FIX-002 | Prevent Preference Drift In Candidate Ranking | Complete | `tasks/FIX-002-Prevent-Preference-Drift-In-Candidate-Ranking/FIX.md` |
 | TASK-025 | Automate Current Runtime Distribution | Complete | `tasks/TASK-025-Automate-Current-Runtime-Distribution/IMPLEMENTATION.md` |
 | EPIC-006 | Technical Architecture And Evidence-Grounded Invocation | Complete | `tasks/EPIC-006-Technical-Architecture-And-Evidence-Grounded-Invocation/REQUIREMENTS.md` |
+| FIX-003 | Align Public Architecture And Drift Claims | Testing | `tasks/FIX-003-Align-Public-Architecture-And-Drift-Claims/FIX.md` |
