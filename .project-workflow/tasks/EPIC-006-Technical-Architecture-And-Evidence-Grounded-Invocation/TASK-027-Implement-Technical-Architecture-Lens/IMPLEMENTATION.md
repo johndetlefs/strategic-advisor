@@ -55,11 +55,11 @@ that frameworks or conceptual neatness do not silently determine topology.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC3 — canonical allowlisted lens passes structure and
+- [x] AC1: Parent AC3 — canonical allowlisted lens passes structure and
   duplicate-advisor checks.
-- [ ] AC2: Parent AC4 — project/product and architecture remain complementary
+- [x] AC2: Parent AC4 — project/product and architecture remain complementary
   under one-primary/one-secondary routing.
-- [ ] AC3: Parent AC5 — approved mechanisms, failure modes and specialist
+- [x] AC3: Parent AC5 — approved mechanisms, failure modes and specialist
   boundaries are explicit and case-testable.
 
 ## Goal
@@ -88,26 +88,26 @@ TASK-029 supplies behavioural cases.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Define architecture contract | Author distinct outcomes, evidence, mechanisms, ownership, failure modes, boundaries and readiness implications. | AC1, AC3 | Inspect the new lens and run lens validation. | To Do |
-| 2 | Integrate selective routing | Add canonical routing, allowlist and capability declarations without another advisor or secondary-lens expansion. | AC1, AC2 | Run skill, lens and duplicate-logic checks. | To Do |
-| 3 | Prove complementarity | Encode project/product ownership, topology discipline, framework evidence and specialist dependencies. | AC2, AC3 | Review source and TASK-029 matched cases. | To Do |
+| 1 | Define architecture contract | Author distinct outcomes, evidence, mechanisms, ownership, failure modes, boundaries and readiness implications. | AC1, AC3 | Inspect the new lens and run lens validation. | Done |
+| 2 | Integrate selective routing | Add canonical routing, allowlist and capability declarations without another advisor or secondary-lens expansion. | AC1, AC2 | Run skill, lens and duplicate-logic checks. | Done |
+| 3 | Prove complementarity | Encode project/product ownership, topology discipline, framework evidence and specialist dependencies. | AC2, AC3 | Review source and TASK-029 matched cases. | Done |
 
 ## Parent AC Evidence
 
-- AC3, AC4, AC5: Pending canonical lens/routing diff, validator results,
-  TASK-029 cases and QA review.
+- AC3: `references/technical-architecture.md` is canonical, allowlisted and structurally validated as the seventh lens; no separate advisor or workflow logic was introduced.
+- AC4/AC5: LENS-TA-001 through LENS-TA-006 freeze project/product complementarity, conceptual-versus-physical boundaries, auth ownership, migration, framework authority, proof layers and specialist limits. Run-005 passed the topology, auth and migration cases.
 
 ## QA & Code Review
 
-- Verdict: ____
-- Evidence: ____
-- Findings: ____
+- Verdict: Pass.
+- Evidence: lens/skill/claims/privacy scopes, deterministic inventory, runtime manifest inspection, clean package archives and run-005.
+- Findings: No blocking overlap. The lens is implemented-not-validated and security/reliability decisions remain specialist dependencies.
 
 ## Retro
 
-- Reusable lessons: ____
-- Conventions or agent assets updated: ____
-- Follow-up tasks: ____
+- Reusable lessons: Conceptual responsibilities need independent ownership/change/deployment evidence before becoming physical topology.
+- Conventions or agent assets updated: Seventh-lens structure and architecture probe requirements.
+- Follow-up tasks: None; comparative capability promotion remains outside this epic.
 
 ## Notes
 

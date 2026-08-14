@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "source_revision": "3ddf77aee9719416b5c6520adaa858b4a787aead",
+  "prepared_distribution": {
+    "version": "0.2.0-alpha.4",
+    "runtime_package_identity_sha256": "0dd720757af6ccda598f2333b74ef055af625e48f10bb7824cced064c9f15bf1",
+    "state": "prepared-not-published"
+  },
+  "bounded_drift_smoke": {
+    "run": "run-005",
+    "status": "pass",
+    "scenario_groups": 12,
+    "fresh_sessions": 13,
+    "actual_turns": 36,
+    "criteria": 38,
+    "authority_commit": "9442c0e784c9495bd60cddf42c44a1f9c19dc71c",
+    "result_sha256": "7e7667ec79be0627caafc048fb08bc12d601a0b95faa581e8c735b14bed40ba0"
+  },
+  "evaluation_authority": {
+    "executable_cases": 56,
+    "trigger_queries": 44,
+    "trigger_positive": 22,
+    "trigger_negative": 22,
+    "deterministic_rebuild": "pass",
+    "runtime_exclusion": "pass"
+  },
+  "clean_package_builds": {
+    "build_count": 2,
+    "byte_identical": true,
+    "independent_verification_count": 2,
+    "trusted_runtime_identity_matched": true,
+    "trusted_provenance_sha256_matched": true,
+    "standalone_skill_sha256": "c7d40e023315d054e0422df196bb1face5a4c02dca6eb2fd66c67b44b335d1ab",
+    "openai_local_marketplace_sha256": "2d965ce233cef649774f1bf72d0911f190c9e2629a3f78d77507ea5a4e8453ee",
+    "chatgpt_custom_gpt_sha256": "4c09dfe3b91beb2927f22e0d206fe44acdee9399a4c001bd281264eb75e6623d",
+    "provenance_sha256": "75c064ee4c0194bdbada06fba6b33aee8bfb33d5cc389d1184e39b7c594e0ac2"
+  },
+  "regression": {
+    "unit_tests": 138,
+    "unit_test_status": "pass",
+    "validator_scopes": 7,
+    "validator_status": "pass",
+    "project_workflow_doctor": "pass",
+    "diff_check": "pass",
+    "privacy_scope": "pass",
+    "claims_scope": "pass"
+  },
+  "proof_boundary": [
+    "The bounded smoke proves only the exact synthetic cases, model, host, runtime and date.",
+    "Package verification proves byte identity, allowlist projection and provenance consistency, not host installation or advice quality.",
+    "Alpha.4 is prepared release intent only; it was not pushed, merged, published, deployed or publicly verified.",
+    "No comparative improvement, general invocation reliability, domain support or real-user validation is established."
+  ]
+}

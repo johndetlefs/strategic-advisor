@@ -58,11 +58,11 @@ architecture discipline, or selective-invocation boundary.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC2 — baseline mismatch/update cases are complete.
-- [ ] AC2: Parent AC4/AC5 — architecture routing/mechanism cases are complete.
-- [ ] AC3: Parent AC6/AC7 — difficult positive and matched negative trigger
+- [x] AC1: Parent AC2 — baseline mismatch/update cases are complete.
+- [x] AC2: Parent AC4/AC5 — architecture routing/mechanism cases are complete.
+- [x] AC3: Parent AC6/AC7 — difficult positive and matched negative trigger
   categories are complete and fail-closed validated.
-- [ ] AC4: Parent AC8 — inventory, provenance, privacy and runtime isolation
+- [x] AC4: Parent AC8 — inventory, provenance, privacy and runtime isolation
   pass deterministically.
 
 ## Goal
@@ -91,27 +91,28 @@ the canonical executable inventory, and review sanitisation before execution.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Add baseline regressions | Freeze wrong-state/revision/artifact/scope and evidence-update behaviour without private case details. | AC1, AC4 | Inspect cases and run deterministic build/coverage checks. | To Do |
-| 2 | Add architecture regressions | Freeze routing, topology, ownership, framework, migration and specialist-boundary decisions. | AC2, AC4 | Inspect cases and run lens/eval validation. | To Do |
-| 3 | Expand trigger boundary | Add stable labelled latent/emergent/cross-project/update positives and factual/routine/status/fix/build negatives. | AC3, AC4 | Run trigger validation and negative fixtures. | To Do |
-| 4 | Prove isolation and provenance | Regenerate `evals.json`; verify synthetic provenance, privacy and runtime exclusion. | AC4 | Run builder, privacy scope and package inventory check. | To Do |
+| 1 | Add baseline regressions | Freeze wrong-state/revision/artifact/scope and evidence-update behaviour without private case details. | AC1, AC4 | Inspect cases and run deterministic build/coverage checks. | Done |
+| 2 | Add architecture regressions | Freeze routing, topology, ownership, framework, migration and specialist-boundary decisions. | AC2, AC4 | Inspect cases and run lens/eval validation. | Done |
+| 3 | Expand trigger boundary | Add stable labelled latent/emergent/cross-project/update positives and factual/routine/status/fix/build negatives. | AC3, AC4 | Run trigger validation and negative fixtures. | Done |
+| 4 | Prove isolation and provenance | Regenerate `evals.json`; verify synthetic provenance, privacy and runtime exclusion. | AC4 | Run builder, privacy scope and package inventory check. | Done |
 
 ## Parent AC Evidence
 
-- AC2, AC4, AC5, AC6, AC7, AC8: Pending case inventory, deterministic build,
-  validator/privacy results and QA review.
+- AC2/AC4/AC5: Five new core cases and six architecture lens cases bring the deterministic executable inventory from 45 to 56 cases.
+- AC6/AC7: Sixteen labelled queries bring the trigger authority from 28 to 44, balanced 22 positive/22 negative with two cases in each required difficult category.
+- AC8: All additions are marked synthetic; deterministic rebuild, privacy scope and three clean package inventories pass, and evaluation authority remains excluded from runtime packages.
 
 ## QA & Code Review
 
-- Verdict: ____
-- Evidence: ____
-- Findings: ____
+- Verdict: Pass.
+- Evidence: `build_evals.py --check` (56), eval/privacy scopes, category negative fixtures, 138 unit tests and archive scans.
+- Findings: These are synthetic regression authorities, not private transcript reconstructions or comparative effectiveness evidence.
 
 ## Retro
 
-- Reusable lessons: ____
-- Conventions or agent assets updated: ____
-- Follow-up tasks: ____
+- Reusable lessons: Trigger coverage should name decision shape and negative operational class, not rely on a small implicit-positive slice.
+- Conventions or agent assets updated: Required core/lens probes and eight paired trigger categories.
+- Follow-up tasks: None inside this epic; the frozen comparative matrix remains unrun.
 
 ## Notes
 

@@ -57,13 +57,13 @@ I can dogfood current behaviour without mistaking implementation for support.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC9 — exact-runtime bounded smoke passes the approved case
+- [x] AC1: Parent AC9 — exact-runtime bounded smoke passes the approved case
   mix with runtime-target/source evidence.
-- [ ] AC2: Parent AC10/AC11 — every runtime/public artifact agrees on seven
+- [x] AC2: Parent AC10/AC11 — every runtime/public artifact agrees on seven
   implemented-not-validated lenses and preserved separation/boundaries.
-- [ ] AC3: Parent AC12 — alpha.4 preparation and two byte-identical
+- [x] AC3: Parent AC12 — alpha.4 preparation and two byte-identical
   independently verified package builds pass.
-- [ ] AC4: Parent AC13 — full validation, current-source drift smoke, privacy,
+- [x] AC4: Parent AC13 — full validation, current-source drift smoke, privacy,
   Doctor, QA, audit and retro pass or remain explicitly blocking.
 
 ## Goal
@@ -95,27 +95,29 @@ proof, then perform QA, acceptance audit and retro.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Align product and runtime claims | Update contract, architecture, README, install, host metadata, validator and manifest around seven bounded lenses. | AC2 | Run claim, link, skill and lens validation. | To Do |
-| 2 | Prepare deterministic alpha.4 | Bind the runtime change with the canonical command, build twice and verify exact contents/identities. | AC3 | Inspect release authority and compare verifier outputs. | To Do |
-| 3 | Run bounded exact-runtime dogfood | Execute isolated synthetic architecture/baseline/invocation/control cases and retain runtime-target/source proof. | AC1 | Validate raw artifacts and case verdicts against frozen criteria. | To Do |
-| 4 | Close validation and QA | Run full regression, current-source drift smoke, privacy/diff/Doctor, QA, parent audit and retro. | AC2, AC4 | Review evidence map, findings and proof boundaries. | To Do |
+| 1 | Align product and runtime claims | Update contract, architecture, README, install, host metadata, validator and manifest around seven bounded lenses. | AC2 | Run claim, link, skill and lens validation. | Done |
+| 2 | Prepare deterministic alpha.4 | Bind the runtime change with the canonical command, build twice and verify exact contents/identities. | AC3 | Inspect release authority and compare verifier outputs. | Done |
+| 3 | Run bounded exact-runtime dogfood | Execute isolated synthetic architecture/baseline/invocation/control cases and retain runtime-target/source proof. | AC1 | Validate raw artifacts and case verdicts against frozen criteria. | Done |
+| 4 | Close validation and QA | Run full regression, current-source drift smoke, privacy/diff/Doctor, QA, parent audit and retro. | AC2, AC4 | Review evidence map, findings and proof boundaries. | Done |
 
 ## Parent AC Evidence
 
-- AC9, AC10, AC11, AC12, AC13: Pending exact-runtime evidence, claim matrix,
-  package identities, full validation and QA review.
+- AC9: Run-005 passed 12 frozen scenario groups, 13 fresh sessions, 36 turns and all 38 criteria against exact runtime `0dd720…f15bf1`; three implicit positives loaded the architecture lens and the routine negative loaded no advisor files.
+- AC10/AC11: Runtime, contract, architecture, README, install guide, host metadata and validator consistently declare seven implemented-not-validated lenses; no Daily Checklist coupling, cadence lens or separate advisor was added.
+- AC12: `release_state.py prepare --version 0.2.0-alpha.4` bound runtime `0dd720…f15bf1`. Two clean builds from `3ddf77a` were byte-identical: standalone `c7d40e…d1ab`, plugin `2d965c…53ee`, ChatGPT `4c09df…623d`, provenance `75c064…0ac2`; both independent verifications passed.
+- AC13: 138 unit tests, all seven validator scopes, deterministic eval build, run verifier, privacy/diff checks and Workflow Doctor pass.
 
 ## QA & Code Review
 
-- Verdict: ____
-- Evidence: ____
-- Findings: ____
+- Verdict: Pass for local implementation, bounded behaviour, packaging and closeout gates.
+- Evidence: retained run-005 artifacts; exact release authority; two verified clean builds; full validation and Doctor.
+- Findings: Alpha.4 remains prepared release intent only. No push, PR, merge, deployment, public release, capability promotion, comparative run or real-user validation occurred.
 
 ## Retro
 
-- Reusable lessons: ____
-- Conventions or agent assets updated: ____
-- Follow-up tasks: ____
+- Reusable lessons: Automatic-invocation claims require both response evidence and host source traces; package determinism must be proven from a clean committed source.
+- Conventions or agent assets updated: Drift-smoke activation modes, source-access verifier, local alpha preparation and install checks.
+- Follow-up tasks: Public alpha.4 publication requires separate authority; comparative and real-pilot gates remain pending.
 
 ## Notes
 

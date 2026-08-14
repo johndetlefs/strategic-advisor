@@ -54,9 +54,9 @@ challenged without turning normal implementation into strategy theatre.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Parent AC6 — canonical invocation covers ordinary-language and
+- [x] AC1: Parent AC6 — canonical invocation covers ordinary-language and
   emergent material architecture decisions with validated categories.
-- [ ] AC2: Parent AC7 — routine technical assistance remains non-triggering
+- [x] AC2: Parent AC7 — routine technical assistance remains non-triggering
   unless a new hard-to-reverse decision emerges.
 
 ## Goal
@@ -83,26 +83,26 @@ trigger category rules, and keep query/case data in TASK-029.
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ |
-| 1 | Strengthen latent activation | Recognise material decisions in ordinary wording without keyword dependence. | AC1 | Inspect canonical activation and run source checks. | To Do |
-| 2 | Bound emergent checkpoints | Shift only for a newly exposed hard-to-reverse decision, then return to implementation. | AC1, AC2 | Review matched positive/negative rules. | To Do |
-| 3 | Enforce difficult categories | Validate positive and negative trigger categories and their labels fail closed. | AC1, AC2 | Run focused validator negative fixtures. | To Do |
+| 1 | Strengthen latent activation | Recognise material decisions in ordinary wording without keyword dependence. | AC1 | Inspect canonical activation and run source checks. | Done |
+| 2 | Bound emergent checkpoints | Shift only for a newly exposed hard-to-reverse decision, then return to implementation. | AC1, AC2 | Review matched positive/negative rules. | Done |
+| 3 | Enforce difficult categories | Validate positive and negative trigger categories and their labels fail closed. | AC1, AC2 | Run focused validator negative fixtures. | Done |
 
 ## Parent AC Evidence
 
-- AC6, AC7: Pending canonical diff, category validator, TASK-029 inventory,
-  TASK-030 smoke and QA review.
+- AC6: Ordinary structure, sense-check and emergent implementation wording is constrained by materiality and reversibility in the canonical conversational contract; eight labelled positive categories are fail-closed validated.
+- AC7: Eight labelled operational-negative categories preserve direct assistance. Run-005 loaded the architecture lens for three implicit positives and no advisor file for the routine negative.
 
 ## QA & Code Review
 
-- Verdict: ____
-- Evidence: ____
-- Findings: ____
+- Verdict: Pass for the approved implemented and bounded-smoke claims.
+- Evidence: 44-query trigger authority, validator negative fixtures, run-005 source-access trace and full regression.
+- Findings: The run does not establish automatic invocation reliability beyond the exact prompts/model/runtime/host.
 
 ## Retro
 
-- Reusable lessons: ____
-- Conventions or agent assets updated: ____
-- Follow-up tasks: ____
+- Reusable lessons: Invocation needs material decision and reversibility tests; technical vocabulary alone is not a trigger.
+- Conventions or agent assets updated: Conversational routing, trigger category authority and source-access checks.
+- Follow-up tasks: General invocation validation remains a future comparative/host concern.
 
 ## Notes
 
