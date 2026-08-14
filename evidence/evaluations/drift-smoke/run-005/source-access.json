@@ -1,0 +1,151 @@
+{
+  "observation": "Successful tool events from each fresh synthetic session were reduced to installed-runtime relative paths; command output, reasoning, and unrelated session data were not retained.",
+  "records": [
+    {
+      "case_id": "DRIFT-001",
+      "session_id": "019ffe19-de69-7903-b825-43dcb4bc2b1e",
+      "variant_id": "scale",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-001",
+      "session_id": "019ffe1a-c0e6-73d2-9381-2765b05e3834",
+      "variant_id": "stop",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-002",
+      "session_id": "019ffe1b-d866-77c3-9f01-1f17be7749dd",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-003",
+      "session_id": "019ffe1c-aa47-7262-af17-ff0a3fa837f3",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-004",
+      "session_id": "019ffe1d-cbce-7f00-bc83-82b9f5fc100b",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-005",
+      "session_id": "019ffe1f-10b2-7f03-bc57-d2798949b007",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/context-policy.md",
+        "references/strategy-workspace.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-006",
+      "session_id": "019ffe20-3808-7983-9526-d7bc50665dc7",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/business-venture.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/marketing-growth.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-007",
+      "session_id": "019ffe22-cb70-7160-bb39-02b431d1ea6c",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-008",
+      "session_id": "019ffe24-e3fa-7902-a0ec-3ba5cb014600",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/evidence.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-009",
+      "session_id": "019ffe25-b7cd-7b60-b40b-e2f13a4661ed",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-010",
+      "session_id": "019ffe26-d297-77d2-a79f-5731e0255ff7",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/boundaries.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-011",
+      "session_id": "019ffe27-9f62-7e12-8889-f77679560933",
+      "successful_runtime_reads": []
+    },
+    {
+      "case_id": "DRIFT-012",
+      "session_id": "019ffe28-120e-7413-8e11-69a0ed570256",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    }
+  ],
+  "schema_version": 1
+}

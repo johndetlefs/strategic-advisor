@@ -1,15 +1,15 @@
 {
   "bounded_drift_smoke": "pass",
-  "bounded_drift_smoke_authority_commit": "57d42e3c5b5f398a3f0c2a685b8301102d115bec",
+  "bounded_drift_smoke_authority_commit": "9442c0e784c9495bd60cddf42c44a1f9c19dc71c",
   "bounded_drift_smoke_model": "gpt-5.6-sol",
-  "bounded_drift_smoke_run": "run-004",
-  "bounded_drift_smoke_runtime_package_identity_sha256": "200a91f4a988a55450ae7859541ca12b2169a08ba192f0dbd7a8f905c903e590",
+  "bounded_drift_smoke_run": "run-005",
+  "bounded_drift_smoke_runtime_package_identity_sha256": "0dd720757af6ccda598f2333b74ef055af625e48f10bb7824cced064c9f15bf1",
   "schema_version": 1,
   "behavioral_comparison": "not-run",
   "frozen_iteration_manifest": "not-created",
   "skilled_vs_unskilled_improvement": "not-established",
   "release_gate": "pending",
   "real_pilot_evidence": "none-enrolled",
-  "executable_case_count": 45,
-  "trigger_query_count": 28
+  "executable_case_count": 56,
+  "trigger_query_count": 44
 }
