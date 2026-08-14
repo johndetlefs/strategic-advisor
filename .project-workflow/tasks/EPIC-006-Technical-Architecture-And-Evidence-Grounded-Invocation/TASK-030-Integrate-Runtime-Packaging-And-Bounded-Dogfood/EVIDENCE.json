@@ -1,0 +1,26 @@
+{
+  "task_id": "TASK-030",
+  "claims": [
+    {
+      "id": "CLM-001",
+      "parent_ac": "AC9",
+      "claim": "The exact packaged current runtime was observed on the approved bounded synthetic architecture, baseline, invocation and direct-assistance cases.",
+      "recipe": "runtime-target-source",
+      "status": "pending",
+      "commit": "____",
+      "timestamp": "____",
+      "execution_target": "____",
+      "source_artifact": "____",
+      "observation_method": "____",
+      "target_used_source_proof": "____",
+      "evidence_artifact": "____",
+      "evidence_artifact_hash": "____",
+      "invalid_substitutes": [
+        "plausible response without source proof",
+        "source-tree inspection",
+        "visible skill name alone",
+        "static validation or package build"
+      ]
+    }
+  ]
+}

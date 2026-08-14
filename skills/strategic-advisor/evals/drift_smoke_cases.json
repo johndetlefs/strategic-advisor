@@ -264,6 +264,159 @@
           "user": "Give the final ranking. Separate owner fit, validation priority, and commercial readiness; explain what changed when I first declined and then reopened the rival test; and specify the smallest comparable tests without pretending either candidate is already the economic front-runner."
         }
       ]
+    },
+    {
+      "criteria": [
+        {
+          "id": "BASELINE_STALE_BLOCKS_SCORE",
+          "requirement": "The old demonstration artifact is identified as stale and cannot support a current-product score or commitment."
+        },
+        {
+          "id": "BASELINE_CURRENT_EVIDENCE_WINS",
+          "requirement": "Current inspected production evidence supersedes the disputed old capability claims without being generalised beyond its journey."
+        },
+        {
+          "id": "BASELINE_REVISION_EXPLICIT",
+          "requirement": "The final response names the baseline evidence delta, retracts superseded claims, and gives a bounded current-state next move."
+        }
+      ],
+      "id": "DRIFT-008",
+      "risk": "wrong-or-stale-decision-baseline",
+      "title": "Current inspected state replaces a stale demonstration baseline",
+      "turns": [
+        {
+          "id": "T1",
+          "user": "$strategic-advisor For this synthetic evaluation, use only the installed Strategic Advisor runtime and do not read memory or files outside .agents/skills/strategic-advisor. A team asks for a score of its current planning product. The only artifact supplied is a six-month-old demonstration build with every item complete. The owner reports that production now has editing, notifications and incomplete days, but production has not been inspected. Score the current product out of 100 and decide whether to replace it."
+        },
+        {
+          "id": "T2",
+          "user": "New qualifying evidence is now available: the exact production revision and normal incomplete-day journey were inspected. Editing and notifications are present. Re-entering the planning flow later still requires seven manual steps. Update the assessment."
+        },
+        {
+          "id": "T3",
+          "user": "Finish by stating which baseline now controls, which earlier claims must be withdrawn, what remains unknown, and the smallest next move without inventing a whole-product score."
+        }
+      ]
+    },
+    {
+      "activation": "implicit-positive",
+      "criteria": [
+        {
+          "id": "ARCH_LATENT_ACTIVATES",
+          "requirement": "Ordinary wording is recognised as a material architecture decision and the technical architecture lens is loaded without an explicit skill token."
+        },
+        {
+          "id": "ARCH_CONCEPT_NOT_TOPOLOGY",
+          "requirement": "Conceptual responsibilities are distinguished from packages and no unsupported topology is invented."
+        },
+        {
+          "id": "ARCH_SIMPLER_RIVAL",
+          "requirement": "The simpler colocated rival, operating burden and evidence-based future extraction triggers remain visible."
+        }
+      ],
+      "id": "DRIFT-009",
+      "risk": "latent-conceptual-topology-decision",
+      "title": "Ordinary structure wording activates architecture proportionately",
+      "turns": [
+        {
+          "id": "T1",
+          "user": "For this synthetic case, use no memory or files outside any installed skill you independently select. What is the right way to structure this? Two applications have one five-person team and one deployment cadence. A design names contracts, domain, application, data and configuration as responsibilities, and proposes five shared packages. Only UI and database access are currently reused; there is no independent ownership, release or change-frequency evidence."
+        },
+        {
+          "id": "T2",
+          "user": "Give the bounded initial topology, the strongest simpler rival, and the observations that would justify later extraction. Do not make the answer longer merely to sound architectural."
+        }
+      ]
+    },
+    {
+      "activation": "implicit-positive",
+      "criteria": [
+        {
+          "id": "ARCH_EMERGENT_CHECKPOINT",
+          "requirement": "The newly exposed unrestricted credential is named as a material architecture checkpoint rather than treated as routine implementation."
+        },
+        {
+          "id": "ARCH_AUTH_OWNERSHIP",
+          "requirement": "Data location, runtime identity, authentication, authorisation and ownership are separated, with a specialist security dependency."
+        },
+        {
+          "id": "ARCH_RETURN_TO_IMPLEMENTATION",
+          "requirement": "The response bounds the decision and states how implementation can resume without reopening unrelated approved direction."
+        }
+      ],
+      "id": "DRIFT-010",
+      "risk": "emergent-runtime-auth-ownership",
+      "title": "Implementation pauses only for a newly material auth boundary",
+      "turns": [
+        {
+          "id": "T1",
+          "user": "For this synthetic case, use no memory or files outside any installed skill you independently select. Continue implementing the approved member application. I have just discovered the admin and member runtimes would share one unrestricted database credential, which was never part of the approved direction. Admins edit all accounts; members update only their own profile. Decide what must be settled before continuing."
+        },
+        {
+          "id": "T2",
+          "user": "State the bounded checkpoint, the evidence or specialist dependency needed, and exactly when routine implementation can resume."
+        }
+      ]
+    },
+    {
+      "activation": "implicit-negative",
+      "criteria": [
+        {
+          "id": "ROUTINE_DIRECT",
+          "requirement": "The factual explanation and unchanged-interface fix receive concise direct assistance."
+        },
+        {
+          "id": "ROUTINE_NO_STRATEGIC_CEREMONY",
+          "requirement": "No readiness verdict, claim ledger, architecture decision, baseline checklist or strategic checkpoint is manufactured."
+        },
+        {
+          "id": "ROUTINE_NO_SKILL_READ",
+          "requirement": "The host trace records no installed Strategic Advisor runtime file reads for this non-triggering session."
+        }
+      ],
+      "id": "DRIFT-011",
+      "risk": "routine-technical-over-invocation",
+      "title": "Routine technical work remains direct",
+      "turns": [
+        {
+          "id": "T1",
+          "user": "Explain the difference between authentication and authorisation in two sentences. No product or implementation decision is under review."
+        },
+        {
+          "id": "T2",
+          "user": "Now fix a null check in a repository method while keeping its approved public interface unchanged. Do not revisit architecture."
+        }
+      ]
+    },
+    {
+      "activation": "implicit-positive",
+      "criteria": [
+        {
+          "id": "ARCH_MIGRATION_ACTIVATES",
+          "requirement": "The ordinary migration request is recognised as a material technical architecture decision without explicit invocation."
+        },
+        {
+          "id": "ARCH_MIGRATION_REVERSIBILITY",
+          "requirement": "Coexistence, data reconciliation, rollback, ownership and the support deadline control the architecture recommendation."
+        },
+        {
+          "id": "ARCH_PRODUCT_COST_SECONDARY",
+          "requirement": "The product feature delay is treated as a material secondary opportunity cost, not allowed to erase migration risk."
+        }
+      ],
+      "id": "DRIFT-012",
+      "risk": "migration-without-coexistence-or-rollback",
+      "title": "Migration decision preserves coexistence and product cost",
+      "turns": [
+        {
+          "id": "T1",
+          "user": "For this synthetic case, use no memory or files outside any installed skill you independently select. Sense check this migration: a live workflow must leave a legacy runtime before support ends in nine months. The proposed big-bang replacement has no coexistence path, data reconciliation design or tested rollback. A strangler path is forecast to delay two product features by six weeks. Which direction is justified?"
+        },
+        {
+          "id": "T2",
+          "user": "Give the bounded migration decision, rollback and review controls, and explain how the feature delay should affect but not dominate it."
+        }
+      ]
     }
   ],
   "execution_contract": {

@@ -96,6 +96,7 @@ class DriftSmokeTests(unittest.TestCase):
                     "SKILL.md",
                     "references/conversational-strategy.md",
                     "references/evidence.md",
+                    "references/technical-architecture.md",
                 ],
                 "source_access_artifact": "source-access.json",
             },
@@ -103,16 +104,24 @@ class DriftSmokeTests(unittest.TestCase):
 
     def write_result(self, value: dict) -> Path:
         source_access = {
-            "records": [
-                {
-                    "session_id": session["session_id"],
-                    "successful_runtime_reads": ["SKILL.md"],
-                }
-                for scenario in value["scenarios"]
-                for session in scenario["sessions"]
-            ],
+            "records": [],
             "schema_version": 1,
         }
+        case_by_id = {case["id"]: case for case in self.spec["cases"]}
+        for scenario in value["scenarios"]:
+            activation = case_by_id[scenario["case_id"]].get("activation", "explicit")
+            for session in scenario["sessions"]:
+                reads = []
+                if activation != "implicit-negative":
+                    reads.append("SKILL.md")
+                if activation == "implicit-positive":
+                    reads.append("references/technical-architecture.md")
+                source_access["records"].append(
+                    {
+                        "session_id": session["session_id"],
+                        "successful_runtime_reads": reads,
+                    }
+                )
         source_bytes = json.dumps(source_access).encode("utf-8")
         (self.base / "source-access.json").write_bytes(source_bytes)
         value["target"]["source_access_artifact_sha256"] = TOOL_MODULE.sha256_bytes(
@@ -131,8 +140,35 @@ class DriftSmokeTests(unittest.TestCase):
         )
 
     def test_approved_spec_and_complete_result_pass(self) -> None:
-        self.assertEqual(len(self.spec["cases"]), 7)
+        self.assertEqual(len(self.spec["cases"]), 12)
         self.assertTrue(self.verify(self.result))
+
+    def test_implicit_activation_contract_is_explicit_in_authority(self) -> None:
+        activation = {case["id"]: case.get("activation", "explicit") for case in self.spec["cases"]}
+        self.assertEqual(activation["DRIFT-009"], "implicit-positive")
+        self.assertEqual(activation["DRIFT-010"], "implicit-positive")
+        self.assertEqual(activation["DRIFT-011"], "implicit-negative")
+        self.assertEqual(activation["DRIFT-012"], "implicit-positive")
+
+    def test_implicit_negative_runtime_read_fails(self) -> None:
+        value = copy.deepcopy(self.result)
+        result_path = self.write_result(value)
+        source_path = self.base / "source-access.json"
+        source = json.loads(source_path.read_text(encoding="utf-8"))
+        negative_session = value["scenarios"][10]["sessions"][0]["session_id"]
+        record = next(item for item in source["records"] if item["session_id"] == negative_session)
+        record["successful_runtime_reads"] = ["SKILL.md"]
+        source_bytes = json.dumps(source).encode("utf-8")
+        source_path.write_bytes(source_bytes)
+        value["target"]["source_access_artifact_sha256"] = TOOL_MODULE.sha256_bytes(source_bytes)
+        result_path.write_text(json.dumps(value), encoding="utf-8")
+        with self.assertRaisesRegex(TOOL_MODULE.SmokeError, "implicit-negative"):
+            TOOL_MODULE.validate_result(
+                REPOSITORY_ROOT,
+                self.spec,
+                self.spec_hash,
+                result_path,
+            )
 
     def test_candidate_ranking_case_preserves_three_axes(self) -> None:
         ranking_case = next(

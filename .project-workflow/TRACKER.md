@@ -10,3 +10,4 @@
 | FIX-001 | Publish Current Claude Distribution | Complete | `tasks/FIX-001-Publish-Current-Claude-Distribution/FIX.md` |
 | FIX-002 | Prevent Preference Drift In Candidate Ranking | Complete | `tasks/FIX-002-Prevent-Preference-Drift-In-Candidate-Ranking/FIX.md` |
 | TASK-025 | Automate Current Runtime Distribution | Complete | `tasks/TASK-025-Automate-Current-Runtime-Distribution/IMPLEMENTATION.md` |
+| EPIC-006 | Technical Architecture And Evidence-Grounded Invocation | In Progress | `tasks/EPIC-006-Technical-Architecture-And-Evidence-Grounded-Invocation/REQUIREMENTS.md` |

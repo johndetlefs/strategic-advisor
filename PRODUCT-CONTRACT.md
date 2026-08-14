@@ -23,8 +23,8 @@ A validated capability's `evidence` array contains objects with exactly `artifac
   "schema_version": 1,
   "release_status": "pre-release",
   "early_access_distribution_version": "0.2.0-alpha.3",
-  "prepared_distribution_version": null,
-  "prepared_runtime_package_identity_sha256": null,
+  "prepared_distribution_version": "0.2.0-alpha.4",
+  "prepared_runtime_package_identity_sha256": "0dd720757af6ccda598f2333b74ef055af625e48f10bb7824cced064c9f15bf1",
   "capability_promotion_enabled": false,
   "canonical_product_path": "skills/strategic-advisor/",
   "supported_installation_available": false,
@@ -94,6 +94,12 @@ A validated capability's `evidence` array contains objects with exactly `artifac
     },
     {
       "id": "domain.marketing-growth",
+      "kind": "domain",
+      "state": "implemented-not-validated",
+      "evidence": []
+    },
+    {
+      "id": "domain.technical-architecture",
       "kind": "domain",
       "state": "implemented-not-validated",
       "evidence": []
@@ -183,7 +189,7 @@ A validated capability's `evidence` array contains objects with exactly `artifac
 
 ## Current interpretation
 
-The repository is pre-release and capability promotion is disabled. The canonical core, selective interactive-strategy contract, decision-relevant personal-context contract, configurable retention policy, eight-file Strategy Workspace, six bounded lenses, comparative-evaluation definitions, deterministic install builder, standalone Agent Skills envelope, skill-only OpenAI local-marketplace envelope, and paid-personal ChatGPT Custom GPT kit are implemented. Exact personal facts may be used and durably retained in an owner-authorised user workspace; they are not copied into this public product repository or its generic packages. Personal context may shape strategy without claiming specialist legal, medical, clinical, or financial authority. The Custom GPT kit mechanically derives its Instructions from canonical `SKILL.md` and supplies the remaining runtime references/templates as Knowledge; it is not a Personal Skill. Existing host observations prove only the exact recorded artifacts and accounts, not strategic effectiveness, general host support, or another host. A public ChatGPT Plugin Directory or GPT Store submission has not been implemented. No passing frozen comparative run or improvement result exists. These artifacts are candidates for early testing and evaluation, not supported capabilities. There is no supported installation, validated domain, or connector.
+The repository is pre-release and capability promotion is disabled. The canonical core, proportionate evidence-baseline guard, selective interactive-strategy contract, decision-relevant personal-context contract, configurable retention policy, eight-file Strategy Workspace, seven bounded lenses, comparative-evaluation definitions, deterministic install builder, standalone Agent Skills envelope, skill-only OpenAI local-marketplace envelope, and paid-personal ChatGPT Custom GPT kit are implemented. The seventh lens covers material technical/system architecture decisions and remains implemented but not validated. Exact personal facts may be used and durably retained in an owner-authorised user workspace; they are not copied into this public product repository or its generic packages. Personal context may shape strategy without claiming specialist legal, medical, clinical, financial, security, privacy, safety, regulatory, reliability, or other professional authority. The Custom GPT kit mechanically derives its Instructions from canonical `SKILL.md` and supplies the remaining runtime references/templates as Knowledge; it is not a Personal Skill. Existing host observations prove only the exact recorded artifacts and accounts, not strategic effectiveness, general host support, automatic invocation, or another host. A public ChatGPT Plugin Directory or GPT Store submission has not been implemented. No passing frozen comparative run or improvement result exists. These artifacts are candidates for early testing and evaluation, not supported capabilities. There is no supported installation, validated domain, or connector.
 
 The runtime package is an explicit allowlist in [`skills/strategic-advisor/runtime-manifest.json`](skills/strategic-advisor/runtime-manifest.json). [`scripts/build_install_artifacts.py`](scripts/build_install_artifacts.py) wraps those exact runtime bytes in deterministic standalone-Skill, OpenAI local-marketplace plugin, and ChatGPT Custom GPT envelopes and identifies the added Apache-2.0 licence separately. The Custom GPT envelope contains generated canonical Instructions and an exact Knowledge projection rather than a hand-maintained prompt fork. Evaluation definitions, expected properties, rubrics, fixtures, and prior results must never enter the model-visible treatment or install package.
 

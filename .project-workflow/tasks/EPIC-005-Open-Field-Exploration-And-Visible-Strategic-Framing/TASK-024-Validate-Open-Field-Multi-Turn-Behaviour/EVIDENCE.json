@@ -4,17 +4,17 @@
     {
       "id": "CLM-001",
       "parent_ac": "AC10",
-      "claim": "Eight public-synthetic open-field scenario families with required and forbidden assertions are deterministically imported into a current 45-case evaluation inventory.",
+      "claim": "Eight public-synthetic open-field scenario families with required and forbidden assertions remain deterministically imported; the completion inventory contained 45 cases and its current expanded successor contains 56.",
       "recipe": "runtime-target-source",
       "status": "pass",
       "commit": "b9acb84241fb0a3eec966fc21e03e2fdc127638e",
       "timestamp": "2026-07-26T05:35:06Z",
       "execution_target": "CORE-023 through CORE-030 and deterministic eval builder",
-      "source_artifact": "skills/strategic-advisor/evals/evals.json sha256:621780abde9244dadcd576519751b47e79eb11b993fa6e8083eec4b948e8a543",
+      "source_artifact": "skills/strategic-advisor/evals/evals.json sha256:0ca9fa4f0ddb321a0a11157e1d6bc327e489fa19333b3015ecd5622920cb06bf",
       "observation_method": "Run build_evals.py --check, the eval scope, probe-coverage validators, and negative fixtures.",
-      "target_used_source_proof": "The current combined inventory contains 45 cases and the validator requires all eight new probe families.",
+      "target_used_source_proof": "The current 56-case successor retains CORE-023 through CORE-030 and the validator still requires all eight open-field probe families.",
       "evidence_artifact": "../../../../skills/strategic-advisor/evals/evals.json",
-      "evidence_artifact_hash": "sha256:621780abde9244dadcd576519751b47e79eb11b993fa6e8083eec4b948e8a543",
+      "evidence_artifact_hash": "sha256:0ca9fa4f0ddb321a0a11157e1d6bc327e489fa19333b3015ecd5622920cb06bf",
       "invalid_substitutes": []
     },
     {

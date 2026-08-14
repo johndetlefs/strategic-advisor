@@ -39,6 +39,8 @@ stored content current evidence or truth.
 <!-- strategic-advisor-download:start -->
 Download these four files together from the current
 [`v0.2.0-alpha.3` prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.3):
+
+`v0.2.0-alpha.4` is prepared release intent, not the current public download, until the protected-main workflow and fresh-download verification pass.
 <!-- strategic-advisor-download:end -->
 
 - `strategic-advisor.zip`
@@ -187,6 +189,28 @@ The first is a dual-track search, the second is portfolio-bounded, and the third
 is open-field. The labels need not appear in the response; the option set and
 reasoning should visibly obey the request.
 
+### Check proportionate architecture invocation
+
+Use an ordinary material-decision prompt without naming the skill:
+
+> What is the right way to structure this? Two applications have one small
+> team and deployment cadence. A design proposes five shared packages, but
+> only UI and database access are currently reused. There is no independent
+> ownership, release, or change-frequency evidence.
+
+The response should recognise the hard-to-reverse boundary decision, separate
+conceptual responsibilities from physical topology, test the simpler colocated
+rival, and name evidence that would justify later extraction. This is a
+behavioural check, not proof that automatic invocation works generally.
+
+Then use a direct negative control:
+
+> Explain authentication versus authorisation in two sentences. No product or
+> implementation decision is under review.
+
+That prompt should receive concise factual assistance without a strategic
+ledger, readiness verdict, architecture checkpoint, or baseline recital.
+
 ## Optional local marketplace
 
 `strategic-advisor-plugin.zip` is for Codex and compatible ChatGPT desktop Work
@@ -220,7 +244,7 @@ The builder refuses a dirty release source and existing output paths. Use
 
 - Deterministic package verification proves selected bytes and archive safety.
 - Exact-host evidence proves only the installation/activation actually observed.
-- The bounded Codex drift smoke proves only its seven recorded public-synthetic
+- The bounded Codex drift smoke proves only its recorded public-synthetic
   scenarios on its exact model/runtime/date.
 - No current artifact proves cross-host parity, comparative improvement,
   universal drift resistance, supported professional domains, or suitability

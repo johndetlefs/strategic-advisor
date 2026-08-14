@@ -114,33 +114,33 @@ class ReleaseStateTests(unittest.TestCase):
         }
 
     def test_prepare_advances_and_synchronizes_release_state(self) -> None:
-        authority = self.module.prepare(self.root, "0.2.0-alpha.4")
+        authority = self.module.prepare(self.root, "0.2.0-alpha.5")
         self.assertEqual(authority["state"], "prepared")
-        self.assertEqual(authority["distribution"]["version"], "0.2.0-alpha.4")
+        self.assertEqual(authority["distribution"]["version"], "0.2.0-alpha.5")
         self.assertEqual(
             authority["distribution"]["runtime_package_identity_sha256"],
             self.module.runtime_identity(self.root),
         )
         self.assertEqual(self.module.validate(self.root), authority)
         self.assertIn(
-            "`v0.2.0-alpha.4` is release intent only",
+            "`v0.2.0-alpha.5` is release intent only",
             (self.root / "README.md").read_text(encoding="utf-8"),
         )
 
     def test_invalid_nonadvancing_and_reused_versions_do_not_write(self) -> None:
         before = self.tracked_hashes()
-        for version in ("not-semver", "0.2.0-alpha.3", "0.1.9-rc.9"):
+        for version in ("not-semver", "0.2.0-alpha.4", "0.1.9-rc.9"):
             with self.subTest(version=version):
                 with self.assertRaises(self.module.ReleaseStateError):
                     self.module.prepare(self.root, version)
                 self.assertEqual(self.tracked_hashes(), before)
 
-        reused = self.root / "evidence" / "releases" / "v0.2.0-alpha.4.json"
+        reused = self.root / "evidence" / "releases" / "v0.2.0-alpha.5.json"
         reused.write_text("{}\n", encoding="utf-8")
         with self.assertRaisesRegex(
             self.module.ReleaseStateError, "already used"
         ):
-            self.module.prepare(self.root, "0.2.0-alpha.4")
+            self.module.prepare(self.root, "0.2.0-alpha.5")
         self.assertEqual(self.tracked_hashes(), before)
 
     def test_transaction_rolls_back_if_replace_fails(self) -> None:
@@ -157,7 +157,7 @@ class ReleaseStateTests(unittest.TestCase):
 
         with mock.patch.object(self.module.os, "replace", side_effect=fail_second):
             with self.assertRaisesRegex(OSError, "synthetic replace failure"):
-                self.module.prepare(self.root, "0.2.0-alpha.4")
+                self.module.prepare(self.root, "0.2.0-alpha.5")
         self.assertEqual(self.tracked_hashes(), before)
 
     def test_runtime_drift_fails_but_documentation_drift_does_not(self) -> None:

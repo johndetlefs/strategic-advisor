@@ -2,7 +2,7 @@
 
 Strategic Advisor is an experimental Agent Skill for reality-tested strategy under uncertainty. The project is designed to help a capable model distinguish what is known from what is merely reported, inferred, preferred, forecast, or unknown before recommending action.
 
-> **Current status: pre-release.** The canonical skill, selective conversation, personal-context and continuity contract, six decision lenses, deterministic cross-host packages, and bounded Codex smoke evidence exist. The project has not passed its comparative or real-pilot release gates. Alpha artifacts are experimental test candidates, not supported releases; exact host installation and activation are recorded separately.
+> **Current status: pre-release.** The canonical skill, proportionate evidence-baseline guard, selective conversation, personal-context and continuity contract, seven decision lenses, deterministic cross-host packages, and bounded Codex smoke evidence exist. The project has not passed its comparative or real-pilot release gates. Alpha artifacts are experimental test candidates, not supported releases; exact host installation and activation are recorded separately.
 
 The public capability authority is [PRODUCT-CONTRACT.md](PRODUCT-CONTRACT.md). If this README and that contract ever disagree, treat the more conservative claim as current and report the drift.
 
@@ -15,6 +15,7 @@ The design is one canonical reality protocol, an owner-controlled personal-conte
 | --- | --- |
 | Maturity | Pre-release |
 | Early-access distribution | [`v0.2.0-alpha.3` GitHub prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.3) |
+| Prepared distribution | `v0.2.0-alpha.4` is release intent only until the protected-main workflow publishes and a fresh public download verifies. |
 <!-- strategic-advisor-distribution:end -->
 | Canonical product | [`skills/strategic-advisor/`](skills/strategic-advisor/) |
 | Supported installation | None |
@@ -132,7 +133,7 @@ python3 -m unittest discover -s tests -v
 
 Run one scope with `python3 scripts/validate.py --scope <scope>`.
 
-`build_evals.py --check` proves that the committed executable inventory is the deterministic import of the normative core and original four-lens inventories. The newer interactive, business, and marketing source is packaged for alpha testing but is not covered by a passing comparative run. `build_runtime_package.py` can construct a content-addressed, allowlisted package; its existence and unit tests do not constitute a host installation or behavioural result.
+`build_evals.py --check` proves that the committed executable inventory is the deterministic import of the normative core and lens inventories. The interactive, business, marketing, baseline, and technical-architecture source is packaged for alpha testing but is not covered by a passing comparative run. `build_runtime_package.py` can construct a content-addressed, allowlisted package; its existence and unit tests do not constitute a host installation or behavioural result.
 
 `build_install_artifacts.py` wraps those allowlisted runtime bytes in deterministic standalone-Skill, OpenAI local-marketplace, and ChatGPT Custom GPT ZIPs with shared external provenance. Repeated-build and adversarial unit tests prove the archive contract; [INSTALL.md](INSTALL.md) explains the host-specific early-access steps.
 

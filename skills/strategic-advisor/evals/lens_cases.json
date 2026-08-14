@@ -820,6 +820,191 @@
         "Recommend waiting without a contingency, threshold, or opportunity-cost analysis.",
         "Invent the manager's loyalty, power after reorganisation, or future behaviour."
       ]
+    },
+    {
+      "id": "LENS-TA-001",
+      "title": "Conceptual layers have not earned package topology",
+      "case_kind": "lens",
+      "lens": "technical-architecture",
+      "pair_id": null,
+      "probe_tags": ["conceptual_topology", "premature_extraction", "operational_burden"],
+      "data_classification": "synthetic",
+      "prompt": "A two-application repository has one five-person team and one deployment cadence. A design document names contracts, domain, application, data and configuration as conceptual responsibilities. The architect proposes five shared packages immediately. Only UI components and database access are currently reused; no independent release, ownership or change-frequency evidence exists. Decide the initial topology.",
+      "expected_routing": {"primary": "technical-architecture", "secondary": null, "unsupported_domain": false, "bounded_supported_subdecision": false},
+      "expected_readiness": "Not validated",
+      "readiness_target": "the proposed five-package extraction",
+      "expected_claim_statuses": [
+        {"claim": "The design document names five conceptual responsibilities", "status": "Report"},
+        {"claim": "UI components and database access are currently reused", "status": "Report"},
+        {"claim": "Each responsibility needs an independent package", "status": "Assumption"},
+        {"claim": "Independent ownership or release cadence will emerge", "status": "Unknown"}
+      ],
+      "required_decision_properties": [
+        "Distinguish conceptual responsibilities from physical package topology.",
+        "Classify five-package extraction as Not validated and test the simpler colocated rival.",
+        "Recommend extracting only boundaries with current sharing or independent-change evidence, with thresholds for later extraction.",
+        "Include coordination, versioning, ownership and future change cost rather than optimising conceptual neatness."
+      ],
+      "forbidden_decision_properties": [
+        "Treat every conceptual layer as a required package.",
+        "Assume a monorepo makes package boundaries free.",
+        "Invent independent teams, deployments or consumers.",
+        "Route the decision only as project scope without technical architecture."
+      ]
+    },
+    {
+      "id": "LENS-TA-002",
+      "title": "Shared database does not imply shared permissions",
+      "case_kind": "lens",
+      "lens": "technical-architecture",
+      "pair_id": null,
+      "probe_tags": ["ownership_boundary", "runtime_data_auth", "security_dependency"],
+      "data_classification": "synthetic",
+      "prompt": "An admin application and member application use one database. The proposal gives both runtimes the same service credential because the tables are shared. Admins can edit every account; members can read and update only their own profile. There is no documented authorisation owner, audit design or credential-rotation plan. Should the shared credential design proceed?",
+      "expected_routing": {"primary": "technical-architecture", "secondary": null, "unsupported_domain": false, "bounded_supported_subdecision": false},
+      "expected_readiness": "Not validated",
+      "readiness_target": "the shared service-credential design",
+      "expected_claim_statuses": [
+        {"claim": "Both applications use one database", "status": "Report"},
+        {"claim": "The applications have different permission rules", "status": "Report"},
+        {"claim": "Shared tables justify shared runtime permissions", "status": "Assumption"},
+        {"claim": "The proposed design enforces least privilege", "status": "Unknown"}
+      ],
+      "required_decision_properties": [
+        "Separate data location, authentication, authorisation and runtime credential ownership.",
+        "Classify the shared credential proposal as Not validated pending explicit enforcement and ownership evidence.",
+        "Compare scoped runtime identities or a mediated access boundary with the proposed shared privilege.",
+        "Require a specialist security review dependency without claiming to perform the audit."
+      ],
+      "forbidden_decision_properties": [
+        "Treat a shared database as a shared permission boundary.",
+        "Claim the design is secure or insecure without inspecting enforcement and threat context.",
+        "Conflate authentication with authorisation.",
+        "Recommend duplicating all data merely to avoid defining permissions."
+      ]
+    },
+    {
+      "id": "LENS-TA-003",
+      "title": "Product outcome primary with material architecture secondary",
+      "case_kind": "cross-cutting",
+      "lens": "project-product",
+      "pair_id": null,
+      "probe_tags": ["project_architecture_boundary", "outcome_vs_activity", "build_adopt_migrate"],
+      "data_classification": "synthetic",
+      "prompt": "A scheduling product has no evidence that users need cross-project portfolio reporting. The team wants to build a shared analytics platform first because it could later serve three products. Decide the next product move, accounting for the proposed technical commitment.",
+      "expected_routing": {"primary": "project-product", "secondary": "technical-architecture", "unsupported_domain": false, "bounded_supported_subdecision": false},
+      "expected_readiness": "Not validated",
+      "readiness_target": "building the shared analytics platform now",
+      "expected_claim_statuses": [
+        {"claim": "Three products could potentially consume the platform", "status": "Forecast"},
+        {"claim": "Users need cross-project portfolio reporting", "status": "Unknown"},
+        {"claim": "A shared platform should be built first", "status": "Preference"}
+      ],
+      "required_decision_properties": [
+        "Keep the unvalidated user outcome and product sequence primary.",
+        "Use technical architecture secondarily to expose platform coupling, ownership and option-cost consequences.",
+        "Prefer a bounded demand/workflow test and the simplest reversible technical path before a shared platform.",
+        "State what consumer and independent-change evidence would justify platformisation later."
+      ],
+      "forbidden_decision_properties": [
+        "Treat reuse potential as evidence of user value.",
+        "Make technical elegance primary over the missing outcome evidence.",
+        "Recommend a platform because three products exist.",
+        "Activate more than one secondary lens."
+      ]
+    },
+    {
+      "id": "LENS-TA-004",
+      "title": "Migration architecture primary with product consequence secondary",
+      "case_kind": "cross-cutting",
+      "lens": "technical-architecture",
+      "pair_id": null,
+      "probe_tags": ["project_architecture_boundary", "migration_reversibility", "operational_burden"],
+      "data_classification": "synthetic",
+      "prompt": "A live customer workflow must move from a legacy runtime before vendor support ends in nine months. The proposed big-bang replacement has no coexistence path, data reconciliation design or tested rollback. A strangler migration would delay two planned product features by six weeks. Choose the migration direction.",
+      "expected_routing": {"primary": "technical-architecture", "secondary": "project-product", "unsupported_domain": false, "bounded_supported_subdecision": false},
+      "expected_readiness": "Not validated",
+      "readiness_target": "the proposed big-bang replacement",
+      "expected_claim_statuses": [
+        {"claim": "Vendor support ends in nine months", "status": "Report"},
+        {"claim": "The big-bang path has no tested rollback", "status": "Report"},
+        {"claim": "A strangler path delays two features by six weeks", "status": "Forecast"},
+        {"claim": "Big-bang replacement is the fastest safe route", "status": "Assumption"}
+      ],
+      "required_decision_properties": [
+        "Keep migration, coexistence, rollback and data integrity as the primary architecture decision.",
+        "Use project/product secondarily to expose the six-week feature opportunity cost without letting schedule erase migration risk.",
+        "Reject the untested big-bang commitment and define a bounded coexistence or rollback proof.",
+        "Set review and stop conditions against the nine-month support constraint."
+      ],
+      "forbidden_decision_properties": [
+        "Recommend big-bang solely to protect the feature roadmap.",
+        "Treat the strangler estimate as observed fact.",
+        "Ignore data reconciliation, coexistence or rollback.",
+        "Use project/product as the primary lens."
+      ]
+    },
+    {
+      "id": "LENS-TA-005",
+      "title": "Framework artifact is evidence rather than authority",
+      "case_kind": "cross-cutting",
+      "lens": "technical-architecture",
+      "pair_id": null,
+      "probe_tags": ["framework_not_authority", "build_adopt_migrate", "operational_burden"],
+      "data_classification": "synthetic",
+      "prompt": "A generated architecture artifact recommends event sourcing, six services and a message broker for a new internal approval tool. The current team is three developers, projected load is 200 approvals a week, audit history is required, and nobody operates a broker. The framework labels the design best practice. Decide whether to adopt it.",
+      "expected_routing": {"primary": "technical-architecture", "secondary": null, "unsupported_domain": false, "bounded_supported_subdecision": false},
+      "expected_readiness": "Not validated",
+      "readiness_target": "adopting the generated six-service architecture",
+      "expected_claim_statuses": [
+        {"claim": "The framework labels the design best practice", "status": "Report"},
+        {"claim": "The team has no broker operating experience", "status": "Report"},
+        {"claim": "Six services are required for the audit history", "status": "Assumption"},
+        {"claim": "The generated topology will improve the outcome", "status": "Unknown"}
+      ],
+      "required_decision_properties": [
+        "Treat the framework artifact as a proposal to challenge rather than authority.",
+        "Compare a simpler auditable modular deployment with the distributed design.",
+        "Include team capability, on-call load, failure modes, transaction boundaries and future extraction triggers.",
+        "Classify adoption as Not validated and propose the cheapest architecture spike only for unresolved load-bearing claims."
+      ],
+      "forbidden_decision_properties": [
+        "Adopt the topology because the framework calls it best practice.",
+        "Assume event sourcing is required for an audit log.",
+        "Ignore broker ownership and operational burden.",
+        "Reject all future service separation regardless of evidence."
+      ]
+    },
+    {
+      "id": "LENS-TA-006",
+      "title": "Authoritative geometry remains separate from presentation",
+      "case_kind": "cross-cutting",
+      "lens": "technical-architecture",
+      "pair_id": null,
+      "probe_tags": ["ownership_boundary", "proof_layer_separation", "future_change_cost"],
+      "data_classification": "synthetic",
+      "prompt": "A reusable simulation foundation owns collision geometry and deterministic movement. One consumer needs foreground art that can visually cover the actor without changing collision. The proposal moves all presentation layers into the foundation so every consumer receives the same foreground model. Decide the boundary.",
+      "expected_routing": {"primary": "technical-architecture", "secondary": null, "unsupported_domain": false, "bounded_supported_subdecision": false},
+      "expected_readiness": "Not validated",
+      "readiness_target": "moving all presentation layers into the foundation",
+      "expected_claim_statuses": [
+        {"claim": "The foundation owns collision geometry and deterministic movement", "status": "Report"},
+        {"claim": "One consumer needs foreground visual occlusion", "status": "Report"},
+        {"claim": "Every consumer needs the same presentation model", "status": "Assumption"},
+        {"claim": "Presentation ownership must follow collision ownership", "status": "Assumption"}
+      ],
+      "required_decision_properties": [
+        "Separate authoritative simulation geometry from consumer-owned presentation.",
+        "Reject universal presentation ownership absent multi-consumer evidence.",
+        "Recommend the smallest stable foundation seam that exposes needed geometry or ordering without owning consumer art.",
+        "Require runtime/rendered proof for visual behaviour rather than treating unit tests as presentation proof."
+      ],
+      "forbidden_decision_properties": [
+        "Move presentation into the foundation solely because collision is shared.",
+        "Duplicate authoritative collision in the consumer.",
+        "Treat build or unit-test success as rendered occlusion proof.",
+        "Assume one consumer's presentation need is universal."
+      ]
     }
   ]
 }

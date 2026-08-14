@@ -1,0 +1,9 @@
+# Stories
+
+| ID | Title | Status | Type | Parent ACs | Docs | Branch | Notes |
+|---|---|---|---|---|---|---|---|
+| TASK-026 | Establish Proportionate Evidence Baseline Guard | In Progress | Task | AC1, AC2 | tasks/EPIC-006-Technical-Architecture-And-Evidence-Grounded-Invocation/TASK-026-Establish-Proportionate-Evidence-Baseline-Guard/IMPLEMENTATION.md |  | Covers AC1, AC2; Prefix TASK: default prefix; no guidance match; Decomposition plan: Proposed Child Work |
+| TASK-027 | Implement Technical Architecture Lens | In Progress | Task | AC3, AC4, AC5 | tasks/EPIC-006-Technical-Architecture-And-Evidence-Grounded-Invocation/TASK-027-Implement-Technical-Architecture-Lens/IMPLEMENTATION.md |  | Covers AC3, AC4, AC5; Prefix TASK: default prefix; no guidance match; Decomposition plan: Proposed Child Work |
+| TASK-028 | Strengthen Latent And Emergent Invocation | In Progress | Task | AC6, AC7 | tasks/EPIC-006-Technical-Architecture-And-Evidence-Grounded-Invocation/TASK-028-Strengthen-Latent-And-Emergent-Invocation/IMPLEMENTATION.md |  | Covers AC6, AC7; Prefix TASK: default prefix; no guidance match; Decomposition plan: Proposed Child Work |
+| TASK-029 | Expand Architecture And Baseline Evaluations | In Progress | Task | AC2, AC4, AC5, AC6, AC7, AC8 | tasks/EPIC-006-Technical-Architecture-And-Evidence-Grounded-Invocation/TASK-029-Expand-Architecture-And-Baseline-Evaluations/IMPLEMENTATION.md |  | Covers AC2, AC4, AC5, AC6, AC7, AC8; Prefix TASK: default prefix; no guidance match; Decomposition plan: Proposed Child Work |
+| TASK-030 | Integrate Runtime Packaging And Bounded Dogfood | In Progress | Task | AC9, AC10, AC11, AC12, AC13 | tasks/EPIC-006-Technical-Architecture-And-Evidence-Grounded-Invocation/TASK-030-Integrate-Runtime-Packaging-And-Bounded-Dogfood/IMPLEMENTATION.md |  | Covers AC9, AC10, AC11, AC12, AC13; Prefix TASK: default prefix; no guidance match; Decomposition plan: Proposed Child Work |

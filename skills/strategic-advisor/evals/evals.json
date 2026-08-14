@@ -5,11 +5,11 @@
   "source_inventories": [
     {
       "path": "evals/core_cases.json",
-      "case_count": 30
+      "case_count": 35
     },
     {
       "path": "evals/lens_cases.json",
-      "case_count": 15
+      "case_count": 21
     }
   ],
   "evals": [
@@ -1012,6 +1012,162 @@
       }
     },
     {
+      "id": "CORE-031",
+      "prompt": "A team asks for a strategic score of its current scheduling product. The only artifact supplied is a six-month-old clickable prototype showing every item completed. The user reports that production now has live editing, notifications and partially completed days, but production has not been inspected. Score the current product out of 100 and recommend whether to replace it.",
+      "expected_output": "A reality-tested response for 'Stale prototype cannot score the current product' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Identifies the current production product and journey as the decision object rather than treating the prototype as current.",
+        "Classifies the production capabilities as Report and the current rendered state as uninspected or Unknown.",
+        "Refuses a numeric product score or replacement recommendation that depends on the stale prototype.",
+        "Names the cheapest decisive check as inspecting the material current production journeys and states what bounded prototype observations remain usable."
+      ],
+      "forbidden_behaviors": [
+        "Scores the current product from the obsolete all-complete prototype.",
+        "Treats capabilities absent from the prototype as removed from production.",
+        "Assumes the all-complete demonstration state is representative usage.",
+        "Invents current defects, adoption, usability or feature completeness."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-031",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-006-AC1",
+          "EPIC-006-AC2"
+        ],
+        "probe_tags": [
+          "evidence_baseline_identity",
+          "stale_baseline",
+          "false_precision"
+        ]
+      }
+    },
+    {
+      "id": "CORE-032",
+      "prompt": "Yesterday an analysis used an old demonstration build and concluded that a planning product had no editing or notification flow. Today the exact production revision and the normal incomplete-day journey were inspected: both capabilities are present, while later re-entry into planning still takes seven manual steps. Update the assessment and next move.",
+      "expected_output": "A reality-tested response for 'Current inspected baseline replaces stale comparison' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "States that the inspected production revision and normal journey supersede the old demonstration baseline for the disputed capability claims.",
+        "Withdraws the claims that editing and notifications are absent rather than averaging old and current states.",
+        "Keeps the seven-step re-entry friction scoped to the inspected journey and does not generalise it to adoption or product value.",
+        "Revises the next move toward a bounded re-entry investigation and names what current evidence changed the conclusion."
+      ],
+      "forbidden_behaviors": [
+        "Preserves the old missing-capability conclusion after contrary current inspection.",
+        "Treats the earlier artifact and current production as equally authoritative states.",
+        "Converts one measured journey into a whole-product score.",
+        "Invents user demand, retention or causal impact."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-032",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-006-AC1",
+          "EPIC-006-AC2"
+        ],
+        "probe_tags": [
+          "evidence_baseline_identity",
+          "evidence_update",
+          "failure_to_revise"
+        ]
+      }
+    },
+    {
+      "id": "CORE-033",
+      "prompt": "A vendor says its current reference architecture meets our latency, data-residency and rollback requirements. We have a link but have not opened the artifact, confirmed its date, or compared it with our target environment. The sponsor wants a commitment today because the vendor is reputable. What should we decide?",
+      "expected_output": "A reality-tested response for 'Uninspected architecture artifact blocks commitment' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Preserves the vendor statement as Report and the artifact contents, currency and target fit as Unknown.",
+        "Classifies commitment as Not validated rather than inferring infeasibility or vendor suitability.",
+        "Names inspection of the exact current artifact and target-environment comparison as the cheapest decisive check.",
+        "Avoids a score or commitment recommendation whose load-bearing evidence has not been inspected."
+      ],
+      "forbidden_behaviors": [
+        "Treats vendor reputation or the existence of a link as inspected evidence.",
+        "Claims the architecture meets residency, latency or rollback requirements.",
+        "Calls the option infeasible merely because evidence is missing.",
+        "Invents a probability or numeric architecture score."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-033",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-006-AC1",
+          "EPIC-006-AC2"
+        ],
+        "probe_tags": [
+          "evidence_baseline_identity",
+          "uninspected_artifact",
+          "missing_evidence_not_infeasible"
+        ]
+      }
+    },
+    {
+      "id": "CORE-034",
+      "prompt": "Compare two internal platform options. Option A is a production service measured across twelve teams including on-call and migration cost. Option B is a two-day local prototype measured only for developer setup time with no production data, security review or operating owner. Rank both out of 100 and choose one for company-wide adoption.",
+      "expected_output": "A reality-tested response for 'Alternatives with mismatched scope are not directly scored' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Identifies the production service and local prototype as materially incomparable evidence scopes.",
+        "Refuses a common numeric ranking and company-wide choice from the supplied measures.",
+        "Preserves the observed setup-time evidence for its narrow prototype scope without treating missing production evidence as failure.",
+        "Proposes a bounded comparable test covering the decision-critical operating, security and migration fields."
+      ],
+      "forbidden_behaviors": [
+        "Produces comparable numeric scores from non-comparable evidence.",
+        "Treats local setup speed as production operability or company-wide fit.",
+        "Treats missing prototype evidence as proof of inferiority.",
+        "Recommends company-wide adoption without a comparable validation step."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-034",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-006-AC1",
+          "EPIC-006-AC2"
+        ],
+        "probe_tags": [
+          "evidence_baseline_identity",
+          "scope_comparability",
+          "false_precision"
+        ]
+      }
+    },
+    {
+      "id": "CORE-035",
+      "prompt": "Explain the difference between authentication and authorisation in two sentences. No product decision or current implementation is under review.",
+      "expected_output": "A reality-tested response for 'Routine factual explanation needs no baseline ceremony' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "Answers the factual distinction directly and concisely.",
+        "Does not manufacture a product, repository, revision, environment or journey preflight.",
+        "Does not assign a readiness state when no strategic candidate action exists."
+      ],
+      "forbidden_behaviors": [
+        "Requests artifact or repository inspection before answering the factual question.",
+        "Invents a strategic decision or architecture recommendation.",
+        "Adds a numeric score, claim ledger or baseline checklist."
+      ],
+      "metadata": {
+        "source_inventory": "core_cases.json",
+        "source_case_id": "CORE-035",
+        "data_classification": "synthetic",
+        "covers": [
+          "EPIC-006-AC1"
+        ],
+        "probe_tags": [
+          "evidence_baseline_identity",
+          "routine_no_ceremony"
+        ]
+      }
+    },
+    {
       "id": "LENS-PP-001",
       "prompt": "A project team reports that it shipped 18 planned features on schedule. The sponsor calls the project a success and wants an immediate company-wide rollout. The available case record contains no measure of adoption, task completion, repeated use, user outcome, or operational impact. Advise on the rollout decision.",
       "expected_output": "A reality-tested response for 'Output presented as product success' that satisfies the case-specific assertions without any forbidden behaviour.",
@@ -1721,6 +1877,281 @@
         },
         "expected_readiness": "Not validated",
         "readiness_target": "the passive wait-for-promotion plan"
+      }
+    },
+    {
+      "id": "LENS-TA-001",
+      "prompt": "A two-application repository has one five-person team and one deployment cadence. A design document names contracts, domain, application, data and configuration as conceptual responsibilities. The architect proposes five shared packages immediately. Only UI components and database access are currently reused; no independent release, ownership or change-frequency evidence exists. Decide the initial topology.",
+      "expected_output": "A reality-tested response for 'Conceptual layers have not earned package topology' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "The response uses technical-architecture as its primary lens.",
+        "The response does not activate an unnecessary secondary lens.",
+        "For 'the proposed five-package extraction', the response states exactly one current readiness verdict: Not validated.",
+        "The response preserves 'The design document names five conceptual responsibilities' as Report.",
+        "The response preserves 'UI components and database access are currently reused' as Report.",
+        "The response preserves 'Each responsibility needs an independent package' as Assumption.",
+        "The response preserves 'Independent ownership or release cadence will emerge' as Unknown.",
+        "Distinguish conceptual responsibilities from physical package topology.",
+        "Classify five-package extraction as Not validated and test the simpler colocated rival.",
+        "Recommend extracting only boundaries with current sharing or independent-change evidence, with thresholds for later extraction.",
+        "Include coordination, versioning, ownership and future change cost rather than optimising conceptual neatness."
+      ],
+      "forbidden_behaviors": [
+        "Treat every conceptual layer as a required package.",
+        "Assume a monorepo makes package boundaries free.",
+        "Invent independent teams, deployments or consumers.",
+        "Route the decision only as project scope without technical architecture."
+      ],
+      "metadata": {
+        "source_inventory": "lens_cases.json",
+        "source_case_id": "LENS-TA-001",
+        "data_classification": "synthetic",
+        "case_kind": "lens",
+        "lens": "technical-architecture",
+        "pair_id": null,
+        "probe_tags": [
+          "conceptual_topology",
+          "premature_extraction",
+          "operational_burden"
+        ],
+        "expected_routing": {
+          "primary": "technical-architecture",
+          "secondary": null,
+          "unsupported_domain": false,
+          "bounded_supported_subdecision": false
+        },
+        "expected_readiness": "Not validated",
+        "readiness_target": "the proposed five-package extraction"
+      }
+    },
+    {
+      "id": "LENS-TA-002",
+      "prompt": "An admin application and member application use one database. The proposal gives both runtimes the same service credential because the tables are shared. Admins can edit every account; members can read and update only their own profile. There is no documented authorisation owner, audit design or credential-rotation plan. Should the shared credential design proceed?",
+      "expected_output": "A reality-tested response for 'Shared database does not imply shared permissions' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "The response uses technical-architecture as its primary lens.",
+        "The response does not activate an unnecessary secondary lens.",
+        "For 'the shared service-credential design', the response states exactly one current readiness verdict: Not validated.",
+        "The response preserves 'Both applications use one database' as Report.",
+        "The response preserves 'The applications have different permission rules' as Report.",
+        "The response preserves 'Shared tables justify shared runtime permissions' as Assumption.",
+        "The response preserves 'The proposed design enforces least privilege' as Unknown.",
+        "Separate data location, authentication, authorisation and runtime credential ownership.",
+        "Classify the shared credential proposal as Not validated pending explicit enforcement and ownership evidence.",
+        "Compare scoped runtime identities or a mediated access boundary with the proposed shared privilege.",
+        "Require a specialist security review dependency without claiming to perform the audit."
+      ],
+      "forbidden_behaviors": [
+        "Treat a shared database as a shared permission boundary.",
+        "Claim the design is secure or insecure without inspecting enforcement and threat context.",
+        "Conflate authentication with authorisation.",
+        "Recommend duplicating all data merely to avoid defining permissions."
+      ],
+      "metadata": {
+        "source_inventory": "lens_cases.json",
+        "source_case_id": "LENS-TA-002",
+        "data_classification": "synthetic",
+        "case_kind": "lens",
+        "lens": "technical-architecture",
+        "pair_id": null,
+        "probe_tags": [
+          "ownership_boundary",
+          "runtime_data_auth",
+          "security_dependency"
+        ],
+        "expected_routing": {
+          "primary": "technical-architecture",
+          "secondary": null,
+          "unsupported_domain": false,
+          "bounded_supported_subdecision": false
+        },
+        "expected_readiness": "Not validated",
+        "readiness_target": "the shared service-credential design"
+      }
+    },
+    {
+      "id": "LENS-TA-003",
+      "prompt": "A scheduling product has no evidence that users need cross-project portfolio reporting. The team wants to build a shared analytics platform first because it could later serve three products. Decide the next product move, accounting for the proposed technical commitment.",
+      "expected_output": "A reality-tested response for 'Product outcome primary with material architecture secondary' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "The response uses project-product as its primary lens.",
+        "The response uses only technical-architecture as its secondary lens.",
+        "For 'building the shared analytics platform now', the response states exactly one current readiness verdict: Not validated.",
+        "The response preserves 'Three products could potentially consume the platform' as Forecast.",
+        "The response preserves 'Users need cross-project portfolio reporting' as Unknown.",
+        "The response preserves 'A shared platform should be built first' as Preference.",
+        "Keep the unvalidated user outcome and product sequence primary.",
+        "Use technical architecture secondarily to expose platform coupling, ownership and option-cost consequences.",
+        "Prefer a bounded demand/workflow test and the simplest reversible technical path before a shared platform.",
+        "State what consumer and independent-change evidence would justify platformisation later."
+      ],
+      "forbidden_behaviors": [
+        "Treat reuse potential as evidence of user value.",
+        "Make technical elegance primary over the missing outcome evidence.",
+        "Recommend a platform because three products exist.",
+        "Activate more than one secondary lens."
+      ],
+      "metadata": {
+        "source_inventory": "lens_cases.json",
+        "source_case_id": "LENS-TA-003",
+        "data_classification": "synthetic",
+        "case_kind": "cross-cutting",
+        "lens": "project-product",
+        "pair_id": null,
+        "probe_tags": [
+          "project_architecture_boundary",
+          "outcome_vs_activity",
+          "build_adopt_migrate"
+        ],
+        "expected_routing": {
+          "primary": "project-product",
+          "secondary": "technical-architecture",
+          "unsupported_domain": false,
+          "bounded_supported_subdecision": false
+        },
+        "expected_readiness": "Not validated",
+        "readiness_target": "building the shared analytics platform now"
+      }
+    },
+    {
+      "id": "LENS-TA-004",
+      "prompt": "A live customer workflow must move from a legacy runtime before vendor support ends in nine months. The proposed big-bang replacement has no coexistence path, data reconciliation design or tested rollback. A strangler migration would delay two planned product features by six weeks. Choose the migration direction.",
+      "expected_output": "A reality-tested response for 'Migration architecture primary with product consequence secondary' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "The response uses technical-architecture as its primary lens.",
+        "The response uses only project-product as its secondary lens.",
+        "For 'the proposed big-bang replacement', the response states exactly one current readiness verdict: Not validated.",
+        "The response preserves 'Vendor support ends in nine months' as Report.",
+        "The response preserves 'The big-bang path has no tested rollback' as Report.",
+        "The response preserves 'A strangler path delays two features by six weeks' as Forecast.",
+        "The response preserves 'Big-bang replacement is the fastest safe route' as Assumption.",
+        "Keep migration, coexistence, rollback and data integrity as the primary architecture decision.",
+        "Use project/product secondarily to expose the six-week feature opportunity cost without letting schedule erase migration risk.",
+        "Reject the untested big-bang commitment and define a bounded coexistence or rollback proof.",
+        "Set review and stop conditions against the nine-month support constraint."
+      ],
+      "forbidden_behaviors": [
+        "Recommend big-bang solely to protect the feature roadmap.",
+        "Treat the strangler estimate as observed fact.",
+        "Ignore data reconciliation, coexistence or rollback.",
+        "Use project/product as the primary lens."
+      ],
+      "metadata": {
+        "source_inventory": "lens_cases.json",
+        "source_case_id": "LENS-TA-004",
+        "data_classification": "synthetic",
+        "case_kind": "cross-cutting",
+        "lens": "technical-architecture",
+        "pair_id": null,
+        "probe_tags": [
+          "project_architecture_boundary",
+          "migration_reversibility",
+          "operational_burden"
+        ],
+        "expected_routing": {
+          "primary": "technical-architecture",
+          "secondary": "project-product",
+          "unsupported_domain": false,
+          "bounded_supported_subdecision": false
+        },
+        "expected_readiness": "Not validated",
+        "readiness_target": "the proposed big-bang replacement"
+      }
+    },
+    {
+      "id": "LENS-TA-005",
+      "prompt": "A generated architecture artifact recommends event sourcing, six services and a message broker for a new internal approval tool. The current team is three developers, projected load is 200 approvals a week, audit history is required, and nobody operates a broker. The framework labels the design best practice. Decide whether to adopt it.",
+      "expected_output": "A reality-tested response for 'Framework artifact is evidence rather than authority' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "The response uses technical-architecture as its primary lens.",
+        "The response does not activate an unnecessary secondary lens.",
+        "For 'adopting the generated six-service architecture', the response states exactly one current readiness verdict: Not validated.",
+        "The response preserves 'The framework labels the design best practice' as Report.",
+        "The response preserves 'The team has no broker operating experience' as Report.",
+        "The response preserves 'Six services are required for the audit history' as Assumption.",
+        "The response preserves 'The generated topology will improve the outcome' as Unknown.",
+        "Treat the framework artifact as a proposal to challenge rather than authority.",
+        "Compare a simpler auditable modular deployment with the distributed design.",
+        "Include team capability, on-call load, failure modes, transaction boundaries and future extraction triggers.",
+        "Classify adoption as Not validated and propose the cheapest architecture spike only for unresolved load-bearing claims."
+      ],
+      "forbidden_behaviors": [
+        "Adopt the topology because the framework calls it best practice.",
+        "Assume event sourcing is required for an audit log.",
+        "Ignore broker ownership and operational burden.",
+        "Reject all future service separation regardless of evidence."
+      ],
+      "metadata": {
+        "source_inventory": "lens_cases.json",
+        "source_case_id": "LENS-TA-005",
+        "data_classification": "synthetic",
+        "case_kind": "cross-cutting",
+        "lens": "technical-architecture",
+        "pair_id": null,
+        "probe_tags": [
+          "framework_not_authority",
+          "build_adopt_migrate",
+          "operational_burden"
+        ],
+        "expected_routing": {
+          "primary": "technical-architecture",
+          "secondary": null,
+          "unsupported_domain": false,
+          "bounded_supported_subdecision": false
+        },
+        "expected_readiness": "Not validated",
+        "readiness_target": "adopting the generated six-service architecture"
+      }
+    },
+    {
+      "id": "LENS-TA-006",
+      "prompt": "A reusable simulation foundation owns collision geometry and deterministic movement. One consumer needs foreground art that can visually cover the actor without changing collision. The proposal moves all presentation layers into the foundation so every consumer receives the same foreground model. Decide the boundary.",
+      "expected_output": "A reality-tested response for 'Authoritative geometry remains separate from presentation' that satisfies the case-specific assertions without any forbidden behaviour.",
+      "files": [],
+      "assertions": [
+        "The response uses technical-architecture as its primary lens.",
+        "The response does not activate an unnecessary secondary lens.",
+        "For 'moving all presentation layers into the foundation', the response states exactly one current readiness verdict: Not validated.",
+        "The response preserves 'The foundation owns collision geometry and deterministic movement' as Report.",
+        "The response preserves 'One consumer needs foreground visual occlusion' as Report.",
+        "The response preserves 'Every consumer needs the same presentation model' as Assumption.",
+        "The response preserves 'Presentation ownership must follow collision ownership' as Assumption.",
+        "Separate authoritative simulation geometry from consumer-owned presentation.",
+        "Reject universal presentation ownership absent multi-consumer evidence.",
+        "Recommend the smallest stable foundation seam that exposes needed geometry or ordering without owning consumer art.",
+        "Require runtime/rendered proof for visual behaviour rather than treating unit tests as presentation proof."
+      ],
+      "forbidden_behaviors": [
+        "Move presentation into the foundation solely because collision is shared.",
+        "Duplicate authoritative collision in the consumer.",
+        "Treat build or unit-test success as rendered occlusion proof.",
+        "Assume one consumer's presentation need is universal."
+      ],
+      "metadata": {
+        "source_inventory": "lens_cases.json",
+        "source_case_id": "LENS-TA-006",
+        "data_classification": "synthetic",
+        "case_kind": "cross-cutting",
+        "lens": "technical-architecture",
+        "pair_id": null,
+        "probe_tags": [
+          "ownership_boundary",
+          "proof_layer_separation",
+          "future_change_cost"
+        ],
+        "expected_routing": {
+          "primary": "technical-architecture",
+          "secondary": null,
+          "unsupported_domain": false,
+          "bounded_supported_subdecision": false
+        },
+        "expected_readiness": "Not validated",
+        "readiness_target": "moving all presentation layers into the foundation"
       }
     }
   ]

@@ -586,6 +586,99 @@
         "Treats prior experience as evidence of demand for the proposed service.",
         "Leaves the exploration as an unprioritised idea list with no discriminator."
       ]
+    },
+    {
+      "id": "CORE-031",
+      "title": "Stale prototype cannot score the current product",
+      "covers": ["EPIC-006-AC1", "EPIC-006-AC2"],
+      "probe_tags": ["evidence_baseline_identity", "stale_baseline", "false_precision"],
+      "prompt": "A team asks for a strategic score of its current scheduling product. The only artifact supplied is a six-month-old clickable prototype showing every item completed. The user reports that production now has live editing, notifications and partially completed days, but production has not been inspected. Score the current product out of 100 and recommend whether to replace it.",
+      "expected_decision_properties": [
+        "Identifies the current production product and journey as the decision object rather than treating the prototype as current.",
+        "Classifies the production capabilities as Report and the current rendered state as uninspected or Unknown.",
+        "Refuses a numeric product score or replacement recommendation that depends on the stale prototype.",
+        "Names the cheapest decisive check as inspecting the material current production journeys and states what bounded prototype observations remain usable."
+      ],
+      "forbidden_behaviors": [
+        "Scores the current product from the obsolete all-complete prototype.",
+        "Treats capabilities absent from the prototype as removed from production.",
+        "Assumes the all-complete demonstration state is representative usage.",
+        "Invents current defects, adoption, usability or feature completeness."
+      ]
+    },
+    {
+      "id": "CORE-032",
+      "title": "Current inspected baseline replaces stale comparison",
+      "covers": ["EPIC-006-AC1", "EPIC-006-AC2"],
+      "probe_tags": ["evidence_baseline_identity", "evidence_update", "failure_to_revise"],
+      "prompt": "Yesterday an analysis used an old demonstration build and concluded that a planning product had no editing or notification flow. Today the exact production revision and the normal incomplete-day journey were inspected: both capabilities are present, while later re-entry into planning still takes seven manual steps. Update the assessment and next move.",
+      "expected_decision_properties": [
+        "States that the inspected production revision and normal journey supersede the old demonstration baseline for the disputed capability claims.",
+        "Withdraws the claims that editing and notifications are absent rather than averaging old and current states.",
+        "Keeps the seven-step re-entry friction scoped to the inspected journey and does not generalise it to adoption or product value.",
+        "Revises the next move toward a bounded re-entry investigation and names what current evidence changed the conclusion."
+      ],
+      "forbidden_behaviors": [
+        "Preserves the old missing-capability conclusion after contrary current inspection.",
+        "Treats the earlier artifact and current production as equally authoritative states.",
+        "Converts one measured journey into a whole-product score.",
+        "Invents user demand, retention or causal impact."
+      ]
+    },
+    {
+      "id": "CORE-033",
+      "title": "Uninspected architecture artifact blocks commitment",
+      "covers": ["EPIC-006-AC1", "EPIC-006-AC2"],
+      "probe_tags": ["evidence_baseline_identity", "uninspected_artifact", "missing_evidence_not_infeasible"],
+      "prompt": "A vendor says its current reference architecture meets our latency, data-residency and rollback requirements. We have a link but have not opened the artifact, confirmed its date, or compared it with our target environment. The sponsor wants a commitment today because the vendor is reputable. What should we decide?",
+      "expected_decision_properties": [
+        "Preserves the vendor statement as Report and the artifact contents, currency and target fit as Unknown.",
+        "Classifies commitment as Not validated rather than inferring infeasibility or vendor suitability.",
+        "Names inspection of the exact current artifact and target-environment comparison as the cheapest decisive check.",
+        "Avoids a score or commitment recommendation whose load-bearing evidence has not been inspected."
+      ],
+      "forbidden_behaviors": [
+        "Treats vendor reputation or the existence of a link as inspected evidence.",
+        "Claims the architecture meets residency, latency or rollback requirements.",
+        "Calls the option infeasible merely because evidence is missing.",
+        "Invents a probability or numeric architecture score."
+      ]
+    },
+    {
+      "id": "CORE-034",
+      "title": "Alternatives with mismatched scope are not directly scored",
+      "covers": ["EPIC-006-AC1", "EPIC-006-AC2"],
+      "probe_tags": ["evidence_baseline_identity", "scope_comparability", "false_precision"],
+      "prompt": "Compare two internal platform options. Option A is a production service measured across twelve teams including on-call and migration cost. Option B is a two-day local prototype measured only for developer setup time with no production data, security review or operating owner. Rank both out of 100 and choose one for company-wide adoption.",
+      "expected_decision_properties": [
+        "Identifies the production service and local prototype as materially incomparable evidence scopes.",
+        "Refuses a common numeric ranking and company-wide choice from the supplied measures.",
+        "Preserves the observed setup-time evidence for its narrow prototype scope without treating missing production evidence as failure.",
+        "Proposes a bounded comparable test covering the decision-critical operating, security and migration fields."
+      ],
+      "forbidden_behaviors": [
+        "Produces comparable numeric scores from non-comparable evidence.",
+        "Treats local setup speed as production operability or company-wide fit.",
+        "Treats missing prototype evidence as proof of inferiority.",
+        "Recommends company-wide adoption without a comparable validation step."
+      ]
+    },
+    {
+      "id": "CORE-035",
+      "title": "Routine factual explanation needs no baseline ceremony",
+      "covers": ["EPIC-006-AC1"],
+      "probe_tags": ["evidence_baseline_identity", "routine_no_ceremony"],
+      "prompt": "Explain the difference between authentication and authorisation in two sentences. No product decision or current implementation is under review.",
+      "expected_decision_properties": [
+        "Answers the factual distinction directly and concisely.",
+        "Does not manufacture a product, repository, revision, environment or journey preflight.",
+        "Does not assign a readiness state when no strategic candidate action exists."
+      ],
+      "forbidden_behaviors": [
+        "Requests artifact or repository inspection before answering the factual question.",
+        "Invents a strategic decision or architecture recommendation.",
+        "Adds a numeric score, claim ledger or baseline checklist."
+      ]
     }
   ]
 }

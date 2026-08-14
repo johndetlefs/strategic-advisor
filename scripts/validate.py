@@ -125,6 +125,7 @@ LENS_REFERENCES = {
     "domain.people-leadership": "references/people-leadership.md",
     "domain.business-venture": "references/business-venture.md",
     "domain.marketing-growth": "references/marketing-growth.md",
+    "domain.technical-architecture": "references/technical-architecture.md",
 }
 LENS_HEADINGS = (
     "routing boundary",
@@ -142,6 +143,7 @@ SUPPORTED_LENSES = {
     "career",
     "organizational-influence",
     "people-leadership",
+    "technical-architecture",
 }
 ALLOWED_CLAIM_STATUSES = {
     "Observation",
@@ -180,6 +182,14 @@ REQUIRED_LENS_PROBES = {
     "firm_accountability",
     "hard_negotiation",
     "material_omission",
+    "conceptual_topology",
+    "ownership_boundary",
+    "build_adopt_migrate",
+    "migration_reversibility",
+    "framework_not_authority",
+    "proof_layer_separation",
+    "project_architecture_boundary",
+    "operational_burden",
 }
 REQUIRED_CORE_PROBES = {
     "repetition_without_new_evidence",
@@ -205,6 +215,11 @@ REQUIRED_CORE_PROBES = {
     "routine_no_ceremony",
     "no_forced_novelty",
     "exploration_reconvergence",
+    "evidence_baseline_identity",
+    "stale_baseline",
+    "uninspected_artifact",
+    "scope_comparability",
+    "evidence_update",
 }
 EVALUATION_AUTHORITY_FILES = (
     "RUBRIC.md",
@@ -1782,8 +1797,20 @@ def check_evals(root: Path) -> list[Diagnostic]:
                     "direct-negative": False,
                     "supported-operational-negative": False,
                 }
+                required_categories = {
+                    "latent-architecture": (True, "implicit-mixed-positive"),
+                    "emergent-implementation": (True, "implicit-mixed-positive"),
+                    "cross-project-conflict": (True, "implicit-mixed-positive"),
+                    "evidence-update": (True, "implicit-mixed-positive"),
+                    "factual-technical": (False, "supported-operational-negative"),
+                    "approved-implementation": (False, "supported-operational-negative"),
+                    "simple-fix-status": (False, "supported-operational-negative"),
+                    "build-test": (False, "supported-operational-negative"),
+                }
                 slice_counts = {name: 0 for name in allowed_slices}
+                category_counts = {name: 0 for name in required_categories}
                 slice_valid = True
+                category_valid = True
                 for item in queries:
                     slice_name = item.get("slice")
                     if slice_name is None:
@@ -1799,6 +1826,17 @@ def check_evals(root: Path) -> list[Diagnostic]:
                         slice_valid = False
                         continue
                     slice_counts[slice_name] += 1
+                    category = item.get("category")
+                    if category is not None:
+                        expected = required_categories.get(category)
+                        if (
+                            expected is None
+                            or expected[0] is not item["should_trigger"]
+                            or expected[1] != slice_name
+                        ):
+                            category_valid = False
+                        else:
+                            category_counts[category] += 1
                 valid_queries = (
                     len(set(query_ids)) == len(query_ids)
                     and query_ids == sorted(query_ids)
@@ -1806,14 +1844,16 @@ def check_evals(root: Path) -> list[Diagnostic]:
                     and positive >= 8
                     and negative >= 8
                     and slice_valid
+                    and category_valid
                     and slice_counts["implicit-mixed-positive"] >= 4
                     and slice_counts["supported-operational-negative"] >= 4
+                    and all(count >= 2 for count in category_counts.values())
                 )
             if not valid_queries:
                 failures.append(
                     diagnostic(
                         "EVALS_TRIGGER_INVALID",
-                        "Trigger inventory needs at least 20 ordered unique TRIGGER-NNN IDs and query texts, boolean labels, at least 8 per class, and four correctly labelled examples in each difficult slice.",
+                        "Trigger inventory needs ordered unique TRIGGER-NNN IDs and query texts, boolean labels, at least 8 per class, four examples in each difficult slice, and two correctly labelled examples for every required architecture/invocation category.",
                         trigger_path.relative_to(root),
                     )
                 )
@@ -1996,12 +2036,13 @@ def check_evals(root: Path) -> list[Diagnostic]:
                 )
             )
 
+        current_drift_run = "run-005"
         drift_result_path = (
             root
             / "evidence"
             / "evaluations"
             / "drift-smoke"
-            / "run-004"
+            / current_drift_run
             / "result.json"
         )
         drift_result, drift_result_failures = load_json_object(drift_result_path, root)
@@ -2047,7 +2088,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "executable_case_count": combined_case_count,
             "trigger_query_count": trigger_query_count,
             "bounded_drift_smoke": "pass",
-            "bounded_drift_smoke_run": "run-004",
+            "bounded_drift_smoke_run": current_drift_run,
             "bounded_drift_smoke_authority_commit": (
                 drift_result.get("authority_commit", "")
                 if isinstance(drift_result, dict)
@@ -2079,7 +2120,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
             f"Executable synthetic inventory: **{combined_case_count} cases**",
             f"Trigger inventory: **{trigger_query_count} queries**",
             "Bounded current-source drift smoke: **Pass**",
-            "Drift-smoke execution: **Codex CLI / gpt-5.6-sol / run-004**",
+            f"Drift-smoke execution: **Codex CLI / gpt-5.6-sol / {current_drift_run}**",
         )
         if not status_markdown.is_file() or any(
             line not in read_text(status_markdown) for line in required_status_lines
@@ -2105,6 +2146,9 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "drift-smoke/run-004/result.json",
             "drift-smoke/run-004/runtime-package-manifest.json",
             "drift-smoke/run-004/source-access.json",
+            "drift-smoke/run-005/result.json",
+            "drift-smoke/run-005/runtime-package-manifest.json",
+            "drift-smoke/run-005/source-access.json",
         }
         actual_evidence = {
             path.relative_to(evaluation_evidence_root).as_posix()

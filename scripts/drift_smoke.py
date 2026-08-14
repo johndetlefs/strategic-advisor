@@ -81,6 +81,46 @@ EXPECTED_CASES = {
             "RANK_LABEL_CALIBRATED",
         },
     },
+    "DRIFT-008": {
+        "risk": "wrong-or-stale-decision-baseline",
+        "criteria": {
+            "BASELINE_STALE_BLOCKS_SCORE",
+            "BASELINE_CURRENT_EVIDENCE_WINS",
+            "BASELINE_REVISION_EXPLICIT",
+        },
+    },
+    "DRIFT-009": {
+        "risk": "latent-conceptual-topology-decision",
+        "criteria": {
+            "ARCH_LATENT_ACTIVATES",
+            "ARCH_CONCEPT_NOT_TOPOLOGY",
+            "ARCH_SIMPLER_RIVAL",
+        },
+    },
+    "DRIFT-010": {
+        "risk": "emergent-runtime-auth-ownership",
+        "criteria": {
+            "ARCH_EMERGENT_CHECKPOINT",
+            "ARCH_AUTH_OWNERSHIP",
+            "ARCH_RETURN_TO_IMPLEMENTATION",
+        },
+    },
+    "DRIFT-011": {
+        "risk": "routine-technical-over-invocation",
+        "criteria": {
+            "ROUTINE_DIRECT",
+            "ROUTINE_NO_STRATEGIC_CEREMONY",
+            "ROUTINE_NO_SKILL_READ",
+        },
+    },
+    "DRIFT-012": {
+        "risk": "migration-without-coexistence-or-rollback",
+        "criteria": {
+            "ARCH_MIGRATION_ACTIVATES",
+            "ARCH_MIGRATION_REVERSIBILITY",
+            "ARCH_PRODUCT_COST_SECONDARY",
+        },
+    },
 }
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 COMMIT_PATTERN = re.compile(r"[0-9a-f]{40}")
@@ -114,7 +154,9 @@ def nonempty(value: object, label: str) -> str:
     return value
 
 
-def validate_turns(turns: object, label: str) -> list[dict]:
+def validate_turns(
+    turns: object, label: str, activation: str = "explicit"
+) -> list[dict]:
     if not isinstance(turns, list) or len(turns) < 2:
         raise SmokeError(f"{label} must contain at least two actual user turns")
     seen: set[str] = set()
@@ -126,8 +168,12 @@ def validate_turns(turns: object, label: str) -> list[dict]:
             raise SmokeError(f"{label} contains duplicate turn id {turn_id}")
         seen.add(turn_id)
         nonempty(turn.get("user"), f"{label}[{index}].user")
-        if index == 0 and "$strategic-advisor" not in turn["user"]:
-            raise SmokeError(f"{label}[0] must explicitly invoke $strategic-advisor")
+        if index == 0:
+            has_explicit_token = "$strategic-advisor" in turn["user"]
+            if activation == "explicit" and not has_explicit_token:
+                raise SmokeError(f"{label}[0] must explicitly invoke $strategic-advisor")
+            if activation != "explicit" and has_explicit_token:
+                raise SmokeError(f"{label}[0] must not explicitly invoke $strategic-advisor")
     return turns
 
 
@@ -164,6 +210,9 @@ def validate_spec(root: Path, spec_path: Path) -> tuple[dict, str]:
         if case.get("risk") != expected["risk"]:
             raise SmokeError(f"{case_id} risk is invalid")
         nonempty(case.get("title"), f"{case_id}.title")
+        activation = case.get("activation", "explicit")
+        if activation not in {"explicit", "implicit-positive", "implicit-negative"}:
+            raise SmokeError(f"{case_id}.activation is invalid")
         criteria = case.get("criteria")
         if not isinstance(criteria, list):
             raise SmokeError(f"{case_id}.criteria must be an array")
@@ -188,9 +237,13 @@ def validate_spec(root: Path, spec_path: Path) -> tuple[dict, str]:
             if set(variant_map) != expected["variants"] or len(variant_map) != len(variants):
                 raise SmokeError(f"{case_id} variants are invalid")
             for variant_id, variant in variant_map.items():
-                validate_turns(variant.get("turns"), f"{case_id}.{variant_id}.turns")
+                validate_turns(
+                    variant.get("turns"),
+                    f"{case_id}.{variant_id}.turns",
+                    activation,
+                )
         else:
-            validate_turns(case.get("turns"), f"{case_id}.turns")
+            validate_turns(case.get("turns"), f"{case_id}.turns", activation)
     allowlist, _, _ = load_allowlist(root, Path(DEFAULT_ALLOWLIST))
     if any("eval" in str(item).lower() for item in allowlist.get("include", [])):
         raise SmokeError("runtime allowlist contains evaluation material")
@@ -245,6 +298,7 @@ def validate_result(root: Path, spec: dict, spec_sha256: str, result_path: Path)
         "SKILL.md",
         "references/evidence.md",
         "references/conversational-strategy.md",
+        "references/technical-architecture.md",
     }
     if not isinstance(source_access, list) or not required_access.issubset(set(source_access)):
         raise SmokeError("result lacks positive access evidence for the installed runtime")
@@ -272,6 +326,7 @@ def validate_result(root: Path, spec: dict, spec_sha256: str, result_path: Path)
     ) != len(scenarios):
         raise SmokeError("result scenarios differ from the frozen case set")
     all_session_ids: set[str] = set()
+    expected_activation_by_session: dict[str, str] = {}
     overall_pass = True
     for case in spec["cases"]:
         case_id = case["id"]
@@ -293,6 +348,9 @@ def validate_result(root: Path, spec: dict, spec_sha256: str, result_path: Path)
             if session_id in all_session_ids:
                 raise SmokeError(f"session id is reused: {session_id}")
             all_session_ids.add(session_id)
+            expected_activation_by_session[session_id] = case.get(
+                "activation", "explicit"
+            )
             actual_turns = session.get("turns")
             if not isinstance(actual_turns, list) or len(actual_turns) != len(planned_turns):
                 raise SmokeError(f"{case_id}.{variant_id} is missing an actual turn")
@@ -333,8 +391,22 @@ def validate_result(root: Path, spec: dict, spec_sha256: str, result_path: Path)
             raise SmokeError("source-access record must be an object")
         source_session_ids.add(nonempty(record.get("session_id"), "source-access session_id"))
         reads = record.get("successful_runtime_reads")
-        if not isinstance(reads, list) or "SKILL.md" not in reads:
-            raise SmokeError("every fresh session needs successful installed SKILL.md access")
+        if not isinstance(reads, list):
+            raise SmokeError("successful_runtime_reads must be an array")
+        activation = expected_activation_by_session.get(record.get("session_id"))
+        if activation == "implicit-negative":
+            if reads:
+                raise SmokeError(
+                    "implicit-negative session must not read installed runtime files"
+                )
+        elif "SKILL.md" not in reads:
+            raise SmokeError(
+                "explicit and implicit-positive sessions need successful installed SKILL.md access"
+            )
+        if activation == "implicit-positive" and "references/technical-architecture.md" not in reads:
+            raise SmokeError(
+                "implicit-positive architecture session must load the technical architecture lens"
+            )
     if source_session_ids != all_session_ids or len(source_records) != len(all_session_ids):
         raise SmokeError("source-access session coverage differs from the retained run")
     return overall_pass

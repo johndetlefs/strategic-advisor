@@ -2,6 +2,21 @@
 
 Use this protocol for propositions that could change the decision, readiness state, risk, or recommended action. Do not inflate the ledger with immaterial background.
 
+## Lock the material decision baseline
+
+Before scoring, comparing, diagnosing, or recommending commitment on a consequential decision, identify the exact decision object and only the baseline fields that could change the conclusion. Depending on the case, those fields can include the product or system, repository or artifact, revision or date, environment, current state, scope, user journey, and alternatives being compared.
+
+State which material parts were directly inspected, which were reported by the user or another source, and which remain assumed or unknown. Observing an artifact does not prove it is current, representative, deployed, used in the named environment, or comparable with another artifact.
+
+If a stale reference, demonstration state, wrong revision, uninspected artifact, scope mismatch, incomparable alternative, or missing journey could plausibly overturn the conclusion:
+
+1. name the baseline gap and its implication;
+2. inspect the exact material object when authorised and available, or propose the cheapest decisive check;
+3. do not issue a numeric score or commitment recommendation that depends on the unresolved baseline; and
+4. label any bounded interim analysis with the reported or assumed baseline it uses.
+
+When qualifying current evidence changes the baseline, identify the evidence delta and revise the affected claims, readiness, and recommendation. Do not silently carry forward a score or conclusion from the superseded state. This preflight is proportionate: factual explanation, routine implementation, simple edits, and status work do not require a baseline recital when object identity cannot materially change the answer.
+
 ## Build the claim ledger
 
 Record each material proposition with:

@@ -412,6 +412,37 @@ class ValidatorFixtureTests(unittest.TestCase):
         result = self.run_validator("evals")
         self.assert_named_failure(result, "EVALS_TRIGGER_INVALID")
 
+    def test_missing_architecture_trigger_category_fails_evals_scope(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "evals"
+            / "eval_queries.json"
+        )
+        inventory = json.loads(path.read_text(encoding="utf-8"))
+        for item in inventory:
+            if item.get("category") == "latent-architecture":
+                item.pop("category")
+        path.write_text(json.dumps(inventory, indent=2) + "\n", encoding="utf-8")
+        result = self.run_validator("evals")
+        self.assert_named_failure(result, "EVALS_TRIGGER_INVALID")
+
+    def test_mislabelled_architecture_trigger_category_fails_evals_scope(self) -> None:
+        path = (
+            self.fixture_root
+            / "skills"
+            / "strategic-advisor"
+            / "evals"
+            / "eval_queries.json"
+        )
+        inventory = json.loads(path.read_text(encoding="utf-8"))
+        target = next(item for item in inventory if item.get("category") == "build-test")
+        target["should_trigger"] = True
+        path.write_text(json.dumps(inventory, indent=2) + "\n", encoding="utf-8")
+        result = self.run_validator("evals")
+        self.assert_named_failure(result, "EVALS_TRIGGER_INVALID")
+
     def test_incomplete_freeze_authority_fails_evals_scope(self) -> None:
         path = (
             self.fixture_root

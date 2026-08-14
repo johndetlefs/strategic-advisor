@@ -146,5 +146,117 @@
     "query": "According to this organisation chart and delegation policy, who signs off department budgets?",
     "slice": "supported-operational-negative",
     "should_trigger": false
+  },
+  {
+    "id": "TRIGGER-029",
+    "query": "What is the right way to structure this? We have two applications, one team, and a proposal for six shared packages that would be difficult to unwind.",
+    "slice": "implicit-mixed-positive",
+    "category": "latent-architecture",
+    "should_trigger": true
+  },
+  {
+    "id": "TRIGGER-030",
+    "query": "Sense check this: should identity, data access and notifications be one shared service for three products, or are we creating the wrong ownership boundary?",
+    "slice": "implicit-mixed-positive",
+    "category": "latent-architecture",
+    "should_trigger": true
+  },
+  {
+    "id": "TRIGGER-031",
+    "query": "Continue implementing the approved member app. I have just discovered the admin and member runtimes would share one unrestricted credential, which was not part of the approved design. Decide the boundary before continuing.",
+    "slice": "implicit-mixed-positive",
+    "category": "emergent-implementation",
+    "should_trigger": true
+  },
+  {
+    "id": "TRIGGER-032",
+    "query": "While applying this routine refactor, we found the proposed library would force four repositories onto coordinated releases. That cross-repository commitment was never decided. What should we do before finishing?",
+    "slice": "implicit-mixed-positive",
+    "category": "emergent-implementation",
+    "should_trigger": true
+  },
+  {
+    "id": "TRIGGER-033",
+    "query": "Three current products need similar reporting, but none has proven the same user workflow. Should we create a shared platform now or keep bounded implementations until the common boundary is evidenced?",
+    "slice": "implicit-mixed-positive",
+    "category": "cross-project-conflict",
+    "should_trigger": true
+  },
+  {
+    "id": "TRIGGER-034",
+    "query": "Two repositories now duplicate authentication logic. One team wants immediate centralisation; the other needs independent release and has different permission rules. Help choose the cross-project architecture.",
+    "slice": "implicit-mixed-positive",
+    "category": "cross-project-conflict",
+    "should_trigger": true
+  },
+  {
+    "id": "TRIGGER-035",
+    "query": "Our earlier recommendation used a year-old architecture diagram. The current production runtime and data flow have now been inspected and contradict two load-bearing assumptions. Update the decision.",
+    "slice": "implicit-mixed-positive",
+    "category": "evidence-update",
+    "should_trigger": true
+  },
+  {
+    "id": "TRIGGER-036",
+    "query": "We had paused a migration because rollback was unknown. A current target-environment test now demonstrates coexistence and rollback within the required window. Reassess readiness and the next bounded move.",
+    "slice": "implicit-mixed-positive",
+    "category": "evidence-update",
+    "should_trigger": true
+  },
+  {
+    "id": "TRIGGER-037",
+    "query": "Explain the difference between a monorepo and a polyrepo in three concise bullets; I am not choosing between them.",
+    "slice": "supported-operational-negative",
+    "category": "factual-technical",
+    "should_trigger": false
+  },
+  {
+    "id": "TRIGGER-038",
+    "query": "Describe how OAuth authorization code flow works. No product or implementation decision is requested.",
+    "slice": "supported-operational-negative",
+    "category": "factual-technical",
+    "should_trigger": false
+  },
+  {
+    "id": "TRIGGER-039",
+    "query": "Implement the already approved database adapter in the existing package and follow the repository tests; do not revisit architecture.",
+    "slice": "supported-operational-negative",
+    "category": "approved-implementation",
+    "should_trigger": false
+  },
+  {
+    "id": "TRIGGER-040",
+    "query": "Add the agreed authentication middleware to the existing runtime boundary exactly as specified in the approved plan.",
+    "slice": "supported-operational-negative",
+    "category": "approved-implementation",
+    "should_trigger": false
+  },
+  {
+    "id": "TRIGGER-041",
+    "query": "Report which service owns the current queue and whether its deployment is healthy; make no design recommendation.",
+    "slice": "supported-operational-negative",
+    "category": "simple-fix-status",
+    "should_trigger": false
+  },
+  {
+    "id": "TRIGGER-042",
+    "query": "Fix the null check in this repository method and keep the public interface unchanged.",
+    "slice": "supported-operational-negative",
+    "category": "simple-fix-status",
+    "should_trigger": false
+  },
+  {
+    "id": "TRIGGER-043",
+    "query": "Run the existing unit and integration tests and summarise any failures without changing the approved design.",
+    "slice": "supported-operational-negative",
+    "category": "build-test",
+    "should_trigger": false
+  },
+  {
+    "id": "TRIGGER-044",
+    "query": "Update the build configuration to the already approved compiler target and verify the build passes.",
+    "slice": "supported-operational-negative",
+    "category": "build-test",
+    "should_trigger": false
   }
 ]

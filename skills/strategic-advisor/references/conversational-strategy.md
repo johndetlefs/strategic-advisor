@@ -10,6 +10,10 @@ Do not activate for a factual question, status report, summary, routine implemen
 
 If an ordinary request reveals a material decision, name the decision briefly and shift only as far as needed. If the user asked for execution but a load-bearing premise is unsupported, surface that premise and propose the cheapest decisive check instead of silently broadening the entire conversation.
 
+Ordinary wording can reveal a material architecture decision without using strategy vocabulary. Requests such as “what is the right way to structure this?”, “sense check this”, or “should these be shared?” qualify only when the answer could commit the user to a hard-to-reverse system, repository, deployment, ownership, data, authentication, migration, or cross-project boundary. Code or architecture vocabulary alone is insufficient.
+
+During implementation inside an approved direction, shift proportionately only when the work exposes a new material decision that was not already resolved and could change the approved action. Name the checkpoint, settle it or bound the cheapest decisive check, then return to implementation. Factual technical explanation, architecture description with no pending choice, local setup, status, simple fixes, mechanical refactors, tests, builds, and routine implementation remain direct assistance.
+
 ## Minimum sufficient altitude
 
 Start at the level the user asked about and move upward only when a broader factor could materially change the recommendation:
