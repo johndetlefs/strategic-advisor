@@ -56,20 +56,20 @@ Permit an immutable prepared release candidate that has not been published to be
 - Affected target: `scripts/release_state.py`, distribution authority/schema, release-state and aggregate validation tests, release documentation, and the alpha.5 preparation/publication sequence.
 - Primary repo: .
 - Repos touched: .
-- Branch, PR, and evidence links: Branch `codex/fix-004-owner-led-recommendation-drift`; PR and release links pending; retained FIX-004 drift evidence under `evidence/evaluations/drift-smoke/run-006/`.
+- Branch, PR, and evidence links: `codex/fix-004-owner-led-recommendation-drift`; candidate commit `1cc2826eda9c2270a88f1cec35e5a167bc1ab6fa`; [PR #18](https://github.com/johndetlefs/strategic-advisor/pull/18); release pending; retained FIX-004 drift evidence under `evidence/evaluations/drift-smoke/run-006/`.
 - Verification plan: Freeze transition tests first; prove refusal for non-prepared, reused/non-advancing versions, invalid source/reason/time, mismatched committed intent, and transactional failure; prove exact superseded record plus alpha.5 preparation; run release/package/claims tests, complete unit and validator suites, clean deterministic builds, Workflow Doctor, protected-main publication, fresh-download verification, finalization, and installed-runtime identity verification.
 
 ### Repository Links
 
 | Repo | Branch | PR | Evidence |
 |---|---|---|---|
-| . | `codex/fix-004-owner-led-recommendation-drift` | Pending | Unit/validator/build/release evidence pending |
+| . | `codex/fix-004-owner-led-recommendation-drift` | [#18](https://github.com/johndetlefs/strategic-advisor/pull/18) | Unit/validator/run-006/two-build evidence pass; release pending |
 
 ## Repository Evidence
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | Local `codex/fix-004-owner-led-recommendation-drift`; no PR yet | Focused release-state/publication suites and complete 149-test suite pass; seven validator scopes, 56-case rebuild, run-006 verifier, Doctor, compilation, and diff check pass | Alpha.4 superseded locally and alpha.5 prepared; no commit, publication, finalization, or installation yet | `distribution.json`; FIX-004 `run-006`; commands recorded below |
+| . | Pushed `codex/fix-004-owner-led-recommendation-drift`; PR #18 | Focused release-state/publication suites and complete 149-test suite pass; seven validator scopes, 56-case rebuild, run-006 verifier, Doctor, compilation, diff check, and two clean byte-identical candidate builds pass | Alpha.4 retained as superseded and alpha.5 prepared; merge, publication, finalization, and installation pending | `distribution.json`; FIX-004 `run-006`; clean build from `1cc2826...`; commands recorded below |
 
 ## Verification
 

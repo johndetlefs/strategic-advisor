@@ -56,20 +56,20 @@ Strategic Advisor must keep its diagnosis and recommendation tied to the owner's
 - Affected target: Canonical Strategic Advisor conversational runtime, bounded actual-turn drift-smoke specification/verifier/tests, and fresh exact-runtime drift evidence.
 - Primary repo: .
 - Repos touched: .
-- Branch, PR, and evidence links: Local `codex/fix-004-owner-led-recommendation-drift` based on `9dbc7d744dc10bd5053daacf6054e978c67c3a5c`; no commit, push, PR, release, installation, or deployment authorised; retained evidence under `evidence/evaluations/drift-smoke/run-006/`.
+- Branch, PR, and evidence links: `codex/fix-004-owner-led-recommendation-drift`; candidate commit `1cc2826eda9c2270a88f1cec35e5a167bc1ab6fa`; [PR #18](https://github.com/johndetlefs/strategic-advisor/pull/18); retained evidence under `evidence/evaluations/drift-smoke/run-006/`.
 - Verification plan: Add new public-synthetic cases and deterministic turn-review enforcement before runtime edits; confirm the exact current runtime fails at least one newly frozen criterion or record honestly if it does not; implement the bounded runtime correction; run focused drift-smoke/runtime tests, full deterministic validation and unit tests; build the exact runtime package; execute every frozen scenario in isolated fresh/resumed Codex CLI sessions; review every precommitted criterion, including first-proposal turns; verify the retained result and run Project Workflow Doctor.
 
 ### Repository Links
 
 | Repo | Branch | PR | Evidence |
 |---|---|---|---|
-| . | `codex/fix-004-owner-led-recommendation-drift` | None | `evidence/evaluations/drift-smoke/run-006/` (retained) |
+| . | `codex/fix-004-owner-led-recommendation-drift` | [#18](https://github.com/johndetlefs/strategic-advisor/pull/18) | `evidence/evaluations/drift-smoke/run-006/` (retained) |
 
 ## Repository Evidence
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | Local `codex/fix-004-owner-led-recommendation-drift`; no PR yet | Behavioural, release-state, claims, aggregate, 149-test, seven-scope validator, run-006, Doctor, compilation, and diff gates pass | Alpha.5 prepared locally; no commit, push, merge, publication, finalization, or installation yet | `run-006-baseline`, exact-runtime `run-006`, `distribution.json`, FIX-005 review |
+| . | Pushed `codex/fix-004-owner-led-recommendation-drift`; PR #18 | Behavioural, release-state, claims, aggregate, 149-test, seven-scope validator, run-006, Doctor, compilation, diff, and two clean byte-identical candidate builds pass | Alpha.5 prepared; branch pushed and PR open; merge, publication, finalization, and installation pending | `run-006-baseline`, exact-runtime `run-006`, `distribution.json`, FIX-005 review, clean build from `1cc2826...` |
 
 ## Verification
 
@@ -87,7 +87,7 @@ Strategic Advisor must keep its diagnosis and recommendation tied to the owner's
 - Validation evidence: `git diff --check`; `build_evals.py --check` (56 current cases); frozen 15-group exact-runtime run-006 verifier; all seven validator scopes; `python3 -m unittest discover -s tests` (149 pass); compilation; Workflow Doctor; exact alpha.4/alpha.5 release-state and live absence evidence recorded in FIX-005.
 - Findings:
   - **Resolved — release/distribution sequence:** FIX-005 added and exercised the authorised pre-publication supersession transition. Alpha.4 remains immutably recorded with its original version, runtime identity, source, reason, timestamp, and alpha.5 replacement; it was not published or reused. Alpha.5 is prepared against the corrected runtime and every previously affected release/claims/aggregate gate passes.
-  - **Proof boundary — delivery pending:** Run-006 remains source-bound by exact frozen-spec and runtime identities, but the local authority is not yet commit-backed, merged, publicly published, freshly downloaded, finalized, or installed. Those named stages remain the only closeout work.
+  - **Proof boundary — delivery pending:** Run-006 is bound by exact frozen-spec and runtime identities and is now included in pushed PR #18. Protected-main merge, public publication, fresh download, finalization, and installed-runtime verification remain the only closeout work.
   - No independent runtime-logic, regression-authority, per-turn-verifier, privacy, lens, pilot, link, or workflow finding remains in the bounded correction.
 - Verdict: **Pass for local implementation and prepared alpha.5 state.** No code or behavioural finding remains; completion is withheld only until the named integration, public verification, finalization, and installed-runtime delivery stages pass.
 
