@@ -13,11 +13,11 @@ import shutil
 import subprocess
 import tempfile
 import zipfile
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import date
 from importlib.resources import files
 from pathlib import Path
-from typing import Optional
+from typing import Mapping, Optional, Sequence
 
 
 AGENT_CHOICES = {
@@ -66,11 +66,11 @@ BACKLOG_ID_PREFIX = "BL"
 ID_PADDING = 3
 WORKFLOW_CONFIG_FILENAME = "config.json"
 WORKFLOW_MANIFEST_FILENAME = "manifest.json"
-CURRENT_PACKAGE_VERSION = "0.1.1"
+CURRENT_PACKAGE_VERSION = "0.6.0"
 CURRENT_MANIFEST_VERSION = 1
-CURRENT_ASSET_VERSION = 1
+CURRENT_ASSET_VERSION = 5
 CURRENT_SCHEMA_VERSION = 1
-SUPPORTED_ASSET_VERSIONS = (1,)
+SUPPORTED_ASSET_VERSIONS = (1, 2, 3, 4, 5)
 SUPPORTED_SCHEMA_VERSIONS = (0, 1)
 REPOSITORY_COMPATIBILITY_STATES = (
     "current",
@@ -94,6 +94,7 @@ DOCTOR_FINDING_CODES = (
     "PW_FIX_INVALID",
     "PW_GENERATED_ASSET_DRIFT",
     "PW_GENERATED_UPDATE_PENDING",
+    "PW_INTENT_AUDIT_NOT_CURRENT",
     "PW_OWNER_DECISION_REQUIRED",
     "PW_REPOSITORY_ASSETS_BEHIND",
     "PW_REPOSITORY_INVALID",
@@ -104,6 +105,7 @@ DOCTOR_FINDING_CODES = (
     "PW_TASK_DOCUMENT_INVALID",
     "PW_TRACKER_INVALID",
     "PW_WORKFLOW_INVALID",
+    "PW_WORKSPACE_AUTHORITY_CONFLICT",
 )
 UPGRADE_PLAN_SCHEMA_VERSION = 1
 UPGRADE_APPLY_RESULT_SCHEMA_VERSION = 1
@@ -145,6 +147,7 @@ SMOKE_BOMB_BLOCKER_CODES = (
     "PW_SMOKE_BOMB_CLIENT_GUIDANCE_REQUIRED",
     "PW_SMOKE_BOMB_DIRTY_WORKTREE",
     "PW_SMOKE_BOMB_OUTPUT_UNSAFE",
+    "PW_SMOKE_BOMB_PRIVATE_RUNTIME_PRESENT",
     "PW_SMOKE_BOMB_RESIDUAL_REFERENCE",
     "PW_SMOKE_BOMB_UNSAFE_TARGET",
     "PW_SMOKE_BOMB_VALIDATION_REQUIRED",
@@ -155,6 +158,149 @@ SMOKE_BOMB_FAILURE_CODES = (
     "PW_SMOKE_BOMB_APPLY_STALE_PLAN",
     "PW_SMOKE_BOMB_ARCHIVE_BLOCKED",
     "PW_SMOKE_BOMB_VALIDATION_FAILED",
+)
+OPERATIONAL_STATUS_SCHEMA_VERSION = 1
+OPERATIONAL_STATUS_SOURCE_KINDS = (
+    "acceptance",
+    "backlog",
+    "delivery-receipt",
+    "doctor",
+    "epic-tracker",
+    "git",
+    "global-tracker",
+    "implementation",
+    "intent-audit",
+    "local-helper",
+    "manifest",
+    "repository-compatibility",
+    "requirements",
+    "repository-evidence",
+    "structured-evidence",
+    "workspace-config",
+)
+OPERATIONAL_STATUS_SOURCE_PRECEDENCE = (
+    ("installation", ("repository-compatibility", "manifest", "local-helper")),
+    ("workspace", ("workspace-config", "git")),
+    ("work", ("epic-tracker", "global-tracker")),
+    ("approval", ("requirements",)),
+    ("intent", ("intent-audit",)),
+    ("implementation", ("implementation",)),
+    ("qa", ("implementation",)),
+    ("repository-evidence", ("repository-evidence",)),
+    ("acceptance", ("acceptance", "epic-tracker")),
+    ("proof", ("structured-evidence", "implementation", "requirements")),
+    ("integration", ("git",)),
+    ("delivery", ("delivery-receipt", "structured-evidence", "git")),
+    ("health", ("doctor", "repository-compatibility")),
+    ("backlog", ("backlog",)),
+)
+OPERATIONAL_STATUS_DIMENSION_STATES = (
+    (
+        "installation",
+        (
+            "unknown",
+            "current",
+            "upgradeable",
+            "legacy-unversioned",
+            "unsupported-future",
+            "invalid",
+            "not-initialized",
+            "helper-limited",
+        ),
+    ),
+    ("git", ("unknown", "unavailable", "clean", "dirty", "detached")),
+    ("health", ("unknown", "pass", "warning", "fail")),
+    (
+        "proof",
+        (
+            "unknown",
+            "not-recorded",
+            "declared",
+            "approved",
+            "ready",
+            "implementation-recorded",
+            "repository-validated",
+            "recorded-evidence",
+        ),
+    ),
+    (
+        "delivery",
+        (
+            "unknown",
+            "not-recorded",
+            "repository-complete",
+            "integrated",
+            "released",
+            "published",
+            "deployed",
+        ),
+    ),
+)
+OPERATIONAL_STATUS_WORK_ITEM_KINDS = ("task", "fix", "epic", "epic-child")
+OPERATIONAL_STATUS_FINDING_SEVERITIES = ("info", "warning", "error")
+OPERATIONAL_STATUS_RESPONSIBLE_PARTIES = ("agent", "owner", "external-authority")
+OPERATIONAL_STATUS_PROOF_LAYER_NAMES = (
+    "requirements-approval",
+    "readiness",
+    "implementation",
+    "qa-review",
+    "parent-acceptance",
+    "structured-evidence",
+)
+OPERATIONAL_STATUS_PROOF_LAYER_STATES = (
+    "unknown",
+    "not-recorded",
+    "not-required",
+    "pending",
+    "pass",
+    "fail",
+)
+VALIDATION_IMPACT_CLASSIFICATIONS = (
+    "unaffected",
+    "affected",
+    "ambiguous",
+)
+VALIDATION_IMPACT_VERDICTS = ("pending", "pass", "fail", "not-required")
+VALIDATION_IMPACT_IDENTITY_PREFIX = "sha256:"
+VALIDATION_IMPACT_REQUIREMENTS = {
+    "unaffected": "none",
+    "affected": "affected-proof-layer",
+    "ambiguous": "clarify",
+}
+OPERATIONAL_STATUS_ACTION_PRECEDENCE = (
+    "installation-safety",
+    "blocking-current-finding",
+    "owner-decision",
+    "missing-workflow-gate",
+    "lifecycle-progress",
+    "delivery-follow-up",
+    "backlog-selection",
+    "no-action",
+)
+OPERATIONAL_STATUS_GLOBAL_TERMINAL_STATES = ("Complete", "N/A")
+OPERATIONAL_STATUS_EPIC_CHILD_TERMINAL_STATES = ("Complete",)
+OPERATIONAL_STATUS_EPIC_CHILD_UNSCAFFOLDED_STATES = ("Proposed", "Approved")
+OPERATIONAL_STATUS_GLOBAL_LIFECYCLE_MEANINGS = (
+    ("To Do", "Requirements or triage have not begun."),
+    ("Analysing", "Requirements or implementation planning is underway."),
+    ("Ready", "Approved work is ready for implementation."),
+    ("Plan Confirmed", "Legacy-compatible ready state; implementation may begin."),
+    ("In Progress", "Implementation is underway."),
+    ("Closeout", "Epic delivery is in acceptance and closeout."),
+    ("Blocked", "Progress cannot continue until a named blocker is resolved."),
+    ("Testing", "Implementation validation is underway."),
+    ("Review", "QA and code review are underway."),
+    ("Complete", "Repository work passed its completion gates."),
+    ("N/A", "Work is closed without implementation."),
+)
+OPERATIONAL_STATUS_EPIC_CHILD_LIFECYCLE_MEANINGS = (
+    ("Proposed", "The authorised child is planned but not approved for scaffolding."),
+    ("Approved", "The child is approved and awaiting scaffold or implementation start."),
+    ("In Progress", "Child implementation is underway."),
+    ("Testing", "Child implementation validation is underway."),
+    ("Review", "Child QA and code review are underway."),
+    ("Blocked", "Child progress cannot continue until a named blocker is resolved."),
+    ("Complete", "The child passed its completion gates."),
 )
 RECOGNIZED_WORKFLOW_PATHS = (
     "TRACKER.md",
@@ -168,6 +314,8 @@ MIGRATION_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 EPIC_CONTRACT_FILENAME = "EPIC-CONTRACT.md"
 DECOMPOSITION_PLAN_FILENAME = "DECOMPOSITION.md"
 EPIC_AMENDMENTS_FILENAME = "AMENDMENTS.md"
+INTENT_AUDIT_FILENAME = "INTENT-AUDIT.json"
+INTENT_AUDIT_SCHEMA_VERSION = 1
 STRUCTURED_EVIDENCE_FILENAME = "EVIDENCE.json"
 ID_GENERATION_KINDS = ("tasks", "epics", "fixes", "backlog")
 ID_GENERATION_MODES = ("sequential", "unique")
@@ -211,6 +359,49 @@ IMPLEMENTATION_TASK_COLUMNS = (
     "User Verification",
     "Status",
 )
+DELEGATION_IMPLEMENTATION_TASK_COLUMNS = (
+    *IMPLEMENTATION_TASK_COLUMNS,
+    "Dependencies",
+    "Write Scope",
+    "Parallel Safe",
+)
+DELEGATION_EXECUTION_NEEDS_TASK_COLUMNS = (
+    *DELEGATION_IMPLEMENTATION_TASK_COLUMNS,
+    "Execution Needs",
+)
+DELEGATION_SCHEMA_VERSION = 2
+DELEGATION_RUNTIME_SCHEMA_VERSION = 1
+DELEGATION_RUNTIME_RELATIVE_DIR = Path(".project-workflow/runtime/delegations")
+DELEGATION_CAPABILITIES = (
+    "persistent-task",
+    "isolated-worktree",
+    "task-monitoring",
+    "task-reconciliation",
+    "subagent",
+    "worktree",
+    "subagent-isolated-worktree",
+    "persistent-task-isolated-worktree",
+    "peer-team",
+    "peer-messaging",
+    "peer-team-isolated-worktree",
+    "persistent-task-owner-steering",
+    "task-retirement",
+    "task-retirement-reconciliation",
+)
+DELEGATION_EXECUTOR_SURFACES = (
+    "coordinator",
+    "subagent",
+    "persistent-task",
+    "peer-team",
+)
+DELEGATION_EXECUTION_NEED_TOKENS = (
+    "bounded-return",
+    "durable-resume",
+    "direct-owner-steering",
+    "isolated-worktree",
+)
+DELEGATION_CAPABILITY_STATES = ("verified", "unsupported", "unknown")
+DELEGATION_UNIT_STATES = ("pending", "active", "complete", "blocked", "orphaned")
 TRACKER_STATUSES = (
     "To Do",
     "Analysing",
@@ -276,6 +467,11 @@ DECOMPOSITION_PLAN_COLUMNS = (
     "Title",
     "Parent ACs",
     "Source",
+)
+DELEGATION_DECOMPOSITION_PLAN_COLUMNS = (*DECOMPOSITION_PLAN_COLUMNS, "Dependencies")
+DELEGATION_EXECUTION_NEEDS_DECOMPOSITION_PLAN_COLUMNS = (
+    *DELEGATION_DECOMPOSITION_PLAN_COLUMNS,
+    "Execution Needs",
 )
 EPIC_AMENDMENT_COLUMNS = (
     "ID",
@@ -358,6 +554,29 @@ PROOF_RECIPE_REQUIRED_FIELDS = {
         "evidence_artifact",
         "evidence_artifact_hash",
     ),
+    "user-outcome-journey": (
+        "commit",
+        "timestamp",
+        "parent_ac",
+        "claim",
+        "claim_scope",
+        "journey_scope",
+        "actor",
+        "normal_entry_point",
+        "starting_state",
+        "material_operations",
+        "resulting_state_or_artifact",
+        "outcome_observations",
+        "source_artifact",
+        "source_revision",
+        "artifact_identity",
+        "environment",
+        "invalid_substitute_policy",
+        "owner_acceptance_required",
+        "owner_acceptance_status",
+        "evidence_artifact",
+        "evidence_artifact_hash",
+    ),
 }
 PROOF_RECIPE_TRIGGER_PATTERNS = {
     "visual-reference-fidelity": (
@@ -394,6 +613,13 @@ PROOF_RECIPE_TRIGGER_PATTERNS = {
         r"\bmobile\s+and\s+desktop\b",
         r"\bmulti-context\b",
     ),
+    "user-outcome-journey": (
+        r"\buser-outcome-journey\b",
+        r"\buser outcome journey\b",
+        r"\bnormal user journey\b",
+        r"\buser-operable outcome\b",
+        r"\brequested (?:user )?job\b",
+    ),
 }
 PROOF_RECIPE_INVALID_SUBSTITUTE_PATTERNS = {
     "visual-reference-fidelity": (
@@ -426,6 +652,24 @@ PROOF_RECIPE_INVALID_SUBSTITUTE_PATTERNS = {
         "mobile only",
         "unit test",
     ),
+    "user-outcome-journey": (
+        "debug-only evidence",
+        "related environment evidence",
+        "canary-only evidence",
+        "internal-data-only evidence",
+        "screenshot-only evidence",
+        "build-only evidence",
+        "test-only evidence",
+    ),
+}
+USER_OUTCOME_INVALID_SUBSTITUTE_POLICY = {
+    "tests",
+    "builds",
+    "screenshots",
+    "internal-data",
+    "debug-only",
+    "related-environment",
+    "canary",
 }
 EPIC_CHILD_GATED_STATUSES = (
     "Approved",
@@ -459,9 +703,10 @@ GENERATED_MARKER_HTML = f"<!-- {GENERATED_MARKER} -->"
 GENERATED_MARKER_COMMENT = f"# {GENERATED_MARKER}"
 MANAGED_BLOCK_START = "<!-- project-workflow:start -->"
 MANAGED_BLOCK_END = "<!-- project-workflow:end -->"
-CANONICAL_INIT_COMMAND = "uvx --from git+https://github.com/johndetlefs/project-workflow.git project init"
+CANONICAL_PACKAGE_SPEC = f"project-workflow=={CURRENT_PACKAGE_VERSION}"
+CANONICAL_INIT_COMMAND = f"uvx --from {CANONICAL_PACKAGE_SPEC} project init"
 CANONICAL_UPGRADE_COMMAND = (
-    "uvx --from git+https://github.com/johndetlefs/project-workflow.git project upgrade"
+    f"uvx --from {CANONICAL_PACKAGE_SPEC} project upgrade"
 )
 
 
@@ -661,6 +906,41 @@ def _ensure_user_config_file(path: Path) -> str:
     return f"Created: {path}"
 
 
+def _ensure_delegation_runtime_ignore(root: Path) -> str:
+    ignore_path = root / ".project-workflow" / ".gitignore"
+    ignore_path.parent.mkdir(parents=True, exist_ok=True)
+    entry = "runtime/delegations/"
+    content = ignore_path.read_text(encoding="utf-8") if ignore_path.exists() else ""
+    if entry in {line.strip() for line in content.splitlines()}:
+        return f"Exists: {ignore_path} delegation runtime entry"
+    separator = "" if not content or content.endswith("\n") else "\n"
+    ignore_path.write_text(
+        content
+        + separator
+        + "\n# Machine-local delegation handles and leases\n"
+        + entry
+        + "\n",
+        encoding="utf-8",
+    )
+    return f"Updated: {ignore_path} delegation runtime entry"
+
+
+def _planned_delegation_runtime_ignore(root: Path) -> bytes:
+    ignore_path = root / ".project-workflow" / ".gitignore"
+    entry = "runtime/delegations/"
+    content = ignore_path.read_text(encoding="utf-8") if ignore_path.exists() else ""
+    if entry in {line.strip() for line in content.splitlines()}:
+        return content.encode("utf-8")
+    separator = "" if not content or content.endswith("\n") else "\n"
+    return (
+        content
+        + separator
+        + "\n# Machine-local delegation handles and leases\n"
+        + entry
+        + "\n"
+    ).encode("utf-8")
+
+
 def _managed_project_workflow_block() -> str:
     return (
         f"{MANAGED_BLOCK_START}\n"
@@ -672,7 +952,12 @@ def _managed_project_workflow_block() -> str:
         "- Use `.project-workflow/BACKLOG.md` for optional future intent before work is "
         "promoted into task or epic execution state. Promoted rows stay in the backlog; "
         "active execution status belongs in trackers and task/epic docs.\n"
-        "- Read task ID namespace and generation config from `.project-workflow/config.json`.\n"
+        "- Read task ID namespace, generation config, and optional parent-workspace registry "
+        "from `.project-workflow/config.json`.\n"
+        "- In workspace mode, run workflow commands from the parent authority root, keep the "
+        "only live workflow state there, and use registered repository IDs in task scope and "
+        "evidence. Status Git inspection is read-only and never authorizes cross-repository "
+        "mutation.\n"
         f"- To initialize a new repository, run `{CANONICAL_INIT_COMMAND}` from the repository "
         "root with `--agent codex`, `--agent cursor`, `--agent claude-code`, or "
         "`--agent github-copilot`.\n"
@@ -682,14 +967,31 @@ def _managed_project_workflow_block() -> str:
         "first.\n"
         "- Use `./.project-workflow/cli/workflow` for supported backlog, Fix, task, epic, "
         "and validation commands.\n"
+        "- Run `./.project-workflow/cli/workflow status` for a read-only operational summary "
+        "and sourced next action. Use `--id <WORK-ID>` to focus active work, "
+        "`--repository <REPOSITORY-ID>` to focus one registered workspace repository, `--strict` to "
+        "make visible Doctor warnings blocking, and `--format json` for schema-versioned output. "
+        "Status does not replace Doctor diagnosis, canonical upgrade, lifecycle gates, QA, Git "
+        "integration, or service verification, and never executes its recommended action.\n"
         "- Route one bounded post-completion correction to a Fix, new outcomes or multiple "
         "independent items to a Task, and coordinated workstreams to an Epic. The user's label "
         "is evidence, not a binding classification. Fixes use one `FIX.md`, the shared tasks "
         "directory, and the global tracker; do not create a separate Fix tracker.\n"
-        "- Before planning, record one owner approval envelope with "
-        "`task approve-requirements` or `epic approve-requirements`; unchanged work inside "
-        "that envelope should proceed without repeated approval prompts, while drift, stale "
-        "requirements, or evidence gaps must be fixed or amended.\n"
+        "- Begin current-contract Task and Epic requirements with a one- or two-sentence "
+        "plain-language Intent and stable outcome commitments. Before planning, run "
+        "`task approval-summary` or `epic approval-summary`, show its Intent/capability/"
+        "boundary/proof synopsis, and ask whether that meaning accurately reflects what the "
+        "owner wants. Do not ask the owner to approve IDs or hashes as a substitute for "
+        "comprehension. Record the confirmation with `task approve-requirements` or "
+        "`epic approve-requirements`; unchanged work inside that envelope should proceed "
+        "without repeated approval prompts, while drift, stale requirements, or evidence gaps "
+        "must be fixed or amended.\n"
+        "- Full-contract epics keep sourced OC-to-AC/child/proof coverage and semantic "
+        "classifications in `INTENT-AUDIT.json`. Run `epic intent-audit --epic-id <EPIC-ID>` "
+        "to inspect `current`, `stale`, `unknown`, `review-required`, or `changes-requested` "
+        "state without mutation. Child readiness, Review, and Complete fail closed on any "
+        "non-current state; material narrowing, proxy substitution, omission, or broadening "
+        "requires restoration or a current owner-approved capability amendment.\n"
         "- After requirements approval, run Planner, post-plan Clarify, `task ready`, and move "
         "new tasks to `Ready` autonomously unless material drift or exceptional risk requires "
         "owner input. `Plan Confirmed` remains legacy-compatible.\n"
@@ -713,6 +1015,20 @@ def _managed_project_workflow_block() -> str:
         "- For a sanitized client handoff, use canonical `project smoke-bomb` from a clean "
         "dedicated worktree to review exact removal, run explicit validations, preserve useful "
         "client agent guidance, and export a ZIP without Git or workflow internals.\n"
+        "- Delegate coordinates existing approved rows for exactly one Task or Epic. Select the "
+        "lightest sufficient coordinator, subagent, persistent-task, or peer-team surface from "
+        "approved Execution Needs rather than Task-versus-Epic kind. Resolve surface-specific "
+        "isolation, monitoring, reconciliation, retirement, and capacity capabilities as "
+        "runtime-observed `verified`, `unsupported`, or `unknown`; only verified capability plus "
+        "current-host authority authorizes native launch, otherwise use a safe coordinator/"
+        "sequential fallback or block. Never hard-code worker capacity.\n"
+        "- The coordinator alone writes shared workflow state and verifies worker identity, source, "
+        "scope, validation, and evidence before satisfying dependencies. A failure blocks its "
+        "descendants; unrelated branches continue only while shared premises remain valid. "
+        "Temporary visible subordinate tasks retire only after verified durable disposition; "
+        "Codex maps retirement to reversible archival, while attention-bearing work stays visible. "
+        "Delegate never replaces Implement, independent QA, Epic closeout, owner acceptance, or "
+        "delivery proof.\n"
         "- Run `./.project-workflow/cli/workflow doctor` after tracker or task-doc changes.\n"
         f"{MANAGED_BLOCK_END}"
     )
@@ -826,6 +1142,26 @@ class DoctorEvaluation:
 
 
 @dataclass(frozen=True)
+class WorkspaceRepository:
+    repository_id: str
+    path: str
+    role: str
+    resolved_path: Path
+
+
+@dataclass(frozen=True)
+class WorkspaceDefinition:
+    authority_repository: str
+    repositories: tuple[WorkspaceRepository, ...]
+
+    def repository(self, repository_id: str) -> WorkspaceRepository:
+        for repository in self.repositories:
+            if repository.repository_id == repository_id:
+                return repository
+        raise KeyError(repository_id)
+
+
+@dataclass(frozen=True)
 class WorkflowConfig:
     task_id_prefixes: tuple[str, ...]
     default_task_id_prefix: str
@@ -833,6 +1169,7 @@ class WorkflowConfig:
     id_generation: dict[str, str]
     unique_id_length: int
     accepted_doctor_warnings: dict[str, str]
+    workspace: Optional[WorkspaceDefinition] = None
 
 
 @dataclass(frozen=True)
@@ -938,6 +1275,3795 @@ class SmokeBombFailure(RuntimeError):
         super().__init__(message)
         self.code = code
         self.message = message
+
+
+class DelegationPlanError(ValueError):
+    """Stable fail-closed error raised before a delegation launch is possible."""
+
+    def __init__(self, code: str, message: str) -> None:
+        super().__init__(message)
+        self.code = code
+        self.message = message
+
+
+@dataclass(frozen=True)
+class DelegationTarget:
+    target_id: str
+    kind: str
+    title: str
+    lifecycle: str
+    source_path: str
+    source_hash: str
+
+
+@dataclass(frozen=True)
+class DelegationExecutionNeeds:
+    """Host-neutral work properties; these are plan facts, never capability claims."""
+
+    tokens: tuple[str, ...] = ("bounded-return",)
+    durable_resume: bool = False
+    direct_owner_steering: bool = False
+    isolated_worktree: bool = False
+    peer_group: str | None = None
+
+    @property
+    def requested_executor(self) -> str:
+        if self.peer_group is not None:
+            return "peer-team"
+        if self.durable_resume or self.direct_owner_steering:
+            return "persistent-task"
+        return "subagent"
+
+    def properties(self) -> dict[str, object]:
+        return {
+            "tokens": list(self.tokens),
+            "durability": "durable-resume" if self.durable_resume else "bounded-return",
+            "isolation": "isolated-worktree" if self.isolated_worktree else "shared-worktree",
+            "communication": "peer" if self.peer_group is not None else "coordinator-mediated",
+            "peer_group": self.peer_group,
+            "owner_interaction": (
+                "direct-owner-steering" if self.direct_owner_steering else "coordinator-mediated"
+            ),
+        }
+
+
+@dataclass(frozen=True)
+class DelegationUnit:
+    unit_id: str
+    title: str
+    dependencies: tuple[str, ...]
+    write_scope: tuple[str, ...]
+    parallel_safe: bool
+    canonical_state: str
+    source_order: int
+    source_path: str
+    authority_acs: tuple[str, ...] = ()
+    execution_needs: DelegationExecutionNeeds = field(default_factory=DelegationExecutionNeeds)
+    repository_scope: tuple[str, ...] = (".",)
+
+
+@dataclass(frozen=True)
+class DelegationPlannedUnit:
+    unit_id: str
+    title: str
+    dependencies: tuple[str, ...]
+    write_scope: tuple[str, ...]
+    parallel_safe: bool
+    canonical_state: str
+    readiness: str
+    blocking_reasons: tuple[str, ...]
+    execution_needs: DelegationExecutionNeeds
+    repository_scope: tuple[str, ...]
+    requested_executor: str
+    executor: str
+    schedule: str
+    visibility_class: str
+    retention_policy: str
+    required_child_slots: int
+    executor_reason: str
+    source_path: str
+    authority_acs: tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class DelegationPlan:
+    target: DelegationTarget
+    units: tuple[DelegationPlannedUnit, ...]
+    selected_units: tuple[str, ...]
+    eligible_units: tuple[str, ...]
+    blocked_units: tuple[str, ...]
+    requested_concurrency: int
+    available_child_capacity: int
+    effective_concurrency: int
+    effective_child_concurrency: int
+    effective_child_slots: int
+    concurrency_reason: str
+    observed_capabilities: tuple[str, ...]
+    capability_matrix: tuple["DelegationCapabilityObservation", ...]
+    capability_source: str
+    persistent_task_authority: str | None
+    provenance: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class DelegationCapabilityObservation:
+    capability: str
+    state: str
+    provenance: str
+
+
+class TaskOrchestrationError(ValueError):
+    """Stable fail-closed error for Task work-item execution."""
+
+    def __init__(self, code: str, message: str) -> None:
+        super().__init__(message)
+        self.code = code
+        self.message = message
+
+
+@dataclass(frozen=True)
+class TaskHostCapabilities:
+    source: str
+    current_session_verified: bool
+    bounded_subagents: bool
+    available_child_capacity: int
+    additional_capabilities: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        if self.available_child_capacity < 0:
+            raise TaskOrchestrationError(
+                "PW_TASK_CAPACITY_INVALID", "Available child capacity cannot be negative."
+            )
+        if self.bounded_subagents and (
+            not self.current_session_verified or not self.source.strip()
+        ):
+            raise TaskOrchestrationError(
+                "PW_TASK_CAPABILITY_UNVERIFIED",
+                "Bounded subagent execution requires verified current-session capabilities.",
+            )
+        unknown = sorted(set(self.additional_capabilities) - set(DELEGATION_CAPABILITIES))
+        if unknown:
+            raise TaskOrchestrationError(
+                "PW_TASK_CAPABILITY_UNKNOWN",
+                "Unknown Task runtime capability: " + ", ".join(unknown) + ".",
+            )
+        if self.additional_capabilities and (
+            not self.current_session_verified or not self.source.strip()
+        ):
+            raise TaskOrchestrationError(
+                "PW_TASK_CAPABILITY_UNVERIFIED",
+                "Additional Task host capabilities require a named current-session observation source.",
+            )
+
+    @property
+    def verified_capabilities(self) -> frozenset[str]:
+        capabilities = set(self.additional_capabilities)
+        if self.bounded_subagents:
+            capabilities.add("subagent")
+        return frozenset(capabilities) if self.current_session_verified else frozenset()
+
+
+@dataclass(frozen=True)
+class TaskExecutionObligations:
+    acceptance_criteria: tuple[str, ...]
+    validations: tuple[str, ...]
+    evidence: tuple[str, ...]
+    repositories: tuple[str, ...] = (".",)
+
+    def __post_init__(self) -> None:
+        fields = {
+            "acceptance criteria": self.acceptance_criteria,
+            "validations": self.validations,
+            "evidence": self.evidence,
+            "repositories": self.repositories,
+        }
+        for label, values in fields.items():
+            normalized = tuple(value.strip() for value in values)
+            if not normalized or any(not value for value in normalized):
+                raise TaskOrchestrationError(
+                    "PW_TASK_PACKET_OBLIGATIONS_INVALID",
+                    f"Task work packet {label} must be non-empty.",
+                )
+            if len(set(normalized)) != len(normalized):
+                raise TaskOrchestrationError(
+                    "PW_TASK_PACKET_OBLIGATIONS_INVALID",
+                    f"Task work packet {label} must not contain duplicates.",
+                )
+            object.__setattr__(self, label.replace(" ", "_"), normalized)
+        if any(
+            repository != "."
+            and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", repository)
+            for repository in self.repositories
+        ):
+            raise TaskOrchestrationError(
+                "PW_TASK_PACKET_OBLIGATIONS_INVALID",
+                "Task work packet repositories must be '.' or registered repository IDs.",
+            )
+
+
+@dataclass(frozen=True)
+class TaskExecutorDecision:
+    unit_id: str
+    executor: str
+    launchable: bool
+    reason: str
+
+
+@dataclass(frozen=True)
+class TaskWorkPacket:
+    target_id: str
+    unit_id: str
+    unit_title: str
+    acceptance_criteria: tuple[str, ...]
+    verified_dependencies: tuple[str, ...]
+    write_scope: tuple[str, ...]
+    repositories: tuple[str, ...]
+    validations: tuple[str, ...]
+    evidence: tuple[str, ...]
+    forbidden_actions: tuple[str, ...]
+    stop_conditions: tuple[str, ...]
+    baseline_hash: str
+    plan_fingerprint: str
+    executor: str
+    attempt: int
+
+    def payload(self) -> dict[str, object]:
+        return {
+            "schema_version": 1,
+            "target": {"id": self.target_id, "kind": "task"},
+            "unit": {"id": self.unit_id, "title": self.unit_title},
+            "acceptance_criteria": list(self.acceptance_criteria),
+            "verified_dependencies": list(self.verified_dependencies),
+            "scope": {
+                "write_prefixes": list(self.write_scope),
+                "repositories": list(self.repositories),
+            },
+            "obligations": {
+                "validation": list(self.validations),
+                "evidence": list(self.evidence),
+            },
+            "forbidden_actions": list(self.forbidden_actions),
+            "stop_conditions": list(self.stop_conditions),
+            "baseline_hash": self.baseline_hash,
+            "plan_fingerprint": self.plan_fingerprint,
+            "executor": self.executor,
+            "attempt": self.attempt,
+            "persistent_task_intent": None,
+        }
+
+
+@dataclass(frozen=True)
+class TaskWorkerResult:
+    unit_id: str
+    handle: str
+    success: bool
+    claimed_paths: tuple[str, ...]
+    validations: Mapping[str, bool]
+    evidence: Mapping[str, bool]
+    baseline_hash: str
+    shared_state_hash: str
+    plan_fingerprint: str
+    attempt: int
+    shared_premise_valid: bool = True
+    failure_reason: str = ""
+
+
+@dataclass(frozen=True)
+class TaskVerificationResult:
+    unit_id: str
+    accepted: bool
+    state: str
+    issues: tuple[str, ...]
+    newly_eligible: tuple[str, ...]
+
+
+@dataclass
+class TaskUnitRun:
+    state: str = "pending"
+    attempt: int = 0
+    handle: str | None = None
+    executor: str | None = None
+    baseline_hash: str | None = None
+    baseline_revision: int = 0
+    checkpointed: bool = False
+    issues: tuple[str, ...] = ()
+    canonical_blocked: bool = False
+    blocked_by: tuple[str, ...] = ()
+    completion_provenance: str | None = None
+
+
+@dataclass
+class TaskOrchestrationState:
+    schema_version: int
+    target_id: str
+    plan_fingerprint: str
+    coordinator_hash: str
+    shared_state_hash: str
+    lifecycle: str
+    units: dict[str, TaskUnitRun]
+    shared_premise_valid: bool = True
+    integration_revision: int = 0
+    integrated_paths: list[tuple[int, str, tuple[str, ...]]] = field(default_factory=list)
+    failure_seen: bool = False
+    used_handles: set[str] = field(default_factory=set)
+    shared_state_revisions: list[tuple[str, str]] = field(default_factory=list)
+
+
+def _task_orchestration_state_payload(state: TaskOrchestrationState) -> dict[str, object]:
+    return {
+        "schema_version": state.schema_version,
+        "target_id": state.target_id,
+        "plan_fingerprint": state.plan_fingerprint,
+        "coordinator_hash": state.coordinator_hash,
+        "shared_state_hash": state.shared_state_hash,
+        "lifecycle": state.lifecycle,
+        "shared_premise_valid": state.shared_premise_valid,
+        "integration_revision": state.integration_revision,
+        "failure_seen": state.failure_seen,
+        "used_handles": sorted(state.used_handles),
+        "shared_state_revisions": [list(item) for item in state.shared_state_revisions],
+        "integrated_paths": [
+            [revision, unit_id, list(paths)]
+            for revision, unit_id, paths in state.integrated_paths
+        ],
+        "units": {
+            unit_id: {
+                "state": run.state,
+                "attempt": run.attempt,
+                "handle": run.handle,
+                "executor": run.executor,
+                "baseline_hash": run.baseline_hash,
+                "baseline_revision": run.baseline_revision,
+                "checkpointed": run.checkpointed,
+                "issues": list(run.issues),
+                "canonical_blocked": run.canonical_blocked,
+                "blocked_by": list(run.blocked_by),
+                "completion_provenance": run.completion_provenance,
+            }
+            for unit_id, run in state.units.items()
+        },
+    }
+
+
+def _task_orchestration_state_from_payload(payload: object) -> TaskOrchestrationState:
+    if not isinstance(payload, dict):
+        raise TaskOrchestrationError(
+            "PW_TASK_RUNTIME_INVALID", "Task orchestration runtime must be an object."
+        )
+    allowed = {
+        "schema_version",
+        "target_id",
+        "plan_fingerprint",
+        "coordinator_hash",
+        "shared_state_hash",
+        "lifecycle",
+        "shared_premise_valid",
+        "integration_revision",
+        "failure_seen",
+        "used_handles",
+        "shared_state_revisions",
+        "integrated_paths",
+        "units",
+    }
+    unknown = set(payload) - allowed
+    if unknown:
+        raise TaskOrchestrationError(
+            "PW_TASK_RUNTIME_PRIVATE_FIELD",
+            "Task runtime contains forbidden fields: " + ", ".join(sorted(unknown)) + ".",
+        )
+    if (
+        payload.get("schema_version") != 1
+        or not isinstance(payload.get("target_id"), str)
+        or not isinstance(payload.get("plan_fingerprint"), str)
+        or not isinstance(payload.get("coordinator_hash"), str)
+        or not isinstance(payload.get("shared_state_hash"), str)
+        or payload.get("lifecycle") != "In Progress"
+        or not isinstance(payload.get("shared_premise_valid"), bool)
+        or not isinstance(payload.get("integration_revision"), int)
+        or not isinstance(payload.get("failure_seen"), bool)
+        or not isinstance(payload.get("used_handles"), list)
+        or not isinstance(payload.get("shared_state_revisions"), list)
+        or not isinstance(payload.get("integrated_paths"), list)
+        or not isinstance(payload.get("units"), dict)
+    ):
+        raise TaskOrchestrationError(
+            "PW_TASK_RUNTIME_INVALID", "Task orchestration runtime schema is invalid."
+        )
+    raw_units = payload["units"]
+    assert isinstance(raw_units, dict)
+    units: dict[str, TaskUnitRun] = {}
+    unit_allowed = {
+        "state",
+        "attempt",
+        "handle",
+        "executor",
+        "baseline_hash",
+        "baseline_revision",
+        "checkpointed",
+        "issues",
+        "canonical_blocked",
+        "blocked_by",
+        "completion_provenance",
+    }
+    valid_states = {"pending", "active", "returned", "done", "failed", "blocked", "halted", "orphaned"}
+    for unit_id, raw in raw_units.items():
+        if not isinstance(unit_id, str) or not isinstance(raw, dict) or set(raw) - unit_allowed:
+            raise TaskOrchestrationError(
+                "PW_TASK_RUNTIME_PRIVATE_FIELD",
+                f"{unit_id} runtime entry has forbidden or malformed fields.",
+            )
+        if (
+            raw.get("state") not in valid_states
+            or not isinstance(raw.get("attempt"), int)
+            or raw.get("attempt", -1) < 0
+            or raw.get("handle") is not None
+            and not isinstance(raw.get("handle"), str)
+            or raw.get("executor") is not None
+            and not isinstance(raw.get("executor"), str)
+            or raw.get("baseline_hash") is not None
+            and not isinstance(raw.get("baseline_hash"), str)
+            or not isinstance(raw.get("baseline_revision"), int)
+            or not isinstance(raw.get("checkpointed"), bool)
+            or not isinstance(raw.get("issues"), list)
+            or not all(isinstance(item, str) for item in raw.get("issues", []))
+            or not isinstance(raw.get("canonical_blocked"), bool)
+            or not isinstance(raw.get("blocked_by"), list)
+            or not all(isinstance(item, str) for item in raw.get("blocked_by", []))
+            or raw.get("completion_provenance") is not None
+            and not isinstance(raw.get("completion_provenance"), str)
+        ):
+            raise TaskOrchestrationError(
+                "PW_TASK_RUNTIME_INVALID", f"{unit_id} runtime entry is invalid."
+            )
+        units[unit_id] = TaskUnitRun(
+            state=str(raw["state"]),
+            attempt=int(raw["attempt"]),
+            handle=raw.get("handle"),
+            executor=raw.get("executor"),
+            baseline_hash=raw.get("baseline_hash"),
+            baseline_revision=int(raw["baseline_revision"]),
+            checkpointed=bool(raw["checkpointed"]),
+            issues=tuple(raw["issues"]),
+            canonical_blocked=bool(raw["canonical_blocked"]),
+            blocked_by=tuple(raw["blocked_by"]),
+            completion_provenance=raw.get("completion_provenance"),
+        )
+    used_handles = payload["used_handles"]
+    assert isinstance(used_handles, list)
+    if not all(isinstance(item, str) and item for item in used_handles):
+        raise TaskOrchestrationError(
+            "PW_TASK_RUNTIME_INVALID", "Task runtime handles are invalid."
+        )
+    raw_integrated = payload["integrated_paths"]
+    assert isinstance(raw_integrated, list)
+    integrated_paths: list[tuple[int, str, tuple[str, ...]]] = []
+    for item in raw_integrated:
+        if (
+            not isinstance(item, list)
+            or len(item) != 3
+            or not isinstance(item[0], int)
+            or not isinstance(item[1], str)
+            or not isinstance(item[2], list)
+            or not all(isinstance(path, str) for path in item[2])
+        ):
+            raise TaskOrchestrationError(
+                "PW_TASK_RUNTIME_INVALID", "Integrated path history is invalid."
+            )
+        integrated_paths.append((item[0], item[1], tuple(item[2])))
+    raw_revisions = payload["shared_state_revisions"]
+    assert isinstance(raw_revisions, list)
+    revisions: list[tuple[str, str]] = []
+    for item in raw_revisions:
+        if (
+            not isinstance(item, list)
+            or len(item) != 2
+            or not all(isinstance(value, str) and value for value in item)
+        ):
+            raise TaskOrchestrationError(
+                "PW_TASK_RUNTIME_INVALID", "Shared-state revision history is invalid."
+            )
+        revisions.append((item[0], item[1]))
+    return TaskOrchestrationState(
+        schema_version=1,
+        target_id=str(payload["target_id"]),
+        plan_fingerprint=str(payload["plan_fingerprint"]),
+        coordinator_hash=str(payload["coordinator_hash"]),
+        shared_state_hash=str(payload["shared_state_hash"]),
+        lifecycle="In Progress",
+        units=units,
+        shared_premise_valid=bool(payload["shared_premise_valid"]),
+        integration_revision=int(payload["integration_revision"]),
+        integrated_paths=integrated_paths,
+        failure_seen=bool(payload["failure_seen"]),
+        used_handles=set(used_handles),
+        shared_state_revisions=revisions,
+    )
+
+
+TASK_WORKER_FORBIDDEN_ACTIONS = (
+    "mutate shared workflow artifacts, runtime state, or Task lifecycle",
+    "push, merge, release, deploy, or contact third parties",
+    "create persistent Codex tasks or worktrees",
+    "write outside the allowed repository-relative prefixes",
+)
+TASK_WORKER_STOP_CONDITIONS = (
+    "scope, validation, or evidence obligations cannot be satisfied",
+    "the observed diff leaves the allowed scope",
+    "the shared baseline changes or another worker collides",
+    "a shared-premise failure invalidates the run",
+)
+
+
+def _task_worker_path_forbidden(path: str) -> bool:
+    if path == ".git" or path.startswith(".git/"):
+        return True
+    if path == ".project-workflow/cli/workflow.py":
+        return False
+    return path == ".project-workflow" or path.startswith(".project-workflow/")
+
+
+def _task_worker_scope_forbidden(scope: str) -> bool:
+    if scope == ".git" or scope.startswith(".git/"):
+        return True
+    if scope == ".project-workflow/cli/workflow.py":
+        return False
+    return scope == "." or scope == ".project-workflow" or scope.startswith(
+        ".project-workflow/"
+    )
+
+
+def _task_execution_fingerprint(
+    plan: DelegationPlan,
+    obligations: Mapping[str, TaskExecutionObligations],
+) -> str:
+    payload = {
+        "target": {
+            "id": plan.target.target_id,
+            "kind": plan.target.kind,
+            "source": plan.target.source_path,
+        },
+        "units": [
+            {
+                "id": unit.unit_id,
+                "title": unit.title,
+                "dependencies": unit.dependencies,
+                "write_scope": unit.write_scope,
+                "parallel_safe": unit.parallel_safe,
+                "execution_needs": unit.execution_needs.properties(),
+                "requested_executor": unit.requested_executor,
+                "executor": unit.executor,
+                "schedule": unit.schedule,
+                "visibility_class": unit.visibility_class,
+                "retention_policy": unit.retention_policy,
+                "obligations": {
+                    "acceptance_criteria": obligations[unit.unit_id].acceptance_criteria,
+                    "validations": obligations[unit.unit_id].validations,
+                    "evidence": obligations[unit.unit_id].evidence,
+                    "repositories": obligations[unit.unit_id].repositories,
+                },
+            }
+            for unit in plan.units
+        ],
+    }
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
+class TaskOrchestrator:
+    """Coordinator-only state machine for one approved Task delegation plan."""
+
+    def __init__(
+        self,
+        *,
+        plan: DelegationPlan,
+        obligations: Mapping[str, TaskExecutionObligations],
+        capabilities: TaskHostCapabilities,
+        coordinator_token: str,
+        shared_state_hash: str,
+    ) -> None:
+        if plan.target.kind != "task":
+            raise TaskOrchestrationError(
+                "PW_TASK_TARGET_REQUIRED", "Task orchestration requires exactly one Task target."
+            )
+        durable_surfaces = sorted(
+            unit.unit_id
+            for unit in plan.units
+            if unit.executor in {"persistent-task", "peer-team"}
+        )
+        if durable_surfaces:
+            raise TaskOrchestrationError(
+                "PW_TASK_SURFACE_RUNTIME_REQUIRED",
+                "Task units selected for persistent-task or peer-team execution require "
+                "DelegationSurfaceOrchestrator so visible handles, disposition, and retirement "
+                "remain resumable: " + ", ".join(durable_surfaces) + ".",
+            )
+        if plan.target.lifecycle != "In Progress":
+            raise TaskOrchestrationError(
+                "PW_TASK_LIFECYCLE_INVALID",
+                "The coordinator must move the Task to In Progress once before execution.",
+            )
+        if not coordinator_token:
+            raise TaskOrchestrationError(
+                "PW_TASK_COORDINATOR_REQUIRED", "A coordinator token is required."
+            )
+        self.plan = plan
+        self.units = {unit.unit_id: unit for unit in plan.units}
+        if set(self.units) != set(obligations):
+            missing = sorted(set(self.units) - set(obligations))
+            extra = sorted(set(obligations) - set(self.units))
+            raise TaskOrchestrationError(
+                "PW_TASK_PACKET_OBLIGATIONS_MISMATCH",
+                f"Work packet obligations mismatch; missing={missing}, extra={extra}.",
+            )
+        self.obligations = dict(obligations)
+        self.capabilities = capabilities
+        self._dependants = {
+            unit_id: tuple(
+                candidate.unit_id
+                for candidate in plan.units
+                if unit_id in candidate.dependencies
+            )
+            for unit_id in self.units
+        }
+        plan_fingerprint = _task_execution_fingerprint(plan, obligations)
+        self.state = TaskOrchestrationState(
+            schema_version=1,
+            target_id=plan.target.target_id,
+            plan_fingerprint=plan_fingerprint,
+            coordinator_hash=self._token_hash(coordinator_token),
+            shared_state_hash=shared_state_hash,
+            lifecycle="In Progress",
+            units={
+                unit.unit_id: TaskUnitRun(
+                    state=(
+                        "done"
+                        if unit.canonical_state == "complete"
+                        else "blocked"
+                        if unit.canonical_state == "blocked"
+                        else "pending"
+                    ),
+                    canonical_blocked=unit.canonical_state == "blocked",
+                )
+                for unit in plan.units
+            },
+        )
+
+    @classmethod
+    def resume(
+        cls,
+        *,
+        root: Path,
+        plan: DelegationPlan,
+        obligations: Mapping[str, TaskExecutionObligations],
+        capabilities: TaskHostCapabilities,
+        coordinator_token: str,
+    ) -> TaskOrchestrator:
+        stored = _load_delegation_runtime_state(root, plan.target.target_id)
+        if stored is None or "task_orchestration" not in stored:
+            raise TaskOrchestrationError(
+                "PW_TASK_RUNTIME_MISSING", "No persisted Task orchestration state exists."
+            )
+        restored = _task_orchestration_state_from_payload(stored["task_orchestration"])
+        expected_fingerprint = _task_execution_fingerprint(plan, obligations)
+        if (
+            restored.target_id != plan.target.target_id
+            or restored.plan_fingerprint != expected_fingerprint
+        ):
+            raise TaskOrchestrationError(
+                "PW_TASK_RUNTIME_PLAN_MISMATCH",
+                "Persisted Task runtime belongs to a different plan or capability bound.",
+            )
+        instance = cls(
+            plan=plan,
+            obligations=obligations,
+            capabilities=capabilities,
+            coordinator_token=coordinator_token,
+            shared_state_hash=restored.shared_state_hash,
+        )
+        if set(restored.units) != set(instance.units):
+            raise TaskOrchestrationError(
+                "PW_TASK_RUNTIME_PLAN_MISMATCH",
+                "Persisted Task runtime units do not match the canonical plan.",
+            )
+        if restored.coordinator_hash != instance.state.coordinator_hash:
+            raise TaskOrchestrationError(
+                "PW_TASK_COORDINATOR_ONLY",
+                "The coordinator token does not own the persisted Task runtime.",
+            )
+        instance.state = restored
+        for unit in plan.units:
+            run = instance.state.units[unit.unit_id]
+            if unit.canonical_state == "complete":
+                run.state = "done"
+                run.handle = None
+                run.canonical_blocked = False
+                run.blocked_by = ()
+                run.completion_provenance = (
+                    f"canonical:{plan.target.source_path}#{plan.target.source_hash}"
+                )
+            elif unit.canonical_state == "blocked":
+                # Refreshed canonical authority wins over stale persisted runtime.
+                # In particular, an active handle may not return and integrate after
+                # the coordinator has blocked its implementation row.
+                run.state = "blocked"
+                run.handle = None
+                run.canonical_blocked = True
+                run.blocked_by = ()
+                run.issues = ("Canonical implementation row is Blocked.",)
+        return instance
+
+    def persist(self, root: Path, *, coordinator_token: str) -> Path:
+        self._require_coordinator(coordinator_token)
+        state = _load_delegation_runtime_state(root, self.plan.target.target_id)
+        if state is None:
+            state = initialize_delegation_runtime_state(root, self.plan)
+        else:
+            if (
+                state.get("target_id") != self.plan.target.target_id
+                or state.get("target_kind") != "task"
+                or Path(str(state.get("worktree", ""))).resolve() != root.resolve()
+            ):
+                raise TaskOrchestrationError(
+                    "PW_TASK_RUNTIME_TARGET_MISMATCH",
+                    "Persisted Task runtime target or worktree does not match this run.",
+                )
+            if "task_orchestration" in state:
+                stored_task = _task_orchestration_state_from_payload(
+                    state["task_orchestration"]
+                )
+                if stored_task.plan_fingerprint != self.state.plan_fingerprint:
+                    raise TaskOrchestrationError(
+                        "PW_TASK_RUNTIME_PLAN_MISMATCH",
+                        "Persisted Task runtime belongs to different approved metadata.",
+                    )
+            state["plan_fingerprint"] = _delegation_plan_fingerprint(self.plan)
+        state["task_orchestration"] = _task_orchestration_state_payload(self.state)
+        stored_units = state.get("units")
+        assert isinstance(stored_units, dict)
+        for unit_id, run in self.state.units.items():
+            projected = (
+                "complete"
+                if run.state == "done"
+                else "active"
+                if run.state in {"active", "returned"}
+                else "orphaned"
+                if run.state == "orphaned"
+                else "blocked"
+                if run.state in {"failed", "blocked", "halted"}
+                else "pending"
+            )
+            stored_units[unit_id] = {"state": projected, "handle": None}
+        _write_delegation_runtime_state(root, self.plan, state)
+        return _delegation_runtime_path(root, self.state.target_id)
+
+    @staticmethod
+    def _token_hash(value: str) -> str:
+        return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+    def _require_coordinator(self, token: str) -> None:
+        if self._token_hash(token) != self.state.coordinator_hash:
+            raise TaskOrchestrationError(
+                "PW_TASK_COORDINATOR_ONLY",
+                "Only the coordinator may mutate shared runtime state or Task lifecycle.",
+            )
+
+    def _active_ids(self) -> tuple[str, ...]:
+        return tuple(
+            unit_id
+            for unit_id, run in self.state.units.items()
+            if run.state in {"active", "returned"}
+        )
+
+    def _dependencies_done(self, unit: DelegationPlannedUnit) -> bool:
+        return all(
+            item not in self.state.units or self.state.units[item].state == "done"
+            for item in unit.dependencies
+        )
+
+    def _scope_collision(self, left_id: str, right_id: str) -> bool:
+        return any(
+            _delegation_scope_overlap(left, right)
+            for left in self.units[left_id].write_scope
+            for right in self.units[right_id].write_scope
+        )
+
+    def decisions(self) -> tuple[TaskExecutorDecision, ...]:
+        actual_active = self._active_ids()
+        active = list(actual_active)
+        reserved_slots = sum(
+            self.units[unit_id].required_child_slots
+            for unit_id in actual_active
+            if self.units[unit_id].executor
+            in {"subagent", "persistent-task", "peer-team"}
+        )
+        available_slots = max(0, min(
+            self.plan.requested_concurrency - reserved_slots,
+            self.plan.available_child_capacity - reserved_slots,
+            self.capabilities.available_child_capacity,
+        ))
+        exclusive_reserved = any(
+            self.units[unit_id].executor == "coordinator"
+            or self.units[unit_id].schedule == "sequential"
+            for unit_id in actual_active
+        )
+        runtime_capabilities = self.capabilities.verified_capabilities
+        decisions: list[TaskExecutorDecision] = []
+        for unit in self.plan.units:
+            run = self.state.units[unit.unit_id]
+            if run.state in {"active", "returned", "done", "failed", "blocked", "halted"}:
+                decisions.append(
+                    TaskExecutorDecision(
+                        unit.unit_id, "none", False, f"Unit state is {run.state}."
+                    )
+                )
+                continue
+            if run.state == "orphaned":
+                decisions.append(
+                    TaskExecutorDecision(
+                        unit.unit_id,
+                        "none",
+                        False,
+                        "Orphaned work requires an explicit coordinator retry.",
+                    )
+                )
+                continue
+            if not self.state.shared_premise_valid:
+                decisions.append(
+                    TaskExecutorDecision(
+                        unit.unit_id, "none", False, "Shared premise is invalid."
+                    )
+                )
+                continue
+            if not self._dependencies_done(unit):
+                decisions.append(
+                    TaskExecutorDecision(
+                        unit.unit_id, "none", False, "Dependencies are not verified Done."
+                    )
+                )
+                continue
+            if unit.executor == "none":
+                decisions.append(
+                    TaskExecutorDecision(
+                        unit.unit_id,
+                        "none",
+                        False,
+                        "Immutable delegation plan has no executable surface: "
+                        + unit.executor_reason,
+                    )
+                )
+                continue
+            if unit.executor == "coordinator":
+                launchable = not active and not exclusive_reserved
+                decisions.append(
+                    TaskExecutorDecision(
+                        unit.unit_id,
+                        "coordinator",
+                        launchable,
+                        "Write scope includes coordinator-owned workflow authority.",
+                    )
+                )
+                if launchable:
+                    active.append(unit.unit_id)
+                    exclusive_reserved = True
+                continue
+            required: set[str]
+            if unit.executor == "subagent":
+                required = {"subagent"}
+                if unit.execution_needs.isolated_worktree:
+                    required.add("subagent-isolated-worktree")
+            elif unit.executor == "persistent-task":
+                required = {"persistent-task", "task-monitoring", "task-reconciliation"}
+                if unit.execution_needs.isolated_worktree and not {
+                    "persistent-task-isolated-worktree", "isolated-worktree"
+                }.intersection(runtime_capabilities):
+                    required.add("persistent-task-isolated-worktree")
+                if unit.execution_needs.direct_owner_steering:
+                    required.add("persistent-task-owner-steering")
+            elif unit.executor == "peer-team":
+                required = {"peer-team", "peer-messaging"}
+                if unit.execution_needs.isolated_worktree:
+                    required.add("peer-team-isolated-worktree")
+            else:
+                decisions.append(
+                    TaskExecutorDecision(
+                        unit.unit_id, "none", False,
+                        f"Immutable delegation plan executor {unit.executor} is unsupported.",
+                    )
+                )
+                continue
+            missing_plan = sorted(required - set(self.plan.observed_capabilities))
+            missing_runtime = sorted(required - runtime_capabilities)
+            source_mismatch = (
+                self.plan.capability_source.strip() != self.capabilities.source.strip()
+            )
+            if missing_plan or missing_runtime or source_mismatch:
+                reasons = [f"immutable plan lacks verified {item}" for item in missing_plan]
+                reasons.extend(
+                    f"current runtime lacks verified {item}" for item in missing_runtime
+                )
+                if source_mismatch:
+                    reasons.append("runtime capability source does not match the immutable plan")
+                decisions.append(
+                    TaskExecutorDecision(
+                        unit.unit_id, "none", False, "; ".join(reasons) + "."
+                    )
+                )
+                continue
+            collision = any(self._scope_collision(unit.unit_id, item) for item in active)
+            capacity = unit.required_child_slots <= available_slots
+            parallel = unit.schedule == "parallel"
+            launchable = (
+                not collision
+                and capacity
+                and not exclusive_reserved
+                and (parallel or not active)
+            )
+            if launchable:
+                decisions.append(
+                    TaskExecutorDecision(
+                        unit.unit_id,
+                        unit.executor,
+                        True,
+                        f"Immutable {unit.executor} selection is supported by current-session "
+                        f"capacity from {self.capabilities.source}.",
+                    )
+                )
+                active.append(unit.unit_id)
+                reserved_slots += unit.required_child_slots
+                available_slots -= unit.required_child_slots
+                if not parallel:
+                    exclusive_reserved = True
+            else:
+                reasons = []
+                if collision:
+                    reasons.append("write scope overlaps in-flight work")
+                if not capacity:
+                    reasons.append("requested or available child capacity is exhausted")
+                if exclusive_reserved:
+                    reasons.append("exclusive sequential/coordinator execution is reserved")
+                if not parallel and active:
+                    reasons.append("sequential schedule requires no in-flight work")
+                decisions.append(
+                    TaskExecutorDecision(
+                        unit.unit_id,
+                        unit.executor,
+                        False,
+                        "; ".join(dict.fromkeys(reasons)) + ".",
+                    )
+                )
+        return tuple(decisions)
+
+    def launch(
+        self, unit_id: str, *, handle: str, coordinator_token: str
+    ) -> TaskWorkPacket:
+        self._require_coordinator(coordinator_token)
+        if unit_id not in self.units:
+            raise TaskOrchestrationError("PW_TASK_UNIT_UNKNOWN", f"Unknown unit {unit_id}.")
+        run = self.state.units[unit_id]
+        if run.state in {"active", "returned", "done"}:
+            raise TaskOrchestrationError(
+                "PW_TASK_DUPLICATE_LAUNCH",
+                f"{unit_id} is already {run.state}; duplicate launch is forbidden.",
+            )
+        if run.state in {"failed", "blocked", "halted", "orphaned"}:
+            raise TaskOrchestrationError(
+                "PW_TASK_RETRY_REQUIRED",
+                f"{unit_id} is {run.state}; explicit coordinator recovery is required.",
+            )
+        if not handle.strip() or handle in self.state.used_handles:
+            raise TaskOrchestrationError(
+                "PW_TASK_HANDLE_REUSE",
+                "Every bounded launch requires a non-empty handle unused by any prior attempt.",
+            )
+        decision = next(item for item in self.decisions() if item.unit_id == unit_id)
+        if decision.executor == "coordinator":
+            raise TaskOrchestrationError(
+                "PW_TASK_COORDINATOR_EXECUTION_REQUIRED",
+                f"{unit_id} is coordinator-owned and cannot receive a worker launch packet.",
+            )
+        if self.units[unit_id].schedule == "sequential" and any(
+            self._scope_collision(unit_id, active) for active in self._active_ids()
+        ):
+            raise TaskOrchestrationError(
+                "PW_TASK_WRITE_SCOPE_COLLISION",
+                f"{unit_id} overlaps in-flight work and was rejected before launch.",
+            )
+        if not decision.launchable:
+            raise TaskOrchestrationError(
+                "PW_TASK_NOT_LAUNCHABLE", f"{unit_id}: {decision.reason}"
+            )
+        unit = self.units[unit_id]
+        duty = self.obligations[unit_id]
+        run.state = "active"
+        run.attempt += 1
+        run.handle = handle
+        run.executor = decision.executor
+        run.baseline_hash = self.state.shared_state_hash
+        run.baseline_revision = self.state.integration_revision
+        run.checkpointed = False
+        run.issues = ()
+        self.state.used_handles.add(handle)
+        return TaskWorkPacket(
+            target_id=self.state.target_id,
+            unit_id=unit_id,
+            unit_title=unit.title,
+            acceptance_criteria=duty.acceptance_criteria,
+            verified_dependencies=tuple(
+                item
+                for item in unit.dependencies
+                if item not in self.state.units or self.state.units[item].state == "done"
+            ),
+            write_scope=unit.write_scope,
+            repositories=duty.repositories,
+            validations=duty.validations,
+            evidence=duty.evidence,
+            forbidden_actions=TASK_WORKER_FORBIDDEN_ACTIONS,
+            stop_conditions=TASK_WORKER_STOP_CONDITIONS,
+            baseline_hash=self.state.shared_state_hash,
+            plan_fingerprint=self.state.plan_fingerprint,
+            executor=decision.executor,
+            attempt=run.attempt,
+        )
+
+    def _descendants(self, unit_id: str) -> tuple[str, ...]:
+        pending = list(self._dependants[unit_id])
+        seen: set[str] = set()
+        while pending:
+            current = pending.pop(0)
+            if current in seen:
+                continue
+            seen.add(current)
+            pending.extend(self._dependants[current])
+        return tuple(unit.unit_id for unit in self.plan.units if unit.unit_id in seen)
+
+    def _fail(self, unit_id: str, issues: Sequence[str], *, shared: bool) -> None:
+        run = self.state.units[unit_id]
+        run.state = "failed"
+        run.handle = None
+        run.issues = tuple(issues)
+        self.state.failure_seen = True
+        if shared:
+            self.state.shared_premise_valid = False
+            for other_id, other in self.state.units.items():
+                if other_id != unit_id and other.state in {"pending", "blocked", "orphaned"}:
+                    other.state = "halted"
+        else:
+            for descendant in self._descendants(unit_id):
+                descendant_run = self.state.units[descendant]
+                if descendant_run.canonical_blocked:
+                    continue
+                blockers = set(descendant_run.blocked_by)
+                blockers.add(unit_id)
+                descendant_run.blocked_by = tuple(sorted(blockers))
+                if descendant_run.state == "pending":
+                    descendant_run.state = "blocked"
+
+    @staticmethod
+    def _normalize_paths(paths: Sequence[str]) -> tuple[str, ...]:
+        normalized: set[str] = set()
+        for path in paths:
+            value = path.strip().replace("\\", "/")
+            parts = tuple(item for item in value.split("/") if item not in {"", "."})
+            if (
+                not parts
+                or value.startswith("/")
+                or ".." in parts
+                or any(character in value for character in "*?[]{}")
+            ):
+                raise TaskOrchestrationError(
+                    "PW_TASK_DIFF_INVALID", f"Invalid repository-relative diff path: {path}."
+                )
+            normalized.add("/".join(parts))
+        return tuple(sorted(normalized))
+
+    def complete_coordinator_unit(
+        self,
+        unit_id: str,
+        *,
+        observed_paths: Sequence[str],
+        observed_validations: Mapping[str, bool],
+        observed_evidence: Mapping[str, bool],
+        current_shared_state_hash: str,
+        provenance: str,
+        coordinator_token: str,
+    ) -> TaskVerificationResult:
+        self._require_coordinator(coordinator_token)
+        if unit_id not in self.units:
+            raise TaskOrchestrationError("PW_TASK_UNIT_UNKNOWN", f"Unknown unit {unit_id}.")
+        decision = next(item for item in self.decisions() if item.unit_id == unit_id)
+        if decision.executor != "coordinator" or not decision.launchable:
+            raise TaskOrchestrationError(
+                "PW_TASK_COORDINATOR_EXECUTION_INVALID",
+                f"{unit_id} is not currently eligible for exclusive coordinator execution.",
+            )
+        if not provenance.strip() or current_shared_state_hash != self.state.shared_state_hash:
+            raise TaskOrchestrationError(
+                "PW_TASK_COORDINATOR_VERIFICATION_REQUIRED",
+                "Coordinator execution requires matching shared state and durable provenance.",
+            )
+        unit = self.units[unit_id]
+        observed = self._normalize_paths(observed_paths)
+        outside = tuple(
+            path
+            for path in observed
+            if not any(
+                scope == "." or path == scope or path.startswith(scope + "/")
+                for scope in unit.write_scope
+            )
+        )
+        duty = self.obligations[unit_id]
+        issues: list[str] = []
+        if outside:
+            issues.append("Out-of-scope paths: " + ", ".join(outside) + ".")
+        missing_validation = tuple(
+            item for item in duty.validations if observed_validations.get(item) is not True
+        )
+        missing_evidence = tuple(
+            item for item in duty.evidence if observed_evidence.get(item) is not True
+        )
+        if missing_validation:
+            issues.append("Required validation did not pass: " + ", ".join(missing_validation) + ".")
+        if missing_evidence:
+            issues.append("Required evidence is absent: " + ", ".join(missing_evidence) + ".")
+        if issues:
+            self._fail(unit_id, issues, shared=bool(outside))
+            return TaskVerificationResult(unit_id, False, "failed", tuple(issues), ())
+        run = self.state.units[unit_id]
+        run.state = "done"
+        run.completion_provenance = provenance.strip()
+        self.state.integration_revision += 1
+        self.state.integrated_paths.append((self.state.integration_revision, unit_id, observed))
+        newly_eligible = tuple(
+            item.unit_id
+            for item in self.decisions()
+            if item.launchable and item.executor != "none"
+        )
+        return TaskVerificationResult(unit_id, True, "done", (), newly_eligible)
+
+    def verify_result(
+        self,
+        result: TaskWorkerResult,
+        *,
+        observed_paths: Sequence[str],
+        observed_validations: Mapping[str, bool],
+        observed_evidence: Mapping[str, bool],
+        current_shared_state_hash: str,
+        coordinator_token: str,
+    ) -> TaskVerificationResult:
+        self._require_coordinator(coordinator_token)
+        if result.unit_id not in self.units:
+            raise TaskOrchestrationError(
+                "PW_TASK_UNIT_UNKNOWN", f"Unknown unit {result.unit_id}."
+            )
+        unit = self.units[result.unit_id]
+        run = self.state.units[result.unit_id]
+        if run.state not in {"active", "returned"} or run.handle != result.handle:
+            raise TaskOrchestrationError(
+                "PW_TASK_RESULT_UNMATCHED",
+                "Returned work does not match the coordinator's active bounded handle.",
+            )
+        if (
+            result.plan_fingerprint != self.state.plan_fingerprint
+            or result.attempt != run.attempt
+        ):
+            raise TaskOrchestrationError(
+                "PW_TASK_RESULT_STALE",
+                "Returned work belongs to a different plan fingerprint or launch attempt.",
+            )
+        if not self.state.shared_premise_valid:
+            run.state = "halted"
+            run.handle = None
+            run.checkpointed = True
+            run.issues = ("Shared premise is invalid; returned work was halted, not integrated.",)
+            return TaskVerificationResult(
+                result.unit_id,
+                False,
+                "halted",
+                run.issues,
+                (),
+            )
+        issues: list[str] = []
+        coordinator_integrity_failure = False
+        try:
+            claimed = self._normalize_paths(result.claimed_paths)
+            observed = self._normalize_paths(observed_paths)
+        except TaskOrchestrationError as error:
+            claimed, observed = (), ()
+            issues.append(error.message)
+            coordinator_integrity_failure = True
+        if claimed != observed:
+            issues.append("Worker-claimed paths do not match the coordinator-observed diff.")
+            coordinator_integrity_failure = True
+        outside = tuple(
+            path
+            for path in observed
+            if not any(
+                scope == "." or path == scope or path.startswith(scope + "/")
+                for scope in unit.write_scope
+            )
+        )
+        if outside:
+            issues.append("Out-of-scope paths: " + ", ".join(outside) + ".")
+            coordinator_integrity_failure = True
+        shared_paths = tuple(path for path in observed if _task_worker_path_forbidden(path))
+        if shared_paths:
+            issues.append(
+                "Coordinator-only shared workflow paths: " + ", ".join(shared_paths) + "."
+            )
+            coordinator_integrity_failure = True
+        if (
+            result.baseline_hash != run.baseline_hash
+            or result.shared_state_hash != run.baseline_hash
+            or current_shared_state_hash != self.state.shared_state_hash
+        ):
+            issues.append("Coordinator-only shared state changed from the launch baseline.")
+            coordinator_integrity_failure = True
+        intervening = [
+            paths
+            for revision, _other_id, paths in self.state.integrated_paths
+            if revision > run.baseline_revision
+        ]
+        collisions = tuple(
+            path
+            for path in observed
+            if any(
+                _delegation_scope_overlap(path, prior)
+                for paths in intervening
+                for prior in paths
+            )
+        )
+        if collisions:
+            issues.append("Intervening diff collision: " + ", ".join(collisions) + ".")
+            coordinator_integrity_failure = True
+        duty = self.obligations[result.unit_id]
+        missing_validation = tuple(
+            item for item in duty.validations if observed_validations.get(item) is not True
+        )
+        if missing_validation:
+            issues.append("Required validation did not pass: " + ", ".join(missing_validation) + ".")
+        missing_evidence = tuple(
+            item for item in duty.evidence if observed_evidence.get(item) is not True
+        )
+        if missing_evidence:
+            issues.append("Required evidence is absent: " + ", ".join(missing_evidence) + ".")
+        if not result.success:
+            issues.append(result.failure_reason.strip() or "Worker reported failure.")
+        if not result.shared_premise_valid:
+            issues.append("Worker reported a shared-premise failure.")
+        worker_claim_mismatch = tuple(
+            item
+            for item in duty.validations
+            if result.validations.get(item) is not observed_validations.get(item)
+        ) + tuple(
+            item
+            for item in duty.evidence
+            if result.evidence.get(item) is not observed_evidence.get(item)
+        )
+        if worker_claim_mismatch:
+            issues.append(
+                "Worker claims disagree with coordinator observations: "
+                + ", ".join(worker_claim_mismatch)
+                + "."
+            )
+        if issues:
+            self._fail(
+                result.unit_id,
+                issues,
+                shared=coordinator_integrity_failure or not result.shared_premise_valid,
+            )
+            return TaskVerificationResult(result.unit_id, False, "failed", tuple(issues), ())
+        run.state = "done"
+        run.handle = None
+        run.issues = ()
+        self.state.integration_revision += 1
+        self.state.integrated_paths.append(
+            (self.state.integration_revision, result.unit_id, observed)
+        )
+        newly_eligible = tuple(
+            item.unit_id
+            for item in self.decisions()
+            if item.launchable and item.executor != "none"
+        )
+        return TaskVerificationResult(result.unit_id, True, "done", (), newly_eligible)
+
+    def rebaseline_shared_state(
+        self,
+        new_hash: str,
+        *,
+        reason: str,
+        coordinator_token: str,
+    ) -> None:
+        """Record a coordinator-owned canonical write without rewriting worker baselines."""
+        self._require_coordinator(coordinator_token)
+        if not new_hash.strip() or not reason.strip():
+            raise TaskOrchestrationError(
+                "PW_TASK_REBASE_PROVENANCE_REQUIRED",
+                "Shared-state rebaseline requires a new hash and durable reason.",
+            )
+        if new_hash == self.state.shared_state_hash:
+            return
+        self.state.shared_state_hash = new_hash
+        self.state.shared_state_revisions.append((new_hash, reason.strip()))
+
+    def checkpoint(self, unit_id: str, *, coordinator_token: str) -> None:
+        self._require_coordinator(coordinator_token)
+        run = self.state.units.get(unit_id)
+        if run is None or run.state not in {"active", "returned"}:
+            raise TaskOrchestrationError(
+                "PW_TASK_CHECKPOINT_INVALID", f"{unit_id} is not in flight."
+            )
+        run.checkpointed = True
+        if not self.state.shared_premise_valid:
+            run.state = "halted"
+            run.handle = None
+
+    def reconcile(
+        self,
+        observations: Mapping[str, Mapping[str, str]],
+        *,
+        canonical_completed: Mapping[str, str] | None = None,
+        coordinator_token: str,
+    ) -> None:
+        self._require_coordinator(coordinator_token)
+        canonical = dict(canonical_completed or {})
+        if any(not source.strip() for source in canonical.values()):
+            raise TaskOrchestrationError(
+                "PW_TASK_COMPLETION_PROVENANCE_REQUIRED",
+                "Canonical completion requires a non-empty durable evidence reference.",
+            )
+        invalid_canonical = tuple(
+            unit_id
+            for unit_id in canonical
+            if unit_id not in self.units
+            or self.units[unit_id].canonical_state != "complete"
+        )
+        if invalid_canonical:
+            raise TaskOrchestrationError(
+                "PW_TASK_COMPLETION_PROVENANCE_INVALID",
+                "Canonical completion is not present in the current plan for: "
+                + ", ".join(invalid_canonical)
+                + ".",
+            )
+        for unit_id, run in self.state.units.items():
+            if unit_id in canonical:
+                run.state = "done"
+                run.handle = None
+                run.completion_provenance = canonical[unit_id]
+                continue
+            if run.state not in {"active", "returned"}:
+                continue
+            observed = observations.get(unit_id)
+            identity_matches = (
+                observed is not None
+                and observed.get("id") == run.handle
+                and observed.get("kind") == "subagent"
+            )
+            observed_state = observed.get("state") if observed is not None else None
+            if identity_matches and observed_state == "active":
+                run.state = "active"
+            elif identity_matches and observed_state in {"complete", "completed"}:
+                run.state = "returned"
+            elif identity_matches and observed_state == "failed":
+                self._fail(unit_id, ("Observed worker failure.",), shared=False)
+            else:
+                run.state = "orphaned"
+                run.handle = None
+                run.issues = (
+                    "Exact active handle identity was not observed in the current session.",
+                )
+
+    def retry(self, unit_id: str, *, coordinator_token: str) -> None:
+        self._require_coordinator(coordinator_token)
+        run = self.state.units.get(unit_id)
+        if run is None:
+            raise TaskOrchestrationError("PW_TASK_UNIT_UNKNOWN", f"Unknown unit {unit_id}.")
+        if run.state not in {"failed", "orphaned"}:
+            raise TaskOrchestrationError(
+                "PW_TASK_RETRY_INVALID", f"{unit_id} is not failed or orphaned."
+            )
+        if not self.state.shared_premise_valid:
+            raise TaskOrchestrationError(
+                "PW_TASK_SHARED_PREMISE_INVALID", "A halted run cannot be retried in place."
+            )
+        run.state = "pending"
+        run.issues = ()
+        for descendant in self._descendants(unit_id):
+            descendant_run = self.state.units[descendant]
+            descendant_run.blocked_by = tuple(
+                blocker for blocker in descendant_run.blocked_by if blocker != unit_id
+            )
+            if (
+                descendant_run.state == "blocked"
+                and not descendant_run.canonical_blocked
+                and not descendant_run.blocked_by
+            ):
+                descendant_run.state = "pending"
+
+    def assert_testing_allowed(self, *, force: bool = False) -> None:
+        incomplete = tuple(
+            unit_id for unit_id, run in self.state.units.items() if run.state != "done"
+        )
+        if incomplete:
+            suffix = " Ordinary --force cannot bypass this integrity gate." if force else ""
+            raise TaskOrchestrationError(
+                "PW_TASK_TESTING_INCOMPLETE",
+                "Task cannot move to Testing until every required implementation row is Done; "
+                f"incomplete: {', '.join(incomplete)}.{suffix}",
+            )
+
+    def summary(self) -> dict[str, object]:
+        groups: dict[str, list[str]] = {
+            "completed": [],
+            "failed": [],
+            "blocked": [],
+            "halted": [],
+            "in_flight": [],
+            "orphaned": [],
+            "unaffected": [],
+        }
+        for unit in self.plan.units:
+            state = self.state.units[unit.unit_id].state
+            if state == "done":
+                groups["completed"].append(unit.unit_id)
+            elif state in {"active", "returned"}:
+                groups["in_flight"].append(unit.unit_id)
+            elif state in groups:
+                groups[state].append(unit.unit_id)
+            elif self.state.failure_seen and self.state.shared_premise_valid:
+                groups["unaffected"].append(unit.unit_id)
+        return {
+            "schema_version": 1,
+            "target_id": self.state.target_id,
+            "shared_premise_valid": self.state.shared_premise_valid,
+            "testing_allowed": all(run.state == "done" for run in self.state.units.values()),
+            **groups,
+        }
+
+
+class EpicOrchestrationError(ValueError):
+    """Stable fail-closed error for Epic child-Task orchestration."""
+
+    def __init__(self, code: str, message: str) -> None:
+        super().__init__(message)
+        self.code = code
+        self.message = message
+
+
+def _epic_opaque_handle_valid(value: object) -> bool:
+    return bool(
+        isinstance(value, str)
+        and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}", value)
+    )
+
+
+@dataclass(frozen=True)
+class EpicHostCapabilities:
+    source: str
+    current_session_verified: bool
+    persistent_tasks: bool
+    isolated_worktrees: bool
+    monitoring: bool
+    reconciliation: bool
+    available_child_capacity: int
+    additional_capabilities: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        if self.available_child_capacity < 0:
+            raise EpicOrchestrationError(
+                "PW_EPIC_CAPACITY_INVALID", "Available persistent-task capacity cannot be negative."
+            )
+        claims_support = any(
+            (
+                self.persistent_tasks,
+                self.isolated_worktrees,
+                self.monitoring,
+                self.reconciliation,
+            )
+        )
+        if claims_support and (
+            not self.current_session_verified or not self.source.strip()
+        ):
+            raise EpicOrchestrationError(
+                "PW_EPIC_CAPABILITY_UNVERIFIED",
+                "Epic host capabilities require a named current-session observation source.",
+            )
+        unknown = sorted(set(self.additional_capabilities) - set(DELEGATION_CAPABILITIES))
+        if unknown:
+            raise EpicOrchestrationError(
+                "PW_EPIC_CAPABILITY_UNKNOWN",
+                "Unknown Epic runtime capability: " + ", ".join(unknown) + ".",
+            )
+        if self.additional_capabilities and (
+            not self.current_session_verified or not self.source.strip()
+        ):
+            raise EpicOrchestrationError(
+                "PW_EPIC_CAPABILITY_UNVERIFIED",
+                "Additional Epic host capabilities require a named current-session observation source.",
+            )
+
+    @property
+    def creation_supported(self) -> bool:
+        return bool(
+            self.current_session_verified
+            and self.persistent_tasks
+            and self.monitoring
+            and self.reconciliation
+            and self.available_child_capacity > 0
+        )
+
+    @property
+    def verified_capabilities(self) -> frozenset[str]:
+        capabilities = set(self.additional_capabilities)
+        if self.persistent_tasks:
+            capabilities.add("persistent-task")
+        if self.isolated_worktrees:
+            capabilities.update({"isolated-worktree", "persistent-task-isolated-worktree"})
+        if self.monitoring:
+            capabilities.add("task-monitoring")
+        if self.reconciliation:
+            capabilities.add("task-reconciliation")
+        return frozenset(capabilities) if self.current_session_verified else frozenset()
+
+
+@dataclass(frozen=True)
+class EpicChildObligations:
+    parent_acs: tuple[str, ...]
+    repositories: tuple[str, ...]
+    write_scope: tuple[str, ...]
+    validations: tuple[str, ...]
+    evidence: tuple[str, ...]
+
+    def __post_init__(self) -> None:
+        fields = {
+            "parent ACs": ("parent_acs", self.parent_acs),
+            "repositories": ("repositories", self.repositories),
+            "write scope": ("write_scope", self.write_scope),
+            "validations": ("validations", self.validations),
+            "evidence": ("evidence", self.evidence),
+        }
+        for label, (attribute, values) in fields.items():
+            normalized = tuple(value.strip() for value in values)
+            if not normalized or any(not value for value in normalized):
+                raise EpicOrchestrationError(
+                    "PW_EPIC_PACKET_OBLIGATIONS_INVALID",
+                    f"Epic child packet {label} must be non-empty.",
+                )
+            if len(set(normalized)) != len(normalized):
+                raise EpicOrchestrationError(
+                    "PW_EPIC_PACKET_OBLIGATIONS_INVALID",
+                    f"Epic child packet {label} must not contain duplicates.",
+                )
+            object.__setattr__(self, attribute, normalized)
+        if any(not re.fullmatch(r"AC\d+", ac_id) for ac_id in self.parent_acs):
+            raise EpicOrchestrationError(
+                "PW_EPIC_PACKET_OBLIGATIONS_INVALID",
+                "Epic child packet parent ACs must use canonical AC<number> identities.",
+            )
+        try:
+            normalized_scope = TaskOrchestrator._normalize_paths(self.write_scope)
+        except TaskOrchestrationError as error:
+            raise EpicOrchestrationError(
+                "PW_EPIC_PACKET_OBLIGATIONS_INVALID", error.message
+            ) from error
+        object.__setattr__(self, "write_scope", normalized_scope)
+        if any(
+            repository != "."
+            and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", repository)
+            for repository in self.repositories
+        ):
+            raise EpicOrchestrationError(
+                "PW_EPIC_PACKET_OBLIGATIONS_INVALID",
+                "Epic child repositories must be '.' or registered repository IDs.",
+            )
+
+
+EPIC_CHILD_FORBIDDEN_ACTIONS = (
+    "mutate the global or parent Epic tracker, acceptance map, lifecycle, or delegation runtime",
+    "mutate another child Task or repository outside the packet scope",
+    "mark the child Complete or self-certify parent Epic closeout",
+    "push, merge, release, deploy, or contact third parties",
+)
+EPIC_CHILD_STOP_CONDITIONS = (
+    "child authority, parent AC coverage, or dependency identity no longer matches",
+    "branch, worktree, repository, validation, or evidence scope cannot be verified",
+    "the observed diff leaves the permitted child scope or collides with integrated work",
+    "a shared-premise failure invalidates the coordinator baseline",
+)
+
+
+@dataclass(frozen=True)
+class EpicChildWorkPacket:
+    target_id: str
+    target_kind: str
+    target_source: str
+    target_source_hash: str
+    unit_id: str
+    unit_title: str
+    parent_acs: tuple[str, ...]
+    verified_dependencies: tuple[str, ...]
+    repositories: tuple[str, ...]
+    write_scope: tuple[str, ...]
+    validations: tuple[str, ...]
+    evidence: tuple[str, ...]
+    forbidden_actions: tuple[str, ...]
+    stop_conditions: tuple[str, ...]
+    base_commit: str
+    plan_fingerprint: str
+    executor: str
+    visibility_class: str
+    retention_policy: str
+    isolated_worktree_required: bool
+    attempt: int
+
+    def payload(self) -> dict[str, object]:
+        return {
+            "schema_version": 2,
+            "target": {
+                "id": self.target_id,
+                "kind": self.target_kind,
+                "authority_source": self.target_source,
+                "authority_hash": self.target_source_hash,
+            },
+            "unit": {
+                "id": self.unit_id,
+                "kind": "epic-child" if self.target_kind == "epic" else "task-unit",
+                "title": self.unit_title,
+                "parent_acs": list(self.parent_acs),
+            },
+            "verified_dependencies": list(self.verified_dependencies),
+            "scope": {
+                "repositories": list(self.repositories),
+                "write_prefixes": list(self.write_scope),
+                "isolated_worktree_required": self.isolated_worktree_required,
+            },
+            "obligations": {
+                "validation": list(self.validations),
+                "evidence": list(self.evidence),
+            },
+            "forbidden_actions": list(self.forbidden_actions),
+            "stop_conditions": list(self.stop_conditions),
+            "base_commit": self.base_commit,
+            "plan_fingerprint": self.plan_fingerprint,
+            "executor": self.executor,
+            "visibility_class": self.visibility_class,
+            "retention_policy": self.retention_policy,
+            "attempt": self.attempt,
+        }
+
+
+@dataclass(frozen=True)
+class EpicLaunchIntent:
+    intent_id: str
+    unit_id: str
+    attempt: int
+    executor: str
+    packet: EpicChildWorkPacket
+    capability_source: str
+
+    def payload(self) -> dict[str, object]:
+        operation = {
+            "subagent": "launch-subagent",
+            "persistent-task": "create-persistent-task",
+            "peer-team": "launch-peer-team",
+        }.get(self.executor, "launch-worker")
+        return {
+            "schema_version": 1,
+            "intent_id": self.intent_id,
+            "operation": operation,
+            "unit_id": self.unit_id,
+            "attempt": self.attempt,
+            "executor": self.executor,
+            "capability_source": self.capability_source,
+            "work_packet": self.packet.payload(),
+        }
+
+
+@dataclass(frozen=True)
+class PersistentTaskCreationIntent:
+    intent_id: str
+    unit_id: str
+    attempt: int
+    packet: EpicChildWorkPacket
+    capability_source: str
+
+    def payload(self) -> dict[str, object]:
+        requires = ["persistent-task", "task-monitoring", "task-reconciliation"]
+        if self.packet.isolated_worktree_required:
+            requires.append("isolated-worktree")
+        if self.packet.retention_policy == "retire-on-verified":
+            requires.extend(("task-retirement", "task-retirement-reconciliation"))
+        return {
+            "schema_version": 1,
+            "intent_id": self.intent_id,
+            "operation": "create-persistent-task",
+            "unit_id": self.unit_id,
+            "attempt": self.attempt,
+            "requires": requires,
+            "capability_source": self.capability_source,
+            "work_packet": self.packet.payload(),
+        }
+
+
+@dataclass(frozen=True)
+class EpicRetirementIntent:
+    intent_id: str
+    unit_id: str
+    attempt: int
+    handle: str
+    capability_source: str
+
+    def payload(self) -> dict[str, object]:
+        return {
+            "schema_version": 1,
+            "intent_id": self.intent_id,
+            "operation": "retire-visible-task",
+            "unit_id": self.unit_id,
+            "attempt": self.attempt,
+            "handle": self.handle,
+            "requires": ["task-retirement", "task-retirement-reconciliation"],
+            "capability_source": self.capability_source,
+        }
+
+
+@dataclass(frozen=True)
+class EpicChildResult:
+    unit_id: str
+    handle: str
+    attempt: int
+    branch: str
+    worktree: str
+    base_commit: str
+    head_commit: str
+    success: bool
+    claimed_paths: tuple[str, ...]
+    validations: Mapping[str, bool]
+    evidence: Mapping[str, bool]
+    repositories: tuple[str, ...]
+    plan_fingerprint: str
+    shared_premise_valid: bool = True
+    failure_reason: str = ""
+
+
+@dataclass
+class EpicUnitRun:
+    state: str = "pending"
+    attempt: int = 0
+    intent_id: str | None = None
+    handle: str | None = None
+    branch: str | None = None
+    worktree: str | None = None
+    base_commit: str | None = None
+    checkpointed: bool = False
+    issues: tuple[str, ...] = ()
+    blocked_by: tuple[str, ...] = ()
+    completion_provenance: str | None = None
+    executor: str = "coordinator"
+    visibility_class: str = "ephemeral"
+    retention_policy: str = "not-applicable"
+    disposition_state: str = "pending"
+    disposition_receipt: str | None = None
+    attention_reasons: tuple[str, ...] = ()
+    owner_promoted: bool = False
+    explicit_retain_reason: str | None = None
+    retirement_state: str = "not-applicable"
+    retirement_intent_id: str | None = None
+    retirement_ack: str | None = None
+    prior_handles: tuple[str, ...] = ()
+
+
+@dataclass
+class EpicOrchestrationState:
+    schema_version: int
+    target_id: str
+    plan_fingerprint: str
+    coordinator_hash: str
+    coordinator_worktree: str
+    base_commit: str
+    units: dict[str, EpicUnitRun]
+    shared_premise_valid: bool = True
+    failure_seen: bool = False
+    create_count: int = 0
+    used_intents: set[str] = field(default_factory=set)
+    used_handles: set[str] = field(default_factory=set)
+    verified_paths: list[tuple[str, tuple[str, ...]]] = field(default_factory=list)
+    migrated_from_version: int | None = None
+
+
+def _epic_orchestration_state_payload(state: EpicOrchestrationState) -> dict[str, object]:
+    return {
+        "schema_version": 2,
+        "target_id": state.target_id,
+        "plan_fingerprint": state.plan_fingerprint,
+        "coordinator_hash": state.coordinator_hash,
+        "coordinator_worktree": state.coordinator_worktree,
+        "base_commit": state.base_commit,
+        "shared_premise_valid": state.shared_premise_valid,
+        "failure_seen": state.failure_seen,
+        "create_count": state.create_count,
+        "used_intents": sorted(state.used_intents),
+        "used_handles": sorted(state.used_handles),
+        "verified_paths": [
+            [unit_id, list(paths)] for unit_id, paths in state.verified_paths
+        ],
+        "units": {
+            unit_id: {
+                "state": run.state,
+                "attempt": run.attempt,
+                "intent_id": run.intent_id,
+                "handle": run.handle,
+                "branch": run.branch,
+                "worktree": run.worktree,
+                "base_commit": run.base_commit,
+                "checkpointed": run.checkpointed,
+                "issues": list(run.issues),
+                "blocked_by": list(run.blocked_by),
+                "completion_provenance": run.completion_provenance,
+                "executor": run.executor,
+                "visibility_class": run.visibility_class,
+                "retention_policy": run.retention_policy,
+                "disposition_state": run.disposition_state,
+                "disposition_receipt": run.disposition_receipt,
+                "attention_reasons": list(run.attention_reasons),
+                "owner_promoted": run.owner_promoted,
+                "explicit_retain_reason": run.explicit_retain_reason,
+                "retirement_state": run.retirement_state,
+                "retirement_intent_id": run.retirement_intent_id,
+                "retirement_ack": run.retirement_ack,
+                "prior_handles": list(run.prior_handles),
+            }
+            for unit_id, run in state.units.items()
+        },
+    }
+
+
+def _epic_orchestration_state_from_payload(payload: object) -> EpicOrchestrationState:
+    if not isinstance(payload, dict):
+        raise EpicOrchestrationError(
+            "PW_EPIC_RUNTIME_INVALID", "Epic orchestration runtime must be an object."
+        )
+    schema_version = payload.get("schema_version")
+    if schema_version not in {1, 2}:
+        raise EpicOrchestrationError(
+            "PW_EPIC_RUNTIME_INVALID", "Epic orchestration runtime schema is invalid."
+        )
+    allowed = {
+        "schema_version", "target_id", "plan_fingerprint", "coordinator_hash",
+        "coordinator_worktree", "base_commit", "shared_premise_valid", "failure_seen",
+        "create_count", "used_intents", "used_handles", "units",
+    }
+    allowed.add("integrated_paths" if schema_version == 1 else "verified_paths")
+    if set(payload) - allowed:
+        raise EpicOrchestrationError(
+            "PW_EPIC_RUNTIME_PRIVATE_FIELD",
+            "Epic runtime contains forbidden fields: "
+            + ", ".join(sorted(set(payload) - allowed))
+            + ".",
+        )
+    required_strings = (
+        "target_id", "plan_fingerprint", "coordinator_hash", "coordinator_worktree", "base_commit"
+    )
+    if (
+        any(not isinstance(payload.get(key), str) or not payload.get(key) for key in required_strings)
+        or not isinstance(payload.get("shared_premise_valid"), bool)
+        or not isinstance(payload.get("failure_seen"), bool)
+        or not isinstance(payload.get("create_count"), int)
+        or int(payload.get("create_count", -1)) < 0
+        or not isinstance(payload.get("used_intents"), list)
+        or not isinstance(payload.get("used_handles"), list)
+        or not isinstance(
+            payload.get("integrated_paths" if schema_version == 1 else "verified_paths"),
+            list,
+        )
+        or not isinstance(payload.get("units"), dict)
+    ):
+        raise EpicOrchestrationError(
+            "PW_EPIC_RUNTIME_INVALID", "Epic orchestration runtime schema is invalid."
+        )
+    used_intents = payload["used_intents"]
+    used_handles = payload["used_handles"]
+    if not all(
+        isinstance(item, str) and re.fullmatch(r"[0-9a-f]{64}", item)
+        for item in used_intents
+    ) or not all(_epic_opaque_handle_valid(item) for item in used_handles):
+        raise EpicOrchestrationError(
+            "PW_EPIC_RUNTIME_INVALID", "Epic runtime intent or handle identities are invalid."
+        )
+    if (
+        int(payload["create_count"]) != len(used_intents)
+        or len(used_intents) != len(used_handles)
+        or len(set(used_intents)) != len(used_intents)
+        or len(set(used_handles)) != len(used_handles)
+    ):
+        raise EpicOrchestrationError(
+            "PW_EPIC_RUNTIME_INVALID", "Epic runtime creation identity counts are inconsistent."
+        )
+    raw_verified = payload[
+        "integrated_paths" if schema_version == 1 else "verified_paths"
+    ]
+    verified_paths: list[tuple[str, tuple[str, ...]]] = []
+    for item in raw_verified:
+        if (
+            not isinstance(item, list) or len(item) != 2 or not isinstance(item[0], str)
+            or not isinstance(item[1], list) or not all(isinstance(path, str) for path in item[1])
+        ):
+            raise EpicOrchestrationError(
+                "PW_EPIC_RUNTIME_INVALID", "Epic verified path history is invalid."
+            )
+        verified_paths.append((item[0], tuple(item[1])))
+    units: dict[str, EpicUnitRun] = {}
+    unit_allowed = {
+        "state", "attempt", "intent_id", "handle", "branch", "worktree", "base_commit",
+        "checkpointed", "issues", "blocked_by", "completion_provenance",
+    }
+    if schema_version == 2:
+        unit_allowed.update(
+            {
+                "executor", "visibility_class", "retention_policy", "disposition_state",
+                "disposition_receipt", "attention_reasons", "owner_promoted",
+                "explicit_retain_reason", "retirement_state", "retirement_intent_id",
+                "retirement_ack", "prior_handles",
+            }
+        )
+    valid_states = {
+        "pending", "active", "returned", "verified", "failed", "blocked", "halted", "orphaned"
+    }
+    raw_units = payload["units"]
+    assert isinstance(raw_units, dict)
+    for unit_id, raw in raw_units.items():
+        if not isinstance(unit_id, str) or not isinstance(raw, dict) or set(raw) - unit_allowed:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RUNTIME_PRIVATE_FIELD", f"{unit_id} runtime entry is malformed."
+            )
+        optional_strings = (
+            "intent_id", "handle", "branch", "worktree", "base_commit",
+            "completion_provenance", "disposition_receipt", "explicit_retain_reason",
+            "retirement_intent_id", "retirement_ack",
+        )
+        intent_id = raw.get("intent_id")
+        handle = raw.get("handle")
+        if (
+            raw.get("state") not in valid_states
+            or not isinstance(raw.get("attempt"), int) or raw.get("attempt", -1) < 0
+            or any(raw.get(key) is not None and not isinstance(raw.get(key), str) for key in optional_strings)
+            or not isinstance(raw.get("checkpointed"), bool)
+            or not isinstance(raw.get("issues"), list)
+            or not all(
+                isinstance(item, str)
+                and re.fullmatch(r"PW_EPIC_[A-Z0-9_]{1,64}", item)
+                for item in raw.get("issues", [])
+            )
+            or not isinstance(raw.get("blocked_by"), list)
+            or not all(isinstance(item, str) for item in raw.get("blocked_by", []))
+            or intent_id is not None
+            and (
+                not re.fullmatch(r"[0-9a-f]{64}", intent_id)
+                or intent_id not in used_intents
+            )
+            or handle is not None
+            and (not _epic_opaque_handle_valid(handle) or handle not in used_handles)
+        ):
+            raise EpicOrchestrationError(
+                "PW_EPIC_RUNTIME_INVALID", f"{unit_id} runtime entry is invalid."
+            )
+        if schema_version == 2:
+            executor = raw.get("executor")
+            visibility_class = raw.get("visibility_class")
+            retention_policy = raw.get("retention_policy")
+            disposition_state = raw.get("disposition_state")
+            retirement_state = raw.get("retirement_state")
+            attention_reasons = raw.get("attention_reasons")
+            prior_handles = raw.get("prior_handles")
+            retirement_intent_id = raw.get("retirement_intent_id")
+            if (
+                executor not in {*DELEGATION_EXECUTOR_SURFACES, "none"}
+                or visibility_class not in {"ephemeral", "visible-retirable", "visible-retained"}
+                or retention_policy not in {"not-applicable", "retire-on-verified", "retain"}
+                or disposition_state not in {"pending", "integrated", "no-integration"}
+                or retirement_state not in {
+                    "not-applicable", "pending", "requested", "confirmed", "failed",
+                    "unknown", "retained",
+                }
+                or not isinstance(attention_reasons, list)
+                or not all(
+                    isinstance(item, str) and re.fullmatch(r"[a-z][a-z0-9-]{0,63}", item)
+                    for item in attention_reasons
+                )
+                or not isinstance(raw.get("owner_promoted"), bool)
+                or not isinstance(prior_handles, list)
+                or not all(
+                    _epic_opaque_handle_valid(item) and item in used_handles
+                    for item in prior_handles
+                )
+                or retirement_intent_id is not None
+                and not re.fullmatch(r"[0-9a-f]{64}", retirement_intent_id)
+            ):
+                raise EpicOrchestrationError(
+                    "PW_EPIC_RUNTIME_INVALID", f"{unit_id} lifecycle entry is invalid."
+                )
+        else:
+            launched = bool(intent_id or handle or raw.get("branch") or raw.get("worktree"))
+            executor = "persistent-task" if launched else "coordinator"
+            visibility_class = "visible-retained" if launched else "ephemeral"
+            retention_policy = "retain" if launched else "not-applicable"
+            disposition_state = "pending"
+            retirement_state = "retained" if launched else "not-applicable"
+            attention_reasons = (
+                ["legacy-handle-unavailable"] if launched and handle is None else []
+            )
+            prior_handles = []
+            retirement_intent_id = None
+        units[unit_id] = EpicUnitRun(
+            state=str(raw["state"]), attempt=int(raw["attempt"]),
+            intent_id=raw.get("intent_id"), handle=raw.get("handle"),
+            branch=raw.get("branch"), worktree=raw.get("worktree"),
+            base_commit=raw.get("base_commit"), checkpointed=bool(raw["checkpointed"]),
+            issues=tuple(raw["issues"]), blocked_by=tuple(raw["blocked_by"]),
+            completion_provenance=raw.get("completion_provenance"),
+            executor=str(executor), visibility_class=str(visibility_class),
+            retention_policy=str(retention_policy),
+            disposition_state=str(disposition_state),
+            disposition_receipt=raw.get("disposition_receipt"),
+            attention_reasons=tuple(attention_reasons),
+            owner_promoted=bool(raw.get("owner_promoted", False)),
+            explicit_retain_reason=raw.get("explicit_retain_reason"),
+            retirement_state=str(retirement_state),
+            retirement_intent_id=retirement_intent_id,
+            retirement_ack=raw.get("retirement_ack"),
+            prior_handles=tuple(prior_handles),
+        )
+    return EpicOrchestrationState(
+        schema_version=2, target_id=str(payload["target_id"]),
+        plan_fingerprint=str(payload["plan_fingerprint"]),
+        coordinator_hash=str(payload["coordinator_hash"]),
+        coordinator_worktree=str(payload["coordinator_worktree"]),
+        base_commit=str(payload["base_commit"]), units=units,
+        shared_premise_valid=bool(payload["shared_premise_valid"]),
+        failure_seen=bool(payload["failure_seen"]), create_count=int(payload["create_count"]),
+        used_intents=set(used_intents), used_handles=set(used_handles),
+        verified_paths=verified_paths,
+        migrated_from_version=1 if schema_version == 1 else None,
+    )
+
+
+def _epic_execution_fingerprint(
+    plan: DelegationPlan, obligations: Mapping[str, EpicChildObligations], base_commit: str
+) -> str:
+    payload = {
+        "target": {"id": plan.target.target_id, "source": plan.target.source_path,
+                   "source_hash": plan.target.source_hash},
+        "base_commit": base_commit,
+        "execution_authority": {
+            "requested_concurrency": plan.requested_concurrency,
+            "available_child_capacity": plan.available_child_capacity,
+            "observed_capabilities": plan.observed_capabilities,
+            "capability_source": plan.capability_source,
+            "persistent_task_authority": plan.persistent_task_authority,
+        },
+        "units": [
+            {
+                "id": unit.unit_id, "dependencies": unit.dependencies,
+                "authority_acs": unit.authority_acs,
+                "execution_needs": unit.execution_needs.properties(),
+                "requested_executor": unit.requested_executor,
+                "executor": unit.executor,
+                "schedule": unit.schedule,
+                "visibility_class": unit.visibility_class,
+                "retention_policy": unit.retention_policy,
+                "obligations": {
+                    "parent_acs": obligations[unit.unit_id].parent_acs,
+                    "repositories": obligations[unit.unit_id].repositories,
+                    "write_scope": obligations[unit.unit_id].write_scope,
+                    "validations": obligations[unit.unit_id].validations,
+                    "evidence": obligations[unit.unit_id].evidence,
+                },
+            }
+            for unit in plan.units
+        ],
+    }
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
+def _epic_execution_fingerprint_v1(
+    plan: DelegationPlan, obligations: Mapping[str, EpicChildObligations], base_commit: str
+) -> str:
+    """Reproduce the 0.4 runtime identity solely to migrate exact legacy state."""
+    payload = {
+        "target": {"id": plan.target.target_id, "source": plan.target.source_path,
+                   "source_hash": plan.target.source_hash},
+        "base_commit": base_commit,
+        "execution_authority": {
+            "requested_concurrency": plan.requested_concurrency,
+            "available_child_capacity": plan.available_child_capacity,
+            "observed_capabilities": plan.observed_capabilities,
+            "capability_source": plan.capability_source,
+            "persistent_task_authority": plan.persistent_task_authority,
+        },
+        "units": [
+            {
+                "id": unit.unit_id, "dependencies": unit.dependencies,
+                "authority_acs": unit.authority_acs,
+                "obligations": {
+                    "parent_acs": obligations[unit.unit_id].parent_acs,
+                    "repositories": obligations[unit.unit_id].repositories,
+                    "write_scope": obligations[unit.unit_id].write_scope,
+                    "validations": obligations[unit.unit_id].validations,
+                    "evidence": obligations[unit.unit_id].evidence,
+                },
+            }
+            for unit in plan.units
+        ],
+    }
+    return hashlib.sha256(
+        json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+
+
+class EpicOrchestrator:
+    """Coordinator-only state machine for durable capability-aware execution surfaces."""
+
+    def __init__(
+        self, *, plan: DelegationPlan, obligations: Mapping[str, EpicChildObligations],
+        capabilities: EpicHostCapabilities, coordinator_token: str,
+        coordinator_worktree: Path, base_commit: str,
+    ) -> None:
+        if plan.target.kind not in {"task", "epic"}:
+            raise EpicOrchestrationError(
+                "PW_EPIC_TARGET_REQUIRED",
+                "Surface orchestration requires exactly one Task or Epic target.",
+            )
+        if plan.target.lifecycle != "In Progress":
+            raise EpicOrchestrationError(
+                "PW_EPIC_LIFECYCLE_INVALID", "The parent Epic must already be In Progress."
+            )
+        if not coordinator_token.strip():
+            raise EpicOrchestrationError(
+                "PW_EPIC_COORDINATOR_REQUIRED", "A coordinator token is required."
+            )
+        if not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", base_commit):
+            raise EpicOrchestrationError(
+                "PW_EPIC_BASE_INVALID",
+                "Epic execution requires an exact full-length hexadecimal Git object ID.",
+            )
+        self.plan = plan
+        self.units = {unit.unit_id: unit for unit in plan.units}
+        if set(self.units) != set(obligations):
+            raise EpicOrchestrationError(
+                "PW_EPIC_PACKET_OBLIGATIONS_MISMATCH",
+                "Epic child obligations must match every selected canonical child exactly.",
+            )
+        for unit_id, duty in obligations.items():
+            if (
+                plan.target.kind == "epic"
+                and tuple(duty.parent_acs) != tuple(self.units[unit_id].authority_acs)
+            ):
+                raise EpicOrchestrationError(
+                    "PW_EPIC_AUTHORITY_MISMATCH",
+                    f"{unit_id} packet parent ACs do not match decomposition authority.",
+                )
+        self.obligations = dict(obligations)
+        self.capabilities = capabilities
+        self._dependants = {
+            unit_id: tuple(
+                candidate.unit_id for candidate in plan.units if unit_id in candidate.dependencies
+            )
+            for unit_id in self.units
+        }
+        fingerprint = _epic_execution_fingerprint(plan, obligations, base_commit)
+        self.state = EpicOrchestrationState(
+            schema_version=2, target_id=plan.target.target_id,
+            plan_fingerprint=fingerprint,
+            coordinator_hash=self._token_hash(coordinator_token),
+            coordinator_worktree=str(coordinator_worktree.resolve()),
+            base_commit=base_commit,
+            units={
+                unit.unit_id: EpicUnitRun(
+                    state=("verified" if unit.canonical_state == "complete" else
+                           "blocked" if unit.canonical_state == "blocked" else "pending"),
+                    completion_provenance=(
+                        f"canonical:{plan.target.source_path}#{plan.target.source_hash}"
+                        if unit.canonical_state == "complete" else None
+                    ),
+                    executor=unit.executor,
+                    visibility_class=unit.visibility_class,
+                    retention_policy=unit.retention_policy,
+                    disposition_state=(
+                        "integrated" if unit.canonical_state == "complete" else "pending"
+                    ),
+                    disposition_receipt=(
+                        f"canonical:{plan.target.source_hash}"
+                        if unit.canonical_state == "complete" else None
+                    ),
+                    retirement_state=(
+                        "pending" if unit.visibility_class == "visible-retirable"
+                        else "retained" if unit.visibility_class == "visible-retained"
+                        else "not-applicable"
+                    ),
+                )
+                for unit in plan.units
+            },
+        )
+
+    @staticmethod
+    def _token_hash(value: str) -> str:
+        return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+    def _require_coordinator(self, token: str) -> None:
+        if self._token_hash(token) != self.state.coordinator_hash:
+            raise EpicOrchestrationError(
+                "PW_EPIC_COORDINATOR_ONLY",
+                "Only the parent coordinator may mutate Epic delegation runtime state.",
+            )
+
+    def _dependencies_verified(self, unit: DelegationPlannedUnit) -> bool:
+        # build_delegation_plan permits an omitted dependency only when its canonical
+        # lifecycle is already Complete. Missing selected-state entries therefore
+        # represent verified canonical predecessors rather than unknown work.
+        return all(
+            dependency not in self.state.units
+            or (
+                self.state.units[dependency].state == "verified"
+                and (
+                    self.state.units[dependency].visibility_class == "ephemeral"
+                    or self.state.units[dependency].disposition_state
+                    in {"integrated", "no-integration"}
+                )
+            )
+            for dependency in unit.dependencies
+        )
+
+    def _scope_collision(self, left_id: str, right_id: str) -> bool:
+        if not set(self.obligations[left_id].repositories).intersection(
+            self.obligations[right_id].repositories
+        ):
+            return False
+        return any(
+            _delegation_scope_overlap(left, right)
+            for left in self.obligations[left_id].write_scope
+            for right in self.obligations[right_id].write_scope
+        )
+
+    def capability_boundary(self) -> dict[str, object]:
+        reasons: list[str] = []
+        required = {
+            "persistent-task",
+            "task-monitoring",
+            "task-reconciliation",
+        }
+        persistent_units = tuple(
+            unit for unit in self.plan.units if unit.executor == "persistent-task"
+        )
+        isolation_required = any(
+            unit.execution_needs.isolated_worktree for unit in persistent_units
+        )
+        if isolation_required:
+            required.add("isolated-worktree")
+        if not _delegation_explicit_authority(self.plan.persistent_task_authority):
+            reasons.append("explicit owner authority is absent")
+        if not required.issubset(self.plan.observed_capabilities):
+            reasons.append("immutable plan lacks the verified persistent-task capability set")
+        if self.plan.capability_source.strip() != self.capabilities.source.strip():
+            reasons.append("runtime capability source does not match the immutable plan")
+        if self.plan.available_child_capacity == 0:
+            reasons.append("immutable plan authorizes no persistent child capacity")
+        if not self.capabilities.current_session_verified:
+            reasons.append("current-session capability observation is absent")
+        if not self.capabilities.persistent_tasks:
+            reasons.append("persistent task creation is unsupported or unknown")
+        if isolation_required and not self.capabilities.isolated_worktrees:
+            reasons.append("isolated worktree creation is unsupported or unknown")
+        if not self.capabilities.monitoring:
+            reasons.append("task monitoring is unsupported or unknown")
+        if not self.capabilities.reconciliation:
+            reasons.append("task reconciliation is unsupported or unknown")
+        if self.capabilities.available_child_capacity == 0:
+            reasons.append("available persistent-task capacity is zero")
+        supported = not reasons
+        resume_reasons: list[str] = []
+        if self.plan.capability_source.strip() != self.capabilities.source.strip():
+            resume_reasons.append("runtime capability source does not match the immutable plan")
+        if not self.capabilities.current_session_verified:
+            resume_reasons.append("current-session capability observation is absent")
+        if "task-reconciliation" not in self.plan.observed_capabilities:
+            resume_reasons.append("immutable plan lacks verified task reconciliation")
+        if "task-monitoring" not in self.plan.observed_capabilities:
+            resume_reasons.append("immutable plan lacks verified task monitoring")
+        if not self.capabilities.monitoring:
+            resume_reasons.append("current-session task monitoring is unsupported or unknown")
+        if not self.capabilities.reconciliation:
+            resume_reasons.append("current-session task reconciliation is unsupported or unknown")
+        return {
+            "creation_authorized": _delegation_explicit_authority(
+                self.plan.persistent_task_authority
+            ),
+            "creation_supported": supported,
+            "resume_supported": not resume_reasons,
+            "resume_reasons": resume_reasons,
+            "fallback": None if supported else "safe-sequential-coordinator",
+            "reasons": reasons,
+            "source": self.capabilities.source or "not observed",
+        }
+
+    def _surface_runtime_reasons(self, unit: DelegationPlannedUnit) -> tuple[str, ...]:
+        runtime = self.capabilities.verified_capabilities
+        if self.plan.capability_source.strip() != self.capabilities.source.strip():
+            return ("runtime capability source does not match the immutable plan",)
+        if not self.capabilities.current_session_verified:
+            return ("current-session capability observation is absent",)
+        required: set[str]
+        if unit.executor == "subagent":
+            required = {"subagent"}
+            if unit.execution_needs.isolated_worktree:
+                required.add("subagent-isolated-worktree")
+        elif unit.executor == "persistent-task":
+            required = {
+                "persistent-task", "task-monitoring", "task-reconciliation",
+            }
+            if unit.execution_needs.isolated_worktree:
+                if not {
+                    "persistent-task-isolated-worktree", "isolated-worktree"
+                }.intersection(runtime):
+                    required.add("persistent-task-isolated-worktree")
+        elif unit.executor == "peer-team":
+            required = {"peer-team", "peer-messaging"}
+            if unit.execution_needs.isolated_worktree:
+                required.add("peer-team-isolated-worktree")
+        else:
+            return ()
+        missing_plan = sorted(required - set(self.plan.observed_capabilities))
+        missing = sorted(required - runtime)
+        reasons = [f"immutable plan lacks verified {item}" for item in missing_plan]
+        reasons.extend(f"current runtime lacks verified {item}" for item in missing)
+        if unit.executor == "persistent-task" and not _delegation_explicit_authority(
+            self.plan.persistent_task_authority
+        ):
+            reasons.append("explicit owner authority is absent")
+        return tuple(reasons)
+
+    def _packet(self, unit_id: str, attempt: int) -> EpicChildWorkPacket:
+        unit = self.units[unit_id]
+        duty = self.obligations[unit_id]
+        return EpicChildWorkPacket(
+            target_id=self.state.target_id, target_kind=self.plan.target.kind,
+            target_source=self.plan.target.source_path,
+            target_source_hash=self.plan.target.source_hash,
+            unit_id=unit_id, unit_title=unit.title, parent_acs=duty.parent_acs,
+            verified_dependencies=tuple(
+                dependency for dependency in unit.dependencies
+                if dependency not in self.state.units
+                or self.state.units[dependency].state == "verified"
+            ),
+            repositories=duty.repositories, write_scope=duty.write_scope,
+            validations=duty.validations, evidence=duty.evidence,
+            forbidden_actions=EPIC_CHILD_FORBIDDEN_ACTIONS,
+            stop_conditions=EPIC_CHILD_STOP_CONDITIONS,
+            base_commit=self.state.base_commit, plan_fingerprint=self.state.plan_fingerprint,
+            executor=unit.executor, visibility_class=unit.visibility_class,
+            retention_policy=unit.retention_policy,
+            isolated_worktree_required=unit.execution_needs.isolated_worktree,
+            attempt=attempt,
+        )
+
+    def _launch_evaluation(
+        self,
+    ) -> tuple[tuple[EpicLaunchIntent, ...], dict[str, tuple[str, ...]]]:
+        reasons: dict[str, tuple[str, ...]] = {}
+        if not self.state.shared_premise_valid:
+            return (), {
+                unit.unit_id: ("shared Epic premise is invalid",)
+                for unit in self.plan.units
+                if self.state.units[unit.unit_id].state == "pending"
+            }
+        active = [
+            unit_id for unit_id, run in self.state.units.items()
+            if run.state in {"active", "returned"}
+        ]
+        active_child_slots = sum(
+            self.units[unit_id].required_child_slots
+            for unit_id in active
+            if self.units[unit_id].executor
+            in {"subagent", "persistent-task", "peer-team"}
+        )
+        available = max(0, min(
+            self.plan.requested_concurrency - active_child_slots,
+            self.plan.available_child_capacity - active_child_slots,
+            self.capabilities.available_child_capacity,
+        ))
+        reserved = list(active)
+        intents: list[EpicLaunchIntent] = []
+        for unit in self.plan.units:
+            run = self.state.units[unit.unit_id]
+            if run.state != "pending":
+                continue
+            unit_reasons: list[str] = []
+            if not self._dependencies_verified(unit):
+                unit_reasons.append("waiting for coordinator-verified dependencies")
+            if unit.executor not in {"subagent", "persistent-task", "peer-team"}:
+                unit_reasons.append(
+                    f"immutable plan executor is {unit.executor}, not a host-launched surface"
+                )
+            unit_reasons.extend(self._surface_runtime_reasons(unit))
+            collisions = [
+                other_id
+                for other_id in reserved
+                if self._scope_collision(unit.unit_id, other_id)
+            ]
+            if collisions:
+                unit_reasons.append(
+                    "repository/write-scope collision with active or reserved child: "
+                    + ", ".join(collisions)
+                )
+            if available <= 0:
+                unit_reasons.append("effective child capacity is exhausted")
+            if unit.executor == "peer-team" and available < 2:
+                unit_reasons.append("peer-team requires at least two available child slots")
+            if unit_reasons:
+                reasons[unit.unit_id] = tuple(unit_reasons)
+                continue
+            attempt = run.attempt + 1
+            packet = self._packet(unit.unit_id, attempt)
+            identity = f"{self.state.plan_fingerprint}:{unit.unit_id}:{attempt}"
+            if unit.executor != "persistent-task":
+                identity += f":{unit.executor}"
+            intent_id = hashlib.sha256(identity.encode("utf-8")).hexdigest()
+            intents.append(
+                EpicLaunchIntent(
+                    intent_id=intent_id, unit_id=unit.unit_id, attempt=attempt,
+                    executor=unit.executor,
+                    packet=packet, capability_source=self.capabilities.source,
+                )
+            )
+            reserved.append(unit.unit_id)
+            available -= 2 if unit.executor == "peer-team" else 1
+        return tuple(intents), reasons
+
+    def launch_intents(self) -> tuple[EpicLaunchIntent, ...]:
+        intents, _reasons = self._launch_evaluation()
+        return intents
+
+    def creation_intents(self) -> tuple[PersistentTaskCreationIntent, ...]:
+        return tuple(
+            PersistentTaskCreationIntent(
+                intent_id=intent.intent_id, unit_id=intent.unit_id,
+                attempt=intent.attempt, packet=intent.packet,
+                capability_source=intent.capability_source,
+            )
+            for intent in self.launch_intents()
+            if intent.executor == "persistent-task"
+        )
+
+    def register_launch(
+        self, intent: EpicLaunchIntent, *, handle: str, branch: str,
+        worktree: Path, coordinator_token: str,
+    ) -> EpicChildWorkPacket:
+        self._require_coordinator(coordinator_token)
+        expected = {item.intent_id: item for item in self.launch_intents()}
+        if intent.intent_id not in expected or expected[intent.intent_id] != intent:
+            raise EpicOrchestrationError(
+                "PW_EPIC_LAUNCH_INTENT_INVALID",
+                "Worker launch did not match a currently eligible bounded intent.",
+            )
+        run = self.state.units[intent.unit_id]
+        if intent.intent_id in self.state.used_intents or run.state != "pending":
+            raise EpicOrchestrationError(
+                "PW_EPIC_DUPLICATE_CREATION", "A child intent may launch at most one worker."
+            )
+        if not _epic_opaque_handle_valid(handle) or handle in self.state.used_handles:
+            raise EpicOrchestrationError(
+                "PW_EPIC_HANDLE_REUSE",
+                "Every delegated child requires a unique bounded opaque native handle.",
+            )
+        named_branch = bool(
+            branch.strip() and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]*", branch)
+        )
+        detached_identity = branch == f"detached@{self.state.base_commit}"
+        if not named_branch and not detached_identity:
+            raise EpicOrchestrationError(
+                "PW_EPIC_BRANCH_INVALID",
+                "Child checkout identity must be a named branch or exact detached base identity.",
+            )
+        resolved_worktree = worktree.resolve()
+        coordinator_worktree = Path(self.state.coordinator_worktree).resolve()
+        if intent.packet.isolated_worktree_required and resolved_worktree == coordinator_worktree:
+            raise EpicOrchestrationError(
+                "PW_EPIC_WORKTREE_NOT_ISOLATED", "This selected surface requires an isolated worktree."
+            )
+        for other in self.state.units.values():
+            if (
+                resolved_worktree != coordinator_worktree
+                and other.worktree
+                and Path(other.worktree).resolve() == resolved_worktree
+            ):
+                raise EpicOrchestrationError(
+                    "PW_EPIC_WORKTREE_REUSE", "Isolated child worktrees must be distinct."
+                )
+            if (
+                intent.executor == "persistent-task"
+                and named_branch
+                and other.branch == branch
+            ):
+                raise EpicOrchestrationError(
+                    "PW_EPIC_BRANCH_REUSE", "Persistent child branches must be distinct."
+                )
+        run.state = "active"
+        run.attempt = intent.attempt
+        run.intent_id = intent.intent_id
+        run.handle = handle
+        run.branch = branch
+        run.worktree = str(resolved_worktree)
+        run.base_commit = self.state.base_commit
+        run.checkpointed = False
+        run.issues = ()
+        run.executor = intent.executor
+        self.state.create_count += 1
+        self.state.used_intents.add(intent.intent_id)
+        self.state.used_handles.add(handle)
+        return intent.packet
+
+    def register_creation(
+        self, intent: PersistentTaskCreationIntent, *, handle: str, branch: str,
+        worktree: Path, coordinator_token: str,
+    ) -> EpicChildWorkPacket:
+        expected = {
+            item.intent_id: item for item in self.launch_intents()
+            if item.executor == "persistent-task"
+        }
+        launch = expected.get(intent.intent_id)
+        if launch is None or launch.packet != intent.packet:
+            raise EpicOrchestrationError(
+                "PW_EPIC_CREATION_INTENT_INVALID",
+                "Persistent task creation did not match a currently eligible bounded intent.",
+            )
+        return self.register_launch(
+            launch, handle=handle, branch=branch, worktree=worktree,
+            coordinator_token=coordinator_token,
+        )
+
+    def _descendants(self, unit_id: str) -> tuple[str, ...]:
+        pending = list(self._dependants[unit_id])
+        seen: set[str] = set()
+        while pending:
+            current = pending.pop(0)
+            if current in seen:
+                continue
+            seen.add(current)
+            pending.extend(self._dependants[current])
+        return tuple(unit.unit_id for unit in self.plan.units if unit.unit_id in seen)
+
+    def _fail(self, unit_id: str, issues: Sequence[str], *, shared: bool) -> None:
+        run = self.state.units[unit_id]
+        run.state = "failed"
+        run.issues = (
+            "PW_EPIC_SHARED_PREMISE_FAILED" if shared else "PW_EPIC_CHILD_FAILED",
+        )
+        if run.visibility_class == "ephemeral":
+            run.handle = None
+        self.state.failure_seen = True
+        if shared:
+            self.state.shared_premise_valid = False
+            for other_id, other in self.state.units.items():
+                if other_id != unit_id and other.state in {"pending", "blocked", "orphaned"}:
+                    other.state = "halted"
+        else:
+            for descendant in self._descendants(unit_id):
+                descendant_run = self.state.units[descendant]
+                blockers = set(descendant_run.blocked_by)
+                blockers.add(unit_id)
+                descendant_run.blocked_by = tuple(sorted(blockers))
+                if descendant_run.state == "pending":
+                    descendant_run.state = "blocked"
+
+    @staticmethod
+    def _normalized_paths(paths: Sequence[str]) -> tuple[str, ...]:
+        try:
+            return TaskOrchestrator._normalize_paths(paths)
+        except TaskOrchestrationError as error:
+            raise EpicOrchestrationError("PW_EPIC_DIFF_INVALID", error.message) from error
+
+    def verify_result(
+        self, result: EpicChildResult, *, observed_branch: str, observed_worktree: Path,
+        observed_base_commit: str, observed_head_commit: str,
+        observed_repositories: Sequence[str], observed_paths: Sequence[str],
+        observed_validations: Mapping[str, bool],
+        observed_evidence: Mapping[str, bool], coordinator_token: str,
+    ) -> TaskVerificationResult:
+        self._require_coordinator(coordinator_token)
+        if result.unit_id not in self.units:
+            raise EpicOrchestrationError("PW_EPIC_UNIT_UNKNOWN", f"Unknown child {result.unit_id}.")
+        run = self.state.units[result.unit_id]
+        if (
+            run.state not in {"active", "returned"} or run.handle != result.handle
+            or run.attempt != result.attempt or result.plan_fingerprint != self.state.plan_fingerprint
+        ):
+            raise EpicOrchestrationError(
+                "PW_EPIC_RESULT_UNMATCHED",
+                "Returned child result does not match the exact active attempt and native handle.",
+            )
+        if not self.state.shared_premise_valid:
+            run.state = "halted"
+            if run.visibility_class == "ephemeral":
+                run.handle = None
+            run.checkpointed = True
+            run.issues = ("PW_EPIC_SHARED_PREMISE_INVALID",)
+            return TaskVerificationResult(result.unit_id, False, "halted", run.issues, ())
+        issues: list[str] = []
+        shared_failure = False
+        try:
+            claimed = self._normalized_paths(result.claimed_paths)
+            observed = self._normalized_paths(observed_paths)
+        except EpicOrchestrationError as error:
+            claimed, observed = (), ()
+            issues.append(error.message)
+            shared_failure = True
+        if claimed != observed:
+            issues.append("Child-claimed paths do not match the coordinator-observed diff.")
+            shared_failure = True
+        identity_pairs = (
+            (result.branch, observed_branch, run.branch, "branch"),
+            (str(Path(result.worktree).resolve()), str(observed_worktree.resolve()), run.worktree, "worktree"),
+            (result.base_commit, observed_base_commit, run.base_commit, "base commit"),
+        )
+        for claimed_value, observed_value, expected_value, label in identity_pairs:
+            if claimed_value != observed_value or observed_value != expected_value:
+                issues.append(f"Child {label} identity does not match coordinator observation.")
+                shared_failure = True
+        if (
+            result.head_commit != observed_head_commit
+            or not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", observed_head_commit)
+        ):
+            issues.append("Child head commit identity is missing or does not match observation.")
+            shared_failure = True
+        duty = self.obligations[result.unit_id]
+        normalized_repositories = tuple(item.strip() for item in observed_repositories)
+        if (
+            result.repositories != normalized_repositories
+            or normalized_repositories != duty.repositories
+        ):
+            issues.append("Child repository scope does not match coordinator observation.")
+            shared_failure = True
+        if not observed:
+            issues.append("Coordinator-observed child diff is empty.")
+        outside = tuple(
+            path for path in observed
+            if not any(path == scope or path.startswith(scope + "/") for scope in duty.write_scope)
+        )
+        if outside:
+            issues.append("Out-of-scope paths: " + ", ".join(outside) + ".")
+            shared_failure = True
+        collisions = tuple(
+            path for path in observed
+            if any(
+                set(duty.repositories).intersection(
+                    self.obligations[other_id].repositories
+                )
+                and _delegation_scope_overlap(path, prior)
+                for other_id, prior_paths in self.state.verified_paths
+                for prior in prior_paths
+            )
+        )
+        if collisions:
+            issues.append("Integrated diff collision: " + ", ".join(collisions) + ".")
+            shared_failure = True
+        missing_validation = tuple(
+            item for item in duty.validations if observed_validations.get(item) is not True
+        )
+        missing_evidence = tuple(
+            item for item in duty.evidence if observed_evidence.get(item) is not True
+        )
+        if missing_validation:
+            issues.append("Required validation did not pass: " + ", ".join(missing_validation) + ".")
+        if missing_evidence:
+            issues.append("Required evidence is absent: " + ", ".join(missing_evidence) + ".")
+        mismatched_claims = tuple(
+            item for item in duty.validations
+            if result.validations.get(item) is not observed_validations.get(item)
+        ) + tuple(
+            item for item in duty.evidence
+            if result.evidence.get(item) is not observed_evidence.get(item)
+        )
+        if mismatched_claims:
+            issues.append("Child claims disagree with coordinator observations: "
+                          + ", ".join(mismatched_claims) + ".")
+        if not result.success:
+            issues.append("Child reported failure.")
+        if not result.shared_premise_valid:
+            issues.append("Child reported a shared-premise failure.")
+            shared_failure = True
+        if issues:
+            self._fail(result.unit_id, issues, shared=shared_failure)
+            return TaskVerificationResult(result.unit_id, False, "failed", tuple(issues), ())
+        run.state = "verified"
+        if run.visibility_class == "ephemeral":
+            run.handle = None
+        run.issues = ()
+        run.completion_provenance = f"coordinator:{observed_head_commit}"
+        self.state.verified_paths.append((result.unit_id, observed))
+        newly_eligible = tuple(intent.unit_id for intent in self.launch_intents())
+        return TaskVerificationResult(result.unit_id, True, "verified", (), newly_eligible)
+
+    @staticmethod
+    def _durable_reference(value: str) -> str:
+        normalized = value.strip()
+        if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/#@+-]{0,511}", normalized):
+            raise EpicOrchestrationError(
+                "PW_EPIC_DURABLE_RECEIPT_INVALID",
+                "Durable disposition and retirement receipts must be compact opaque references.",
+            )
+        return normalized
+
+    def complete_coordinator_unit(
+        self, unit_id: str, *, observed_paths: Sequence[str],
+        observed_validations: Mapping[str, bool], observed_evidence: Mapping[str, bool],
+        provenance: str, coordinator_token: str,
+    ) -> TaskVerificationResult:
+        self._require_coordinator(coordinator_token)
+        unit = self.units.get(unit_id)
+        if unit is None:
+            raise EpicOrchestrationError("PW_EPIC_UNIT_UNKNOWN", f"Unknown child {unit_id}.")
+        run = self.state.units[unit_id]
+        if unit.executor != "coordinator" or run.state != "pending" or not self._dependencies_verified(unit):
+            raise EpicOrchestrationError(
+                "PW_EPIC_COORDINATOR_EXECUTION_INVALID",
+                f"{unit_id} is not an eligible coordinator-owned unit.",
+            )
+        durable_provenance = self._durable_reference(provenance)
+        observed = self._normalized_paths(observed_paths)
+        duty = self.obligations[unit_id]
+        issues: list[str] = []
+        outside = tuple(
+            path for path in observed
+            if not any(path == scope or path.startswith(scope + "/") for scope in duty.write_scope)
+        )
+        if outside:
+            issues.append("Out-of-scope paths: " + ", ".join(outside) + ".")
+        if any(observed_validations.get(item) is not True for item in duty.validations):
+            issues.append("Required coordinator validation did not pass.")
+        if any(observed_evidence.get(item) is not True for item in duty.evidence):
+            issues.append("Required coordinator evidence is absent.")
+        if issues:
+            self._fail(unit_id, issues, shared=bool(outside))
+            return TaskVerificationResult(unit_id, False, "failed", tuple(issues), ())
+        run.state = "verified"
+        run.completion_provenance = durable_provenance
+        self.state.verified_paths.append((unit_id, observed))
+        return TaskVerificationResult(
+            unit_id, True, "verified", (),
+            tuple(intent.unit_id for intent in self.launch_intents()),
+        )
+
+    def record_durable_disposition(
+        self, unit_id: str, *, kind: str, receipt: str, coordinator_token: str,
+    ) -> tuple[str, ...]:
+        self._require_coordinator(coordinator_token)
+        run = self.state.units.get(unit_id)
+        if run is None:
+            raise EpicOrchestrationError("PW_EPIC_UNIT_UNKNOWN", f"Unknown child {unit_id}.")
+        if run.state != "verified":
+            raise EpicOrchestrationError(
+                "PW_EPIC_DISPOSITION_UNVERIFIED",
+                "Durable disposition requires an exactly coordinator-verified result.",
+            )
+        if kind not in {"integrated", "no-integration"}:
+            raise EpicOrchestrationError(
+                "PW_EPIC_DISPOSITION_INVALID", "Disposition must be integrated or no-integration."
+            )
+        normalized = self._durable_reference(receipt)
+        if run.disposition_state != "pending":
+            if run.disposition_state == kind and run.disposition_receipt == normalized:
+                return tuple(intent.unit_id for intent in self.launch_intents())
+            raise EpicOrchestrationError(
+                "PW_EPIC_DISPOSITION_CONFLICT", "Durable disposition cannot be rewritten."
+            )
+        run.disposition_state = kind
+        run.disposition_receipt = normalized
+        return tuple(intent.unit_id for intent in self.launch_intents())
+
+    def retain_visible_task(
+        self, unit_id: str, *, reason: str, coordinator_token: str,
+        owner_promoted: bool = False, attention_reasons: Sequence[str] = (),
+    ) -> None:
+        self._require_coordinator(coordinator_token)
+        run = self.state.units.get(unit_id)
+        if run is None:
+            raise EpicOrchestrationError("PW_EPIC_UNIT_UNKNOWN", f"Unknown child {unit_id}.")
+        if run.visibility_class == "ephemeral":
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETENTION_NOT_VISIBLE", f"{unit_id} has no visible task to retain."
+            )
+        normalized_reason = reason.strip().lower().replace("_", "-")
+        normalized_attention = tuple(
+            item.strip().lower().replace("_", "-") for item in attention_reasons
+        )
+        if not re.fullmatch(r"[a-z][a-z0-9-]{0,63}", normalized_reason) or any(
+            not re.fullmatch(r"[a-z][a-z0-9-]{0,63}", item)
+            for item in normalized_attention
+        ):
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETENTION_REASON_INVALID", "Retention reasons must be stable reason codes."
+            )
+        run.explicit_retain_reason = normalized_reason
+        run.owner_promoted = owner_promoted
+        run.attention_reasons = tuple(dict.fromkeys(normalized_attention))
+        run.retirement_state = "retained"
+
+    def _retirement_reasons(self, unit_id: str) -> tuple[str, ...]:
+        run = self.state.units[unit_id]
+        reasons: list[str] = []
+        if run.visibility_class != "visible-retirable":
+            reasons.append("task is not classified as visible-retirable")
+        if run.retention_policy != "retire-on-verified":
+            reasons.append("retention policy is not retire-on-verified")
+        if run.state != "verified":
+            reasons.append(f"execution state is {run.state}, not verified")
+        if run.disposition_state not in {"integrated", "no-integration"}:
+            reasons.append("durable disposition is not recorded")
+        if run.handle is None:
+            reasons.append("exact visible task handle is unavailable")
+        if run.attention_reasons:
+            reasons.append("owner attention remains: " + ", ".join(run.attention_reasons))
+        if run.owner_promoted:
+            reasons.append("task was owner-promoted")
+        if run.explicit_retain_reason:
+            reasons.append("task is explicitly retained: " + run.explicit_retain_reason)
+        required = {"task-retirement", "task-retirement-reconciliation"}
+        if not required.issubset(self.plan.observed_capabilities):
+            reasons.append("immutable plan lacks verified retirement capability")
+        if self.plan.capability_source.strip() != self.capabilities.source.strip():
+            reasons.append("runtime capability source does not match the immutable plan")
+        if not required.issubset(self.capabilities.verified_capabilities):
+            reasons.append("current runtime lacks verified retirement capability")
+        if run.retirement_state in {"confirmed", "failed", "unknown", "retained"}:
+            reasons.append(f"retirement state is {run.retirement_state}")
+        return tuple(reasons)
+
+    def retirement_intents(self) -> tuple[EpicRetirementIntent, ...]:
+        intents: list[EpicRetirementIntent] = []
+        for unit in self.plan.units:
+            run = self.state.units[unit.unit_id]
+            if self._retirement_reasons(unit.unit_id):
+                continue
+            assert run.handle is not None
+            intent_id = run.retirement_intent_id or hashlib.sha256(
+                (
+                    f"{self.state.plan_fingerprint}:{unit.unit_id}:{run.attempt}:"
+                    f"{run.handle}:retire"
+                ).encode("utf-8")
+            ).hexdigest()
+            intents.append(
+                EpicRetirementIntent(
+                    intent_id=intent_id, unit_id=unit.unit_id, attempt=run.attempt,
+                    handle=run.handle, capability_source=self.capabilities.source,
+                )
+            )
+        return tuple(intents)
+
+    def register_retirement_requested(
+        self, intent: EpicRetirementIntent, *, coordinator_token: str,
+    ) -> None:
+        self._require_coordinator(coordinator_token)
+        expected = {item.intent_id: item for item in self.retirement_intents()}
+        if expected.get(intent.intent_id) != intent:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETIREMENT_INTENT_INVALID",
+                "Retirement request does not match one currently eligible exact task handle.",
+            )
+        run = self.state.units[intent.unit_id]
+        if run.retirement_intent_id not in {None, intent.intent_id}:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETIREMENT_CONFLICT", "A visible task cannot receive a second intent."
+            )
+        run.retirement_intent_id = intent.intent_id
+        run.retirement_state = "requested"
+
+    def register_retirement_outcome(
+        self, intent: EpicRetirementIntent, *, observed_handle: str, outcome: str,
+        acknowledgement: str, coordinator_token: str,
+    ) -> None:
+        self._require_coordinator(coordinator_token)
+        run = self.state.units.get(intent.unit_id)
+        if run is None or run.retirement_intent_id != intent.intent_id:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETIREMENT_RESULT_UNMATCHED", "Retirement result has no exact request."
+            )
+        if observed_handle != intent.handle or observed_handle != run.handle:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETIREMENT_RESULT_UNMATCHED", "Retirement result handle does not match."
+            )
+        if outcome not in {"confirmed", "failed", "unknown"}:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETIREMENT_RESULT_INVALID", "Unknown retirement outcome."
+            )
+        normalized = self._durable_reference(acknowledgement)
+        if run.retirement_state == "confirmed":
+            if outcome == "confirmed" and run.retirement_ack == normalized:
+                return
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETIREMENT_CONFLICT", "Confirmed retirement cannot be rewritten."
+            )
+        if run.retirement_state not in {"requested", "unknown", "failed"}:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETIREMENT_RESULT_UNMATCHED", "Retirement result is out of sequence."
+            )
+        run.retirement_state = outcome
+        run.retirement_ack = normalized
+
+    def retry_retirement(self, unit_id: str, *, coordinator_token: str) -> None:
+        self._require_coordinator(coordinator_token)
+        run = self.state.units.get(unit_id)
+        if run is None:
+            raise EpicOrchestrationError("PW_EPIC_UNIT_UNKNOWN", f"Unknown child {unit_id}.")
+        if run.retirement_state not in {"failed", "unknown"} or not run.retirement_intent_id:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETIREMENT_RETRY_INVALID", f"{unit_id} has no retryable retirement."
+            )
+        run.retirement_state = "pending"
+        run.retirement_ack = None
+
+    def reconcile_retirements(
+        self, observations: Mapping[str, Mapping[str, object]], *, coordinator_token: str,
+    ) -> None:
+        self._require_coordinator(coordinator_token)
+        for unit_id, run in self.state.units.items():
+            if run.retirement_state not in {"requested", "unknown"}:
+                continue
+            observed = observations.get(unit_id)
+            exact = bool(
+                observed
+                and observed.get("intent_id") == run.retirement_intent_id
+                and observed.get("handle") == run.handle
+            )
+            observed_state = observed.get("state") if observed else None
+            if exact and observed_state in {"retired", "archived", "confirmed"}:
+                acknowledgement = self._durable_reference(
+                    str(observed.get("acknowledgement", "host-observed-retired"))
+                )
+                run.retirement_state = "confirmed"
+                run.retirement_ack = acknowledgement
+            elif exact and observed_state == "visible":
+                run.retirement_state = "requested"
+                run.retirement_ack = None
+            else:
+                run.retirement_state = "unknown"
+                run.retirement_ack = None
+
+    def checkpoint(self, unit_id: str, *, coordinator_token: str) -> None:
+        self._require_coordinator(coordinator_token)
+        run = self.state.units.get(unit_id)
+        if run is None or run.state not in {"active", "returned"}:
+            raise EpicOrchestrationError("PW_EPIC_CHECKPOINT_INVALID", f"{unit_id} is not in flight.")
+        run.checkpointed = True
+        if not self.state.shared_premise_valid:
+            run.state = "halted"
+            if run.visibility_class == "ephemeral":
+                run.handle = None
+
+    def reconcile(
+        self, observations: Mapping[str, Mapping[str, object]], *, coordinator_token: str
+    ) -> None:
+        self._require_coordinator(coordinator_token)
+        active = [run for run in self.state.units.values() if run.state in {"active", "returned"}]
+        persistent_active = [run for run in active if run.executor == "persistent-task"]
+        if persistent_active and not self.capability_boundary()["resume_supported"]:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RECONCILIATION_UNVERIFIED",
+                "Resume requires current-session monitoring and reconciliation support.",
+            )
+        for unit in self.plan.units:
+            run = self.state.units[unit.unit_id]
+            if unit.canonical_state == "complete":
+                run.state = "verified"
+                if run.visibility_class == "ephemeral":
+                    run.handle = None
+                run.completion_provenance = (
+                    f"canonical:{self.plan.target.source_path}#{self.plan.target.source_hash}"
+                )
+                if run.attempt == 0:
+                    run.disposition_state = "integrated"
+                    run.disposition_receipt = f"canonical:{self.plan.target.source_hash}"
+                continue
+            if run.state not in {"active", "returned"}:
+                continue
+            observed = observations.get(unit.unit_id)
+            exact = bool(
+                observed
+                and observed.get("handle") == run.handle
+                and observed.get("attempt") == run.attempt
+                and observed.get("branch") == run.branch
+                and str(Path(str(observed.get("worktree", ""))).resolve()) == run.worktree
+            )
+            state = observed.get("state") if observed else None
+            if exact and state == "active":
+                run.state = "active"
+            elif exact and state in {"complete", "completed"}:
+                run.state = "returned"
+            elif exact and state == "failed":
+                self._fail(unit.unit_id, ("Observed persistent child failure.",), shared=False)
+            else:
+                run.state = "orphaned"
+                if run.visibility_class == "ephemeral":
+                    run.handle = None
+                run.issues = ("PW_EPIC_HANDLE_ORPHANED",)
+
+    def retry(self, unit_id: str, *, coordinator_token: str) -> None:
+        self._require_coordinator(coordinator_token)
+        run = self.state.units.get(unit_id)
+        if run is None:
+            raise EpicOrchestrationError("PW_EPIC_UNIT_UNKNOWN", f"Unknown child {unit_id}.")
+        if run.state not in {"failed", "orphaned"}:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RETRY_INVALID", f"{unit_id} is not failed or orphaned."
+            )
+        if not self.state.shared_premise_valid:
+            raise EpicOrchestrationError(
+                "PW_EPIC_SHARED_PREMISE_INVALID", "A halted Epic run cannot retry in place."
+            )
+        if run.handle is not None and run.visibility_class != "ephemeral":
+            run.prior_handles = (*run.prior_handles, run.handle)
+        run.state = "pending"
+        run.intent_id = None
+        run.handle = None
+        run.branch = None
+        run.worktree = None
+        run.base_commit = None
+        run.issues = ()
+        run.disposition_state = "pending"
+        run.disposition_receipt = None
+        run.retirement_intent_id = None
+        run.retirement_ack = None
+        run.retirement_state = (
+            "pending" if run.visibility_class == "visible-retirable"
+            else "retained" if run.visibility_class == "visible-retained"
+            else "not-applicable"
+        )
+        for descendant in self._descendants(unit_id):
+            descendant_run = self.state.units[descendant]
+            descendant_run.blocked_by = tuple(
+                blocker for blocker in descendant_run.blocked_by if blocker != unit_id
+            )
+            if descendant_run.state == "blocked" and not descendant_run.blocked_by:
+                descendant_run.state = "pending"
+
+    def persist(self, root: Path, *, coordinator_token: str) -> Path:
+        self._require_coordinator(coordinator_token)
+        stored = _load_delegation_runtime_state(root, self.plan.target.target_id)
+        if stored is None:
+            stored = initialize_delegation_runtime_state(root, self.plan)
+        if (
+            stored.get("target_id") != self.plan.target.target_id
+            or stored.get("target_kind") != self.plan.target.kind
+            or Path(str(stored.get("worktree", ""))).resolve() != root.resolve()
+        ):
+            raise EpicOrchestrationError(
+                "PW_EPIC_RUNTIME_TARGET_MISMATCH",
+                "Persisted Epic runtime target or coordinator worktree does not match.",
+            )
+        if "epic_orchestration" in stored:
+            previous = _epic_orchestration_state_from_payload(stored["epic_orchestration"])
+            accepted_fingerprints = {self.state.plan_fingerprint}
+            if previous.migrated_from_version == 1:
+                accepted_fingerprints.add(
+                    _epic_execution_fingerprint_v1(
+                        self.plan, self.obligations, previous.base_commit
+                    )
+                )
+            if previous.plan_fingerprint not in accepted_fingerprints:
+                raise EpicOrchestrationError(
+                    "PW_EPIC_RUNTIME_PLAN_MISMATCH",
+                    "Persisted Epic runtime belongs to different approved metadata.",
+                )
+        stored["plan_fingerprint"] = _delegation_plan_fingerprint(self.plan)
+        stored["epic_orchestration"] = _epic_orchestration_state_payload(self.state)
+        projected = stored.get("units")
+        assert isinstance(projected, dict)
+        for unit_id, run in self.state.units.items():
+            projected[unit_id] = {
+                "state": (
+                    "complete" if run.state == "verified" else
+                    "active" if run.state in {"active", "returned"} else
+                    "orphaned" if run.state == "orphaned" else
+                    "blocked" if run.state in {"failed", "blocked", "halted"} else "pending"
+                ),
+                "handle": None,
+            }
+        _write_delegation_runtime_state(root, self.plan, stored)
+        return _delegation_runtime_path(root, self.state.target_id)
+
+    @classmethod
+    def resume(
+        cls, *, root: Path, plan: DelegationPlan,
+        obligations: Mapping[str, EpicChildObligations], capabilities: EpicHostCapabilities,
+        coordinator_token: str, observations: Mapping[str, Mapping[str, object]],
+        retirement_observations: Mapping[str, Mapping[str, object]] | None = None,
+    ) -> EpicOrchestrator:
+        stored = _load_delegation_runtime_state(root, plan.target.target_id)
+        if stored is None or "epic_orchestration" not in stored:
+            raise EpicOrchestrationError(
+                "PW_EPIC_RUNTIME_MISSING", "No persisted Epic orchestration state exists."
+            )
+        restored = _epic_orchestration_state_from_payload(stored["epic_orchestration"])
+        supplied_root = root.resolve()
+        if (
+            stored.get("target_id") != plan.target.target_id
+            or stored.get("target_kind") != plan.target.kind
+            or Path(str(stored.get("worktree", ""))).resolve() != supplied_root
+            or Path(restored.coordinator_worktree).resolve() != supplied_root
+        ):
+            raise EpicOrchestrationError(
+                "PW_EPIC_RUNTIME_TARGET_MISMATCH",
+                "Persisted Epic runtime target, plan, or coordinator worktree does not match.",
+            )
+        instance = cls(
+            plan=plan, obligations=obligations, capabilities=capabilities,
+            coordinator_token=coordinator_token,
+            coordinator_worktree=supplied_root,
+            base_commit=restored.base_commit,
+        )
+        accepted_fingerprints = {instance.state.plan_fingerprint}
+        if restored.migrated_from_version == 1:
+            accepted_fingerprints.add(
+                _epic_execution_fingerprint_v1(plan, obligations, restored.base_commit)
+            )
+        if (
+            restored.target_id != plan.target.target_id
+            or restored.plan_fingerprint not in accepted_fingerprints
+            or restored.coordinator_hash != instance.state.coordinator_hash
+            or set(restored.units) != set(instance.units)
+        ):
+            raise EpicOrchestrationError(
+                "PW_EPIC_RUNTIME_PLAN_MISMATCH",
+                "Persisted Epic runtime does not match the plan, units, or coordinator.",
+            )
+        restored.plan_fingerprint = instance.state.plan_fingerprint
+        restored.migrated_from_version = None
+        instance.state = restored
+        instance.reconcile(observations, coordinator_token=coordinator_token)
+        if retirement_observations is not None:
+            instance.reconcile_retirements(
+                retirement_observations, coordinator_token=coordinator_token
+            )
+        return instance
+
+    def assert_child_completion_observed(
+        self, unit_id: str, *, canonical_lifecycle: str, qa_passed: bool
+    ) -> None:
+        if unit_id not in self.units:
+            raise EpicOrchestrationError("PW_EPIC_UNIT_UNKNOWN", f"Unknown child {unit_id}.")
+        if canonical_lifecycle != "Complete" or not qa_passed:
+            raise EpicOrchestrationError(
+                "PW_EPIC_CHILD_COMPLETION_GATED",
+                "Delegate verification cannot replace the child QA/Review and Complete gates.",
+            )
+
+    def assert_parent_closeout_allowed(
+        self, *, children_complete: bool, parent_audit_passed: bool,
+        deferrals_resolved: bool, retro_complete: bool, owner_completion_authority: bool,
+    ) -> None:
+        missing = []
+        if not children_complete:
+            missing.append("child completion")
+        if not parent_audit_passed:
+            missing.append("parent acceptance audit")
+        if not deferrals_resolved:
+            missing.append("deferral decisions")
+        if not retro_complete:
+            missing.append("Epic retro")
+        if not owner_completion_authority:
+            missing.append("owner completion authority")
+        if missing:
+            raise EpicOrchestrationError(
+                "PW_EPIC_CLOSEOUT_GATED",
+                "Delegate cannot certify Epic closeout; missing: " + ", ".join(missing) + ".",
+            )
+
+    def summary(self) -> dict[str, object]:
+        groups = {
+            "verified": [], "failed": [], "blocked": [], "halted": [],
+            "in_flight": [], "orphaned": [], "unaffected": [],
+        }
+        for unit in self.plan.units:
+            state = self.state.units[unit.unit_id].state
+            if state in {"active", "returned"}:
+                groups["in_flight"].append(unit.unit_id)
+            elif state in groups:
+                groups[state].append(unit.unit_id)
+            elif self.state.failure_seen and self.state.shared_premise_valid:
+                groups["unaffected"].append(unit.unit_id)
+        intents, eligibility_reasons = self._launch_evaluation()
+        eligible_ids = {intent.unit_id for intent in intents}
+        retirement_intents = self.retirement_intents()
+        retirement_ids = {intent.unit_id for intent in retirement_intents}
+        return {
+            "schema_version": 2, "target_id": self.state.target_id,
+            "shared_premise_valid": self.state.shared_premise_valid,
+            "create_count": self.state.create_count,
+            "capability_boundary": self.capability_boundary(),
+            "eligible_creation_intents": [intent.unit_id for intent in intents],
+            "creation_eligibility": {
+                unit.unit_id: {
+                    "eligible": unit.unit_id in eligible_ids,
+                    "reasons": list(eligibility_reasons.get(unit.unit_id, ())),
+                }
+                for unit in self.plan.units
+                if self.state.units[unit.unit_id].state == "pending"
+            },
+            "retirement_intents": [intent.unit_id for intent in retirement_intents],
+            "lifecycle": {
+                unit.unit_id: {
+                    "executor": self.state.units[unit.unit_id].executor,
+                    "visibility_class": self.state.units[unit.unit_id].visibility_class,
+                    "retention_policy": self.state.units[unit.unit_id].retention_policy,
+                    "disposition_state": self.state.units[unit.unit_id].disposition_state,
+                    "retirement_state": self.state.units[unit.unit_id].retirement_state,
+                    "retirement_eligible": unit.unit_id in retirement_ids,
+                    "retention_reasons": list(self._retirement_reasons(unit.unit_id)),
+                    "prior_visible_handles": len(self.state.units[unit.unit_id].prior_handles),
+                }
+                for unit in self.plan.units
+            },
+            **groups,
+        }
+
+
+# Public host-neutral name. EpicOrchestrator remains as a compatibility spelling
+# for existing integrations and schema-v1 runtime payloads.
+DelegationSurfaceOrchestrator = EpicOrchestrator
+
+
+def _operational_status_choices(
+    entries: tuple[tuple[str, tuple[str, ...]], ...],
+    key: str,
+) -> tuple[str, ...]:
+    for entry_key, values in entries:
+        if entry_key == key:
+            return values
+    return ()
+
+
+def _require_operational_status_text(label: str, value: str) -> None:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"Operational status {label} must be non-empty text.")
+
+
+def _require_operational_status_choice(
+    label: str,
+    value: str,
+    choices: tuple[str, ...],
+) -> None:
+    if value not in choices:
+        raise ValueError(
+            f"Unknown operational status {label}: {value}. "
+            f"Allowed: {', '.join(choices)}."
+        )
+
+
+def _require_operational_status_sources(
+    label: str,
+    sources: tuple[OperationalStatusSource, ...],
+    *,
+    allow_empty: bool,
+) -> None:
+    if not isinstance(sources, tuple):
+        raise ValueError(f"Operational status {label} sources must be a tuple.")
+    if not allow_empty and not sources:
+        raise ValueError(f"Operational status {label} sources must be a non-empty tuple.")
+    if any(not isinstance(source, OperationalStatusSource) for source in sources):
+        raise ValueError(
+            f"Operational status {label} sources must contain OperationalStatusSource records."
+        )
+
+
+@dataclass(frozen=True)
+class OperationalStatusSource:
+    kind: str
+    artifact: str
+    detail: str = ""
+
+    def __post_init__(self) -> None:
+        _require_operational_status_choice(
+            "source kind", self.kind, OPERATIONAL_STATUS_SOURCE_KINDS
+        )
+        _require_operational_status_text("source artifact", self.artifact)
+        if not isinstance(self.detail, str):
+            raise ValueError("Operational status source detail must be text.")
+
+
+@dataclass(frozen=True)
+class OperationalStatusFact:
+    key: str
+    value: str | int | bool | None | tuple[str, ...]
+
+    def __post_init__(self) -> None:
+        if not re.fullmatch(r"[a-z][a-z0-9_]*", self.key):
+            raise ValueError(f"Invalid operational status fact key: {self.key}")
+        if isinstance(self.value, str) and not self.value.strip():
+            raise ValueError("Operational status string fact values must be non-empty.")
+        if isinstance(self.value, tuple) and any(
+            not isinstance(entry, str) or not entry.strip() for entry in self.value
+        ):
+            raise ValueError(
+                "Operational status tuple fact values must contain non-empty strings."
+            )
+        if not isinstance(self.value, (str, int, bool, tuple)) and self.value is not None:
+            raise ValueError(
+                "Operational status fact values must be text, integer, boolean, "
+                "a string tuple, or None."
+            )
+
+
+@dataclass(frozen=True)
+class OperationalStatusValue:
+    dimension: str
+    state: str
+    summary: str
+    sources: tuple[OperationalStatusSource, ...] = ()
+    facts: tuple[OperationalStatusFact, ...] = ()
+
+    def __post_init__(self) -> None:
+        allowed_states = _operational_status_choices(
+            OPERATIONAL_STATUS_DIMENSION_STATES, self.dimension
+        )
+        if not allowed_states:
+            dimensions = tuple(key for key, _values in OPERATIONAL_STATUS_DIMENSION_STATES)
+            _require_operational_status_choice("dimension", self.dimension, dimensions)
+        _require_operational_status_choice(
+            f"{self.dimension} state", self.state, allowed_states
+        )
+        _require_operational_status_text("state summary", self.summary)
+        _require_operational_status_sources("value", self.sources, allow_empty=True)
+        if not isinstance(self.facts, tuple) or any(
+            not isinstance(fact, OperationalStatusFact) for fact in self.facts
+        ):
+            raise ValueError(
+                "Operational status value facts must be a tuple of OperationalStatusFact records."
+            )
+        fact_keys = [fact.key for fact in self.facts]
+        if len(fact_keys) != len(set(fact_keys)):
+            raise ValueError("Operational status value fact keys must be unique.")
+
+
+@dataclass(frozen=True)
+class OperationalStatusRepository:
+    repository_id: str
+    path: str
+    role: str
+    authority: bool
+    git: OperationalStatusValue
+    evidence: tuple[OperationalStatusFact, ...] = ()
+    sources: tuple[OperationalStatusSource, ...] = ()
+
+    def __post_init__(self) -> None:
+        if not re.fullmatch(r"[a-z][a-z0-9-]*", self.repository_id):
+            raise ValueError("Operational status repository ID must be a lowercase slug.")
+        _require_operational_status_text("repository path", self.path)
+        _require_operational_status_choice(
+            "repository role", self.role, ("control", "implementation")
+        )
+        if not isinstance(self.authority, bool):
+            raise ValueError("Operational status repository authority must be boolean.")
+        if not isinstance(self.git, OperationalStatusValue) or self.git.dimension != "git":
+            raise ValueError("Operational status repository Git state is invalid.")
+        if not isinstance(self.evidence, tuple) or any(
+            not isinstance(fact, OperationalStatusFact) for fact in self.evidence
+        ):
+            raise ValueError("Operational status repository evidence is invalid.")
+        _require_operational_status_sources(
+            "repository evidence", self.sources, allow_empty=True
+        )
+
+
+@dataclass(frozen=True)
+class OperationalStatusProofLayer:
+    name: str
+    state: str
+    summary: str
+    sources: tuple[OperationalStatusSource, ...]
+
+    def __post_init__(self) -> None:
+        _require_operational_status_choice(
+            "proof layer name", self.name, OPERATIONAL_STATUS_PROOF_LAYER_NAMES
+        )
+        _require_operational_status_choice(
+            "proof layer state", self.state, OPERATIONAL_STATUS_PROOF_LAYER_STATES
+        )
+        _require_operational_status_text("proof layer summary", self.summary)
+        _require_operational_status_sources("proof layer", self.sources, allow_empty=False)
+
+
+@dataclass(frozen=True)
+class OperationalStatusWorkItem:
+    item_id: str
+    title: str
+    kind: str
+    lifecycle: str
+    operational_meaning: str
+    sources: tuple[OperationalStatusSource, ...]
+    facts: tuple[OperationalStatusFact, ...] = ()
+    proof_layers: tuple[OperationalStatusProofLayer, ...] = ()
+    delivery: Optional[OperationalStatusValue] = None
+
+    def __post_init__(self) -> None:
+        _require_operational_status_text("work item ID", self.item_id)
+        _require_operational_status_text("work item title", self.title)
+        _require_operational_status_choice(
+            "work item kind", self.kind, OPERATIONAL_STATUS_WORK_ITEM_KINDS
+        )
+        _require_operational_status_text("work item lifecycle", self.lifecycle)
+        _require_operational_status_text(
+            "work item operational meaning", self.operational_meaning
+        )
+        _require_operational_status_sources("work item", self.sources, allow_empty=False)
+        if not isinstance(self.facts, tuple) or any(
+            not isinstance(fact, OperationalStatusFact) for fact in self.facts
+        ):
+            raise ValueError("Operational status work item facts contain an invalid record.")
+        fact_keys = [fact.key for fact in self.facts]
+        if len(fact_keys) != len(set(fact_keys)):
+            raise ValueError("Operational status work item fact keys must be unique.")
+        if not isinstance(self.proof_layers, tuple) or any(
+            not isinstance(layer, OperationalStatusProofLayer) for layer in self.proof_layers
+        ):
+            raise ValueError("Operational status work item proof layers contain an invalid record.")
+        layer_names = [layer.name for layer in self.proof_layers]
+        if len(layer_names) != len(set(layer_names)):
+            raise ValueError("Operational status work item proof layer names must be unique.")
+        if self.delivery is not None:
+            if not isinstance(self.delivery, OperationalStatusValue):
+                raise ValueError("Operational status work item delivery must be a status value.")
+            if self.delivery.dimension != "delivery":
+                raise ValueError("Operational status work item delivery has the wrong dimension.")
+
+
+@dataclass(frozen=True)
+class OperationalStatusFinding:
+    code: str
+    severity: str
+    message: str
+    sources: tuple[OperationalStatusSource, ...]
+
+    def __post_init__(self) -> None:
+        if not re.fullmatch(r"PW_[A-Z0-9_]+", self.code):
+            raise ValueError(f"Invalid operational status finding code: {self.code}")
+        _require_operational_status_choice(
+            "finding severity", self.severity, OPERATIONAL_STATUS_FINDING_SEVERITIES
+        )
+        _require_operational_status_text("finding message", self.message)
+        _require_operational_status_sources("finding", self.sources, allow_empty=False)
+
+
+@dataclass(frozen=True)
+class OperationalStatusAction:
+    code: str
+    title: str
+    responsible_party: str
+    reason: str
+    sources: tuple[OperationalStatusSource, ...]
+    command: Optional[str] = None
+    request: Optional[str] = None
+
+    def __post_init__(self) -> None:
+        if not re.fullmatch(r"PW_STATUS_[A-Z0-9_]+", self.code):
+            raise ValueError(f"Invalid operational status action code: {self.code}")
+        _require_operational_status_text("action title", self.title)
+        _require_operational_status_choice(
+            "responsible party",
+            self.responsible_party,
+            OPERATIONAL_STATUS_RESPONSIBLE_PARTIES,
+        )
+        _require_operational_status_text("action reason", self.reason)
+        _require_operational_status_sources("action", self.sources, allow_empty=False)
+        if self.command is not None and not isinstance(self.command, str):
+            raise ValueError("Operational status action command must be text or None.")
+        if self.request is not None and not isinstance(self.request, str):
+            raise ValueError("Operational status action request must be text or None.")
+        if isinstance(self.command, str) and not self.command.strip():
+            raise ValueError("Operational status action command must be non-empty text or None.")
+        if isinstance(self.request, str) and not self.request.strip():
+            raise ValueError("Operational status action request must be non-empty text or None.")
+        has_command = self.command is not None
+        has_request = self.request is not None
+        if has_command == has_request:
+            raise ValueError(
+                "Operational status action must define exactly one non-empty command or request."
+            )
+
+
+@dataclass(frozen=True)
+class _OperationalStatusActionCandidate:
+    precedence: str
+    work_order: int
+    item_id: str
+    action: OperationalStatusAction
+
+    def __post_init__(self) -> None:
+        _require_operational_status_choice(
+            "action precedence", self.precedence, OPERATIONAL_STATUS_ACTION_PRECEDENCE
+        )
+        if self.work_order < 0:
+            raise ValueError("Operational status action work order cannot be negative.")
+        if not isinstance(self.item_id, str):
+            raise ValueError("Operational status action item ID must be text.")
+
+
+@dataclass(frozen=True)
+class OperationalStatusSnapshot:
+    root: str
+    installation: OperationalStatusValue
+    git: OperationalStatusValue
+    health: OperationalStatusValue
+    proof: OperationalStatusValue
+    delivery: OperationalStatusValue
+    active_work: tuple[OperationalStatusWorkItem, ...] = ()
+    findings: tuple[OperationalStatusFinding, ...] = ()
+    blockers: tuple[OperationalStatusFinding, ...] = ()
+    primary_action: Optional[OperationalStatusAction] = None
+    secondary_actions: tuple[OperationalStatusAction, ...] = ()
+    workspace_authority: Optional[str] = None
+    repositories: tuple[OperationalStatusRepository, ...] = ()
+
+    def __post_init__(self) -> None:
+        _require_operational_status_text("root", self.root)
+        expected_dimensions = (
+            ("installation", self.installation),
+            ("git", self.git),
+            ("health", self.health),
+            ("proof", self.proof),
+            ("delivery", self.delivery),
+        )
+        for expected, value in expected_dimensions:
+            if not isinstance(value, OperationalStatusValue):
+                raise ValueError(
+                    f"Operational status snapshot field '{expected}' must be an "
+                    "OperationalStatusValue."
+                )
+            if value.dimension != expected:
+                raise ValueError(
+                    f"Operational status snapshot field '{expected}' received "
+                    f"dimension '{value.dimension}'."
+                )
+        tuple_fields = (
+            ("active work", self.active_work),
+            ("findings", self.findings),
+            ("blockers", self.blockers),
+            ("secondary actions", self.secondary_actions),
+            ("repositories", self.repositories),
+        )
+        for label, value in tuple_fields:
+            if not isinstance(value, tuple):
+                raise ValueError(f"Operational status snapshot {label} must be a tuple.")
+        expected_types = (
+            ("active work", self.active_work, OperationalStatusWorkItem),
+            ("findings", self.findings, OperationalStatusFinding),
+            ("blockers", self.blockers, OperationalStatusFinding),
+            ("secondary actions", self.secondary_actions, OperationalStatusAction),
+            ("repositories", self.repositories, OperationalStatusRepository),
+        )
+        for label, values, expected_type in expected_types:
+            if any(not isinstance(value, expected_type) for value in values):
+                raise ValueError(
+                    f"Operational status snapshot {label} contains an invalid record."
+                )
+        if self.primary_action is not None and not isinstance(
+            self.primary_action, OperationalStatusAction
+        ):
+            raise ValueError(
+                "Operational status snapshot primary action must be an "
+                "OperationalStatusAction or None."
+            )
+
+
+@dataclass(frozen=True)
+class OperationalStatusInspection:
+    installation: OperationalStatusValue
+    git: OperationalStatusValue
+    active_work: tuple[OperationalStatusWorkItem, ...]
+    findings: tuple[OperationalStatusFinding, ...]
+    workspace_authority: Optional[str] = None
+    repositories: tuple[OperationalStatusRepository, ...] = ()
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.installation, OperationalStatusValue):
+            raise ValueError("Operational inspection installation must be a status value.")
+        if self.installation.dimension != "installation":
+            raise ValueError("Operational inspection installation has the wrong dimension.")
+        if not isinstance(self.git, OperationalStatusValue):
+            raise ValueError("Operational inspection Git state must be a status value.")
+        if self.git.dimension != "git":
+            raise ValueError("Operational inspection Git state has the wrong dimension.")
+        if not isinstance(self.active_work, tuple) or any(
+            not isinstance(item, OperationalStatusWorkItem) for item in self.active_work
+        ):
+            raise ValueError("Operational inspection active work contains an invalid record.")
+        if not isinstance(self.findings, tuple) or any(
+            not isinstance(finding, OperationalStatusFinding) for finding in self.findings
+        ):
+            raise ValueError("Operational inspection findings contain an invalid record.")
+        if self.workspace_authority is not None:
+            _require_operational_status_text(
+                "inspection workspace authority", self.workspace_authority
+            )
+        if not isinstance(self.repositories, tuple) or any(
+            not isinstance(repository, OperationalStatusRepository)
+            for repository in self.repositories
+        ):
+            raise ValueError("Operational inspection repositories contain an invalid record.")
+
+
+def _operational_status_source_payload(source: OperationalStatusSource) -> dict[str, str]:
+    return {
+        "kind": source.kind,
+        "artifact": source.artifact,
+        "detail": source.detail,
+    }
+
+
+def _operational_status_value_payload(value: OperationalStatusValue) -> dict[str, object]:
+    return {
+        "state": value.state,
+        "summary": value.summary,
+        "sources": [_operational_status_source_payload(source) for source in value.sources],
+        "facts": [
+            {
+                "key": fact.key,
+                "value": list(fact.value) if isinstance(fact.value, tuple) else fact.value,
+            }
+            for fact in value.facts
+        ],
+    }
+
+
+def _operational_status_repository_payload(
+    repository: OperationalStatusRepository,
+) -> dict[str, object]:
+    return {
+        "id": repository.repository_id,
+        "path": repository.path,
+        "role": repository.role,
+        "authority": repository.authority,
+        "git": _operational_status_value_payload(repository.git),
+        "evidence": [
+            {
+                "key": fact.key,
+                "value": list(fact.value) if isinstance(fact.value, tuple) else fact.value,
+            }
+            for fact in repository.evidence
+        ],
+        "sources": [
+            _operational_status_source_payload(source) for source in repository.sources
+        ],
+    }
+
+
+def _operational_status_work_item_payload(
+    work_item: OperationalStatusWorkItem,
+) -> dict[str, object]:
+    return {
+        "id": work_item.item_id,
+        "title": work_item.title,
+        "kind": work_item.kind,
+        "lifecycle": work_item.lifecycle,
+        "operational_meaning": work_item.operational_meaning,
+        "sources": [
+            _operational_status_source_payload(source) for source in work_item.sources
+        ],
+        "facts": [
+            {
+                "key": fact.key,
+                "value": list(fact.value) if isinstance(fact.value, tuple) else fact.value,
+            }
+            for fact in work_item.facts
+        ],
+        "proof_layers": [
+            {
+                "name": layer.name,
+                "state": layer.state,
+                "summary": layer.summary,
+                "sources": [
+                    _operational_status_source_payload(source) for source in layer.sources
+                ],
+            }
+            for layer in work_item.proof_layers
+        ],
+        "delivery": (
+            _operational_status_value_payload(work_item.delivery)
+            if work_item.delivery is not None
+            else None
+        ),
+    }
+
+
+def _operational_status_finding_payload(
+    finding: OperationalStatusFinding,
+) -> dict[str, object]:
+    return {
+        "code": finding.code,
+        "severity": finding.severity,
+        "message": finding.message,
+        "sources": [_operational_status_source_payload(source) for source in finding.sources],
+    }
+
+
+def _operational_status_action_payload(
+    action: OperationalStatusAction,
+) -> dict[str, object]:
+    return {
+        "code": action.code,
+        "title": action.title,
+        "responsible_party": action.responsible_party,
+        "reason": action.reason,
+        "command": action.command,
+        "request": action.request,
+        "sources": [_operational_status_source_payload(source) for source in action.sources],
+    }
+
+
+def operational_status_payload(snapshot: OperationalStatusSnapshot) -> dict[str, object]:
+    payload: dict[str, object] = {
+        "schema_version": OPERATIONAL_STATUS_SCHEMA_VERSION,
+        "root": snapshot.root,
+        "installation": _operational_status_value_payload(snapshot.installation),
+        "git": _operational_status_value_payload(snapshot.git),
+        "health": _operational_status_value_payload(snapshot.health),
+        "proof": _operational_status_value_payload(snapshot.proof),
+        "delivery": _operational_status_value_payload(snapshot.delivery),
+        "active_work": [
+            _operational_status_work_item_payload(work_item)
+            for work_item in snapshot.active_work
+        ],
+        "findings": [
+            _operational_status_finding_payload(finding) for finding in snapshot.findings
+        ],
+        "blockers": [
+            _operational_status_finding_payload(blocker) for blocker in snapshot.blockers
+        ],
+        "primary_action": (
+            _operational_status_action_payload(snapshot.primary_action)
+            if snapshot.primary_action is not None
+            else None
+        ),
+        "secondary_actions": [
+            _operational_status_action_payload(action)
+            for action in snapshot.secondary_actions
+        ],
+    }
+    if snapshot.workspace_authority is not None:
+        payload["workspace"] = {
+            "enabled": True,
+            "authority_repository": snapshot.workspace_authority,
+        }
+        payload["repositories"] = [
+            _operational_status_repository_payload(repository)
+            for repository in snapshot.repositories
+        ]
+    return payload
+
+
+def operational_status_inspection_payload(
+    inspection: OperationalStatusInspection,
+) -> dict[str, object]:
+    payload: dict[str, object] = {
+        "installation": _operational_status_value_payload(inspection.installation),
+        "git": _operational_status_value_payload(inspection.git),
+        "active_work": [
+            _operational_status_work_item_payload(work_item)
+            for work_item in inspection.active_work
+        ],
+        "findings": [
+            _operational_status_finding_payload(finding)
+            for finding in inspection.findings
+        ],
+    }
+    if inspection.workspace_authority is not None:
+        payload["workspace"] = {
+            "enabled": True,
+            "authority_repository": inspection.workspace_authority,
+        }
+        payload["repositories"] = [
+            _operational_status_repository_payload(repository)
+            for repository in inspection.repositories
+        ]
+    return payload
 
 
 def _workflow_config_path(root: Path) -> Path:
@@ -1081,6 +5207,2719 @@ def _repository_compatibility(root: Path) -> RepositoryCompatibility:
     if schema_behind:
         return RepositoryCompatibility("upgradeable", "schema-behind", manifest)
     return RepositoryCompatibility("current", "versions-current", manifest)
+
+
+def _operational_status_artifact(root: Path, path: Path | str) -> str:
+    artifact_path = Path(path)
+    if not artifact_path.is_absolute():
+        return artifact_path.as_posix()
+    try:
+        return artifact_path.relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return artifact_path.as_posix()
+
+
+def _operational_status_fact(
+    key: str,
+    value: str | int | bool | None | tuple[str, ...],
+) -> OperationalStatusFact:
+    return OperationalStatusFact(key, value)
+
+
+def _inspect_operational_installation(root: Path) -> OperationalStatusValue:
+    compatibility = _repository_compatibility(root)
+    workflow_source = OperationalStatusSource(
+        "repository-compatibility",
+        ".project-workflow",
+        compatibility.reason,
+    )
+    manifest_path = _workflow_manifest_path(root)
+    sources = [workflow_source]
+    if manifest_path.exists():
+        sources.append(
+            OperationalStatusSource(
+                "manifest",
+                _operational_status_artifact(root, manifest_path),
+            )
+        )
+
+    facts: list[OperationalStatusFact] = [
+        _operational_status_fact("compatibility_reason", compatibility.reason),
+        _operational_status_fact("helper_package_version", CURRENT_PACKAGE_VERSION),
+        _operational_status_fact("helper_asset_version", CURRENT_ASSET_VERSION),
+        _operational_status_fact("helper_schema_version", CURRENT_SCHEMA_VERSION),
+        _operational_status_fact("manifest_present", manifest_path.exists()),
+        _operational_status_fact("manifest_parsed", compatibility.manifest is not None),
+    ]
+    if compatibility.manifest is not None:
+        manifest = compatibility.manifest
+        facts.extend(
+            (
+                _operational_status_fact("manifest_version", manifest.manifest_version),
+                _operational_status_fact("package_version", manifest.package_version),
+                _operational_status_fact("asset_version", manifest.asset_version),
+                _operational_status_fact("schema_version", manifest.schema_version),
+                _operational_status_fact("applied_migrations", manifest.applied_migrations),
+            )
+        )
+    if compatibility.state in {"upgradeable", "legacy-unversioned"}:
+        facts.append(_operational_status_fact("upgrade_command", CANONICAL_UPGRADE_COMMAND))
+
+    summaries = {
+        "current": "Installed project-workflow contract is current.",
+        "upgradeable": "Installed project-workflow contract can be upgraded.",
+        "legacy-unversioned": "Recognized project-workflow installation has no version manifest.",
+        "unsupported-future": "Repository contract is newer than this helper supports.",
+        "invalid": "Repository contract is invalid or cannot be classified safely.",
+        "not-initialized": "Repository is not initialized with project-workflow.",
+    }
+    return OperationalStatusValue(
+        "installation",
+        compatibility.state,
+        summaries[compatibility.state],
+        tuple(sources),
+        tuple(facts),
+    )
+
+
+def _operational_git_optional(args: list[str], root: Path) -> str | None:
+    try:
+        return _run_git(args, cwd=root)
+    except (subprocess.CalledProcessError, FileNotFoundError, OSError):
+        return None
+
+
+def _inspect_operational_git(
+    root: Path,
+    *,
+    source_artifact: str = ".git",
+    source_detail: str = "read-only local Git inspection",
+    repository_id: str | None = None,
+) -> tuple[OperationalStatusValue, tuple[OperationalStatusFinding, ...]]:
+    source = OperationalStatusSource("git", source_artifact, source_detail)
+    repository_label = (
+        f"Workspace repository '{repository_id}'" if repository_id is not None else "Git worktree"
+    )
+    top_level = _operational_git_optional(["rev-parse", "--show-toplevel"], root)
+    if top_level is None:
+        finding = OperationalStatusFinding(
+            "PW_STATUS_GIT_UNAVAILABLE",
+            "warning",
+            f"{repository_label} state is unavailable because its root is not a readable "
+            "Git worktree.",
+            (source,),
+        )
+        return (
+            OperationalStatusValue(
+                "git",
+                "unavailable",
+                "Local Git state is unavailable.",
+                (source,),
+                (_operational_status_fact("available", False),),
+            ),
+            (finding,),
+        )
+
+    branch = _operational_git_optional(["symbolic-ref", "--quiet", "--short", "HEAD"], root)
+    head = _operational_git_optional(["rev-parse", "HEAD"], root)
+    upstream = _operational_git_optional(
+        ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}"], root
+    )
+    porcelain = _operational_git_optional(["status", "--porcelain"], root)
+    findings: list[OperationalStatusFinding] = []
+    resolved_root = str(root.resolve())
+    resolved_top = str(Path(top_level).resolve())
+    if resolved_top != resolved_root:
+        findings.append(
+            OperationalStatusFinding(
+                "PW_STATUS_GIT_ROOT_MISMATCH",
+                "error",
+                f"{repository_label} requested root {resolved_root} differs from Git "
+                f"worktree root {resolved_top}.",
+                (source,),
+            )
+        )
+    if head is None:
+        findings.append(
+            OperationalStatusFinding(
+                "PW_STATUS_GIT_HEAD_UNAVAILABLE",
+                "warning",
+                f"{repository_label} has no readable HEAD commit.",
+                (source,),
+            )
+        )
+    if porcelain is None:
+        findings.append(
+            OperationalStatusFinding(
+                "PW_STATUS_GIT_STATUS_UNAVAILABLE",
+                "warning",
+                f"{repository_label} cleanliness could not be determined.",
+                (source,),
+            )
+        )
+
+    clean = porcelain == "" if porcelain is not None else None
+    detached = branch is None and head is not None
+    if head is None or porcelain is None:
+        state = "unavailable"
+        summary = "Git worktree state is only partially available."
+    elif detached:
+        state = "detached"
+        summary = f"Git HEAD is detached at {head[:12]}."
+    elif clean is False:
+        state = "dirty"
+        summary = f"Git branch {branch} has uncommitted changes."
+    else:
+        state = "clean"
+        summary = f"Git branch {branch} is clean."
+
+    facts = (
+        _operational_status_fact("available", True),
+        _operational_status_fact("top_level", resolved_top),
+        _operational_status_fact("branch", branch),
+        _operational_status_fact("detached", detached),
+        _operational_status_fact("head", head),
+        _operational_status_fact("upstream", upstream),
+        _operational_status_fact("clean", clean),
+    )
+    return OperationalStatusValue("git", state, summary, (source,), facts), tuple(findings)
+
+
+def _workspace_git_state_findings(
+    repository: WorkspaceRepository,
+    git: OperationalStatusValue,
+) -> tuple[OperationalStatusFinding, ...]:
+    source = git.sources[0]
+    if git.state == "dirty":
+        return (
+            OperationalStatusFinding(
+                "PW_STATUS_WORKSPACE_REPOSITORY_DIRTY",
+                "error",
+                f"Workspace repository '{repository.repository_id}' has uncommitted changes.",
+                (source,),
+            ),
+        )
+    if git.state == "detached":
+        return (
+            OperationalStatusFinding(
+                "PW_STATUS_WORKSPACE_REPOSITORY_DETACHED",
+                "error",
+                f"Workspace repository '{repository.repository_id}' has a detached HEAD.",
+                (source,),
+            ),
+        )
+    if git.state == "unavailable":
+        return (
+            OperationalStatusFinding(
+                "PW_STATUS_WORKSPACE_REPOSITORY_UNAVAILABLE",
+                "error",
+                f"Workspace repository '{repository.repository_id}' Git state is unavailable.",
+                (source,),
+            ),
+        )
+    return ()
+
+
+def _operational_status_lifecycle_meaning(kind: str, lifecycle: str) -> str | None:
+    entries = (
+        OPERATIONAL_STATUS_EPIC_CHILD_LIFECYCLE_MEANINGS
+        if kind == "epic-child"
+        else OPERATIONAL_STATUS_GLOBAL_LIFECYCLE_MEANINGS
+    )
+    for stored_status, meaning in entries:
+        if stored_status == lifecycle:
+            return meaning
+    return None
+
+
+def _operational_status_global_kind(item_id: str) -> str:
+    if item_id.startswith(f"{FIX_ID_PREFIX}-"):
+        return "fix"
+    if item_id.startswith(f"{EPIC_ID_PREFIX}-"):
+        return "epic"
+    return "task"
+
+
+def _operational_tracker_issue_finding(
+    root: Path,
+    issue: DoctorIssue,
+    source_kind: str,
+) -> OperationalStatusFinding:
+    source = OperationalStatusSource(
+        source_kind,
+        _operational_status_artifact(root, issue.path),
+        "tracker parsing",
+    )
+    severity = "error" if issue.severity == "error" else "warning"
+    return OperationalStatusFinding(issue.code, severity, issue.message, (source,))
+
+
+def _operational_work_item_from_row(
+    row: dict[str, str],
+    *,
+    kind: str,
+    source: OperationalStatusSource,
+    owner_epic: str | None = None,
+) -> OperationalStatusWorkItem | None:
+    item_id = row.get("ID", "").strip()
+    title = row.get("Title", "").strip()
+    lifecycle = row.get("Status", "").strip()
+    meaning = _operational_status_lifecycle_meaning(kind, lifecycle)
+    if not item_id or not title or meaning is None:
+        return None
+    docs_path = _clean_markdown_cell_path(row.get("Docs", "")) or None
+    tracker_branch = _clean_markdown_cell_path(row.get("Branch", "")) or None
+    facts = [
+        _operational_status_fact("docs_path", docs_path),
+        _operational_status_fact("tracker_branch", tracker_branch),
+    ]
+    if owner_epic is not None:
+        facts.extend(
+            (
+                _operational_status_fact("owner_epic", owner_epic),
+                _operational_status_fact(
+                    "parent_acs",
+                    tuple(sorted(_extract_ac_ids(_extract_parent_ac_coverage(row)))),
+                ),
+            )
+        )
+    return OperationalStatusWorkItem(
+        item_id,
+        title,
+        kind,
+        lifecycle,
+        meaning,
+        (source,),
+        tuple(facts),
+    )
+
+
+def _parse_operational_epic_tracker(
+    tracker_path: Path,
+    *,
+    issues: list[DoctorIssue],
+    label: str,
+) -> list[dict[str, str]]:
+    try:
+        lines = tracker_path.read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return _parse_markdown_table(
+            tracker_path,
+            expected_columns=EPIC_TRACKER_COLUMNS,
+            issues=issues,
+            label=label,
+        )
+    columns: tuple[str, ...] | None = None
+    for line in lines:
+        cells = _parse_markdown_table_cells(line)
+        if cells == list(EPIC_TRACKER_COLUMNS):
+            columns = EPIC_TRACKER_COLUMNS
+            break
+        if cells == list(LEGACY_EPIC_TRACKER_COLUMNS):
+            columns = LEGACY_EPIC_TRACKER_COLUMNS
+            break
+    rows = _parse_markdown_table(
+        tracker_path,
+        expected_columns=columns or EPIC_TRACKER_COLUMNS,
+        issues=issues,
+        label=label,
+    )
+    for row in rows:
+        row.setdefault("Parent ACs", "")
+    return rows
+
+
+def _inspect_operational_active_work(
+    root: Path,
+) -> tuple[tuple[OperationalStatusWorkItem, ...], tuple[OperationalStatusFinding, ...]]:
+    workflow_dir = root / ".project-workflow"
+    tracker_path = workflow_dir / "TRACKER.md"
+    global_source = OperationalStatusSource("global-tracker", ".project-workflow/TRACKER.md")
+    if not tracker_path.exists():
+        return (), (
+            OperationalStatusFinding(
+                "PW_STATUS_GLOBAL_TRACKER_MISSING",
+                "error",
+                "Global workflow tracker is missing.",
+                (global_source,),
+            ),
+        )
+
+    parse_issues: list[DoctorIssue] = []
+    global_rows = _parse_markdown_table(
+        tracker_path,
+        expected_columns=GLOBAL_TRACKER_COLUMNS,
+        issues=parse_issues,
+        label="Global tracker",
+    )
+    findings = [
+        _operational_tracker_issue_finding(root, issue, "global-tracker")
+        for issue in parse_issues
+    ]
+    active_work: list[OperationalStatusWorkItem] = []
+    seen_ids: dict[str, list[tuple[str, OperationalStatusSource]]] = {}
+    active_epic_rows: list[dict[str, str]] = []
+    terminal_epic_rows: list[dict[str, str]] = []
+
+    def record_id(item_id: str, owner: str, source: OperationalStatusSource) -> None:
+        previous = seen_ids.setdefault(item_id, [])
+        if previous:
+            previous_owners = [previous_owner for previous_owner, _source in previous]
+            finding_sources = tuple(
+                dict.fromkeys([previous_source for _owner, previous_source in previous] + [source])
+            )
+            findings.append(
+                OperationalStatusFinding(
+                    "PW_STATUS_DUPLICATE_WORK_ITEM",
+                    "error",
+                    f"Workflow ID {item_id} appears in multiple tracker records: "
+                    + ", ".join([*previous_owners, owner])
+                    + ".",
+                    finding_sources,
+                )
+            )
+            if owner.startswith("EPIC-") and any(
+                previous_owner.startswith("EPIC-") for previous_owner in previous_owners
+            ):
+                findings.append(
+                    OperationalStatusFinding(
+                        "PW_STATUS_MULTIPLE_EPIC_OWNERS",
+                        "error",
+                        f"Epic child {item_id} is owned by multiple Epics: "
+                        + ", ".join([*previous_owners, owner])
+                        + ".",
+                        finding_sources,
+                    )
+                )
+        previous.append((owner, source))
+
+    for row in global_rows:
+        item_id = row.get("ID", "").strip()
+        title = row.get("Title", "").strip()
+        lifecycle = row.get("Status", "").strip()
+        kind = _operational_status_global_kind(item_id)
+        record_id(item_id or "<missing>", "global tracker", global_source)
+        meaning = _operational_status_lifecycle_meaning(kind, lifecycle)
+        if not item_id or not title or meaning is None:
+            findings.append(
+                OperationalStatusFinding(
+                    "PW_STATUS_WORK_ITEM_INVALID",
+                    "error",
+                    f"Global tracker line {row.get('_line_idx', '?')} has missing or invalid "
+                    "ID, title, or lifecycle.",
+                    (global_source,),
+                )
+            )
+            continue
+        docs_path = row.get("Docs", "").strip().strip("`")
+        if lifecycle not in OPERATIONAL_STATUS_GLOBAL_TERMINAL_STATES and not docs_path:
+            findings.append(
+                OperationalStatusFinding(
+                    "PW_STATUS_REQUIRED_DOCS_MISSING",
+                    "warning",
+                    f"Active global item {item_id} has no docs path.",
+                    (global_source,),
+                )
+            )
+        if lifecycle not in OPERATIONAL_STATUS_GLOBAL_TERMINAL_STATES:
+            work_item = _operational_work_item_from_row(row, kind=kind, source=global_source)
+            if work_item is not None:
+                active_work.append(work_item)
+        if kind == "epic":
+            if lifecycle in OPERATIONAL_STATUS_GLOBAL_TERMINAL_STATES:
+                terminal_epic_rows.append(row)
+            else:
+                active_epic_rows.append(row)
+
+    tasks_dir = workflow_dir / "tasks"
+    for parent_row in [*active_epic_rows, *terminal_epic_rows]:
+        epic_id = parent_row["ID"].strip()
+        matches = sorted(
+            path for path in tasks_dir.glob(f"{epic_id}-*") if path.is_dir()
+        )
+        if len(matches) != 1:
+            findings.append(
+                OperationalStatusFinding(
+                    "PW_STATUS_EPIC_TRACKER_MISSING",
+                    "error",
+                    f"Epic {epic_id} does not resolve to exactly one task directory.",
+                    (global_source,),
+                )
+            )
+            continue
+        epic_tracker_path = matches[0] / "TRACKER.md"
+        epic_source = OperationalStatusSource(
+            "epic-tracker",
+            _operational_status_artifact(root, epic_tracker_path),
+            f"owner {epic_id}",
+        )
+        if not epic_tracker_path.exists():
+            findings.append(
+                OperationalStatusFinding(
+                    "PW_STATUS_EPIC_TRACKER_MISSING",
+                    "error",
+                    f"Epic {epic_id} tracker is missing.",
+                    (epic_source,),
+                )
+            )
+            continue
+        epic_parse_issues: list[DoctorIssue] = []
+        epic_rows = _parse_operational_epic_tracker(
+            epic_tracker_path,
+            issues=epic_parse_issues,
+            label=f"{epic_id} tracker",
+        )
+        findings.extend(
+            _operational_tracker_issue_finding(root, issue, "epic-tracker")
+            for issue in epic_parse_issues
+        )
+        parent_is_active = parent_row["Status"].strip() not in (
+            OPERATIONAL_STATUS_GLOBAL_TERMINAL_STATES
+        )
+        for row in epic_rows:
+            item_id = row.get("ID", "").strip()
+            title = row.get("Title", "").strip()
+            lifecycle = row.get("Status", "").strip()
+            record_id(item_id or "<missing>", epic_id, epic_source)
+            meaning = _operational_status_lifecycle_meaning("epic-child", lifecycle)
+            if not item_id or not title or meaning is None:
+                findings.append(
+                    OperationalStatusFinding(
+                        "PW_STATUS_WORK_ITEM_INVALID",
+                        "error",
+                        f"{epic_id} tracker line {row.get('_line_idx', '?')} has missing or "
+                        "invalid ID, title, or lifecycle.",
+                        (epic_source,),
+                    )
+                )
+                continue
+            docs_path = row.get("Docs", "").strip().strip("`")
+            if (
+                lifecycle not in OPERATIONAL_STATUS_EPIC_CHILD_UNSCAFFOLDED_STATES
+                and lifecycle not in OPERATIONAL_STATUS_EPIC_CHILD_TERMINAL_STATES
+                and not docs_path
+            ):
+                findings.append(
+                    OperationalStatusFinding(
+                        "PW_STATUS_REQUIRED_DOCS_MISSING",
+                        "warning",
+                        f"Scaffolded Epic child {item_id} has no docs path.",
+                        (epic_source,),
+                    )
+                )
+            child_is_active = lifecycle not in OPERATIONAL_STATUS_EPIC_CHILD_TERMINAL_STATES
+            if parent_is_active and child_is_active:
+                work_item = _operational_work_item_from_row(
+                    row,
+                    kind="epic-child",
+                    source=epic_source,
+                    owner_epic=epic_id,
+                )
+                if work_item is not None:
+                    active_work.append(work_item)
+            elif not parent_is_active and child_is_active:
+                findings.append(
+                    OperationalStatusFinding(
+                        "PW_STATUS_CLOSED_EPIC_HAS_ACTIVE_CHILD",
+                        "error",
+                        f"Closed Epic {epic_id} still owns non-terminal child {item_id} "
+                        f"in status {lifecycle}.",
+                        (epic_source, global_source),
+                    )
+                )
+
+    return tuple(active_work), tuple(findings)
+
+
+def inspect_operational_status_repository(
+    root: Path,
+    *,
+    repository_id: str | None = None,
+) -> OperationalStatusInspection:
+    inspected_root = root.resolve()
+    installation = _inspect_operational_installation(inspected_root)
+    config = _load_workflow_config(inspected_root)
+    if config.workspace is None:
+        if repository_id is not None:
+            raise SystemExit(
+                "The --repository selector requires a workspace declaration in "
+                ".project-workflow/config.json."
+            )
+        git, git_findings = _inspect_operational_git(inspected_root)
+        repositories: tuple[OperationalStatusRepository, ...] = ()
+        workspace_authority = None
+    else:
+        workspace = config.workspace
+        if repository_id is not None:
+            try:
+                selected_repositories = (workspace.repository(repository_id),)
+            except KeyError as exc:
+                registered = ", ".join(
+                    repository.repository_id for repository in workspace.repositories
+                )
+                raise SystemExit(
+                    f"Unknown workspace repository '{repository_id}'. Registered: {registered}."
+                ) from exc
+        else:
+            selected_repositories = workspace.repositories
+        repository_records: list[OperationalStatusRepository] = []
+        repository_findings: list[OperationalStatusFinding] = []
+        authority_git: OperationalStatusValue | None = None
+        for repository in selected_repositories:
+            source_artifact = (
+                ".git" if repository.path == "." else f"{repository.path}/.git"
+            )
+            repository_git, findings = _inspect_operational_git(
+                repository.resolved_path,
+                source_artifact=source_artifact,
+                source_detail=f"workspace repository {repository.repository_id}",
+                repository_id=repository.repository_id,
+            )
+            repository_records.append(
+                OperationalStatusRepository(
+                    repository.repository_id,
+                    repository.path,
+                    repository.role,
+                    repository.repository_id == workspace.authority_repository,
+                    repository_git,
+                    (),
+                    (
+                        OperationalStatusSource(
+                            "workspace-config",
+                            ".project-workflow/config.json",
+                            f"registration for {repository.repository_id}",
+                        ),
+                    ),
+                )
+            )
+            repository_findings.extend(findings)
+            repository_findings.extend(
+                _workspace_git_state_findings(repository, repository_git)
+            )
+            if repository.repository_id == workspace.authority_repository:
+                authority_git = repository_git
+        if authority_git is None:
+            authority = workspace.repository(workspace.authority_repository)
+            authority_artifact = ".git" if authority.path == "." else f"{authority.path}/.git"
+            authority_git, findings = _inspect_operational_git(
+                authority.resolved_path,
+                source_artifact=authority_artifact,
+                source_detail=f"workspace authority repository {authority.repository_id}",
+                repository_id=authority.repository_id,
+            )
+            repository_findings.extend(findings)
+        git = authority_git
+        git_findings = tuple(repository_findings)
+        repositories = tuple(repository_records)
+        workspace_authority = workspace.authority_repository
+    active_work, work_findings = _inspect_operational_active_work(inspected_root)
+    return OperationalStatusInspection(
+        installation,
+        git,
+        active_work,
+        (*git_findings, *work_findings),
+        workspace_authority,
+        repositories,
+    )
+
+
+def _operational_work_item_facts(item: OperationalStatusWorkItem) -> dict[str, object]:
+    return {fact.key: fact.value for fact in item.facts}
+
+
+def _operational_status_unique_sources(
+    sources: list[OperationalStatusSource],
+) -> tuple[OperationalStatusSource, ...]:
+    return tuple(dict.fromkeys(sources))
+
+
+def _operational_proof_layer(
+    name: str,
+    state: str,
+    summary: str,
+    *sources: OperationalStatusSource,
+) -> OperationalStatusProofLayer:
+    return OperationalStatusProofLayer(name, state, summary, tuple(sources))
+
+
+def _operational_work_item_paths(
+    root: Path,
+    item: OperationalStatusWorkItem,
+) -> tuple[Path | None, Path | None, Path | None]:
+    item_facts = _operational_work_item_facts(item)
+    docs_value = item_facts.get("docs_path")
+    docs_path = (
+        root / ".project-workflow" / str(docs_value)
+        if isinstance(docs_value, str) and docs_value
+        else None
+    )
+    owner_value = item_facts.get("owner_epic")
+    epic_dir: Path | None = None
+    if isinstance(owner_value, str) and owner_value:
+        matches = sorted(
+            path
+            for path in (root / ".project-workflow" / "tasks").glob(f"{owner_value}-*")
+            if path.is_dir()
+        )
+        if len(matches) == 1:
+            epic_dir = matches[0]
+    elif item.kind == "epic" and docs_path is not None:
+        epic_dir = docs_path.parent
+
+    if item.kind == "epic":
+        requirements_path = docs_path
+        implementation_path = None
+    elif item.kind == "fix":
+        requirements_path = None
+        implementation_path = docs_path
+    else:
+        implementation_path = docs_path
+        requirements_path = docs_path.parent / "REQUIREMENTS.md" if docs_path else None
+    return requirements_path, implementation_path, epic_dir
+
+
+def _operational_repository_evidence(
+    root: Path,
+    repositories: tuple[OperationalStatusRepository, ...],
+    work_items: tuple[OperationalStatusWorkItem, ...],
+) -> tuple[OperationalStatusRepository, ...]:
+    enriched: list[OperationalStatusRepository] = []
+    for repository in repositories:
+        primary_work: list[str] = []
+        touched_work: list[str] = []
+        branch_pr: list[str] = []
+        validation: list[str] = []
+        delivery: list[str] = []
+        evidence: list[str] = []
+        sources: list[OperationalStatusSource] = []
+        for item in work_items:
+            requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(
+                root, item
+            )
+            scope_path = (
+                implementation_path
+                if item.kind == "fix"
+                else requirements_path
+            )
+            if scope_path is None or not scope_path.exists():
+                continue
+            requirements_text = scope_path.read_text(encoding="utf-8")
+            primary, touched = _repository_scope_values(requirements_text)
+            if repository.repository_id not in touched:
+                continue
+            touched_work.append(item.item_id)
+            if primary == repository.repository_id:
+                primary_work.append(item.item_id)
+            sources.append(
+                OperationalStatusSource(
+                    "implementation" if item.kind == "fix" else "requirements",
+                    _operational_status_artifact(root, scope_path),
+                    f"repository scope for {item.item_id}",
+                )
+            )
+            if implementation_path is None or not implementation_path.exists():
+                continue
+            rows = _repository_evidence_rows(
+                implementation_path.read_text(encoding="utf-8")
+            )
+            row = rows.get(repository.repository_id)
+            if row is None:
+                continue
+            branch_pr.append(f"{item.item_id}: {row['branch_pr']}")
+            validation.append(f"{item.item_id}: {row['validation']}")
+            delivery.append(f"{item.item_id}: {row['delivery']}")
+            evidence.append(f"{item.item_id}: {row['evidence']}")
+            sources.append(
+                OperationalStatusSource(
+                    "repository-evidence",
+                    _operational_status_artifact(root, implementation_path),
+                    f"repository evidence for {item.item_id}",
+                )
+            )
+        facts: list[OperationalStatusFact] = []
+        for key, values in (
+            ("primary_work", primary_work),
+            ("touched_work", touched_work),
+            ("branch_pr", branch_pr),
+            ("validation", validation),
+            ("delivery", delivery),
+            ("evidence_artifacts", evidence),
+        ):
+            if values:
+                facts.append(_operational_status_fact(key, tuple(values)))
+        enriched.append(
+            OperationalStatusRepository(
+                repository.repository_id,
+                repository.path,
+                repository.role,
+                repository.authority,
+                repository.git,
+                tuple(facts),
+                _operational_status_unique_sources([*repository.sources, *sources]),
+            )
+        )
+    return tuple(enriched)
+
+
+def _workspace_repository_evidence_findings(
+    repositories: tuple[OperationalStatusRepository, ...],
+) -> tuple[OperationalStatusFinding, ...]:
+    findings: list[OperationalStatusFinding] = []
+    for repository in repositories:
+        live_branch = next(
+            (fact.value for fact in repository.git.facts if fact.key == "branch"),
+            None,
+        )
+        branch_records = next(
+            (fact.value for fact in repository.evidence if fact.key == "branch_pr"),
+            (),
+        )
+        if not isinstance(live_branch, str) or not isinstance(branch_records, tuple):
+            continue
+        for record in branch_records:
+            _item_id, separator, recorded_state = record.partition(":")
+            if not separator:
+                continue
+            expected_branch = recorded_state.strip()
+            if expected_branch.lower().startswith("branch "):
+                expected_branch = expected_branch[7:].strip().strip("`")
+            if not re.fullmatch(r"[A-Za-z0-9._/-]+", expected_branch):
+                continue
+            if expected_branch == live_branch:
+                continue
+            sources = _operational_status_unique_sources(
+                [*repository.git.sources, *repository.sources]
+            )
+            findings.append(
+                OperationalStatusFinding(
+                    "PW_STATUS_WORKSPACE_REPOSITORY_BRANCH_MISMATCH",
+                    "error",
+                    f"Workspace repository '{repository.repository_id}' is on branch "
+                    f"'{live_branch}' but recorded work expects '{expected_branch}'.",
+                    sources,
+                )
+            )
+    return tuple(findings)
+
+
+def _operational_relevant_repository_ids(
+    root: Path,
+    work_items: tuple[OperationalStatusWorkItem, ...],
+) -> set[str]:
+    repository_ids: set[str] = set()
+    for item in work_items:
+        requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(
+            root, item
+        )
+        scope_path = implementation_path if item.kind == "fix" else requirements_path
+        if scope_path is None or not scope_path.exists():
+            continue
+        _primary, touched = _repository_scope_values(
+            scope_path.read_text(encoding="utf-8")
+        )
+        repository_ids.update(touched)
+    return repository_ids
+
+
+def _operational_status_document_source(
+    root: Path,
+    kind: str,
+    path: Path | None,
+    fallback: OperationalStatusSource,
+) -> OperationalStatusSource:
+    if path is None:
+        return fallback
+    return OperationalStatusSource(kind, _operational_status_artifact(root, path))
+
+
+def _operational_implementation_complete(implementation_text: str) -> bool:
+    table_found, rows, malformed_rows = _implementation_task_table_rows(implementation_text)
+    return bool(
+        table_found
+        and rows
+        and not malformed_rows
+        and all(row.get("Status", "").strip() == "Done" for row in rows)
+    )
+
+
+def _operational_epic_child_documents(
+    root: Path, epic_dir: Path
+) -> tuple[tuple[dict[str, str], Path, Path], ...]:
+    """Return tracker-bound child requirements and implementation paths for an Epic."""
+    tracker_path = epic_dir / "TRACKER.md"
+    if not tracker_path.exists():
+        return ()
+    try:
+        _lines, _header, rows = _epic_tracker_rows(tracker_path)
+    except (OSError, SystemExit):
+        return ()
+    children: list[tuple[dict[str, str], Path, Path]] = []
+    for row in rows:
+        docs_rel = _clean_markdown_cell_path(row.get("Docs", ""))
+        if not docs_rel:
+            continue
+        implementation_path = root / ".project-workflow" / docs_rel
+        requirements_path = implementation_path.parent / "REQUIREMENTS.md"
+        if requirements_path.exists() and implementation_path.exists():
+            children.append((row, requirements_path, implementation_path))
+    return tuple(children)
+
+
+def _operational_item_proof_layers(
+    root: Path,
+    item: OperationalStatusWorkItem,
+) -> tuple[OperationalStatusProofLayer, ...]:
+    fallback = item.sources[0]
+    requirements_path, implementation_path, epic_dir = _operational_work_item_paths(root, item)
+    requirements_source = _operational_status_document_source(
+        root, "requirements", requirements_path, fallback
+    )
+    implementation_source = _operational_status_document_source(
+        root, "implementation", implementation_path, fallback
+    )
+    owner_epic = _operational_work_item_facts(item).get("owner_epic")
+    parent_requirements_path = epic_dir / "REQUIREMENTS.md" if epic_dir is not None else None
+    parent_requirements_source = _operational_status_document_source(
+        root, "requirements", parent_requirements_path, fallback
+    )
+    requirements_text = (
+        requirements_path.read_text(encoding="utf-8")
+        if requirements_path is not None and requirements_path.exists()
+        else ""
+    )
+    implementation_text = (
+        implementation_path.read_text(encoding="utf-8")
+        if implementation_path is not None and implementation_path.exists()
+        else ""
+    )
+
+    if item.kind == "fix":
+        approval = _operational_proof_layer(
+            "requirements-approval",
+            "not-required",
+            "Fix authority is recorded in FIX.md rather than a requirements approval envelope.",
+            implementation_source,
+        )
+    elif item.kind == "epic-child" and parent_requirements_path is not None:
+        parent_text = (
+            parent_requirements_path.read_text(encoding="utf-8")
+            if parent_requirements_path.exists()
+            else ""
+        )
+        approval_issues = _approval_envelope_issues(
+            parent_text,
+            require_decomposition=True,
+        )
+        approval = _operational_proof_layer(
+            "requirements-approval",
+            "pass" if not approval_issues else "fail",
+            (
+                f"Child authority is inherited from approved Epic {owner_epic}."
+                if not approval_issues
+                else f"Parent Epic approval has {len(approval_issues)} blocking issue(s)."
+            ),
+            parent_requirements_source,
+        )
+    elif requirements_text:
+        approval_issues = _approval_envelope_issues(
+            requirements_text,
+            require_decomposition=item.kind == "epic",
+            require_implementation=item.kind == "task",
+        )
+        approval = _operational_proof_layer(
+            "requirements-approval",
+            "pass" if not approval_issues else "fail",
+            (
+                "Owner approval envelope is current."
+                if not approval_issues
+                else f"Approval envelope has {len(approval_issues)} blocking issue(s)."
+            ),
+            requirements_source,
+        )
+    else:
+        approval = _operational_proof_layer(
+            "requirements-approval",
+            "not-recorded",
+            "No requirements approval source is recorded.",
+            fallback,
+        )
+
+    if item.kind == "epic-child" and item.lifecycle in {
+        "Proposed",
+        "Approved",
+    }:
+        readiness = _operational_proof_layer(
+            "readiness",
+            "pending",
+            "Child readiness begins after scaffolding.",
+            fallback,
+        )
+    elif item.kind == "fix":
+        ready = item.lifecycle not in {"To Do", "N/A"}
+        readiness = _operational_proof_layer(
+            "readiness",
+            "pass" if ready else "pending",
+            "Fix triage has advanced beyond To Do." if ready else "Fix triage is pending.",
+            implementation_source,
+        )
+    elif item.kind == "epic" and epic_dir is not None and requirements_text:
+        ready_issues = [
+            *_epic_requirements_readiness_issues(requirements_text),
+            *_approval_envelope_issues(requirements_text, require_decomposition=True),
+            *_epic_contract_issues(epic_dir, requirements_text),
+        ]
+        readiness = _operational_proof_layer(
+            "readiness",
+            "pass" if not ready_issues else "fail",
+            (
+                "Epic readiness requirements and contract pass."
+                if not ready_issues
+                else f"Epic readiness has {len(ready_issues)} blocking issue(s)."
+            ),
+            requirements_source,
+        )
+    elif requirements_path is not None and implementation_path is not None:
+        ready_issues = _task_ready_issues_for_paths(
+            requirements_path=requirements_path,
+            implementation_path=implementation_path,
+            parent_ac_ids=(
+                set(_operational_work_item_facts(item).get("parent_acs", ()))
+                if item.kind == "epic-child"
+                else None
+            ),
+        )
+        readiness = _operational_proof_layer(
+            "readiness",
+            "pass" if not ready_issues else "fail",
+            (
+                "Task readiness gate passes."
+                if not ready_issues
+                else f"Task readiness has {len(ready_issues)} blocking issue(s)."
+            ),
+            implementation_source,
+        )
+    else:
+        readiness = _operational_proof_layer(
+            "readiness",
+            "not-recorded",
+            "No readiness source is recorded.",
+            fallback,
+        )
+
+    if item.kind == "epic":
+        child_rows: list[dict[str, str]] = []
+        if epic_dir is not None and (epic_dir / "TRACKER.md").exists():
+            try:
+                _lines, _header, child_rows = _epic_tracker_rows(epic_dir / "TRACKER.md")
+            except SystemExit:
+                child_rows = []
+        all_children_complete = bool(child_rows) and all(
+            row.get("Status") == "Complete" for row in child_rows
+        )
+        implementation_state = "pass" if all_children_complete else "pending"
+        implementation_summary = (
+            "All Epic children are complete."
+            if all_children_complete
+            else "Epic child implementation remains in progress."
+        )
+    elif item.kind == "fix":
+        implementation_state = (
+            "pass" if item.lifecycle in {"Testing", "Review", "Complete"} else "pending"
+        )
+        implementation_summary = (
+            "Fix implementation reached validation."
+            if implementation_state == "pass"
+            else "Fix implementation remains in progress."
+        )
+    elif not implementation_text:
+        implementation_state = "not-recorded"
+        implementation_summary = "No implementation document is recorded."
+    else:
+        complete = _operational_implementation_complete(implementation_text)
+        if complete:
+            implementation_state = "pass"
+            implementation_summary = "Every implementation task row is Done."
+        elif item.lifecycle in {"Testing", "Review", "Complete"}:
+            implementation_state = "fail"
+            implementation_summary = "Lifecycle advanced beyond implementation with unfinished rows."
+        else:
+            implementation_state = "pending"
+            implementation_summary = "Implementation task rows remain in progress."
+    implementation = _operational_proof_layer(
+        "implementation",
+        implementation_state,
+        implementation_summary,
+        implementation_source,
+    )
+
+    epic_children = (
+        _operational_epic_child_documents(root, epic_dir)
+        if item.kind == "epic" and epic_dir is not None
+        else ()
+    )
+    if item.kind == "epic":
+        qa_pass = bool(epic_children) and len(epic_children) == len(child_rows) and all(
+            row.get("Status") == "Complete"
+            and _qa_passed(implementation_path.read_text(encoding="utf-8"))
+            for row, _requirements_path, implementation_path in epic_children
+        )
+        qa_summary_pass = "Every completed Epic child records a passing QA verdict."
+        qa_sources = tuple(
+            _operational_status_document_source(
+                root, "implementation", implementation_path, fallback
+            )
+            for _row, _requirements_path, implementation_path in epic_children
+        ) or (fallback,)
+    else:
+        qa_pass = bool(implementation_text and _qa_passed(implementation_text))
+        qa_summary_pass = "QA and code review verdict is Pass."
+        qa_sources = (implementation_source,)
+    if qa_pass:
+        qa_state = "pass"
+        qa_summary = qa_summary_pass
+    elif item.lifecycle in {"Review", "Closeout", "Complete"}:
+        qa_state = "fail"
+        qa_summary = "No passing QA verdict is recorded."
+    else:
+        qa_state = "not-recorded"
+        qa_summary = "No passing QA verdict is recorded yet."
+    qa = _operational_proof_layer(
+        "qa-review",
+        qa_state,
+        qa_summary,
+        *qa_sources,
+    )
+
+    if item.kind == "epic-child":
+        parent_acs = set(_operational_work_item_facts(item).get("parent_acs", ()))
+        evidence_pass = bool(parent_acs) and bool(implementation_text) and all(
+            _parent_ac_evidence_present(implementation_text, ac_id) for ac_id in parent_acs
+        )
+        acceptance_state = "pass" if evidence_pass else "pending"
+        acceptance_summary = (
+            "Parent AC evidence is recorded for every owned AC."
+            if evidence_pass
+            else "Parent AC evidence remains incomplete."
+        )
+        acceptance_source = implementation_source
+    elif item.kind == "epic":
+        audit_path = epic_dir / "ACCEPTANCE-AUDIT.md" if epic_dir is not None else None
+        audit_text = (
+            audit_path.read_text(encoding="utf-8")
+            if audit_path is not None and audit_path.exists()
+            else ""
+        )
+        audit_pass = bool(audit_text) and "| Pass |" in audit_text and "| Gap |" not in audit_text
+        acceptance_state = "pass" if audit_pass else "pending"
+        acceptance_summary = (
+            "Epic acceptance audit records passing coverage."
+            if audit_pass
+            else "Epic acceptance audit is not yet passing."
+        )
+        acceptance_source = _operational_status_document_source(
+            root, "acceptance", audit_path, fallback
+        )
+    else:
+        acceptance_state = "not-required"
+        acceptance_summary = "This work item has no parent Epic acceptance obligation."
+        acceptance_source = fallback
+    acceptance = _operational_proof_layer(
+        "parent-acceptance",
+        acceptance_state,
+        acceptance_summary,
+        acceptance_source,
+    )
+
+    triggered_recipes = _triggered_proof_recipes(requirements_text, implementation_text)
+    evidence_sources: tuple[OperationalStatusSource, ...] = ()
+    if not triggered_recipes:
+        evidence_state = "not-required"
+        evidence_summary = "No structured proof recipe is triggered."
+    elif item.kind == "epic":
+        passing_recipes: set[str] = set()
+        evidence_issues: list[str] = []
+        evidence_sources_list: list[OperationalStatusSource] = []
+        for row, child_requirements, child_implementation in epic_children:
+            child_requirements_text = child_requirements.read_text(encoding="utf-8")
+            child_implementation_text = child_implementation.read_text(encoding="utf-8")
+            child_triggered = _triggered_proof_recipes(
+                child_requirements_text, child_implementation_text
+            )
+            relevant_recipes = triggered_recipes & child_triggered
+            if not relevant_recipes:
+                continue
+            child_issues = _structured_evidence_issues(
+                requirements_path=child_requirements,
+                implementation_path=child_implementation,
+                parent_ac_ids=_extract_ac_ids(_extract_parent_ac_coverage(row)),
+            )
+            if child_issues:
+                evidence_issues.extend(child_issues)
+                continue
+            evidence_path = child_implementation.parent / STRUCTURED_EVIDENCE_FILENAME
+            records, load_issues = _load_structured_evidence(evidence_path)
+            if load_issues:
+                evidence_issues.extend(load_issues)
+                continue
+            passing_recipes.update(
+                str(record.get("recipe", "")).strip()
+                for record in records
+                if str(record.get("status", "")).strip().lower() == "pass"
+                and str(record.get("recipe", "")).strip() in relevant_recipes
+            )
+            evidence_sources_list.append(
+                _operational_status_document_source(
+                    root, "structured-evidence", evidence_path, fallback
+                )
+            )
+        missing_recipes = triggered_recipes - passing_recipes
+        if missing_recipes:
+            evidence_issues.append(
+                "missing passing child evidence for: " + ", ".join(sorted(missing_recipes))
+            )
+        if evidence_issues:
+            evidence_state = "fail" if item.lifecycle in {"Closeout", "Complete"} else "pending"
+            evidence_summary = (
+                f"Aggregated child structured evidence has {len(evidence_issues)} issue(s)."
+            )
+        else:
+            evidence_state = "pass"
+            evidence_summary = "Every triggered parent proof recipe has valid passing child evidence."
+        evidence_sources = tuple(evidence_sources_list)
+    else:
+        evidence_issues = _structured_evidence_issues(
+            requirements_path=requirements_path or Path("missing-requirements"),
+            implementation_path=implementation_path or Path("missing-implementation"),
+            parent_ac_ids=(
+                set(_operational_work_item_facts(item).get("parent_acs", ()))
+                if item.kind == "epic-child"
+                else None
+            ),
+        )
+        if evidence_issues:
+            evidence_state = "fail" if item.lifecycle in {"Review", "Complete"} else "pending"
+            evidence_summary = f"Structured evidence has {len(evidence_issues)} issue(s)."
+        else:
+            evidence_state = "pass"
+            evidence_summary = "Every triggered structured proof recipe has passing evidence."
+    evidence = _operational_proof_layer(
+        "structured-evidence",
+        evidence_state,
+        evidence_summary,
+        *(
+            evidence_sources
+            or (
+                _operational_status_document_source(
+                    root,
+                    "structured-evidence",
+                    implementation_path.parent / STRUCTURED_EVIDENCE_FILENAME
+                    if implementation_path is not None
+                    else None,
+                    fallback,
+                ),
+            )
+        ),
+    )
+    return approval, readiness, implementation, qa, acceptance, evidence
+
+
+def _operational_aggregate_proof_state(
+    layers: tuple[OperationalStatusProofLayer, ...],
+) -> str:
+    by_name = {layer.name: layer.state for layer in layers}
+    state = "declared"
+    if by_name.get("requirements-approval") not in {"pass", "not-required"}:
+        return state
+    state = "approved"
+    if by_name.get("readiness") not in {"pass", "not-required"}:
+        return state
+    state = "ready"
+    if by_name.get("implementation") != "pass":
+        return state
+    state = "implementation-recorded"
+    if by_name.get("qa-review") != "pass" or by_name.get("parent-acceptance") not in {
+        "pass",
+        "not-required",
+    }:
+        return state
+    state = "repository-validated"
+    if by_name.get("structured-evidence") == "pass":
+        return "recorded-evidence"
+    return state
+
+
+def _operational_outcome_states(
+    root: Path, item: OperationalStatusWorkItem
+) -> tuple[str, str]:
+    requirements_path, implementation_path, epic_dir = _operational_work_item_paths(root, item)
+    if requirements_path is None:
+        return "not-recorded", "not-recorded"
+    requirements_text = (
+        requirements_path.read_text(encoding="utf-8") if requirements_path.exists() else ""
+    )
+    implementation_text = (
+        implementation_path.read_text(encoding="utf-8")
+        if implementation_path is not None and implementation_path.exists()
+        else ""
+    )
+    if "user-outcome-journey" not in _triggered_proof_recipes(
+        requirements_text, implementation_text
+    ):
+        return "not-required", "not-required"
+    if item.kind == "epic" and epic_dir is not None:
+        journey_records: list[dict[str, object]] = []
+        for row, child_requirements, child_implementation in _operational_epic_child_documents(
+            root, epic_dir
+        ):
+            child_requirements_text = child_requirements.read_text(encoding="utf-8")
+            child_implementation_text = child_implementation.read_text(encoding="utf-8")
+            if "user-outcome-journey" not in _triggered_proof_recipes(
+                child_requirements_text, child_implementation_text
+            ):
+                continue
+            if _structured_evidence_issues(
+                requirements_path=child_requirements,
+                implementation_path=child_implementation,
+                parent_ac_ids=_extract_ac_ids(_extract_parent_ac_coverage(row)),
+            ):
+                return "invalid", "unknown"
+            records, load_issues = _load_structured_evidence(
+                child_implementation.parent / STRUCTURED_EVIDENCE_FILENAME
+            )
+            if load_issues:
+                return "invalid", "unknown"
+            journey_records.extend(
+                record
+                for record in records
+                if record.get("recipe") == "user-outcome-journey"
+                and str(record.get("status", "")).strip().lower() == "pass"
+            )
+    elif implementation_path is not None:
+        records, load_issues = _load_structured_evidence(
+            implementation_path.parent / STRUCTURED_EVIDENCE_FILENAME
+        )
+        if load_issues:
+            return "not-recorded", "unknown"
+        journey_records = [
+            record
+            for record in records
+            if record.get("recipe") == "user-outcome-journey"
+            and str(record.get("status", "")).strip().lower() == "pass"
+        ]
+    else:
+        return "not-recorded", "unknown"
+    if not journey_records:
+        return "not-recorded", "unknown"
+    if implementation_path is not None and _structured_evidence_issues(
+        requirements_path=requirements_path,
+        implementation_path=implementation_path,
+    ):
+        return "invalid", "unknown"
+    required_acceptance_states = {
+        str(record.get("owner_acceptance_status", "")).strip().lower()
+        for record in journey_records
+        if record.get("owner_acceptance_required") is True
+    }
+    if "pending" in required_acceptance_states:
+        return "outcome-proven", "ready-for-owner-acceptance"
+    if required_acceptance_states and required_acceptance_states == {"accepted"}:
+        return "outcome-proven", "owner-accepted"
+    return "outcome-proven", "not-required"
+
+
+def classify_operational_proof(
+    root: Path,
+    work_items: tuple[OperationalStatusWorkItem, ...],
+) -> tuple[OperationalStatusValue, tuple[OperationalStatusWorkItem, ...]]:
+    classified: list[OperationalStatusWorkItem] = []
+    aggregate_states: list[str] = []
+    all_sources: list[OperationalStatusSource] = []
+    state_rank = {
+        "unknown": 0,
+        "not-recorded": 1,
+        "declared": 2,
+        "approved": 3,
+        "ready": 4,
+        "implementation-recorded": 5,
+        "repository-validated": 6,
+        "recorded-evidence": 7,
+    }
+    for item in work_items:
+        layers = _operational_item_proof_layers(root, item)
+        aggregate_state = _operational_aggregate_proof_state(layers)
+        aggregate_states.append(aggregate_state)
+        all_sources.extend(source for layer in layers for source in layer.sources)
+        item_facts = tuple(
+            fact
+            for fact in item.facts
+            if fact.key
+            not in {
+                "aggregate_proof_state",
+                "outcome_proof_state",
+                "owner_acceptance_state",
+            }
+        ) + (
+            _operational_status_fact("aggregate_proof_state", aggregate_state),
+        )
+        outcome_state, owner_acceptance_state = _operational_outcome_states(root, item)
+        item_facts = item_facts + (
+            _operational_status_fact("outcome_proof_state", outcome_state),
+            _operational_status_fact("owner_acceptance_state", owner_acceptance_state),
+        )
+        classified.append(
+            OperationalStatusWorkItem(
+                item.item_id,
+                item.title,
+                item.kind,
+                item.lifecycle,
+                item.operational_meaning,
+                item.sources,
+                item_facts,
+                layers,
+                item.delivery,
+            )
+        )
+    if not classified:
+        aggregate = "not-recorded"
+        summary = "No active work item proof is recorded."
+        sources = (OperationalStatusSource("global-tracker", ".project-workflow/TRACKER.md"),)
+    else:
+        aggregate = min(aggregate_states, key=lambda value: state_rank[value])
+        summary = f"Weakest active work proof state is {aggregate}."
+        sources = _operational_status_unique_sources(all_sources)
+    return (
+        OperationalStatusValue("proof", aggregate, summary, sources),
+        tuple(classified),
+    )
+
+
+def classify_operational_health(
+    root: Path,
+    *,
+    strict: bool = False,
+) -> tuple[OperationalStatusValue, tuple[OperationalStatusFinding, ...]]:
+    issues = run_doctor(root)
+    accepted = _accepted_doctor_warning_fingerprints(root)
+    evaluation = _evaluate_doctor(
+        issues,
+        root=root,
+        strict=strict,
+        accepted_fingerprints=accepted,
+    )
+    source = OperationalStatusSource("doctor", ".project-workflow", "Doctor evaluation")
+    facts = (
+        _operational_status_fact("strict", strict),
+        _operational_status_fact("total_count", len(evaluation.issues)),
+        _operational_status_fact("visible_count", len(evaluation.visible_issues)),
+        _operational_status_fact("accepted_count", len(evaluation.accepted_issues)),
+        _operational_status_fact("current_count", len(evaluation.current_issues)),
+        _operational_status_fact("legacy_count", len(evaluation.legacy_issues)),
+        _operational_status_fact("blocking_count", len(evaluation.blocking_issues)),
+    )
+    health = OperationalStatusValue(
+        "health",
+        evaluation.status,
+        (
+            "Doctor found no visible issues."
+            if evaluation.status == "pass"
+            else f"Doctor reports {len(evaluation.visible_issues)} visible issue(s)."
+        ),
+        (source,),
+        facts,
+    )
+    findings = tuple(
+        OperationalStatusFinding(
+            issue.code,
+            "error" if issue in evaluation.blocking_issues else "warning",
+            issue.message,
+            (
+                OperationalStatusSource(
+                    "doctor",
+                    _doctor_issue_path_for_fingerprint(issue, root),
+                    f"owner {issue.remediation_owner}; mechanical {str(issue.mechanically_upgradeable).lower()}",
+                ),
+            ),
+        )
+        for issue in evaluation.visible_issues
+    )
+    return health, findings
+
+
+def _operational_delivery_receipt_paths(
+    root: Path,
+    item: OperationalStatusWorkItem,
+) -> tuple[Path, ...]:
+    item_facts = _operational_work_item_facts(item)
+    candidates: list[Path] = []
+    explicit = item_facts.get("delivery_receipt")
+    if isinstance(explicit, str) and explicit:
+        candidates.append(root / explicit)
+    _requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(root, item)
+    if implementation_path is not None:
+        evidence_path = implementation_path.parent / STRUCTURED_EVIDENCE_FILENAME
+        if evidence_path.exists():
+            try:
+                payload = json.loads(evidence_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                payload = {}
+            records = payload.get("claims", []) if isinstance(payload, dict) else []
+            if isinstance(records, list):
+                for record in records:
+                    if not isinstance(record, dict):
+                        continue
+                    if str(record.get("status", "")).strip().lower() != "pass":
+                        continue
+                    artifact = record.get("evidence_artifact")
+                    if not isinstance(artifact, str) or not artifact.strip():
+                        continue
+                    if re.match(r"^[a-z][a-z0-9+.-]*://", artifact, flags=re.IGNORECASE):
+                        continue
+                    candidate = Path(artifact)
+                    if not candidate.is_absolute():
+                        candidate = implementation_path.parent / candidate
+                    candidates.append(candidate)
+    return tuple(dict.fromkeys(candidates))
+
+
+def _operational_receipt_state(payload: object) -> str | None:
+    if not isinstance(payload, dict):
+        return None
+    deployment = payload.get("deployment")
+    if (
+        isinstance(deployment, dict)
+        and deployment.get("status") in {"verified", "deployed"}
+        and all(deployment.get(key) for key in ("target", "source", "observed_at", "result"))
+    ):
+        return "deployed"
+    release = payload.get("release")
+    if not isinstance(release, dict) or not release.get("version"):
+        return None
+    publication = release.get("publication")
+    if (
+        isinstance(publication, dict)
+        and publication.get("status") in {"verified", "published"}
+        and all(
+            publication.get(key)
+            for key in ("target", "source", "observed_at", "result")
+        )
+    ):
+        return "published"
+    return "released"
+
+
+def classify_operational_delivery(
+    root: Path,
+    item: OperationalStatusWorkItem,
+) -> tuple[OperationalStatusValue, tuple[OperationalStatusFinding, ...]]:
+    tracker_source = item.sources[0]
+    if item.lifecycle != "Complete":
+        return (
+            OperationalStatusValue(
+                "delivery",
+                "not-recorded",
+                "Non-terminal work has no completed delivery state.",
+                (tracker_source,),
+            ),
+            (),
+        )
+
+    state = "repository-complete"
+    summary = "Repository workflow completion is recorded."
+    sources: list[OperationalStatusSource] = [tracker_source]
+    findings: list[OperationalStatusFinding] = []
+    item_facts = _operational_work_item_facts(item)
+    tracker_branch = item_facts.get("tracker_branch")
+    if isinstance(tracker_branch, str) and tracker_branch:
+        remote_default = _operational_git_optional(
+            ["symbolic-ref", "--quiet", "--short", "refs/remotes/origin/HEAD"], root
+        )
+        target = remote_default or next(
+            (
+                candidate
+                for candidate in ("main", "master")
+                if _operational_git_optional(["rev-parse", "--verify", candidate], root)
+                is not None
+            ),
+            None,
+        )
+        if target is not None and _operational_git_optional(
+            ["merge-base", "--is-ancestor", tracker_branch, target], root
+        ) is not None:
+            state = "integrated"
+            summary = f"Git proves {tracker_branch} is contained in {target}."
+            sources.append(OperationalStatusSource("git", ".git", f"{tracker_branch} -> {target}"))
+
+    for receipt_path in _operational_delivery_receipt_paths(root, item):
+        receipt_source = OperationalStatusSource(
+            "delivery-receipt",
+            _operational_status_artifact(root, receipt_path),
+        )
+        if not receipt_path.exists():
+            findings.append(
+                OperationalStatusFinding(
+                    "PW_STATUS_DELIVERY_RECEIPT_MISSING",
+                    "warning",
+                    "The referenced delivery receipt does not exist.",
+                    (receipt_source,),
+                )
+            )
+            continue
+        try:
+            receipt_payload = json.loads(receipt_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            findings.append(
+                OperationalStatusFinding(
+                    "PW_STATUS_DELIVERY_RECEIPT_INVALID",
+                    "warning",
+                    f"Delivery receipt is unavailable or malformed: {exc}",
+                    (receipt_source,),
+                )
+            )
+            continue
+        receipt_state = _operational_receipt_state(receipt_payload)
+        if receipt_state is None:
+            findings.append(
+                OperationalStatusFinding(
+                    "PW_STATUS_DELIVERY_RECEIPT_INVALID",
+                    "warning",
+                    "Delivery receipt lacks a recognized release or deployment record.",
+                    (receipt_source,),
+                )
+            )
+            continue
+        receipt_rank = {"released": 1, "published": 2, "deployed": 3}
+        current_rank = receipt_rank.get(state, 0)
+        if receipt_rank[receipt_state] >= current_rank:
+            state = receipt_state
+            summary = f"Repository-local receipt records {receipt_state} delivery."
+            sources.append(receipt_source)
+    return (
+        OperationalStatusValue(
+            "delivery",
+            state,
+            summary,
+            _operational_status_unique_sources(sources),
+        ),
+        tuple(findings),
+    )
+
+
+def _operational_action(
+    code: str,
+    title: str,
+    responsible_party: str,
+    reason: str,
+    sources: tuple[OperationalStatusSource, ...],
+    *,
+    command: str | None = None,
+    request: str | None = None,
+) -> OperationalStatusAction:
+    return OperationalStatusAction(
+        code,
+        title,
+        responsible_party,
+        reason,
+        sources,
+        command,
+        request,
+    )
+
+
+def _operational_action_candidate(
+    precedence: str,
+    action: OperationalStatusAction,
+    *,
+    work_order: int = 0,
+    item_id: str = "",
+) -> _OperationalStatusActionCandidate:
+    return _OperationalStatusActionCandidate(
+        precedence,
+        work_order,
+        item_id,
+        action,
+    )
+
+
+def _operational_installation_action(
+    installation: OperationalStatusValue,
+) -> _OperationalStatusActionCandidate | None:
+    sources = installation.sources or (
+        OperationalStatusSource("repository-compatibility", ".project-workflow"),
+    )
+    if installation.state in {"upgradeable", "legacy-unversioned"}:
+        action = _operational_action(
+            "PW_STATUS_UPGRADE_REQUIRED",
+            "Upgrade project-workflow",
+            "agent",
+            installation.summary,
+            sources,
+            command=CANONICAL_UPGRADE_COMMAND,
+        )
+    elif installation.state == "not-initialized":
+        action = _operational_action(
+            "PW_STATUS_INIT_REQUIRED",
+            "Initialize project-workflow",
+            "agent",
+            installation.summary,
+            sources,
+            command=CANONICAL_INIT_COMMAND,
+        )
+    elif installation.state == "helper-limited":
+        action = _operational_action(
+            "PW_STATUS_HELPER_UPGRADE_REQUIRED",
+            "Use the current project-workflow helper",
+            "agent",
+            installation.summary,
+            sources,
+            command=CANONICAL_UPGRADE_COMMAND,
+        )
+    elif installation.state == "unsupported-future":
+        action = _operational_action(
+            "PW_STATUS_UNSUPPORTED_FUTURE",
+            "Use a compatible helper",
+            "owner",
+            installation.summary,
+            sources,
+            request=(
+                "Select a project-workflow helper version that supports the repository's "
+                "newer contract before making workflow changes."
+            ),
+        )
+    elif installation.state in {"invalid", "unknown"}:
+        action = _operational_action(
+            "PW_STATUS_INSTALLATION_INVALID",
+            "Repair installation identity",
+            "owner",
+            installation.summary,
+            sources,
+            request=(
+                "Review the manifest and repository contract, decide the authoritative "
+                "version, and repair the invalid installation before continuing."
+            ),
+        )
+    else:
+        return None
+    return _operational_action_candidate("installation-safety", action)
+
+
+def _operational_finding_candidates(
+    findings: tuple[OperationalStatusFinding, ...],
+) -> list[_OperationalStatusActionCandidate]:
+    candidates: list[_OperationalStatusActionCandidate] = []
+    for order, finding in enumerate(findings):
+        if finding.severity != "error":
+            continue
+        detail = " ".join(source.detail.lower() for source in finding.sources)
+        responsible_party = "owner" if "owner owner" in detail else "agent"
+        candidates.append(
+            _operational_action_candidate(
+                "blocking-current-finding",
+                _operational_action(
+                    "PW_STATUS_REPAIR_BLOCKER",
+                    f"Resolve {finding.code}",
+                    responsible_party,
+                    finding.message,
+                    finding.sources,
+                    request=(
+                        f"Resolve {finding.code} at its cited source, then rerun "
+                        "`project doctor --strict` and `project status`."
+                    ),
+                ),
+                work_order=order,
+                item_id=finding.code,
+            )
+        )
+    return candidates
+
+
+def _operational_item_layer_map(
+    item: OperationalStatusWorkItem,
+) -> dict[str, OperationalStatusProofLayer]:
+    return {layer.name: layer for layer in item.proof_layers}
+
+
+def _operational_validation_impact_action(
+    root: Path,
+    item: OperationalStatusWorkItem,
+    work_order: int,
+) -> _OperationalStatusActionCandidate | None:
+    _requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(root, item)
+    if implementation_path is None or not implementation_path.exists():
+        return None
+    decision, issues = _validation_impact_from_text(
+        implementation_path.read_text(encoding="utf-8")
+    )
+    if issues:
+        return _operational_action_candidate(
+            "missing-workflow-gate",
+            _operational_action(
+                "PW_STATUS_VALIDATION_IMPACT_INVALID",
+                f"Repair validation impact for {item.item_id}",
+                "agent",
+                "Validation impact decision is invalid: " + "; ".join(issues),
+                (
+                    _operational_status_document_source(
+                        root,
+                        "implementation",
+                        implementation_path,
+                        item.sources[0],
+                    ),
+                ),
+                request=(
+                    "Record one coherent unaffected, affected, or ambiguous decision; "
+                    "do not start validation or review while the decision is invalid."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+    if decision is None:
+        return None
+    classification = str(decision["classification"])
+    verdict = str(decision["validation_verdict"])
+    source = (
+        _operational_status_document_source(
+            root,
+            "implementation",
+            implementation_path,
+            item.sources[0],
+        ),
+    )
+    if classification == "ambiguous":
+        return _operational_action_candidate(
+            "owner-decision",
+            _operational_action(
+                "PW_STATUS_VALIDATION_IMPACT_CLARIFICATION_REQUIRED",
+                f"Clarify validation impact for {item.item_id}",
+                "owner",
+                "The later change cannot yet be tied to a specific prior proof layer.",
+                source,
+                request=(
+                    "Identify the exact prior proof that the later change can invalidate, "
+                    "or confirm that it is unaffected. Do not investigate further first."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+    if classification == "affected" and verdict != "pass":
+        return _operational_action_candidate(
+            "missing-workflow-gate",
+            _operational_action(
+                "PW_STATUS_AFFECTED_VALIDATION_REQUIRED",
+                f"Validate affected proof for {item.item_id}",
+                "agent",
+                (
+                    "The recorded later change invalidates only: "
+                    + ", ".join(str(value) for value in decision["affected_proof_layers"])
+                    + f"; validation verdict is {verdict}."
+                ),
+                source,
+                request=(
+                    "Run the named affected validation once, update its verdict, then stop "
+                    "validation work. This decision does not authorize independent QA."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+    return None
+
+
+def _operational_item_action(
+    root: Path,
+    item: OperationalStatusWorkItem,
+    work_order: int,
+) -> _OperationalStatusActionCandidate | None:
+    layers = _operational_item_layer_map(item)
+    facts = _operational_work_item_facts(item)
+    owner_epic = facts.get("owner_epic")
+    fallback_sources = item.sources
+
+    if item.lifecycle == "Blocked":
+        return _operational_action_candidate(
+            "blocking-current-finding",
+            _operational_action(
+                "PW_STATUS_BLOCKER_DECISION_REQUIRED",
+                f"Resolve blocker for {item.item_id}",
+                "owner",
+                f"{item.item_id} is explicitly Blocked.",
+                fallback_sources,
+                request=(
+                    f"Record the decision or changed condition that unblocks {item.item_id}, "
+                    "then move it to the appropriate prior lifecycle state."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    if item.kind == "epic-child" and item.lifecycle == "Proposed" and owner_epic:
+        return _operational_action_candidate(
+            "lifecycle-progress",
+            _operational_action(
+                "PW_STATUS_APPROVE_EPIC_CHILD",
+                f"Approve {item.item_id}",
+                "agent",
+                "The child is authorized by the parent decomposition and remains Proposed.",
+                fallback_sources,
+                command=(
+                    f"./.project-workflow/cli/workflow epic approve --epic-id "
+                    f"{owner_epic} --id {item.item_id}"
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+    if item.kind == "epic-child" and item.lifecycle == "Approved" and owner_epic:
+        return _operational_action_candidate(
+            "lifecycle-progress",
+            _operational_action(
+                "PW_STATUS_SCAFFOLD_EPIC_CHILD",
+                f"Scaffold {item.item_id}",
+                "agent",
+                "The approved child has not been scaffolded.",
+                fallback_sources,
+                command=(
+                    f"./.project-workflow/cli/workflow epic scaffold-child --epic-id "
+                    f"{owner_epic} --id {item.item_id}"
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    approval = layers.get("requirements-approval")
+    if approval is not None and approval.state not in {"pass", "not-required"}:
+        return _operational_action_candidate(
+            "owner-decision",
+            _operational_action(
+                "PW_STATUS_REQUIREMENTS_APPROVAL_REQUIRED",
+                f"Approve requirements for {item.item_id}",
+                "owner",
+                approval.summary,
+                approval.sources,
+                request=(
+                    f"Review and approve the requirements and acceptance criteria envelope "
+                    f"for {item.item_id}."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    if item.kind == "fix" and item.lifecycle == "To Do":
+        return _operational_action_candidate(
+            "lifecycle-progress",
+            _operational_action(
+                "PW_STATUS_TRIAGE_FIX",
+                f"Triage {item.item_id}",
+                "agent",
+                "The Fix remains in To Do and must pass its triage gate.",
+                fallback_sources,
+                command=f"./.project-workflow/cli/workflow fix triage --id {item.item_id}",
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    readiness = layers.get("readiness")
+    if readiness is not None and readiness.state not in {"pass", "not-required"}:
+        return _operational_action_candidate(
+            "missing-workflow-gate",
+            _operational_action(
+                "PW_STATUS_READINESS_REQUIRED",
+                f"Repair readiness for {item.item_id}",
+                "agent",
+                readiness.summary,
+                readiness.sources,
+                request=(
+                    f"Complete the cited readiness requirements for {item.item_id}, then "
+                    "run its supported readiness command."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    implementation = layers.get("implementation")
+    if (
+        implementation is not None
+        and implementation.state != "pass"
+        and item.lifecycle in {"In Progress", "Testing", "Review", "Closeout", "Complete"}
+    ):
+        return _operational_action_candidate(
+            "missing-workflow-gate",
+            _operational_action(
+                "PW_STATUS_IMPLEMENTATION_REQUIRED",
+                f"Complete implementation for {item.item_id}",
+                "agent",
+                implementation.summary,
+                implementation.sources,
+                request=(
+                    f"Finish and record the implementation work for {item.item_id} before "
+                    "advancing its lifecycle."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    impact_action = _operational_validation_impact_action(root, item, work_order)
+    if impact_action is not None:
+        return impact_action
+
+    qa = layers.get("qa-review")
+    if qa is not None and qa.state != "pass" and item.lifecycle in {"Review", "Complete"}:
+        if qa.state == "not-required":
+            qa = None
+    if qa is not None and qa.state not in {"pass", "not-required"} and item.lifecycle in {"Review", "Complete"}:
+        return _operational_action_candidate(
+            "missing-workflow-gate",
+            _operational_action(
+                "PW_STATUS_QA_REQUIRED",
+                f"Run required review for {item.item_id}",
+                "agent",
+                qa.summary,
+                qa.sources,
+                request=(
+                    "Complete only the QA gate already required by the approved work item. "
+                    "A validation-impact decision never creates or broadens QA."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    acceptance = layers.get("parent-acceptance")
+    if (
+        acceptance is not None
+        and acceptance.state not in {"pass", "not-required"}
+        and item.lifecycle in {"Review", "Closeout", "Complete"}
+    ):
+        return _operational_action_candidate(
+            "missing-workflow-gate",
+            _operational_action(
+                "PW_STATUS_PARENT_ACCEPTANCE_REQUIRED",
+                f"Record acceptance for {item.item_id}",
+                "agent",
+                acceptance.summary,
+                acceptance.sources,
+                request=(
+                    f"Record the cited parent acceptance evidence for {item.item_id} before "
+                    "completion."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    evidence = layers.get("structured-evidence")
+    if (
+        evidence is not None
+        and evidence.state not in {"pass", "not-required"}
+        and item.lifecycle in {"Review", "Closeout", "Complete"}
+    ):
+        return _operational_action_candidate(
+            "missing-workflow-gate",
+            _operational_action(
+                "PW_STATUS_STRUCTURED_EVIDENCE_REQUIRED",
+                f"Collect evidence for {item.item_id}",
+                "external-authority",
+                evidence.summary,
+                evidence.sources,
+                request=(
+                    f"Collect and record passing evidence for every triggered proof recipe "
+                    f"owned by {item.item_id}."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    command: str | None = None
+    code = ""
+    title = ""
+    reason = f"{item.item_id} is ready for its next legal lifecycle transition."
+    if item.kind == "epic-child" and owner_epic:
+        transitions = {
+            "In Progress": ("PW_STATUS_TEST_EPIC_CHILD", "Move child to Testing", "Testing"),
+            "Testing": ("PW_STATUS_REVIEW_EPIC_CHILD", "Move child to Review", "Review"),
+            "Review": ("PW_STATUS_COMPLETE_EPIC_CHILD", "Complete child", "Complete"),
+        }
+        if item.lifecycle in transitions:
+            code, title, target = transitions[item.lifecycle]
+            command = (
+                f"./.project-workflow/cli/workflow epic status --epic-id {owner_epic} "
+                f"--id {item.item_id} --to {target}"
+            )
+    elif item.kind == "epic":
+        transitions = {
+            "To Do": ("PW_STATUS_ANALYSE_EPIC", "Begin Epic analysis", "Analysing"),
+            "Analysing": ("PW_STATUS_READY_EPIC", "Mark Epic ready", "Ready"),
+            "Ready": ("PW_STATUS_START_EPIC", "Start Epic", "In Progress"),
+            "In Progress": ("PW_STATUS_CLOSEOUT_EPIC", "Begin Epic closeout", "Closeout"),
+        }
+        if item.lifecycle in transitions:
+            code, title, target = transitions[item.lifecycle]
+            command = (
+                f"./.project-workflow/cli/workflow epic lifecycle --epic-id "
+                f"{item.item_id} --to '{target}'"
+            )
+        elif item.lifecycle == "Closeout":
+            code = "PW_STATUS_COMPLETE_EPIC"
+            title = "Complete Epic closeout"
+            command = (
+                f"./.project-workflow/cli/workflow epic closeout --epic-id {item.item_id}"
+            )
+    elif item.kind == "fix":
+        transitions = {
+            "Ready": ("PW_STATUS_START_FIX", "Start Fix", "In Progress"),
+            "In Progress": ("PW_STATUS_TEST_FIX", "Move Fix to Testing", "Testing"),
+            "Testing": ("PW_STATUS_REVIEW_FIX", "Move Fix to Review", "Review"),
+        }
+        if item.lifecycle in transitions:
+            code, title, target = transitions[item.lifecycle]
+            command = (
+                f"./.project-workflow/cli/workflow fix status --id {item.item_id} "
+                f"--to '{target}'"
+            )
+    else:
+        transitions = {
+            "To Do": ("PW_STATUS_ANALYSE_TASK", "Begin task analysis", "Analysing"),
+            "Analysing": ("PW_STATUS_READY_TASK", "Mark task ready", "Ready"),
+            "Ready": ("PW_STATUS_START_TASK", "Start task", "In Progress"),
+            "Plan Confirmed": ("PW_STATUS_START_TASK", "Start task", "In Progress"),
+            "In Progress": ("PW_STATUS_TEST_TASK", "Move task to Testing", "Testing"),
+            "Testing": ("PW_STATUS_REVIEW_TASK", "Move task to Review", "Review"),
+            "Review": ("PW_STATUS_COMPLETE_TASK", "Complete task", "Complete"),
+        }
+        if item.lifecycle in transitions:
+            code, title, target = transitions[item.lifecycle]
+            command = (
+                f"./.project-workflow/cli/workflow task status --id {item.item_id} "
+                f"--to '{target}'"
+            )
+    if command is not None:
+        return _operational_action_candidate(
+            "lifecycle-progress",
+            _operational_action(
+                code,
+                f"{title}: {item.item_id}",
+                "agent",
+                reason,
+                fallback_sources,
+                command=command,
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    if item.kind == "fix" and item.lifecycle == "Review":
+        return _operational_action_candidate(
+            "lifecycle-progress",
+            _operational_action(
+                "PW_STATUS_CLOSE_FIX",
+                f"Close Fix: {item.item_id}",
+                "agent",
+                "The Fix reached Review and its recorded proof gates pass.",
+                fallback_sources,
+                request=(
+                    f"Record disposition, decision, closing identity, and verification for "
+                    f"{item.item_id}, then run the supported `fix close` command with those "
+                    "values."
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+
+    if item.delivery is not None and item.delivery.state in {
+        "repository-complete",
+        "integrated",
+        "released",
+        "published",
+    }:
+        delivery_requests = {
+            "repository-complete": ("Authorize and record branch integration.", "owner"),
+            "integrated": ("Create and record the intended release.", "owner"),
+            "released": ("Verify and record public publication.", "external-authority"),
+            "published": ("Verify and record the intended deployment.", "external-authority"),
+        }
+        request, party = delivery_requests[item.delivery.state]
+        return _operational_action_candidate(
+            "delivery-follow-up",
+            _operational_action(
+                "PW_STATUS_DELIVERY_FOLLOW_UP",
+                f"Advance delivery for {item.item_id}",
+                party,
+                item.delivery.summary,
+                item.delivery.sources or fallback_sources,
+                request=request,
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+    return None
+
+
+def _operational_backlog_candidate(
+    root: Path,
+) -> _OperationalStatusActionCandidate | None:
+    backlog_path = root / ".project-workflow" / "BACKLOG.md"
+    if not backlog_path.exists():
+        return None
+    issues: list[DoctorIssue] = []
+    source = OperationalStatusSource("backlog", ".project-workflow/BACKLOG.md")
+    try:
+        rows = _backlog_rows(backlog_path, issues=issues)
+    except (OSError, SystemExit):
+        rows = []
+        issues.append(
+            DoctorIssue(
+                "PW_BACKLOG_INVALID",
+                "error",
+                str(backlog_path),
+                "Backlog cannot be parsed using the required schema.",
+                "agent",
+                False,
+            )
+        )
+    if issues:
+        return _operational_action_candidate(
+            "blocking-current-finding",
+            _operational_action(
+                "PW_STATUS_BACKLOG_INVALID",
+                "Repair backlog structure",
+                "agent",
+                f"Backlog parsing found {len(issues)} issue(s).",
+                (source,),
+                request="Repair the cited backlog rows, then rerun backlog validation.",
+            ),
+        )
+    eligible = [
+        (order, row)
+        for order, row in enumerate(rows)
+        if row.get("Status") in {"Accepted", "Proposed"}
+        and not row.get("Promoted To", "").strip()
+    ]
+    if not eligible:
+        return None
+    priority_rank = {"High": 0, "Medium": 1, "Low": 2, "Unset": 3}
+    order, row = min(
+        eligible,
+        key=lambda entry: (
+            priority_rank.get(entry[1].get("Priority", "Unset"), 4),
+            entry[0],
+        ),
+    )
+    row_id = row.get("ID", "").strip()
+    title = row.get("Title", "").strip() or row_id
+    return _operational_action_candidate(
+        "backlog-selection",
+        _operational_action(
+            "PW_STATUS_SELECT_BACKLOG_ITEM",
+            f"Select backlog item {row_id}",
+            "owner",
+            (
+                f"{row_id} is the highest recorded actionable backlog item "
+                f"({row.get('Priority', 'Unset')}, file order {order + 1})."
+            ),
+            (source,),
+            request=(
+                f"Confirm whether to promote or otherwise advance {row_id}: {title}."
+            ),
+        ),
+        work_order=order,
+        item_id=row_id,
+    )
+
+
+def resolve_operational_actions(
+    root: Path,
+    *,
+    installation: OperationalStatusValue,
+    work_items: tuple[OperationalStatusWorkItem, ...],
+    findings: tuple[OperationalStatusFinding, ...] = (),
+    focus_id: str | None = None,
+) -> tuple[OperationalStatusAction, tuple[OperationalStatusAction, ...]]:
+    candidates: list[_OperationalStatusActionCandidate] = []
+    installation_candidate = _operational_installation_action(installation)
+    if installation_candidate is not None:
+        candidates.append(installation_candidate)
+    candidates.extend(_operational_finding_candidates(findings))
+
+    selected_work = tuple(
+        item for item in work_items if focus_id is None or item.item_id == focus_id
+    )
+    for order, item in enumerate(selected_work):
+        candidate = _operational_item_action(root, item, order)
+        if candidate is not None:
+            candidates.append(candidate)
+
+    if focus_id is not None and not selected_work:
+        candidates.append(
+            _operational_action_candidate(
+                "blocking-current-finding",
+                _operational_action(
+                    "PW_STATUS_FOCUS_NOT_FOUND",
+                    f"Locate work item {focus_id}",
+                    "agent",
+                    f"The active operational projection contains no item named {focus_id}.",
+                    (
+                        OperationalStatusSource(
+                            "global-tracker", ".project-workflow/TRACKER.md"
+                        ),
+                    ),
+                    request=(
+                        f"Check the item ID and its tracker lifecycle, then rerun status for "
+                        f"{focus_id}."
+                    ),
+                ),
+                item_id=focus_id,
+            )
+        )
+    elif not selected_work:
+        backlog_candidate = _operational_backlog_candidate(root)
+        if backlog_candidate is not None:
+            candidates.append(backlog_candidate)
+
+    if not candidates:
+        candidates.append(
+            _operational_action_candidate(
+                "no-action",
+                _operational_action(
+                    "PW_STATUS_NO_ACTION",
+                    "No repository action is required",
+                    "owner",
+                    "No compatibility blocker, active-work gate, or actionable backlog item was found.",
+                    (
+                        OperationalStatusSource(
+                            "global-tracker", ".project-workflow/TRACKER.md"
+                        ),
+                    ),
+                    request="Select a future outcome when more work is desired.",
+                ),
+            )
+        )
+
+    rank = {
+        name: index for index, name in enumerate(OPERATIONAL_STATUS_ACTION_PRECEDENCE)
+    }
+    ordered = sorted(
+        candidates,
+        key=lambda candidate: (
+            rank[candidate.precedence],
+            candidate.work_order,
+            candidate.item_id,
+            candidate.action.code,
+        ),
+    )
+    unique: list[OperationalStatusAction] = []
+    seen: set[tuple[str, str, str | None, str | None, tuple[str, ...]]] = set()
+    for candidate in ordered:
+        action = candidate.action
+        identity = (
+            action.code,
+            action.title,
+            action.command,
+            action.request,
+            tuple(source.artifact for source in action.sources),
+        )
+        if identity in seen:
+            continue
+        seen.add(identity)
+        unique.append(action)
+    return unique[0], tuple(unique[1:])
+
+
+def _operational_aggregate_delivery(
+    work_items: tuple[OperationalStatusWorkItem, ...],
+) -> OperationalStatusValue:
+    values = tuple(item.delivery for item in work_items if item.delivery is not None)
+    if not values:
+        return OperationalStatusValue(
+            "delivery",
+            "not-recorded",
+            "No selected work item has a recorded delivery state.",
+            (OperationalStatusSource("global-tracker", ".project-workflow/TRACKER.md"),),
+        )
+    rank = {
+        "unknown": 0,
+        "not-recorded": 1,
+        "repository-complete": 2,
+        "integrated": 3,
+        "released": 4,
+        "published": 5,
+        "deployed": 6,
+    }
+    weakest = min(values, key=lambda value: rank[value.state])
+    sources = _operational_status_unique_sources(
+        [source for value in values for source in value.sources]
+    )
+    return OperationalStatusValue(
+        "delivery",
+        weakest.state,
+        f"Weakest selected work delivery state is {weakest.state}.",
+        sources,
+    )
+
+
+def build_operational_status_snapshot(
+    root: Path,
+    *,
+    strict: bool = False,
+    focus_id: str | None = None,
+    repository_id: str | None = None,
+) -> OperationalStatusSnapshot:
+    inspected_root = root.resolve()
+    inspection = inspect_operational_status_repository(
+        inspected_root,
+        repository_id=repository_id,
+    )
+    selected = tuple(
+        item
+        for item in inspection.active_work
+        if focus_id is None or item.item_id == focus_id
+    )
+    selected_repositories = inspection.repositories
+    if inspection.workspace_authority is not None and focus_id is not None:
+        relevant_repository_ids = _operational_relevant_repository_ids(
+            inspected_root,
+            selected,
+        )
+        if repository_id is not None and relevant_repository_ids:
+            if repository_id not in relevant_repository_ids:
+                raise SystemExit(
+                    f"Workspace repository '{repository_id}' is not in the recorded scope "
+                    f"for active work item '{focus_id}'."
+                )
+        elif relevant_repository_ids:
+            selected_repositories = tuple(
+                repository
+                for repository in selected_repositories
+                if repository.repository_id in relevant_repository_ids
+            )
+    proof, proof_work = classify_operational_proof(inspected_root, selected)
+    health, health_findings = classify_operational_health(inspected_root, strict=strict)
+    delivered_work: list[OperationalStatusWorkItem] = []
+    delivery_findings: list[OperationalStatusFinding] = []
+    for item in proof_work:
+        delivery, item_findings = classify_operational_delivery(inspected_root, item)
+        delivery_findings.extend(item_findings)
+        item_facts = item.facts
+        item_sources = item.sources
+        owner_epic = next(
+            (
+                str(fact.value)
+                for fact in item.facts
+                if fact.key == "owner_epic" and fact.value
+            ),
+            None,
+        )
+        intent_epic_id = item.item_id if item.kind == "epic" else owner_epic
+        if intent_epic_id:
+            try:
+                intent_epic_dir = _resolve_epic_dir(
+                    inspected_root / ".project-workflow" / "tasks", intent_epic_id
+                )
+                intent_requirements = (intent_epic_dir / "REQUIREMENTS.md").read_text(
+                    encoding="utf-8"
+                )
+                if _intent_contract_mode(intent_requirements) == "full":
+                    intent_evaluation = _intent_audit_evaluation(intent_epic_dir)
+                    item_facts = item_facts + (
+                        _operational_status_fact(
+                            "intent_audit_state", intent_evaluation["state"]
+                        ),
+                    )
+                    item_sources = item_sources + (
+                        OperationalStatusSource(
+                            "intent-audit",
+                            _operational_status_artifact(
+                                inspected_root, _intent_audit_path(intent_epic_dir)
+                            ),
+                            str(intent_evaluation["state"]),
+                        ),
+                    )
+            except (OSError, SystemExit):
+                pass
+        delivered_work.append(
+            OperationalStatusWorkItem(
+                item.item_id,
+                item.title,
+                item.kind,
+                item.lifecycle,
+                item.operational_meaning,
+                item_sources,
+                item_facts,
+                item.proof_layers,
+                delivery,
+            )
+        )
+    work_items = tuple(delivered_work)
+    repositories = _operational_repository_evidence(
+        inspected_root,
+        selected_repositories,
+        work_items,
+    )
+    delivery = _operational_aggregate_delivery(work_items)
+    workspace_evidence_findings = _workspace_repository_evidence_findings(repositories)
+    findings = tuple(
+        [
+            *inspection.findings,
+            *health_findings,
+            *delivery_findings,
+            *workspace_evidence_findings,
+        ]
+    )
+    blockers = tuple(finding for finding in findings if finding.severity == "error")
+    primary, secondary = resolve_operational_actions(
+        inspected_root,
+        installation=inspection.installation,
+        work_items=work_items,
+        findings=findings,
+        focus_id=focus_id,
+    )
+    return OperationalStatusSnapshot(
+        str(inspected_root),
+        inspection.installation,
+        inspection.git,
+        health,
+        proof,
+        delivery,
+        work_items,
+        findings,
+        blockers,
+        primary,
+        secondary,
+        inspection.workspace_authority,
+        repositories,
+    )
+
+
+def _operational_status_fact_value(
+    value: OperationalStatusValue,
+    key: str,
+    default: object = None,
+) -> object:
+    return next((fact.value for fact in value.facts if fact.key == key), default)
+
+
+def _operational_human_sources(
+    snapshot: OperationalStatusSnapshot,
+) -> tuple[OperationalStatusSource, ...]:
+    sources: list[OperationalStatusSource] = []
+    for value in (
+        snapshot.installation,
+        snapshot.git,
+        snapshot.health,
+        snapshot.proof,
+        snapshot.delivery,
+    ):
+        sources.extend(value.sources)
+    for repository in snapshot.repositories:
+        sources.extend(repository.git.sources)
+        sources.extend(repository.sources)
+    for item in snapshot.active_work:
+        sources.extend(item.sources)
+        for layer in item.proof_layers:
+            sources.extend(layer.sources)
+        if item.delivery is not None:
+            sources.extend(item.delivery.sources)
+    for finding in (*snapshot.findings, *snapshot.blockers):
+        sources.extend(finding.sources)
+    if snapshot.primary_action is not None:
+        sources.extend(snapshot.primary_action.sources)
+    for action in snapshot.secondary_actions:
+        sources.extend(action.sources)
+    return _operational_status_unique_sources(sources)
+
+
+def render_operational_status_human(snapshot: OperationalStatusSnapshot) -> str:
+    action = snapshot.primary_action
+    if action is None:
+        raise ValueError("Operational status snapshot requires a primary action.")
+    lines = [
+        "Next action",
+        f"- [{action.code}] {action.title}",
+        f"- Responsible: {action.responsible_party}",
+        f"- Why: {action.reason}",
+        (
+            f"- Run: {action.command}"
+            if action.command is not None
+            else f"- Request: {action.request}"
+        ),
+        "",
+        "Status",
+        f"- Installation: {snapshot.installation.state} — {snapshot.installation.summary}",
+        f"- Git: {snapshot.git.state} — {snapshot.git.summary}",
+        (
+            f"- Health: {snapshot.health.state} — {snapshot.health.summary} "
+            f"(accepted warnings: "
+            f"{_operational_status_fact_value(snapshot.health, 'accepted_count', 0)})"
+        ),
+        f"- Proof: {snapshot.proof.state} — {snapshot.proof.summary}",
+        f"- Delivery: {snapshot.delivery.state} — {snapshot.delivery.summary}",
+    ]
+    if snapshot.workspace_authority is not None:
+        lines.extend(("", "Workspace repositories"))
+        for repository in snapshot.repositories:
+            authority = " (authority)" if repository.authority else ""
+            lines.append(
+                f"- {repository.repository_id}{authority} [{repository.role}] "
+                f"{repository.path} — Git {repository.git.state}: {repository.git.summary}"
+            )
+    lines.extend(("", "Active work"))
+    if snapshot.active_work:
+        for item in snapshot.active_work:
+            aggregate_proof = next(
+                (
+                    fact.value
+                    for fact in item.facts
+                    if fact.key == "aggregate_proof_state"
+                ),
+                "not-recorded",
+            )
+            delivery_state = item.delivery.state if item.delivery is not None else "unknown"
+            intent_state = next(
+                (
+                    fact.value
+                    for fact in item.facts
+                    if fact.key == "intent_audit_state"
+                ),
+                None,
+            )
+            intent_suffix = f"; intent {intent_state}" if intent_state else ""
+            outcome_state = next(
+                (
+                    fact.value
+                    for fact in item.facts
+                    if fact.key == "outcome_proof_state"
+                ),
+                "not-recorded",
+            )
+            owner_acceptance_state = next(
+                (
+                    fact.value
+                    for fact in item.facts
+                    if fact.key == "owner_acceptance_state"
+                ),
+                "not-recorded",
+            )
+            lines.append(
+                f"- {item.item_id} [{item.lifecycle}] {item.title} — "
+                f"proof {aggregate_proof}; outcome {outcome_state}; owner acceptance "
+                f"{owner_acceptance_state}; delivery {delivery_state}{intent_suffix}"
+            )
+    else:
+        lines.append("- None selected or active.")
+
+    lines.extend(("", "Findings"))
+    if snapshot.findings:
+        lines.extend(
+            f"- {finding.severity}: {finding.code} — {finding.message}"
+            for finding in snapshot.findings
+        )
+    else:
+        lines.append("- None.")
+
+    lines.extend(("", "Secondary actions"))
+    if snapshot.secondary_actions:
+        for secondary in snapshot.secondary_actions:
+            instruction = secondary.command or secondary.request
+            lines.append(
+                f"- [{secondary.code}] {secondary.title} "
+                f"({secondary.responsible_party}): {instruction}"
+            )
+    else:
+        lines.append("- None.")
+
+    lines.extend(("", "Sources"))
+    lines.extend(
+        f"- {source.kind}: {source.artifact}"
+        + (f" — {source.detail}" if source.detail else "")
+        for source in _operational_human_sources(snapshot)
+    )
+    return "\n".join(lines) + "\n"
+
+
+def cmd_status(args: argparse.Namespace) -> None:
+    root = Path(args.root).resolve() if args.root else Path.cwd()
+    snapshot = build_operational_status_snapshot(
+        root,
+        strict=args.strict,
+        focus_id=args.id,
+        repository_id=args.repository,
+    )
+    if args.format == "json":
+        print(json.dumps(operational_status_payload(snapshot), indent=2))
+    else:
+        print(render_operational_status_human(snapshot), end="")
+
+
+def cmd_validation_impact(args: argparse.Namespace) -> None:
+    root = Path(args.root).resolve() if args.root else Path.cwd()
+    inspection = inspect_operational_status_repository(root)
+    matches = tuple(item for item in inspection.active_work if item.item_id == args.id)
+    if not matches:
+        raise SystemExit(
+            f"Active operational state contains no work item named '{args.id}'."
+        )
+    if len(matches) > 1:
+        raise SystemExit(f"Active operational state contains duplicate ID '{args.id}'.")
+    item = matches[0]
+    requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(
+        root, item
+    )
+    if implementation_path is None or not implementation_path.exists():
+        raise SystemExit(
+            f"{args.id} has no implementation or Fix document for an impact decision."
+        )
+    try:
+        decision = _validation_impact_decision(
+            classification=args.classification,
+            proof_layers=tuple(args.proof_layer or ()),
+            validation_verdict=args.validation_verdict,
+        )
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
+    section = _validation_impact_section(
+        baseline=args.baseline,
+        change_summary=args.change_summary,
+        decided_by=args.decided_by,
+        decision=decision,
+    )
+    docs_text = implementation_path.read_text(encoding="utf-8")
+    updated = _upsert_markdown_section(
+        docs_text,
+        heading="Validation Impact",
+        section=section,
+        before_heading="QA & Code Review",
+    )
+    implementation_path.write_text(updated, encoding="utf-8")
+    payload = {
+        "work_item": item.item_id,
+        "artifact": _operational_status_artifact(root, implementation_path),
+        "baseline_proof": args.baseline.strip(),
+        "change_summary": args.change_summary.strip(),
+        "decided_by": args.decided_by.strip(),
+        **decision,
+    }
+    payload["decision_identity"] = _validation_impact_identity(
+        baseline=args.baseline,
+        change_summary=args.change_summary,
+        decided_by=args.decided_by,
+        decision=decision,
+    )
+    if args.format == "json":
+        print(json.dumps(payload, indent=2))
+        return
+    print(f"Recorded validation impact for {item.item_id}:")
+    print(f"- Classification: {decision['classification']}")
+    print(f"- Required validation: {decision['required_validation']}")
+    print(f"- Validation verdict: {decision['validation_verdict']}")
+    print(f"- Artifact: {payload['artifact']}")
 
 
 def _migration_target_is_safe(target: str) -> bool:
@@ -1385,6 +8224,11 @@ def _managed_asset_upgrade_outputs(
     guidance_path = workflow_dir / "guidance.md"
     config_path = workflow_dir / WORKFLOW_CONFIG_FILENAME
     manifest_path = workflow_dir / WORKFLOW_MANIFEST_FILENAME
+
+    record(
+        workflow_dir / ".gitignore",
+        _planned_delegation_runtime_ignore(root),
+    )
 
     if not tracker_path.exists():
         record(tracker_path, _tracker_template().encode("utf-8"))
@@ -2303,6 +9147,18 @@ def _smoke_bomb_plan_outputs(
             outputs[action["path"]] = content
 
     workflow_dir = root / ".project-workflow"
+    private_runtime_dir = root / DELEGATION_RUNTIME_RELATIVE_DIR
+    private_runtime_present = private_runtime_dir.is_dir() and any(
+        path.is_file() or path.is_symlink() for path in private_runtime_dir.rglob("*")
+    )
+    if private_runtime_present:
+        blockers.append(
+            SmokeBombBlocker(
+                "PW_SMOKE_BOMB_PRIVATE_RUNTIME_PRESENT",
+                "Machine-local delegation runtime exists. Clear it outside the retained Smoke "
+                "Bomb evidence flow before planning or export; private handle paths are redacted.",
+            )
+        )
     if (
         not _smoke_bomb_target_is_safe(root, workflow_dir / "sentinel")
         or workflow_dir.is_symlink()
@@ -2316,6 +9172,8 @@ def _smoke_bomb_plan_outputs(
         )
     elif workflow_dir.is_dir():
         for path in sorted(workflow_dir.rglob("*")):
+            if path == private_runtime_dir or private_runtime_dir in path.parents:
+                continue
             if path.is_symlink() or (path.exists() and not path.is_file() and not path.is_dir()):
                 blockers.append(
                     SmokeBombBlocker(
@@ -2331,6 +9189,28 @@ def _smoke_bomb_plan_outputs(
                     ownership="project-workflow-directory",
                     source=".project-workflow",
                 )
+
+    ignore_path = root / ".gitignore"
+    if ignore_path.is_file() and not ignore_path.is_symlink():
+        try:
+            ignore_lines = ignore_path.read_text(encoding="utf-8").splitlines()
+        except (OSError, UnicodeDecodeError):
+            ignore_lines = []
+        runtime_comment = "# Machine-local delegation handles and leases"
+        runtime_entry = f"{DELEGATION_RUNTIME_RELATIVE_DIR.as_posix()}/"
+        sanitized_lines = [
+            line for line in ignore_lines if line.strip() not in {runtime_comment, runtime_entry}
+        ]
+        while sanitized_lines and not sanitized_lines[-1].strip():
+            sanitized_lines.pop()
+        sanitized_ignore = ("\n".join(sanitized_lines) + "\n").encode("utf-8")
+        record(
+            ignore_path,
+            sanitized_ignore,
+            reason="Remove the ignored project-workflow runtime-state boundary from client output.",
+            ownership="project-workflow-ignore-entry",
+            source=runtime_entry,
+        )
 
     for path in sorted(_smoke_bomb_generated_asset_paths(root)):
         if not path.exists():
@@ -3206,6 +10086,137 @@ def _normalize_id_generation_mode(value: str) -> str:
     return normalized
 
 
+def _load_workspace_definition(
+    root: Path,
+    config_path: Path,
+    raw_workspace: object,
+) -> WorkspaceDefinition | None:
+    if raw_workspace is None:
+        return None
+    if not isinstance(raw_workspace, dict):
+        raise SystemExit(f"{config_path} field 'workspace' must be an object.")
+
+    authority = raw_workspace.get("authority_repository")
+    if not isinstance(authority, str) or not authority.strip():
+        raise SystemExit(
+            f"{config_path} field 'workspace.authority_repository' must be a non-empty string."
+        )
+    authority = authority.strip()
+
+    raw_repositories = raw_workspace.get("repositories")
+    if not isinstance(raw_repositories, list) or not raw_repositories:
+        raise SystemExit(
+            f"{config_path} field 'workspace.repositories' must be a non-empty list."
+        )
+
+    root_resolved = root.resolve()
+    repositories: list[WorkspaceRepository] = []
+    repository_ids: set[str] = set()
+    repository_paths: set[str] = set()
+    git_roots: set[Path] = set()
+    for index, raw_repository in enumerate(raw_repositories, start=1):
+        label = f"workspace.repositories entry {index}"
+        if not isinstance(raw_repository, dict):
+            raise SystemExit(f"{config_path} {label} must be an object.")
+        repository_id = raw_repository.get("id")
+        repository_path = raw_repository.get("path")
+        role = raw_repository.get("role")
+        if not isinstance(repository_id, str) or not re.fullmatch(
+            r"[a-z][a-z0-9-]*", repository_id
+        ):
+            raise SystemExit(
+                f"{config_path} {label} field 'id' must be a lowercase slug."
+            )
+        if repository_id in repository_ids:
+            raise SystemExit(
+                f"{config_path} workspace repository ID '{repository_id}' is duplicated."
+            )
+        if not isinstance(repository_path, str) or not repository_path.strip():
+            raise SystemExit(f"{config_path} {label} field 'path' must be non-empty text.")
+        path_value = Path(repository_path.strip())
+        if path_value.is_absolute() or ".." in path_value.parts:
+            raise SystemExit(
+                f"{config_path} workspace repository path '{repository_path}' must be "
+                "relative to the authority root and cannot contain '..'."
+            )
+        normalized_path = path_value.as_posix().rstrip("/") or "."
+        if normalized_path in repository_paths:
+            raise SystemExit(
+                f"{config_path} workspace repository path '{normalized_path}' is duplicated."
+            )
+        if role not in {"control", "implementation"}:
+            raise SystemExit(
+                f"{config_path} {label} field 'role' must be 'control' or 'implementation'."
+            )
+
+        resolved_path = (root_resolved / path_value).resolve()
+        try:
+            resolved_path.relative_to(root_resolved)
+        except ValueError as exc:
+            raise SystemExit(
+                f"{config_path} workspace repository path '{normalized_path}' escapes "
+                "the authority root."
+            ) from exc
+        if not resolved_path.is_dir():
+            raise SystemExit(
+                f"{config_path} workspace repository path '{normalized_path}' "
+                "does not exist as a directory."
+            )
+        git_root = _operational_git_optional(["rev-parse", "--show-toplevel"], resolved_path)
+        if git_root is None:
+            raise SystemExit(
+                f"{config_path} workspace repository '{repository_id}' is not a readable "
+                "Git worktree."
+            )
+        resolved_git_root = Path(git_root).resolve()
+        if resolved_git_root != resolved_path:
+            raise SystemExit(
+                f"{config_path} workspace repository '{repository_id}' path "
+                f"'{normalized_path}' is not an independent Git root."
+            )
+        if resolved_git_root in git_roots:
+            raise SystemExit(
+                f"{config_path} workspace repositories must resolve to unique Git roots; "
+                f"'{repository_id}' aliases an existing repository."
+            )
+
+        repository_ids.add(repository_id)
+        repository_paths.add(normalized_path)
+        git_roots.add(resolved_git_root)
+        repositories.append(
+            WorkspaceRepository(
+                repository_id,
+                normalized_path,
+                role,
+                resolved_path,
+            )
+        )
+
+    if authority not in repository_ids:
+        raise SystemExit(
+            f"{config_path} workspace authority repository '{authority}' is not registered."
+        )
+    authority_repository = next(
+        repository for repository in repositories if repository.repository_id == authority
+    )
+    if authority_repository.resolved_path != root_resolved:
+        raise SystemExit(
+            f"{config_path} workspace authority repository '{authority}' must use path '.' "
+            "because the parent repository owns .project-workflow."
+        )
+    control_repositories = [
+        repository.repository_id
+        for repository in repositories
+        if repository.role == "control"
+    ]
+    if control_repositories != [authority]:
+        raise SystemExit(
+            f"{config_path} workspace must define exactly one control repository and it "
+            f"must be authority_repository '{authority}'."
+        )
+    return WorkspaceDefinition(authority, tuple(repositories))
+
+
 def _default_workflow_config() -> WorkflowConfig:
     return WorkflowConfig(
         task_id_prefixes=(TASK_ID_PREFIX,),
@@ -3214,6 +10225,7 @@ def _default_workflow_config() -> WorkflowConfig:
         id_generation=dict(DEFAULT_ID_GENERATION),
         unique_id_length=DEFAULT_UNIQUE_ID_LENGTH,
         accepted_doctor_warnings={},
+        workspace=None,
     )
 
 
@@ -3336,6 +10348,8 @@ def _load_workflow_config(root: Path) -> WorkflowConfig:
             )
         accepted_doctor_warnings[fingerprint] = reason
 
+    workspace = _load_workspace_definition(root, config_path, raw.get("workspace"))
+
     return WorkflowConfig(
         task_id_prefixes=tuple(prefixes),
         default_task_id_prefix=default_prefix,
@@ -3343,6 +10357,7 @@ def _load_workflow_config(root: Path) -> WorkflowConfig:
         id_generation=id_generation,
         unique_id_length=raw_unique_id_length,
         accepted_doctor_warnings=accepted_doctor_warnings,
+        workspace=workspace,
     )
 
 
@@ -3452,7 +10467,20 @@ def _write_file(path: Path, content: str, *, overwrite: bool) -> None:
     path.write_text(content, encoding="utf-8")
 
 
-def _implementation_template(task_id: str, title: str) -> str:
+def _template_repository_id(root: Path | None) -> str:
+    if root is None:
+        return "."
+    workspace = _load_workflow_config(root).workspace
+    return workspace.authority_repository if workspace is not None else "."
+
+
+def _implementation_template(
+    task_id: str,
+    title: str,
+    *,
+    root: Path | None = None,
+) -> str:
+    repository_id = _template_repository_id(root)
     return (
         f"## User Story\n\n"
         f"As a ____, I want ____, so that ____.\n\n"
@@ -3460,12 +10488,22 @@ def _implementation_template(task_id: str, title: str) -> str:
         f"- [ ] AC1: ____\n\n"
         f"## Validation\n\n"
         f"- AC1: ____\n\n"
+        f"## Repository Evidence\n\n"
+        f"| Repository | Branch / PR | Validation | Delivery | Evidence |\n"
+        f"| ---------- | ----------- | ---------- | -------- | -------- |\n"
+        f"| {repository_id} | not recorded | not recorded | not recorded | not recorded |\n\n"
         f"## Task List\n\n"
-        f"| ID | Title | Description | Acceptance Criteria | User Verification | Status |\n"
-        f"| --: | ----- | ----------- | ------------------- | ----------------- | ------ |\n"
-        f"| 1 | ____ | ____ | AC1: ____ | ____ | To Do |\n\n"
+        f"| ID | Title | Description | Acceptance Criteria | User Verification | Status | Dependencies | Write Scope | Parallel Safe | Execution Needs |\n"
+        f"| --: | ----- | ----------- | ------------------- | ----------------- | ------ | ------------ | ----------- | ------------- | --------------- |\n"
+        f"| 1 | ____ | ____ | AC1: ____ | ____ | To Do | | ____ | No | bounded-return |\n\n"
         f"## QA & Code Review\n\n"
+        f"- Intent QA contract: adversarial\n"
         f"- Verdict: ____\n"
+        f"- Intent adversarial verdict: ____\n"
+        f"- Could every AC pass while the approved user job remains undone: ____\n"
+        f"- Intent audit state: ____\n"
+        f"- Outcome journey evidence: ____\n"
+        f"- Reviewer independence: ____\n"
         f"- Evidence: ____\n"
         f"- Findings: ____\n\n"
         f"## Retro\n\n"
@@ -3479,14 +10517,32 @@ def _implementation_template(task_id: str, title: str) -> str:
     )
 
 
-def _requirements_template(task_id: str, title: str) -> str:
+def _requirements_template(
+    task_id: str,
+    title: str,
+    *,
+    root: Path | None = None,
+) -> str:
+    repository_id = _template_repository_id(root)
     return (
         f"# Requirements\n\n"
         f"## Summary\n\n"
         f"- Task: {task_id}\n"
         f"- Title: {title}\n"
-        f"- Last updated: {date.today().isoformat()}\n\n"
+        f"- Last updated: {date.today().isoformat()}\n"
+        f"- Intent contract: full\n\n"
+        f"## Intent\n\n"
+        f"State the owner's desired outcome in one or two plain-language sentences.\n\n"
+        f"## Intent Spine\n\n"
+        f"- OC1 — Completion capability: ____\n"
+        f"- OC2 — Material capabilities: ____\n"
+        f"- OC3 — Success journey: ____\n"
+        f"- OC4 — Successful-but-wrong result: ____\n"
+        f"- OC5 — Exclusions: ____\n"
+        f"- OC6 — Assumptions: ____\n"
+        f"- OC7 — Authority source: ____\n\n"
         f"## Owner Approval\n\n"
+        f"- Intent reviewed and accurately reflected: No\n"
         f"- Requirements reviewed by owner: No\n"
         f"- Acceptance criteria reviewed by owner: No\n"
         f"- Approved for decomposition: No\n"
@@ -3502,6 +10558,9 @@ def _requirements_template(task_id: str, title: str) -> str:
         f"List what is explicitly out-of-scope.\n\n"
         f"## Users & Context\n\n"
         f"Who is affected and in what situation?\n\n"
+        f"## Repository Scope\n\n"
+        f"- Primary repository: {repository_id}\n"
+        f"- Repositories touched: {repository_id}\n\n"
         f"## Requirements (Outcome-Focused)\n\n"
         f"- ____\n\n"
         f"## Acceptance Criteria (Verifiable)\n\n"
@@ -3515,14 +10574,23 @@ def _requirements_template(task_id: str, title: str) -> str:
     )
 
 
-def _fix_template(fix_id: str, title: str) -> str:
+def _fix_template(
+    fix_id: str,
+    title: str,
+    *,
+    root: Path | None = None,
+) -> str:
+    repository_id = _template_repository_id(root)
     return (
         f"# Fix\n\n"
         f"## Summary\n\n"
         f"- Fix: {fix_id}\n"
         f"- Title: {title}\n"
         f"- Status: To Do\n"
-        f"- Created: {date.today().isoformat()}\n\n"
+        f"- Created: {date.today().isoformat()}\n"
+        f"- Intent contract: compact\n\n"
+        f"## Intent\n\n"
+        f"State the bounded correction and restored outcome in one or two plain-language sentences.\n\n"
         f"## Report\n\n"
         f"- Observed or requested: ____\n"
         f"- Expected: ____\n"
@@ -3554,14 +10622,18 @@ def _fix_template(fix_id: str, title: str) -> str:
         f"- Scope: ____\n"
         f"- Non-goals: ____\n"
         f"- Affected target: ____\n"
-        f"- Primary repo: .\n"
-        f"- Repos touched: .\n"
+        f"- Primary repo: {repository_id}\n"
+        f"- Repos touched: {repository_id}\n"
         f"- Branch, PR, and evidence links: ____\n"
         f"- Verification plan: ____\n\n"
         f"### Repository Links\n\n"
         f"| Repo | Branch | PR | Evidence |\n"
         f"|---|---|---|---|\n"
-        f"| . | ____ | ____ | ____ |\n\n"
+        f"| {repository_id} | ____ | ____ | ____ |\n\n"
+        f"## Repository Evidence\n\n"
+        f"| Repository | Branch / PR | Validation | Delivery | Evidence |\n"
+        f"| ---------- | ----------- | ---------- | -------- | -------- |\n"
+        f"| {repository_id} | not recorded | not recorded | not recorded | not recorded |\n\n"
         f"## Verification\n\n"
         f"- Delivered scope: ____\n"
         f"- Verification result: ____\n"
@@ -3828,6 +10900,13 @@ def _markdown_table_rows_from_section(
 
 
 def _proposed_child_work_rows(requirements_text: str) -> list[dict[str, str]]:
+    rows = _markdown_table_rows_from_section(
+        requirements_text,
+        "Proposed Child Work",
+        expected_columns=("Proposed Child", "Parent ACs", "Purpose", "Dependencies"),
+    )
+    if rows:
+        return rows
     return _markdown_table_rows_from_section(
         requirements_text,
         "Proposed Child Work",
@@ -3868,14 +10947,134 @@ def _epic_contract_proof_owner_map(contract_text: str) -> dict[str, set[str]]:
     return owner_map
 
 
+def _flat_markdown_bullet_records(section: str) -> list[tuple[str, str]]:
+    """Return (logical item, first physical line) for a flat Markdown list."""
+    records: list[tuple[str, str]] = []
+    current_parts: list[str] = []
+    first_physical_line = ""
+    continuation_open = False
+
+    def flush() -> None:
+        nonlocal current_parts, first_physical_line, continuation_open
+        if current_parts:
+            records.append((" ".join(current_parts), first_physical_line))
+        current_parts = []
+        first_physical_line = ""
+        continuation_open = False
+
+    for line in section.splitlines():
+        top_level = re.match(r"^[-*+]\s+(.+?)\s*$", line)
+        if top_level:
+            flush()
+            first_physical_line = top_level.group(1).strip()
+            current_parts = [first_physical_line]
+            continuation_open = True
+            continue
+        if not line.strip():
+            flush()
+            continue
+        if continuation_open:
+            stripped = line.strip()
+            if stripped.startswith(("#", "|")) or re.match(r"^[-*+]\s+", stripped):
+                flush()
+                continue
+            current_parts.append(stripped)
+    flush()
+    return records
+
+
+def _contract_section_bullet_records(
+    contract_text: str,
+    heading: str,
+) -> list[tuple[str, str]]:
+    return [
+        (logical_item, first_physical_line)
+        for logical_item, first_physical_line in _flat_markdown_bullet_records(
+            _markdown_section(contract_text, heading)
+        )
+        if not _section_has_placeholder(logical_item)
+    ]
+
+
 def _contract_section_bullets(contract_text: str, heading: str) -> list[str]:
-    section = _markdown_section(contract_text, heading)
-    bullets: list[str] = []
+    return [
+        logical_item
+        for logical_item, _first_physical_line in _contract_section_bullet_records(
+            contract_text,
+            heading,
+        )
+    ]
+
+
+def _markdown_subsection(text: str, parent_heading: str, heading: str) -> str:
+    section = _markdown_section(text, parent_heading)
+    target = f"### {heading}".lower()
+    collecting = False
+    lines: list[str] = []
     for line in section.splitlines():
         stripped = line.strip()
-        if stripped.startswith(("-", "*")) and not _section_has_placeholder(stripped):
-            bullets.append(stripped.lstrip("-*").strip())
-    return bullets
+        if stripped.startswith("### "):
+            if collecting:
+                break
+            collecting = stripped.lower() == target
+            continue
+        if collecting:
+            lines.append(line)
+    return "\n".join(lines).strip()
+
+
+def _legacy_truncated_child_charter_issues(
+    *,
+    epic_dir: Path,
+    requirements_text: str,
+    implementation_text: str,
+) -> list[str]:
+    contract_path = _epic_contract_path(epic_dir)
+    if not contract_path.exists():
+        return []
+    contract_text = contract_path.read_text(encoding="utf-8")
+    section_pairs = (
+        ("Invariants", "Inherited Invariants"),
+        ("Invalid Substitutes", "Invalid Substitutes"),
+        ("Artifact Targets", "Artifact Targets"),
+    )
+    issues: list[str] = []
+    for contract_heading, child_heading in section_pairs:
+        wrapped_records = [
+            (logical_item, first_physical_line)
+            for logical_item, first_physical_line in _contract_section_bullet_records(
+                contract_text,
+                contract_heading,
+            )
+            if logical_item != first_physical_line
+        ]
+        if not wrapped_records:
+            continue
+        for document_name, document_text in (
+            ("REQUIREMENTS.md", requirements_text),
+            ("IMPLEMENTATION.md", implementation_text),
+        ):
+            child_items = {
+                logical_item
+                for logical_item, _first_line in _flat_markdown_bullet_records(
+                    _markdown_subsection(document_text, "Child Charter", child_heading)
+                )
+            }
+            truncated = [
+                (logical_item, legacy_fragment)
+                for logical_item, legacy_fragment in wrapped_records
+                if legacy_fragment in child_items and logical_item not in child_items
+            ]
+            if truncated:
+                logical_item, legacy_fragment = truncated[0]
+                issues.append(
+                    "agent action required: "
+                    f"`{document_name}` contains {len(truncated)} legacy truncated "
+                    f"`{child_heading}` bullet(s), including `{legacy_fragment}`; restore "
+                    "the complete logical parent-contract bullet(s), for example "
+                    f"`{logical_item}`."
+                )
+    return issues
 
 
 def _format_child_charter_from_contract(
@@ -4007,16 +11206,20 @@ def _format_decomposition_plan(
         "",
         "## Authorized Child Rows",
         "",
-        "| ID | Title | Parent ACs | Source |",
-        "|---|---|---|---|",
+        "| ID | Title | Parent ACs | Source | Dependencies | Execution Needs |",
+        "|---|---|---|---|---|---|",
     ]
     for row in rows:
         lines.append(
-            "| {id} | {title} | {parent_acs} | {source} |".format(
+            "| {id} | {title} | {parent_acs} | {source} | {dependencies} | "
+            "{execution_needs} |".format(
                 id=row["ID"],
                 title=row["Title"],
                 parent_acs=_normalize_ac_list(row.get("Parent ACs", "")),
                 source=row.get("Source", "Decomposition plan"),
+                dependencies=row.get("Dependencies", ""),
+                execution_needs=row.get("Execution Needs", "bounded-return")
+                or "bounded-return",
             )
         )
     lines.extend(
@@ -4036,8 +11239,23 @@ def _format_decomposition_plan(
 def _read_decomposition_plan_rows(plan_path: Path) -> list[dict[str, str]]:
     if not plan_path.exists():
         return []
+    text = plan_path.read_text(encoding="utf-8")
+    rows = _markdown_table_rows_from_section(
+        text,
+        "Authorized Child Rows",
+        expected_columns=DELEGATION_EXECUTION_NEEDS_DECOMPOSITION_PLAN_COLUMNS,
+    )
+    if rows:
+        return rows
+    rows = _markdown_table_rows_from_section(
+        text,
+        "Authorized Child Rows",
+        expected_columns=DELEGATION_DECOMPOSITION_PLAN_COLUMNS,
+    )
+    if rows:
+        return rows
     return _markdown_table_rows_from_section(
-        plan_path.read_text(encoding="utf-8"),
+        text,
         "Authorized Child Rows",
         expected_columns=DECOMPOSITION_PLAN_COLUMNS,
     )
@@ -4174,6 +11392,1710 @@ def _require_decomposition_plan_authority(epic_dir: Path, row: dict[str, str]) -
             f"{row_id} is outside the approved decomposition authority:\n"
             + "\n".join(f"- {issue}" for issue in issues)
         )
+
+
+def _delegation_error(code: str, message: str) -> DelegationPlanError:
+    return DelegationPlanError(code, message)
+
+
+def _delegation_source_hash(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _delegation_relative_path(root: Path, path: Path) -> str:
+    try:
+        return path.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return str(path.resolve())
+
+
+def _delegation_dependency_ids(value: str, *, unit_id: str) -> tuple[str, ...]:
+    normalized = value.strip()
+    if not normalized or normalized.lower() in {"none", "n/a", "-"}:
+        return ()
+    dependencies: list[str] = []
+    for item in normalized.split(","):
+        dependency = item.strip()
+        if not dependency or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", dependency):
+            raise _delegation_error(
+                "PW_DELEGATION_DEPENDENCY_MALFORMED",
+                f"{unit_id} has malformed dependency metadata: '{value}'.",
+            )
+        if dependency not in dependencies:
+            dependencies.append(dependency)
+    return tuple(dependencies)
+
+
+def _delegation_write_scope(value: str, *, unit_id: str) -> tuple[str, ...]:
+    if not value.strip():
+        raise _delegation_error(
+            "PW_DELEGATION_METADATA_MISSING",
+            f"{unit_id} must declare at least one repository-relative Write Scope prefix.",
+        )
+    scopes: list[str] = []
+    for item in value.split(","):
+        raw_scope = item.strip().replace("\\", "/")
+        if not raw_scope or any(character in raw_scope for character in "*?[]{}"):
+            raise _delegation_error(
+                "PW_DELEGATION_WRITE_SCOPE_INVALID",
+                f"{unit_id} has invalid Write Scope '{item.strip()}'; prefixes are not globs.",
+            )
+        if raw_scope.startswith("/"):
+            raise _delegation_error(
+                "PW_DELEGATION_WRITE_SCOPE_INVALID",
+                f"{unit_id} Write Scope must be repository-relative: '{raw_scope}'.",
+            )
+        parts = [part for part in raw_scope.split("/") if part not in {"", "."}]
+        if ".." in parts:
+            raise _delegation_error(
+                "PW_DELEGATION_WRITE_SCOPE_INVALID",
+                f"{unit_id} Write Scope cannot escape the repository: '{raw_scope}'.",
+            )
+        scope = "." if not parts else "/".join(parts)
+        if scope not in scopes:
+            scopes.append(scope)
+    return tuple(scopes)
+
+
+def _delegation_parallel_safe(value: str, *, unit_id: str) -> bool:
+    normalized = value.strip().lower()
+    if normalized in {"yes", "true"}:
+        return True
+    if normalized in {"no", "false"}:
+        return False
+    raise _delegation_error(
+        "PW_DELEGATION_METADATA_MISSING",
+        f"{unit_id} Parallel Safe must be explicitly Yes or No.",
+    )
+
+
+def _delegation_execution_needs(
+    value: str, *, unit_id: str
+) -> DelegationExecutionNeeds:
+    """Parse optional execution needs without inferring any host capability."""
+    normalized = value.strip()
+    if not normalized or normalized.lower() in {"none", "n/a", "-"}:
+        return DelegationExecutionNeeds()
+
+    tokens: list[str] = []
+    peer_group: str | None = None
+    durable_resume = False
+    direct_owner_steering = False
+    isolated_worktree = False
+    for raw_token in normalized.split(","):
+        token = raw_token.strip().lower()
+        if not token:
+            raise _delegation_error(
+                "PW_DELEGATION_EXECUTION_NEEDS_INVALID",
+                f"{unit_id} has an empty Execution Needs token.",
+            )
+        if token.startswith("peer:"):
+            group = token.removeprefix("peer:").strip()
+            if not re.fullmatch(r"[a-z0-9][a-z0-9._-]{0,63}", group):
+                raise _delegation_error(
+                    "PW_DELEGATION_EXECUTION_NEEDS_INVALID",
+                    f"{unit_id} has invalid peer group '{group}'.",
+                )
+            if peer_group is not None and peer_group != group:
+                raise _delegation_error(
+                    "PW_DELEGATION_EXECUTION_NEEDS_INVALID",
+                    f"{unit_id} declares more than one peer communication group.",
+                )
+            peer_group = group
+            canonical = f"peer:{group}"
+        elif token in DELEGATION_EXECUTION_NEED_TOKENS:
+            canonical = token
+            durable_resume = durable_resume or token == "durable-resume"
+            direct_owner_steering = (
+                direct_owner_steering or token == "direct-owner-steering"
+            )
+            isolated_worktree = isolated_worktree or token == "isolated-worktree"
+        else:
+            raise _delegation_error(
+                "PW_DELEGATION_EXECUTION_NEEDS_INVALID",
+                f"{unit_id} has unknown Execution Needs token '{raw_token.strip()}'.",
+            )
+        if canonical not in tokens:
+            tokens.append(canonical)
+
+    if any(token != "bounded-return" for token in tokens):
+        tokens = [token for token in tokens if token != "bounded-return"]
+    if not tokens:
+        tokens = ["bounded-return"]
+    return DelegationExecutionNeeds(
+        tokens=tuple(tokens),
+        durable_resume=durable_resume,
+        direct_owner_steering=direct_owner_steering,
+        isolated_worktree=isolated_worktree,
+        peer_group=peer_group,
+    )
+
+
+def _delegation_explicit_authority(value: str | None) -> bool:
+    if value is None:
+        return False
+    normalized = value.strip().lower()
+    return bool(normalized) and normalized not in {
+        "unknown",
+        "not observed",
+        "not authorized",
+        "unsupported",
+        "none",
+        "false",
+    }
+
+
+def _delegation_canonical_state(value: str) -> str:
+    normalized = value.strip().lower()
+    if normalized in {"done", "complete"}:
+        return "complete"
+    if normalized in {"blocked", "failed"}:
+        return "blocked"
+    return "pending"
+
+
+def _delegation_task_units(root: Path, implementation_path: Path) -> tuple[DelegationUnit, ...]:
+    text = implementation_path.read_text(encoding="utf-8")
+    table_found, rows, malformed_rows = _implementation_task_table_rows(text)
+    if not table_found:
+        raise _delegation_error(
+            "PW_DELEGATION_PLAN_MISSING",
+            "Task IMPLEMENTATION.md has no supported Task List table.",
+        )
+    if malformed_rows:
+        raise _delegation_error(
+            "PW_DELEGATION_PLAN_MALFORMED",
+            "Task List has malformed rows at lines: "
+            + ", ".join(str(line) for line in malformed_rows)
+            + ".",
+        )
+    if not rows:
+        raise _delegation_error("PW_DELEGATION_PLAN_EMPTY", "Task List has no execution units.")
+    if any(row.get("_delegation_metadata") != "present" for row in rows):
+        raise _delegation_error(
+            "PW_DELEGATION_METADATA_MISSING",
+            "Delegate requires Task List columns Dependencies, Write Scope, and Parallel Safe; "
+            "the legacy six-column plan remains valid for non-Delegate commands.",
+        )
+    source_path = _delegation_relative_path(root, implementation_path)
+    repository_scope = _delegation_repository_scope(implementation_path)
+    units: list[DelegationUnit] = []
+    for order, row in enumerate(rows):
+        unit_id = row.get("ID", "").strip()
+        if not unit_id:
+            raise _delegation_error(
+                "PW_DELEGATION_UNIT_ID_MISSING", "Every Task List row requires a stable ID."
+            )
+        units.append(
+            DelegationUnit(
+                unit_id=unit_id,
+                title=row.get("Title", "").strip(),
+                dependencies=_delegation_dependency_ids(
+                    row.get("Dependencies", ""), unit_id=unit_id
+                ),
+                write_scope=_delegation_write_scope(
+                    row.get("Write Scope", ""), unit_id=unit_id
+                ),
+                parallel_safe=_delegation_parallel_safe(
+                    row.get("Parallel Safe", ""), unit_id=unit_id
+                ),
+                canonical_state=_delegation_canonical_state(row.get("Status", "")),
+                source_order=order,
+                source_path=source_path,
+                authority_acs=tuple(
+                    sorted(
+                        _extract_ac_ids(row.get("Acceptance Criteria", "")),
+                        key=lambda ac_id: int(ac_id[2:]),
+                    )
+                ),
+                execution_needs=_delegation_execution_needs(
+                    row.get("Execution Needs", ""), unit_id=unit_id
+                ),
+                repository_scope=repository_scope,
+            )
+        )
+    return tuple(units)
+
+
+def _delegation_epic_units(
+    root: Path, epic_dir: Path, plan_path: Path
+) -> tuple[DelegationUnit, ...]:
+    text = plan_path.read_text(encoding="utf-8")
+    rows = _markdown_table_rows_from_section(
+        text,
+        "Authorized Child Rows",
+        expected_columns=DELEGATION_EXECUTION_NEEDS_DECOMPOSITION_PLAN_COLUMNS,
+    )
+    if not rows:
+        rows = _markdown_table_rows_from_section(
+            text,
+            "Authorized Child Rows",
+            expected_columns=DELEGATION_DECOMPOSITION_PLAN_COLUMNS,
+        )
+    if not rows:
+        legacy_rows = _markdown_table_rows_from_section(
+            text,
+            "Authorized Child Rows",
+            expected_columns=DECOMPOSITION_PLAN_COLUMNS,
+        )
+        if legacy_rows:
+            raise _delegation_error(
+                "PW_DELEGATION_METADATA_MISSING",
+                "Delegate requires the Epic decomposition Dependencies column; the legacy "
+                "four-column plan remains valid for non-Delegate commands.",
+            )
+        raise _delegation_error(
+            "PW_DELEGATION_PLAN_MALFORMED",
+            "Epic DECOMPOSITION.md has no supported Authorized Child Rows table.",
+        )
+    tracker_path = epic_dir / "TRACKER.md"
+    if not tracker_path.exists():
+        raise _delegation_error("PW_DELEGATION_AUTHORITY_MISSING", "Epic TRACKER.md is missing.")
+    _lines, _header_idx, tracker_rows = _epic_tracker_rows(tracker_path)
+    tracker_by_id = {row.get("ID", "").strip(): row for row in tracker_rows}
+    source_path = _delegation_relative_path(root, plan_path)
+    units: list[DelegationUnit] = []
+    for order, row in enumerate(rows):
+        unit_id = row.get("ID", "").strip()
+        tracker_row = tracker_by_id.get(unit_id)
+        if tracker_row is None:
+            raise _delegation_error(
+                "PW_DELEGATION_UNPLANNED_UNIT",
+                f"Authorized child {unit_id} is missing from the Epic tracker.",
+            )
+        authority_issues = _decomposition_plan_authority_issues(
+            epic_dir=epic_dir, row=tracker_row
+        )
+        if authority_issues:
+            raise _delegation_error(
+                "PW_DELEGATION_AUTHORITY_MISMATCH",
+                f"{unit_id} does not match decomposition authority: "
+                + "; ".join(authority_issues),
+            )
+        child_write_scope: tuple[str, ...] = ()
+        child_repository_scope: tuple[str, ...] = (".",)
+        docs_rel = _clean_markdown_cell_path(tracker_row.get("Docs", ""))
+        if docs_rel:
+            child_implementation = root / ".project-workflow" / docs_rel
+            if child_implementation.exists():
+                child_repository_scope = _delegation_repository_scope(child_implementation)
+                _found, child_rows, child_malformed = _implementation_task_table_rows(
+                    child_implementation.read_text(encoding="utf-8")
+                )
+                if not child_malformed and child_rows and all(
+                    child.get("_delegation_metadata") == "present" for child in child_rows
+                ):
+                    child_write_scope = tuple(
+                        dict.fromkeys(
+                            scope
+                            for child in child_rows
+                            for scope in _delegation_write_scope(
+                                child.get("Write Scope", ""),
+                                unit_id=f"{unit_id}/{child.get('ID', '').strip() or '?'}",
+                            )
+                        )
+                    )
+        units.append(
+            DelegationUnit(
+                unit_id=unit_id,
+                title=row.get("Title", "").strip(),
+                dependencies=_delegation_dependency_ids(
+                    row.get("Dependencies", ""), unit_id=unit_id
+                ),
+                write_scope=child_write_scope,
+                parallel_safe=True,
+                canonical_state=_delegation_canonical_state(
+                    tracker_row.get("Status", "")
+                ),
+                source_order=order,
+                source_path=source_path,
+                authority_acs=tuple(
+                    sorted(
+                        _extract_ac_ids(row.get("Parent ACs", "")),
+                        key=lambda ac_id: int(ac_id[2:]),
+                    )
+                ),
+                execution_needs=_delegation_execution_needs(
+                    row.get("Execution Needs", ""), unit_id=unit_id
+                ),
+                repository_scope=child_repository_scope,
+            )
+        )
+    return tuple(units)
+
+
+def _delegation_scope_overlap(left: str, right: str) -> bool:
+    if left == "." or right == ".":
+        return True
+    return left == right or left.startswith(right + "/") or right.startswith(left + "/")
+
+
+def _delegation_repository_scope(implementation_path: Path) -> tuple[str, ...]:
+    requirements_path = implementation_path.parent / "REQUIREMENTS.md"
+    if not requirements_path.exists():
+        return (".",)
+    primary, touched = _repository_scope_values(
+        requirements_path.read_text(encoding="utf-8")
+    )
+    values = touched or ((primary,) if primary else ())
+    normalized = tuple(dict.fromkeys(value for value in values if value))
+    return normalized or (".",)
+
+
+def _delegation_has_path(
+    dependencies: dict[str, tuple[str, ...]], start: str, target: str
+) -> bool:
+    pending = list(dependencies.get(start, ()))
+    seen: set[str] = set()
+    while pending:
+        current = pending.pop()
+        if current == target:
+            return True
+        if current in seen:
+            continue
+        seen.add(current)
+        pending.extend(dependencies.get(current, ()))
+    return False
+
+
+def _delegation_capability_matrix(
+    *,
+    observed_capabilities: tuple[str, ...],
+    unsupported_capabilities: tuple[str, ...],
+    capability_source: str,
+) -> tuple[DelegationCapabilityObservation, ...]:
+    """Resolve verified/unsupported/unknown host capability truth without inference."""
+    verified = set(observed_capabilities)
+    unsupported = set(unsupported_capabilities)
+    unknown_names = sorted((verified | unsupported) - set(DELEGATION_CAPABILITIES))
+    if unknown_names:
+        raise _delegation_error(
+            "PW_DELEGATION_CAPABILITY_UNKNOWN",
+            "Unknown capability: " + ", ".join(unknown_names) + ".",
+        )
+    conflicts = sorted(verified & unsupported)
+    if conflicts:
+        raise _delegation_error(
+            "PW_DELEGATION_CAPABILITY_CONFLICT",
+            "Capabilities cannot be both verified and unsupported: "
+            + ", ".join(conflicts)
+            + ".",
+        )
+    source = capability_source.strip()
+    if (verified or unsupported) and source.lower() in {"", "not observed", "unknown"}:
+        raise _delegation_error(
+            "PW_DELEGATION_CAPABILITY_UNOBSERVED",
+            "Verified or unsupported capabilities require current host observation provenance.",
+        )
+    if verified or unsupported:
+        observed_date_match = re.search(r"(?<!\d)(\d{4}-\d{2}-\d{2})(?!\d)", source)
+        try:
+            observed_date = (
+                date.fromisoformat(observed_date_match.group(1))
+                if observed_date_match is not None
+                else None
+            )
+        except ValueError:
+            observed_date = None
+        if observed_date is None:
+            raise _delegation_error(
+                "PW_DELEGATION_CAPABILITY_PROVENANCE_UNDATED",
+                "Verified or unsupported capabilities require provenance containing a valid "
+                "ISO observation date (YYYY-MM-DD).",
+            )
+    observations: list[DelegationCapabilityObservation] = []
+    for capability in DELEGATION_CAPABILITIES:
+        if capability in verified:
+            state = "verified"
+            provenance = f"runtime-observed:{source}"
+        elif capability in unsupported:
+            state = "unsupported"
+            provenance = f"runtime-observed:{source}"
+        else:
+            state = "unknown"
+            provenance = "not observed"
+        observations.append(
+            DelegationCapabilityObservation(
+                capability=capability,
+                state=state,
+                provenance=provenance,
+            )
+        )
+    return tuple(observations)
+
+
+@dataclass(frozen=True)
+class DelegationExecutorDecision:
+    requested_executor: str
+    executor: str
+    schedule: str
+    visibility_class: str
+    retention_policy: str
+    required_child_slots: int
+    reason: str
+    blocking_reasons: tuple[str, ...] = ()
+
+
+def _delegation_capability_issue(
+    capability: str,
+    observations: Mapping[str, DelegationCapabilityObservation],
+) -> str:
+    observation = observations[capability]
+    return (
+        f"{capability} capability is {observation.state} "
+        f"({observation.provenance})"
+    )
+
+
+def _delegation_select_executor(
+    *,
+    unit: DelegationUnit,
+    capability_matrix: tuple[DelegationCapabilityObservation, ...],
+    available_child_capacity: int,
+    requested_concurrency: int,
+    persistent_task_authority: str | None,
+) -> DelegationExecutorDecision:
+    """Select one surface from work properties; target kind is deliberately absent."""
+    observations = {item.capability: item for item in capability_matrix}
+
+    def verified(capability: str) -> bool:
+        return observations[capability].state == "verified"
+
+    def result(
+        executor: str,
+        reason: str,
+        *,
+        requested_executor: str | None = None,
+        blocking_reasons: tuple[str, ...] = (),
+    ) -> DelegationExecutorDecision:
+        required_child_slots = 2 if executor == "peer-team" else (
+            1 if executor in {"subagent", "persistent-task"} else 0
+        )
+        schedule = (
+            "parallel"
+            if required_child_slots
+            and unit.parallel_safe
+            and requested_concurrency >= required_child_slots
+            and available_child_capacity >= required_child_slots
+            else "sequential"
+        )
+        if executor == "persistent-task":
+            retirement_verified = verified("task-retirement") and verified(
+                "task-retirement-reconciliation"
+            )
+            owner_retained = unit.execution_needs.direct_owner_steering
+            visibility_class = "visible-retained" if owner_retained else (
+                "visible-retirable" if retirement_verified else "visible-retained"
+            )
+            retention_policy = "retain" if owner_retained else (
+                "retire-on-verified" if retirement_verified else "retain"
+            )
+        else:
+            visibility_class = "ephemeral"
+            retention_policy = "not-applicable"
+        return DelegationExecutorDecision(
+            requested_executor=requested_executor or unit.execution_needs.requested_executor,
+            executor=executor,
+            schedule=schedule,
+            visibility_class=visibility_class,
+            retention_policy=retention_policy,
+            required_child_slots=required_child_slots,
+            reason=reason,
+            blocking_reasons=blocking_reasons,
+        )
+
+    needs = unit.execution_needs
+    coordinator_owned = any(
+        _task_worker_scope_forbidden(scope) for scope in unit.write_scope
+    )
+    binding_needs = (
+        needs.durable_resume
+        or needs.direct_owner_steering
+        or needs.isolated_worktree
+        or needs.peer_group is not None
+    )
+    if coordinator_owned:
+        if binding_needs:
+            issue = (
+                "Coordinator-owned workflow scope conflicts with binding execution needs: "
+                + ", ".join(needs.tokens)
+                + "."
+            )
+            return result("none", issue, blocking_reasons=(issue,))
+        return result(
+            "coordinator",
+            "Coordinator-owned workflow scope requires the single shared-state writer.",
+            requested_executor="coordinator",
+        )
+
+    if needs.peer_group is not None:
+        composite = tuple(
+            token
+            for token, enabled in (
+                ("durable-resume", needs.durable_resume),
+                ("direct-owner-steering", needs.direct_owner_steering),
+            )
+            if enabled
+        )
+        if composite:
+            reason = (
+                "Binding peer communication cannot satisfy additional persistent need(s): "
+                + ", ".join(composite)
+                + "."
+            )
+            return result("none", reason, blocking_reasons=(reason,))
+        required = ["peer-team", "peer-messaging"]
+        if needs.isolated_worktree:
+            required.append("peer-team-isolated-worktree")
+        issues = tuple(
+            _delegation_capability_issue(capability, observations)
+            for capability in required
+            if not verified(capability)
+        )
+        if available_child_capacity < 2:
+            issues += (
+                "peer-team requires at least 2 available child slots; "
+                f"observed {available_child_capacity}",
+            )
+        if requested_concurrency < 2:
+            issues += (
+                "peer-team requires requested concurrency of at least 2; "
+                f"requested {requested_concurrency}",
+            )
+        if issues:
+            reason = "Binding peer communication requirement is unmet: " + "; ".join(issues) + "."
+            return result("none", reason, blocking_reasons=(reason,))
+        return result(
+            "peer-team",
+            f"Selected verified peer-team surface for peer group {needs.peer_group}.",
+        )
+
+    persistent_required = needs.durable_resume or needs.direct_owner_steering
+    persistent_capabilities = [
+        "persistent-task",
+        "task-monitoring",
+        "task-reconciliation",
+    ]
+    if needs.isolated_worktree:
+        persistent_isolation_verified = verified(
+            "persistent-task-isolated-worktree"
+        ) or verified("isolated-worktree")
+    else:
+        persistent_isolation_verified = True
+    if needs.direct_owner_steering:
+        persistent_capabilities.append("persistent-task-owner-steering")
+
+    if needs.isolated_worktree and not persistent_required:
+        subagent_isolated = verified("subagent") and verified(
+            "subagent-isolated-worktree"
+        )
+        if subagent_isolated and available_child_capacity > 0:
+            return result(
+                "subagent",
+                "Selected the lightest verified isolated subagent surface.",
+            )
+        persistent_required = True
+
+    if persistent_required:
+        issues = [
+            _delegation_capability_issue(capability, observations)
+            for capability in persistent_capabilities
+            if not verified(capability)
+        ]
+        if needs.isolated_worktree and not persistent_isolation_verified:
+            issues.append(
+                _delegation_capability_issue(
+                    "persistent-task-isolated-worktree", observations
+                )
+                + "; legacy isolated-worktree capability is also not verified"
+            )
+        if not _delegation_explicit_authority(persistent_task_authority):
+            issues.append("explicit current-request persistent-task authority is absent")
+        if available_child_capacity < 1:
+            issues.append("persistent-task child capacity is exhausted")
+        if issues:
+            reason = "Binding persistent execution requirement is unmet: " + "; ".join(issues) + "."
+            return result("none", reason, blocking_reasons=(reason,))
+        return result(
+            "persistent-task",
+            "Selected verified persistent-task surface for "
+            + ", ".join(needs.tokens)
+            + ".",
+        )
+
+    if verified("subagent") and available_child_capacity > 0:
+        return result(
+            "subagent",
+            "Selected the lightest verified bounded-return subagent surface.",
+        )
+    fallback_issues: list[str] = []
+    if not verified("subagent"):
+        fallback_issues.append(_delegation_capability_issue("subagent", observations))
+    if available_child_capacity < 1:
+        fallback_issues.append("subagent child capacity is exhausted")
+    return result(
+        "coordinator",
+        "; ".join(fallback_issues)
+        + "; coordinator sequential fallback satisfies bounded-return.",
+    )
+
+
+def build_delegation_plan(
+    *,
+    target: DelegationTarget,
+    units: tuple[DelegationUnit, ...],
+    selected_unit_ids: tuple[str, ...] = (),
+    requested_concurrency: int = 1,
+    available_child_capacity: int = 0,
+    observed_capabilities: tuple[str, ...] = (),
+    unsupported_capabilities: tuple[str, ...] = (),
+    capability_source: str = "not observed",
+    persistent_task_authority: str | None = None,
+) -> DelegationPlan:
+    """Build and validate a deterministic host-neutral delegation plan without I/O."""
+    if requested_concurrency < 1:
+        raise _delegation_error(
+            "PW_DELEGATION_CONCURRENCY_INVALID", "Requested concurrency must be at least 1."
+        )
+    if available_child_capacity < 0:
+        raise _delegation_error(
+            "PW_DELEGATION_CAPACITY_INVALID", "Available child capacity cannot be negative."
+        )
+    capability_matrix = _delegation_capability_matrix(
+        observed_capabilities=observed_capabilities,
+        unsupported_capabilities=unsupported_capabilities,
+        capability_source=capability_source,
+    )
+    capabilities = tuple(
+        item.capability for item in capability_matrix if item.state == "verified"
+    )
+
+    by_id: dict[str, DelegationUnit] = {}
+    for unit in units:
+        if unit.unit_id in by_id:
+            raise _delegation_error(
+                "PW_DELEGATION_UNIT_DUPLICATE", f"Duplicate execution unit ID: {unit.unit_id}."
+            )
+        by_id[unit.unit_id] = unit
+    if not by_id:
+        raise _delegation_error("PW_DELEGATION_PLAN_EMPTY", "Delegation plan has no units.")
+
+    dependencies = {unit.unit_id: unit.dependencies for unit in units}
+    for unit in units:
+        for dependency in unit.dependencies:
+            if dependency == unit.unit_id:
+                raise _delegation_error(
+                    "PW_DELEGATION_DEPENDENCY_SELF",
+                    f"{unit.unit_id} cannot depend on itself.",
+                )
+            if dependency not in by_id:
+                raise _delegation_error(
+                    "PW_DELEGATION_DEPENDENCY_MISSING",
+                    f"{unit.unit_id} depends on missing unit {dependency}.",
+                )
+
+    ordered_source_ids = [unit.unit_id for unit in sorted(units, key=lambda item: item.source_order)]
+    indegree = {unit_id: len(dependencies[unit_id]) for unit_id in ordered_source_ids}
+    dependents: dict[str, list[str]] = {unit_id: [] for unit_id in ordered_source_ids}
+    for unit_id, dependency_ids in dependencies.items():
+        for dependency_id in dependency_ids:
+            dependents[dependency_id].append(unit_id)
+    ready = [unit_id for unit_id in ordered_source_ids if indegree[unit_id] == 0]
+    topological: list[str] = []
+    while ready:
+        unit_id = ready.pop(0)
+        topological.append(unit_id)
+        for dependent in sorted(
+            dependents[unit_id], key=lambda item: by_id[item].source_order
+        ):
+            indegree[dependent] -= 1
+            if indegree[dependent] == 0:
+                ready.append(dependent)
+                ready.sort(key=lambda item: by_id[item].source_order)
+    if len(topological) != len(units):
+        cycle_units = [unit_id for unit_id in ordered_source_ids if unit_id not in topological]
+        raise _delegation_error(
+            "PW_DELEGATION_DEPENDENCY_CYCLE",
+            "Dependency cycle detected: " + ", ".join(cycle_units) + ".",
+        )
+
+    if selected_unit_ids:
+        selected_set = set(selected_unit_ids)
+        unknown_selected = sorted(selected_set - set(by_id))
+        if unknown_selected:
+            raise _delegation_error(
+                "PW_DELEGATION_UNIT_UNKNOWN",
+                "Selected unit is not in the approved plan: " + ", ".join(unknown_selected) + ".",
+            )
+    else:
+        selected_set = set(by_id)
+    for unit_id in topological:
+        if unit_id not in selected_set:
+            continue
+        for dependency in dependencies[unit_id]:
+            if dependency not in selected_set and by_id[dependency].canonical_state != "complete":
+                raise _delegation_error(
+                    "PW_DELEGATION_SUBSET_DEPENDENCY_OMITTED",
+                    f"Selected unit {unit_id} omits unfinished dependency {dependency}.",
+                )
+
+    selected_order = tuple(unit_id for unit_id in topological if unit_id in selected_set)
+    selected_parallel = [
+        by_id[unit_id]
+        for unit_id in selected_order
+        if by_id[unit_id].parallel_safe and by_id[unit_id].canonical_state != "complete"
+    ]
+    for index, left in enumerate(selected_parallel):
+        for right in selected_parallel[index + 1 :]:
+            if _delegation_has_path(dependencies, left.unit_id, right.unit_id) or _delegation_has_path(
+                dependencies, right.unit_id, left.unit_id
+            ):
+                continue
+            if not set(left.repository_scope).intersection(right.repository_scope):
+                continue
+            overlaps = sorted(
+                {
+                    f"{left_scope} <> {right_scope}"
+                    for left_scope in left.write_scope
+                    for right_scope in right.write_scope
+                    if _delegation_scope_overlap(left_scope, right_scope)
+                }
+            )
+            if overlaps:
+                raise _delegation_error(
+                    "PW_DELEGATION_WRITE_SCOPE_COLLISION",
+                    f"Parallel-safe units {left.unit_id} and {right.unit_id} have overlapping "
+                    "Write Scope prefixes: " + ", ".join(overlaps) + ".",
+                )
+
+    completed = {
+        unit_id for unit_id, unit in by_id.items() if unit.canonical_state == "complete"
+    }
+    planned_units: list[DelegationPlannedUnit] = []
+    eligible: list[str] = []
+    blocked: list[str] = []
+    for unit_id in selected_order:
+        unit = by_id[unit_id]
+        reasons: list[str] = []
+        decision = _delegation_select_executor(
+            unit=unit,
+            capability_matrix=capability_matrix,
+            available_child_capacity=available_child_capacity,
+            requested_concurrency=requested_concurrency,
+            persistent_task_authority=persistent_task_authority,
+        )
+        if unit.canonical_state == "complete":
+            readiness = "complete"
+            executor = decision.executor
+            executor_reason = (
+                "Canonical workflow state is complete; no launch is eligible. "
+                + decision.reason
+            )
+            schedule = decision.schedule
+            visibility_class = decision.visibility_class
+            retention_policy = decision.retention_policy
+        elif unit.canonical_state == "blocked":
+            readiness = "blocked"
+            reasons.append("Canonical workflow state is blocked.")
+            executor = decision.executor
+            executor_reason = "Blocked units are not executable. " + decision.reason
+            schedule = decision.schedule
+            visibility_class = decision.visibility_class
+            retention_policy = decision.retention_policy
+            blocked.append(unit_id)
+        else:
+            incomplete_dependencies = [
+                dependency for dependency in unit.dependencies if dependency not in completed
+            ]
+            if incomplete_dependencies:
+                readiness = "blocked"
+                reasons.append(
+                    "Waiting for dependencies: " + ", ".join(incomplete_dependencies) + "."
+                )
+                blocked.append(unit_id)
+            elif decision.blocking_reasons:
+                readiness = "blocked"
+                reasons.extend(decision.blocking_reasons)
+                blocked.append(unit_id)
+            else:
+                readiness = "eligible"
+                eligible.append(unit_id)
+            executor = decision.executor
+            executor_reason = decision.reason
+            schedule = decision.schedule
+            visibility_class = decision.visibility_class
+            retention_policy = decision.retention_policy
+        planned_units.append(
+            DelegationPlannedUnit(
+                unit_id=unit.unit_id,
+                title=unit.title,
+                dependencies=unit.dependencies,
+                write_scope=unit.write_scope,
+                parallel_safe=unit.parallel_safe,
+                canonical_state=unit.canonical_state,
+                readiness=readiness,
+                blocking_reasons=tuple(reasons),
+                execution_needs=unit.execution_needs,
+                repository_scope=unit.repository_scope,
+                requested_executor=decision.requested_executor,
+                executor=executor,
+                schedule=schedule,
+                visibility_class=visibility_class,
+                retention_policy=retention_policy,
+                required_child_slots=decision.required_child_slots,
+                executor_reason=executor_reason,
+                source_path=unit.source_path,
+                authority_acs=unit.authority_acs,
+            )
+        )
+
+    eligible_workers = [
+        unit
+        for unit in planned_units
+        if unit.readiness == "eligible"
+        and unit.executor in {"subagent", "persistent-task", "peer-team"}
+    ]
+    child_slot_budget = min(requested_concurrency, available_child_capacity)
+    effective_child_concurrency = 0
+    effective_child_slots = 0
+    for unit in eligible_workers:
+        if effective_child_slots + unit.required_child_slots > child_slot_budget:
+            continue
+        effective_child_concurrency += 1
+        effective_child_slots += unit.required_child_slots
+    if not eligible:
+        effective_concurrency = 0
+        concurrency_reason = "No units are currently eligible."
+    elif effective_child_concurrency:
+        effective_concurrency = effective_child_concurrency
+        if effective_concurrency < requested_concurrency:
+            concurrency_reason = (
+                f"Reduced from requested {requested_concurrency} to {effective_concurrency}: "
+                f"available child capacity is {available_child_capacity} and "
+                f"{len(eligible_workers)} child-executable unit(s) require "
+                f"{effective_child_slots} effective child slot(s)."
+            )
+        else:
+            concurrency_reason = "Requested concurrency is supported by observed child capacity."
+    else:
+        effective_concurrency = 1
+        if available_child_capacity == 0:
+            concurrency_reason = (
+                "Available child capacity is 0 (coordinator excluded); using coordinator "
+                "sequential fallback."
+            )
+        elif not capabilities:
+            concurrency_reason = (
+                "No host executor capability was observed; using coordinator sequential fallback."
+            )
+        else:
+            concurrency_reason = "Plan safety requires sequential execution."
+
+    provenance = (
+        f"target:{target.source_path}#{target.source_hash}",
+        *(f"unit:{unit.source_path}" for unit in planned_units),
+        f"capability:{capability_source}",
+        *(
+            (f"persistent-task-authority:{persistent_task_authority}",)
+            if persistent_task_authority
+            else ()
+        ),
+    )
+    return DelegationPlan(
+        target=target,
+        units=tuple(planned_units),
+        selected_units=selected_order,
+        eligible_units=tuple(eligible),
+        blocked_units=tuple(blocked),
+        requested_concurrency=requested_concurrency,
+        available_child_capacity=available_child_capacity,
+        effective_concurrency=effective_concurrency,
+        effective_child_concurrency=effective_child_concurrency,
+        effective_child_slots=effective_child_slots,
+        concurrency_reason=concurrency_reason,
+        observed_capabilities=capabilities,
+        capability_matrix=capability_matrix,
+        capability_source=capability_source,
+        persistent_task_authority=persistent_task_authority,
+        provenance=tuple(dict.fromkeys(provenance)),
+    )
+
+
+def _delegation_approved_lifecycle(kind: str, lifecycle: str) -> bool:
+    rejected = {"", "To Do", "Analysing", "Proposed", "N/A"}
+    return lifecycle not in rejected and (
+        kind in {"task", "epic-child", "epic"}
+    )
+
+
+def _resolve_delegation_target(
+    root: Path, target_ids: tuple[str, ...]
+) -> tuple[DelegationTarget, tuple[DelegationUnit, ...]]:
+    requested = tuple(target_id.strip() for target_id in target_ids if target_id.strip())
+    if len(requested) != 1:
+        raise _delegation_error(
+            "PW_DELEGATION_TARGET_COUNT",
+            "Delegate requires exactly one existing Epic or Task target; mixed or batched "
+            "targets are not allowed.",
+        )
+    target_id = requested[0]
+    workflow_dir = root / ".project-workflow"
+    tracker_path = workflow_dir / "TRACKER.md"
+    tasks_dir = workflow_dir / "tasks"
+    if not tracker_path.exists():
+        raise _delegation_error(
+            "PW_DELEGATION_AUTHORITY_MISSING", f"Missing global tracker: {tracker_path}."
+        )
+
+    _lines, _header_idx, global_rows = _global_tracker_rows(tracker_path)
+    matches: list[tuple[str, dict[str, str], Path | None]] = []
+    for row in global_rows:
+        if row.get("ID", "").strip() == target_id:
+            kind = "epic" if target_id.startswith(f"{EPIC_ID_PREFIX}-") else "task"
+            matches.append((kind, row, None))
+    if tasks_dir.exists():
+        for epic_tracker_path in sorted(tasks_dir.glob("EPIC-*/TRACKER.md")):
+            try:
+                _epic_lines, _epic_header, epic_rows = _epic_tracker_rows(epic_tracker_path)
+            except SystemExit:
+                continue
+            for row in epic_rows:
+                if row.get("ID", "").strip() == target_id:
+                    matches.append(("epic-child", row, epic_tracker_path.parent))
+    if not matches:
+        raise _delegation_error(
+            "PW_DELEGATION_TARGET_UNKNOWN",
+            f"No existing Epic or Task target found for '{target_id}'.",
+        )
+    if len(matches) != 1:
+        locations = ", ".join(
+            _delegation_relative_path(root, epic_dir or tracker_path)
+            for _kind, _row, epic_dir in matches
+        )
+        raise _delegation_error(
+            "PW_DELEGATION_TARGET_AMBIGUOUS",
+            f"Target '{target_id}' resolves to multiple workflow units: {locations}.",
+        )
+
+    kind, row, owner_epic_dir = matches[0]
+    lifecycle = row.get("Status", "").strip()
+    if not _delegation_approved_lifecycle(kind, lifecycle):
+        raise _delegation_error(
+            "PW_DELEGATION_TARGET_UNAPPROVED",
+            f"{target_id} lifecycle '{lifecycle}' is outside approved delegation authority.",
+        )
+    if kind == "epic":
+        epic_dir = _resolve_epic_dir(tasks_dir, target_id)
+        source_path = epic_dir / DECOMPOSITION_PLAN_FILENAME
+        if not source_path.exists():
+            raise _delegation_error(
+                "PW_DELEGATION_PLAN_MISSING", f"Missing delegation plan: {source_path}."
+            )
+        units = _delegation_epic_units(root, epic_dir, source_path)
+    else:
+        docs_rel = _clean_markdown_cell_path(row.get("Docs", ""))
+        if not docs_rel:
+            raise _delegation_error(
+                "PW_DELEGATION_PLAN_MISSING", f"{target_id} has no implementation docs path."
+            )
+        source_path = workflow_dir / docs_rel
+        if not source_path.exists():
+            raise _delegation_error(
+                "PW_DELEGATION_PLAN_MISSING", f"Missing implementation plan: {source_path}."
+            )
+        if kind == "epic-child" and owner_epic_dir is not None:
+            authority_issues = _decomposition_plan_authority_issues(
+                epic_dir=owner_epic_dir, row=row
+            )
+            if authority_issues:
+                raise _delegation_error(
+                    "PW_DELEGATION_AUTHORITY_MISMATCH",
+                    f"{target_id} is outside its parent decomposition authority: "
+                    + "; ".join(authority_issues),
+                )
+        units = _delegation_task_units(root, source_path)
+    target = DelegationTarget(
+        target_id=target_id,
+        kind="task" if kind == "epic-child" else kind,
+        title=row.get("Title", "").strip(),
+        lifecycle=lifecycle,
+        source_path=_delegation_relative_path(root, source_path),
+        source_hash=_delegation_source_hash(source_path),
+    )
+    return target, units
+
+
+def _delegation_plan_from_args(root: Path, args: argparse.Namespace) -> DelegationPlan:
+    target, units = _resolve_delegation_target(root, tuple(args.id))
+    return build_delegation_plan(
+        target=target,
+        units=units,
+        selected_unit_ids=tuple(args.unit or ()),
+        requested_concurrency=args.requested_concurrency,
+        available_child_capacity=args.available_child_capacity,
+        observed_capabilities=tuple(args.observed_capability or ()),
+        unsupported_capabilities=tuple(args.unsupported_capability or ()),
+        capability_source=args.capability_source,
+        persistent_task_authority=args.persistent_task_authority,
+    )
+
+
+def delegation_plan_payload(plan: DelegationPlan) -> dict[str, object]:
+    return {
+        "schema_version": DELEGATION_SCHEMA_VERSION,
+        "target": {
+            "id": plan.target.target_id,
+            "kind": plan.target.kind,
+            "title": plan.target.title,
+            "lifecycle": plan.target.lifecycle,
+            "source": plan.target.source_path,
+            "source_hash": plan.target.source_hash,
+        },
+        "units": [
+            {
+                "id": unit.unit_id,
+                "title": unit.title,
+                "dependencies": list(unit.dependencies),
+                "write_scope": list(unit.write_scope),
+                "parallel_safe": unit.parallel_safe,
+                "canonical_state": unit.canonical_state,
+                "readiness": unit.readiness,
+                "blocking_reasons": list(unit.blocking_reasons),
+                "required_properties": {
+                    **unit.execution_needs.properties(),
+                    "parallel_safe": unit.parallel_safe,
+                    "write_scope": list(unit.write_scope),
+                    "repository_scope": list(unit.repository_scope),
+                },
+                "requested_executor": unit.requested_executor,
+                "effective_executor": unit.executor,
+                "executor": unit.executor,
+                "schedule": unit.schedule,
+                "visibility_class": unit.visibility_class,
+                "retention_policy": unit.retention_policy,
+                "required_child_slots": unit.required_child_slots,
+                "executor_reason": unit.executor_reason,
+                "source": unit.source_path,
+                "authority_acs": list(unit.authority_acs),
+            }
+            for unit in plan.units
+        ],
+        "selected_units": list(plan.selected_units),
+        "eligible_units": list(plan.eligible_units),
+        "blocked_units": list(plan.blocked_units),
+        "concurrency": {
+            "requested": plan.requested_concurrency,
+            "available_child_capacity": plan.available_child_capacity,
+            "effective": plan.effective_concurrency,
+            "effective_child": plan.effective_child_concurrency,
+            "effective_child_slots": plan.effective_child_slots,
+            "reason": plan.concurrency_reason,
+        },
+        "capabilities": {
+            "observed": list(plan.observed_capabilities),
+            "matrix": [
+                {
+                    "capability": item.capability,
+                    "state": item.state,
+                    "provenance": item.provenance,
+                }
+                for item in plan.capability_matrix
+            ],
+            "source": plan.capability_source,
+            "persistent_task_authority": plan.persistent_task_authority,
+        },
+        "provenance": list(plan.provenance),
+    }
+
+
+def _delegation_plan_fingerprint(plan: DelegationPlan) -> str:
+    canonical = json.dumps(
+        delegation_plan_payload(plan), sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
+
+
+def _format_delegation_plan_human(plan: DelegationPlan, *, heading: str = "Delegation Plan") -> str:
+    lines = [
+        heading,
+        f"Target: {plan.target.target_id} ({plan.target.kind}, {plan.target.lifecycle})",
+        f"Source: {plan.target.source_path}#{plan.target.source_hash}",
+        "Units:",
+    ]
+    for unit in plan.units:
+        dependencies = ", ".join(unit.dependencies) or "none"
+        reasons = " ".join(unit.blocking_reasons)
+        suffix = f" — {reasons}" if reasons else ""
+        lines.append(
+            f"- {unit.unit_id}: {unit.readiness}; dependencies={dependencies}; "
+            f"needs={','.join(unit.execution_needs.tokens)}; "
+            f"parallel-safe={'yes' if unit.parallel_safe else 'no'}; "
+            f"write-scope={','.join(unit.write_scope) or 'none'}; "
+            f"repositories={','.join(unit.repository_scope)}; "
+            f"requested={unit.requested_executor}; effective={unit.executor}; "
+            f"schedule={unit.schedule}; visibility={unit.visibility_class}; "
+            f"retention={unit.retention_policy}; child-slots={unit.required_child_slots}{suffix}"
+        )
+        lines.append(f"  Reason: {unit.executor_reason}")
+    lines.extend(
+        [
+            "Eligible: " + (", ".join(plan.eligible_units) or "none"),
+            "Blocked: " + (", ".join(plan.blocked_units) or "none"),
+            (
+                f"Concurrency: requested={plan.requested_concurrency}, "
+                f"available-child={plan.available_child_capacity}, "
+                f"effective={plan.effective_concurrency}, "
+                f"effective-child={plan.effective_child_concurrency}, "
+                f"effective-child-slots={plan.effective_child_slots}"
+            ),
+            f"Concurrency reason: {plan.concurrency_reason}",
+            "Capability source: " + plan.capability_source,
+            "Capability matrix: "
+            + ", ".join(
+                f"{item.capability}={item.state} ({item.provenance})"
+                for item in plan.capability_matrix
+            ),
+            "Persistent task authority: "
+            + (plan.persistent_task_authority or "not authorized"),
+        ]
+    )
+    return "\n".join(lines)
+
+
+def _delegation_runtime_path(root: Path, target_id: str) -> Path:
+    current = root
+    for part in DELEGATION_RUNTIME_RELATIVE_DIR.parts:
+        current /= part
+        if current.is_symlink() or (current.exists() and not current.is_dir()):
+            raise _delegation_error(
+                "PW_DELEGATION_RUNTIME_UNSAFE_PATH",
+                f"Delegation runtime boundary must use real directories: {current}.",
+            )
+    try:
+        current.resolve(strict=False).relative_to(root.resolve())
+    except ValueError as error:
+        raise _delegation_error(
+            "PW_DELEGATION_RUNTIME_UNSAFE_PATH",
+            "Delegation runtime boundary escapes the repository root.",
+        ) from error
+    return current / f"{target_id}.json"
+
+
+def _delegation_runtime_is_ignored(root: Path) -> bool:
+    completed = subprocess.run(
+        ["git", "check-ignore", "-q", str(DELEGATION_RUNTIME_RELATIVE_DIR / "probe.json")],
+        cwd=str(root),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return completed.returncode == 0
+
+
+def _validate_runtime_handle(handle: object, *, unit_id: str) -> dict[str, str]:
+    if not isinstance(handle, dict):
+        raise _delegation_error(
+            "PW_DELEGATION_RUNTIME_INVALID", f"{unit_id} handle must be an object."
+        )
+    allowed = {"kind", "id", "worktree", "state"}
+    unknown = set(handle) - allowed
+    if unknown:
+        raise _delegation_error(
+            "PW_DELEGATION_RUNTIME_PRIVATE_FIELD",
+            f"{unit_id} handle contains forbidden fields: {', '.join(sorted(unknown))}.",
+        )
+    normalized = {key: str(value).strip() for key, value in handle.items()}
+    for key in ("kind", "id", "worktree", "state"):
+        if not normalized.get(key):
+            raise _delegation_error(
+                "PW_DELEGATION_RUNTIME_INVALID", f"{unit_id} handle requires {key}."
+            )
+    if normalized["state"] not in {"active", "complete", "missing"}:
+        raise _delegation_error(
+            "PW_DELEGATION_RUNTIME_INVALID",
+            f"{unit_id} handle state must be active, complete, or missing.",
+        )
+    return normalized
+
+
+def initialize_delegation_runtime_state(root: Path, plan: DelegationPlan) -> dict[str, object]:
+    if not _delegation_runtime_is_ignored(root):
+        raise _delegation_error(
+            "PW_DELEGATION_RUNTIME_NOT_IGNORED",
+            f"{DELEGATION_RUNTIME_RELATIVE_DIR.as_posix()}/ must be ignored before state is written.",
+        )
+    existing = _load_delegation_runtime_state(root, plan.target.target_id)
+    plan_fingerprint = _delegation_plan_fingerprint(plan)
+    if existing is not None:
+        if existing.get("plan_fingerprint") != plan_fingerprint:
+            raise _delegation_error(
+                "PW_DELEGATION_RUNTIME_PLAN_MISMATCH",
+                "Existing runtime state belongs to a different canonical delegation plan; "
+                "reconcile it instead of reinitializing and losing handles.",
+            )
+        return existing
+    state = {
+        "schema_version": DELEGATION_RUNTIME_SCHEMA_VERSION,
+        "target_id": plan.target.target_id,
+        "target_kind": plan.target.kind,
+        "plan_fingerprint": plan_fingerprint,
+        "worktree": str(root.resolve()),
+        "units": {
+            unit.unit_id: {
+                "state": "complete" if unit.canonical_state == "complete" else "pending",
+                "handle": None,
+            }
+            for unit in plan.units
+        },
+    }
+    path = _delegation_runtime_path(root, plan.target.target_id)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        mode="w", encoding="utf-8", dir=path.parent, delete=False
+    ) as temporary:
+        json.dump(state, temporary, indent=2, sort_keys=True)
+        temporary.write("\n")
+        temporary_path = Path(temporary.name)
+    os.replace(temporary_path, path)
+    return state
+
+
+def _load_delegation_runtime_state(root: Path, target_id: str) -> dict[str, object] | None:
+    path = _delegation_runtime_path(root, target_id)
+    if not path.exists():
+        return None
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict) or raw.get("schema_version") != DELEGATION_RUNTIME_SCHEMA_VERSION:
+        raise _delegation_error(
+            "PW_DELEGATION_RUNTIME_INVALID", f"Unsupported runtime state in {path}."
+        )
+    allowed = {
+        "schema_version",
+        "target_id",
+        "target_kind",
+        "plan_fingerprint",
+        "worktree",
+        "units",
+        "task_orchestration",
+        "epic_orchestration",
+    }
+    unknown = set(raw) - allowed
+    if unknown:
+        raise _delegation_error(
+            "PW_DELEGATION_RUNTIME_PRIVATE_FIELD",
+            "Runtime state contains forbidden fields: " + ", ".join(sorted(unknown)) + ".",
+        )
+    if (
+        raw.get("target_id") != target_id
+        or not isinstance(raw.get("target_kind"), str)
+        or not isinstance(raw.get("plan_fingerprint"), str)
+        or not isinstance(raw.get("worktree"), str)
+        or not isinstance(raw.get("units"), dict)
+    ):
+        raise _delegation_error(
+            "PW_DELEGATION_RUNTIME_INVALID", "Runtime state target or units are invalid."
+        )
+    raw_units = raw["units"]
+    assert isinstance(raw_units, dict)
+    for unit_id, value in raw_units.items():
+        if not isinstance(unit_id, str) or not isinstance(value, dict):
+            raise _delegation_error(
+                "PW_DELEGATION_RUNTIME_INVALID", "Runtime unit entries must be objects."
+            )
+        unit_unknown = set(value) - {"state", "handle"}
+        if unit_unknown:
+            raise _delegation_error(
+                "PW_DELEGATION_RUNTIME_PRIVATE_FIELD",
+                f"{unit_id} runtime entry contains forbidden fields: "
+                + ", ".join(sorted(unit_unknown))
+                + ".",
+            )
+        if value.get("state") not in DELEGATION_UNIT_STATES:
+            raise _delegation_error(
+                "PW_DELEGATION_RUNTIME_INVALID",
+                f"{unit_id} has invalid runtime state '{value.get('state')}'.",
+            )
+        handle = value.get("handle")
+        if handle is not None:
+            _validate_runtime_handle(handle, unit_id=unit_id)
+    if "task_orchestration" in raw:
+        _task_orchestration_state_from_payload(raw["task_orchestration"])
+    if "epic_orchestration" in raw:
+        _epic_orchestration_state_from_payload(raw["epic_orchestration"])
+    return raw
+
+
+def reconcile_delegation_runtime_state(
+    root: Path,
+    plan: DelegationPlan,
+    state: dict[str, object],
+    observed_handles: dict[str, object],
+) -> dict[str, object]:
+    """Reconcile canonical state with host observations without inventing missing handles."""
+    if "epic_orchestration" in state:
+        raise _delegation_error(
+            "PW_EPIC_RECONCILIATION_REQUIRES_HOST",
+            "Epic persistent-task state requires exact attempt, handle, checkout, and "
+            "worktree observations through EpicOrchestrator.resume/reconcile.",
+        )
+    if state.get("target_id") != plan.target.target_id:
+        raise _delegation_error(
+            "PW_DELEGATION_RUNTIME_TARGET_MISMATCH", "Runtime state target does not match plan."
+        )
+    stored_units = state.get("units")
+    if not isinstance(stored_units, dict):
+        raise _delegation_error("PW_DELEGATION_RUNTIME_INVALID", "Runtime units are invalid.")
+    normalized_observed = {
+        unit_id: _validate_runtime_handle(handle, unit_id=unit_id)
+        for unit_id, handle in observed_handles.items()
+    }
+    plan_by_id = {unit.unit_id: unit for unit in plan.units}
+    reconciled_units: dict[str, object] = {}
+    for unit_id in plan.selected_units:
+        unit = plan_by_id[unit_id]
+        stored = stored_units.get(unit_id, {})
+        if not isinstance(stored, dict):
+            stored = {}
+        stored_handle = stored.get("handle")
+        observed = normalized_observed.get(unit_id)
+        if unit.canonical_state == "complete":
+            reconciled_units[unit_id] = {"state": "complete", "handle": stored_handle}
+            continue
+        if observed is not None and observed["state"] == "active":
+            state_name = (
+                "active" if Path(observed["worktree"]).resolve() == root.resolve() else "orphaned"
+            )
+            reconciled_units[unit_id] = {"state": state_name, "handle": observed}
+            continue
+        if stored.get("state") == "active" or stored_handle is not None:
+            reconciled_units[unit_id] = {
+                "state": "orphaned",
+                "handle": observed if observed is not None else stored_handle,
+            }
+            continue
+        reconciled_units[unit_id] = {"state": "pending", "handle": None}
+    result = {
+        "schema_version": DELEGATION_RUNTIME_SCHEMA_VERSION,
+        "target_id": plan.target.target_id,
+        "target_kind": plan.target.kind,
+        "plan_fingerprint": _delegation_plan_fingerprint(plan),
+        "worktree": str(root.resolve()),
+        "units": reconciled_units,
+    }
+    if "task_orchestration" in state:
+        task_runtime = _task_orchestration_state_from_payload(state["task_orchestration"])
+        for unit in plan.units:
+            run = task_runtime.units[unit.unit_id]
+            observed = normalized_observed.get(unit.unit_id)
+            if unit.canonical_state == "complete":
+                run.state = "done"
+                run.handle = None
+                run.completion_provenance = (
+                    f"canonical:{plan.target.source_path}#{plan.target.source_hash}"
+                )
+            elif run.state in {"active", "returned"}:
+                expected_kind = "subagent" if run.executor in {
+                    "bounded-subagent",
+                    "sequential-worker",
+                } else run.executor
+                identity_matches = (
+                    observed is not None
+                    and observed["id"] == run.handle
+                    and observed["kind"] == expected_kind
+                )
+                if (
+                    not identity_matches
+                    or observed is None
+                    or Path(observed["worktree"]).resolve() != root.resolve()
+                ):
+                    run.state = "orphaned"
+                    run.handle = None
+                elif observed["state"] == "active":
+                    run.state = "active"
+                elif observed["state"] == "complete":
+                    run.state = "returned"
+                else:
+                    run.state = "failed"
+                    run.handle = None
+                    run.issues = ("Observed worker failure during CLI reconciliation.",)
+                    task_runtime.failure_seen = True
+        result["task_orchestration"] = _task_orchestration_state_payload(task_runtime)
+        projected_units: dict[str, object] = {}
+        for unit_id, run in task_runtime.units.items():
+            projected = (
+                "complete"
+                if run.state == "done"
+                else "active"
+                if run.state in {"active", "returned"}
+                else "orphaned"
+                if run.state == "orphaned"
+                else "blocked"
+                if run.state in {"failed", "blocked", "halted"}
+                else "pending"
+            )
+            projected_units[unit_id] = {"state": projected, "handle": None}
+        result["units"] = projected_units
+    return result
+
+
+def _write_delegation_runtime_state(root: Path, plan: DelegationPlan, state: dict[str, object]) -> None:
+    if not _delegation_runtime_is_ignored(root):
+        raise _delegation_error(
+            "PW_DELEGATION_RUNTIME_NOT_IGNORED",
+            f"{DELEGATION_RUNTIME_RELATIVE_DIR.as_posix()}/ must remain ignored.",
+        )
+    path = _delegation_runtime_path(root, plan.target.target_id)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        mode="w", encoding="utf-8", dir=path.parent, delete=False
+    ) as temporary:
+        json.dump(state, temporary, indent=2, sort_keys=True)
+        temporary.write("\n")
+        temporary_path = Path(temporary.name)
+    os.replace(temporary_path, path)
+
+
+def _delegation_status_payload(
+    plan: DelegationPlan, state: dict[str, object] | None
+) -> dict[str, object]:
+    payload = delegation_plan_payload(plan)
+    payload["runtime"] = state
+    if state is None:
+        payload["runtime_summary"] = {"initialized": False, "active": [], "orphaned": []}
+    else:
+        units = state.get("units", {})
+        assert isinstance(units, dict)
+        task_runtime = None
+        epic_runtime = None
+        if "task_orchestration" in state:
+            task_runtime = _task_orchestration_state_from_payload(
+                state["task_orchestration"]
+            )
+            units = {
+                unit_id: {"state": run.state, "handle": run.handle}
+                for unit_id, run in task_runtime.units.items()
+            }
+        elif "epic_orchestration" in state:
+            epic_runtime = _epic_orchestration_state_from_payload(
+                state["epic_orchestration"]
+            )
+            units = {
+                unit_id: {"state": run.state, "handle": run.handle}
+                for unit_id, run in epic_runtime.units.items()
+            }
+        unavailable = {
+            unit_id
+            for unit_id, value in units.items()
+            if isinstance(value, dict) and value.get("state") != "pending"
+        }
+        payload["eligible_units"] = [
+            unit_id for unit_id in plan.eligible_units if unit_id not in unavailable
+        ]
+        payload["blocked_units"] = list(
+            dict.fromkeys([*plan.blocked_units, *sorted(unavailable)])
+        )
+        plan_units = payload["units"]
+        assert isinstance(plan_units, list)
+        for plan_unit in plan_units:
+            assert isinstance(plan_unit, dict)
+            runtime_unit = units.get(plan_unit["id"])
+            if not isinstance(runtime_unit, dict):
+                continue
+            runtime_state = runtime_unit.get("state")
+            if runtime_state != "pending":
+                plan_unit["readiness"] = runtime_state
+                plan_unit["blocking_reasons"] = [
+                    "Runtime handle is active; resume without relaunch."
+                    if runtime_state == "active"
+                    else "Runtime Task state is not launch-eligible; reconcile or resume it."
+                ]
+        payload["runtime_summary"] = {
+            "initialized": True,
+            "active": sorted(
+                unit_id
+                for unit_id, value in units.items()
+                if isinstance(value, dict) and value.get("state") == "active"
+            ),
+            "orphaned": sorted(
+                unit_id
+                for unit_id, value in units.items()
+                if isinstance(value, dict) and value.get("state") == "orphaned"
+            ),
+        }
+        if task_runtime is not None:
+            payload["runtime_summary"].update(
+                {
+                    "returned": sorted(
+                        unit_id
+                        for unit_id, run in task_runtime.units.items()
+                        if run.state == "returned"
+                    ),
+                    "completed": sorted(
+                        unit_id
+                        for unit_id, run in task_runtime.units.items()
+                        if run.state == "done"
+                    ),
+                    "attempts": {
+                        unit_id: run.attempt
+                        for unit_id, run in sorted(task_runtime.units.items())
+                    },
+                    "no_relaunch": sorted(unavailable),
+                }
+            )
+        if epic_runtime is not None:
+            payload["runtime_summary"].update(
+                {
+                    "returned": sorted(
+                        unit_id for unit_id, run in epic_runtime.units.items()
+                        if run.state == "returned"
+                    ),
+                    "completed": sorted(
+                        unit_id for unit_id, run in epic_runtime.units.items()
+                        if run.state == "verified"
+                    ),
+                    "attempts": {
+                        unit_id: run.attempt
+                        for unit_id, run in sorted(epic_runtime.units.items())
+                    },
+                    "create_count": epic_runtime.create_count,
+                    "lifecycle": {
+                        unit_id: {
+                            "executor": run.executor,
+                            "visibility_class": run.visibility_class,
+                            "retention_policy": run.retention_policy,
+                            "disposition_state": run.disposition_state,
+                            "retirement_state": run.retirement_state,
+                            "attention_reasons": list(run.attention_reasons),
+                            "owner_promoted": run.owner_promoted,
+                            "explicit_retain_reason": run.explicit_retain_reason,
+                            "prior_visible_handles": len(run.prior_handles),
+                        }
+                        for unit_id, run in sorted(epic_runtime.units.items())
+                    },
+                    "retirement_confirmed": sorted(
+                        unit_id for unit_id, run in epic_runtime.units.items()
+                        if run.retirement_state == "confirmed"
+                    ),
+                    "retirement_pending": sorted(
+                        unit_id for unit_id, run in epic_runtime.units.items()
+                        if run.retirement_state in {"pending", "requested", "failed", "unknown"}
+                    ),
+                    "visible_retained": sorted(
+                        unit_id for unit_id, run in epic_runtime.units.items()
+                        if run.visibility_class.startswith("visible-")
+                        and run.retirement_state != "confirmed"
+                    ),
+                    "no_relaunch": sorted(
+                        unit_id for unit_id, run in epic_runtime.units.items()
+                        if run.state != "pending"
+                    ),
+                }
+            )
+    return payload
+
+
+def cmd_delegate_plan(args: argparse.Namespace) -> None:
+    try:
+        plan = _delegation_plan_from_args(Path.cwd(), args)
+    except DelegationPlanError as error:
+        raise SystemExit(f"{error.code}: {error.message}") from error
+    if args.format == "json":
+        print(json.dumps(delegation_plan_payload(plan), indent=2, sort_keys=True))
+    else:
+        print(_format_delegation_plan_human(plan))
+
+
+def cmd_delegate_status(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        plan = _delegation_plan_from_args(root, args)
+        state = _load_delegation_runtime_state(root, plan.target.target_id)
+    except (
+        DelegationPlanError,
+        TaskOrchestrationError,
+        EpicOrchestrationError,
+        json.JSONDecodeError,
+    ) as error:
+        if isinstance(
+            error, (DelegationPlanError, TaskOrchestrationError, EpicOrchestrationError)
+        ):
+            message = f"{error.code}: {error.message}"
+        else:
+            message = f"PW_DELEGATION_RUNTIME_INVALID: {error}"
+        raise SystemExit(message) from error
+    if args.format == "json":
+        print(json.dumps(_delegation_status_payload(plan, state), indent=2, sort_keys=True))
+    else:
+        print(_format_delegation_plan_human(plan, heading="Delegation Status"))
+        if state is None:
+            print("Runtime: not initialized")
+        else:
+            summary = _delegation_status_payload(plan, state)["runtime_summary"]
+            assert isinstance(summary, dict)
+            print("Runtime active: " + (", ".join(summary["active"]) or "none"))
+            print("Runtime orphaned: " + (", ".join(summary["orphaned"]) or "none"))
+
+
+def cmd_delegate_state_init(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        plan = _delegation_plan_from_args(root, args)
+        state = initialize_delegation_runtime_state(root, plan)
+    except (
+        DelegationPlanError,
+        TaskOrchestrationError,
+        EpicOrchestrationError,
+        json.JSONDecodeError,
+        OSError,
+    ) as error:
+        if isinstance(
+            error, (DelegationPlanError, TaskOrchestrationError, EpicOrchestrationError)
+        ):
+            message = f"{error.code}: {error.message}"
+        else:
+            message = f"PW_DELEGATION_RUNTIME_INVALID: {error}"
+        raise SystemExit(message) from error
+    path = _delegation_runtime_path(root, plan.target.target_id)
+    if args.format == "json":
+        print(json.dumps(state, indent=2, sort_keys=True))
+    else:
+        print(f"Initialized ignored delegation runtime state: {path}")
+
+
+def cmd_delegate_state_reconcile(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        plan = _delegation_plan_from_args(root, args)
+        state = _load_delegation_runtime_state(root, plan.target.target_id)
+        if state is None:
+            raise _delegation_error(
+                "PW_DELEGATION_RUNTIME_MISSING", "Initialize runtime state before reconciliation."
+            )
+        raw_observed = json.loads(Path(args.observed_handles).read_text(encoding="utf-8"))
+        if not isinstance(raw_observed, dict):
+            raise _delegation_error(
+                "PW_DELEGATION_RUNTIME_INVALID", "Observed handles JSON must be an object."
+            )
+        reconciled = reconcile_delegation_runtime_state(root, plan, state, raw_observed)
+        _write_delegation_runtime_state(root, plan, reconciled)
+    except (
+        DelegationPlanError,
+        TaskOrchestrationError,
+        EpicOrchestrationError,
+        json.JSONDecodeError,
+        OSError,
+    ) as error:
+        if isinstance(
+            error, (DelegationPlanError, TaskOrchestrationError, EpicOrchestrationError)
+        ):
+            message = f"{error.code}: {error.message}"
+        else:
+            message = f"PW_DELEGATION_RUNTIME_INVALID: {error}"
+        raise SystemExit(message) from error
+    if args.format == "json":
+        print(json.dumps(reconciled, indent=2, sort_keys=True))
+    else:
+        print(f"Reconciled delegation runtime state for {plan.target.target_id}.")
 
 
 def _duplicate_backlog_ids(rows: list[dict[str, str]]) -> list[str]:
@@ -4478,7 +13400,39 @@ def _approved_deferral(row: dict[str, str] | None) -> bool:
 
 def _qa_passed(docs_text: str) -> bool:
     qa_section = _markdown_section(docs_text, "QA & Code Review").lower()
-    return "verdict: pass" in qa_section
+    return "verdict: pass" in qa_section and not _intent_qa_review_issues(docs_text)
+
+
+def _intent_qa_review_issues(docs_text: str) -> list[str]:
+    values = _parse_key_value_section(_markdown_section(docs_text, "QA & Code Review"))
+    mode = values.get("intent qa contract", "").strip().lower()
+    if not mode:
+        return []
+    if mode != "adversarial":
+        return ["set `Intent QA contract` to `adversarial`"]
+    issues: list[str] = []
+    if values.get("verdict", "").strip().lower() != "pass":
+        issues.append("record `Verdict: Pass` after QA")
+    if values.get("intent adversarial verdict", "").strip().lower() != "pass":
+        issues.append("record `Intent adversarial verdict: Pass` only when the user job is fulfilled")
+    undone = values.get(
+        "could every ac pass while the approved user job remains undone", ""
+    ).strip().lower()
+    if undone != "no":
+        issues.append(
+            "answer `Could every AC pass while the approved user job remains undone: No`; "
+            "a Yes or unknown answer requires Changes requested"
+        )
+    if values.get("intent audit state", "").strip().lower() != "current":
+        issues.append("record `Intent audit state: current`")
+    for field in ("outcome journey evidence", "reviewer independence"):
+        value = values.get(field, "")
+        if _evidence_value_missing(value) or not _section_has_substantive_text(value):
+            issues.append(f"record substantive `{field}`")
+    independence = values.get("reviewer independence", "").lower()
+    if any(phrase in independence for phrase in ("same implementation agent", "self review")):
+        issues.append("reviewer independence cannot be satisfied by implementation self-certification")
+    return issues
 
 
 def _parent_ac_evidence_present(docs_text: str, ac_id: str) -> bool:
@@ -4521,6 +13475,24 @@ def _triggered_proof_recipes(*texts: str) -> set[str]:
     for recipe_id, patterns in PROOF_RECIPE_TRIGGER_PATTERNS.items():
         if any(re.search(pattern, combined, flags=re.IGNORECASE) for pattern in patterns):
             triggered.add(recipe_id)
+    user_outcome_sections = (
+        "Goal",
+        "Requirements (Outcome-Focused)",
+        "Acceptance Criteria (Verifiable)",
+        "Acceptance Criteria",
+        "Validation",
+        "Parent AC Evidence",
+    )
+    user_outcome_authority = "\n".join(
+        _markdown_section(text, heading)
+        for text in texts
+        for heading in user_outcome_sections
+    ).lower()
+    if (
+        "user-outcome-journey" in triggered
+        and "user-outcome-journey" not in user_outcome_authority
+    ):
+        triggered.remove("user-outcome-journey")
     return triggered
 
 
@@ -4639,6 +13611,172 @@ def _structured_evidence_contradiction_issues(
     return issues
 
 
+def _user_outcome_journey_record_issues(
+    record: dict[str, object], *, label: str, evidence_dir: Path
+) -> list[str]:
+    issues: list[str] = []
+    for field in ("material_operations", "outcome_observations"):
+        value = record.get(field)
+        if not isinstance(value, list) or not value or any(
+            _evidence_value_missing(item) for item in value
+        ):
+            issues.append(
+                f"structured evidence: {label} `{field}` must be a non-empty list of "
+                "performed or observed journey facts."
+            )
+    policy = record.get("invalid_substitute_policy")
+    policy_values = (
+        {str(value).strip().lower() for value in policy if str(value).strip()}
+        if isinstance(policy, list)
+        else set()
+    )
+    missing_policy = sorted(USER_OUTCOME_INVALID_SUBSTITUTE_POLICY - policy_values)
+    if missing_policy:
+        issues.append(
+            f"structured evidence: {label} invalid_substitute_policy is missing: "
+            + ", ".join(missing_policy)
+            + "."
+        )
+    claim_scope = str(record.get("claim_scope", "")).strip()
+    journey_scope = str(record.get("journey_scope", "")).strip()
+    if claim_scope != journey_scope:
+        issues.append(
+            f"structured evidence: {label} journey_scope must exactly match claim_scope."
+        )
+    source_value = record.get("source_artifact")
+    if isinstance(source_value, str) and source_value.strip() and not re.match(
+        r"^[a-z][a-z0-9+.-]*://", source_value.strip(), flags=re.IGNORECASE
+    ):
+        source_path = Path(source_value.strip())
+        candidates = [evidence_dir / source_path]
+        repository_root = next(
+            (parent for parent in evidence_dir.parents if (parent / ".project-workflow").is_dir()),
+            None,
+        )
+        if repository_root is not None:
+            candidates.append(repository_root / source_path)
+        resolved_source = next((path for path in candidates if path.exists()), None)
+        if resolved_source is None:
+            issues.append(
+                f"structured evidence: {label} source_artifact does not exist: {source_value}."
+            )
+        else:
+            actual_source_hash = _sha256_file(resolved_source)
+            evidence_source_hash = actual_source_hash
+            source_member = str(record.get("source_artifact_member", "")).strip()
+            if source_member:
+                try:
+                    with zipfile.ZipFile(resolved_source) as archive:
+                        evidence_source_hash = (
+                            "sha256:"
+                            + hashlib.sha256(archive.read(source_member)).hexdigest()
+                        )
+                except (KeyError, zipfile.BadZipFile):
+                    issues.append(
+                        f"structured evidence: {label} source_artifact_member does not exist "
+                        f"in a readable ZIP artifact: {source_member}."
+                    )
+            recorded_commit = str(record.get("commit", "")).strip()
+            if not source_member and repository_root is not None and re.fullmatch(
+                r"[a-fA-F0-9]{7,40}", recorded_commit
+            ):
+                try:
+                    current_commit = _run_git(["rev-parse", "HEAD"], cwd=repository_root)
+                    evidence_commit = _run_git(
+                        ["rev-parse", f"{recorded_commit}^{{commit}}"],
+                        cwd=repository_root,
+                    )
+                    relative_source = resolved_source.resolve().relative_to(
+                        repository_root.resolve()
+                    )
+                    ancestor = subprocess.run(
+                        [
+                            "git",
+                            "merge-base",
+                            "--is-ancestor",
+                            evidence_commit,
+                            current_commit,
+                        ],
+                        cwd=str(repository_root),
+                        check=False,
+                        capture_output=True,
+                    )
+                    if evidence_commit != current_commit and ancestor.returncode == 0:
+                        historical = subprocess.run(
+                            [
+                                "git",
+                                "show",
+                                f"{evidence_commit}:{relative_source.as_posix()}",
+                            ],
+                            cwd=str(repository_root),
+                            check=False,
+                            capture_output=True,
+                        )
+                        if historical.returncode == 0:
+                            evidence_source_hash = (
+                                "sha256:" + hashlib.sha256(historical.stdout).hexdigest()
+                            )
+                except (subprocess.CalledProcessError, ValueError):
+                    pass
+            source_revision = _normalized_evidence_hash(record.get("source_revision"))
+            if (
+                source_revision.startswith("sha256:")
+                and source_revision != evidence_source_hash
+            ):
+                issues.append(
+                    f"structured evidence: {label} source_revision is stale "
+                    f"(expected {evidence_source_hash})."
+                )
+            artifact_identity = str(record.get("artifact_identity", ""))
+            if evidence_source_hash.removeprefix("sha256:") not in artifact_identity:
+                issues.append(
+                    f"structured evidence: {label} artifact_identity does not bind the recorded "
+                    "source artifact."
+                )
+    entry_point = str(record.get("normal_entry_point", "")).lower()
+    if any(term in entry_point for term in ("debug", "test-only", "internal-only")):
+        issues.append(
+            f"structured evidence: {label} normal_entry_point cannot be a debug, test-only, "
+            "or internal-only path."
+        )
+    acceptance_required = record.get("owner_acceptance_required")
+    acceptance_status = str(record.get("owner_acceptance_status", "")).strip().lower()
+    if not isinstance(acceptance_required, bool):
+        issues.append(
+            f"structured evidence: {label} owner_acceptance_required must be boolean."
+        )
+    elif acceptance_required and acceptance_status not in {"pending", "accepted"}:
+        issues.append(
+            f"structured evidence: {label} owner_acceptance_status must be pending or accepted "
+            "when owner acceptance is required."
+        )
+    elif not acceptance_required and acceptance_status != "not-required":
+        issues.append(
+            f"structured evidence: {label} owner_acceptance_status must be not-required when "
+            "owner acceptance is not required."
+        )
+    return issues
+
+
+def _owner_acceptance_completion_issues(evidence_path: Path) -> list[str]:
+    records, load_issues = _load_structured_evidence(evidence_path)
+    if load_issues:
+        return []
+    issues: list[str] = []
+    for record in records:
+        if record.get("recipe") != "user-outcome-journey":
+            continue
+        if record.get("owner_acceptance_required") is True and str(
+            record.get("owner_acceptance_status", "")
+        ).strip().lower() != "accepted":
+            label = str(record.get("id", "")).strip() or "user-outcome claim"
+            issues.append(
+                f"structured evidence: {label} is outcome-proven and ready for owner acceptance, "
+                "but owner acceptance is still pending."
+            )
+    return issues
+
+
 def _structured_evidence_issues(
     *,
     requirements_path: Path,
@@ -4671,7 +13809,15 @@ def _structured_evidence_issues(
             continue
         records_by_recipe.setdefault(recipe_id, []).append(record)
         for field in PROOF_RECIPE_REQUIRED_FIELDS[recipe_id]:
-            if _evidence_value_missing(record.get(field)):
+            value_missing = _evidence_value_missing(record.get(field))
+            if (
+                recipe_id == "user-outcome-journey"
+                and field == "owner_acceptance_status"
+                and str(record.get(field, "")).strip().lower()
+                in {"pending", "accepted", "not-required"}
+            ):
+                value_missing = False
+            if value_missing:
                 issues.append(
                     f"structured evidence: {label} missing required field `{field}` "
                     f"for recipe `{recipe_id}`."
@@ -4692,13 +13838,23 @@ def _structured_evidence_issues(
                 f"structured evidence: {label} records invalid substitute evidence: "
                 + ", ".join(invalid_values)
             )
-        text_blob = " ".join(str(value).lower() for value in record.values())
+        text_blob = " ".join(
+            str(value).lower()
+            for key, value in record.items()
+            if key != "invalid_substitute_policy"
+        )
         for invalid_pattern in PROOF_RECIPE_INVALID_SUBSTITUTE_PATTERNS[recipe_id]:
             if invalid_pattern in text_blob:
                 issues.append(
                     f"structured evidence: {label} uses invalid substitute for "
                     f"`{recipe_id}`: {invalid_pattern}."
                 )
+        if recipe_id == "user-outcome-journey":
+            issues.extend(
+                _user_outcome_journey_record_issues(
+                    record, label=label, evidence_dir=implementation_path.parent
+                )
+            )
         if not _evidence_artifact_exists(
             record.get("evidence_artifact"),
             evidence_dir=implementation_path.parent,
@@ -5003,6 +14159,176 @@ def _parse_key_value_section(section: str) -> dict[str, str]:
     return values
 
 
+def _validation_impact_decision(
+    *,
+    classification: str,
+    proof_layers: tuple[str, ...],
+    validation_verdict: str,
+) -> dict[str, object]:
+    if classification not in VALIDATION_IMPACT_CLASSIFICATIONS:
+        raise ValueError(f"Unknown validation-impact classification: {classification}")
+    if validation_verdict not in VALIDATION_IMPACT_VERDICTS:
+        raise ValueError(f"Unknown validation-impact verdict: {validation_verdict}")
+    invalid_layers = sorted(set(proof_layers) - set(OPERATIONAL_STATUS_PROOF_LAYER_NAMES))
+    if invalid_layers:
+        raise ValueError("Unknown proof layer(s): " + ", ".join(invalid_layers))
+    if classification == "affected" and not proof_layers:
+        raise ValueError("affected impact requires at least one invalidated proof layer")
+    if classification == "unaffected":
+        if proof_layers:
+            raise ValueError("unaffected impact cannot name an invalidated proof layer")
+        if validation_verdict != "not-required":
+            raise ValueError("unaffected impact requires validation verdict not-required")
+    elif classification == "ambiguous":
+        if validation_verdict != "pending":
+            raise ValueError("ambiguous impact must remain pending until clarified")
+    elif validation_verdict == "not-required":
+        raise ValueError(
+            f"{classification} impact requires a pending, pass, or fail validation verdict"
+        )
+    affected_layers = tuple(dict.fromkeys(proof_layers))
+    required_validation = VALIDATION_IMPACT_REQUIREMENTS[classification]
+    return {
+        "classification": classification,
+        "affected_proof_layers": affected_layers,
+        "required_validation": required_validation,
+        "validation_verdict": validation_verdict,
+    }
+
+
+def _validation_impact_from_text(
+    docs_text: str,
+) -> tuple[dict[str, object] | None, tuple[str, ...]]:
+    section = _markdown_section(docs_text, "Validation Impact")
+    if not section:
+        return None, ()
+    values = _parse_key_value_section(section)
+    required_fields = (
+        "baseline proof",
+        "change summary",
+        "impact",
+        "invalidated proof layers",
+        "required validation",
+        "validation verdict",
+        "decided by",
+        "change identity",
+    )
+    missing = tuple(
+        field
+        for field in required_fields
+        if not values.get(field, "").strip() or values.get(field, "").strip() == "____"
+    )
+    if missing:
+        return None, tuple(f"record `{field}`" for field in missing)
+    classification = values["impact"].strip().lower()
+    validation_verdict = values["validation verdict"].strip().lower()
+    layer_value = values["invalidated proof layers"].strip()
+    proof_layers = (
+        ()
+        if layer_value.lower() == "none"
+        else tuple(part.strip() for part in layer_value.split(",") if part.strip())
+    )
+    try:
+        decision = _validation_impact_decision(
+            classification=classification,
+            proof_layers=proof_layers,
+            validation_verdict=validation_verdict,
+        )
+    except ValueError as exc:
+        return None, (str(exc),)
+    issues: list[str] = []
+    if values["required validation"].strip().lower() != decision["required_validation"]:
+        issues.append("required validation contradicts the change classification")
+    expected_identity = _validation_impact_identity(
+        baseline=values["baseline proof"],
+        change_summary=values["change summary"],
+        decided_by=values["decided by"],
+        decision=decision,
+    )
+    if values["change identity"].strip().lower() != expected_identity:
+        issues.append("change identity does not match the recorded impact decision")
+    decision["decision_identity"] = expected_identity
+    return (decision if not issues else None), tuple(issues)
+
+
+def _validation_impact_identity(
+    *,
+    baseline: str,
+    change_summary: str,
+    decided_by: str,
+    decision: dict[str, object],
+) -> str:
+    payload = {
+        "baseline_proof": baseline.strip(),
+        "change_summary": change_summary.strip(),
+        "decided_by": decided_by.strip(),
+        "classification": decision["classification"],
+        "affected_proof_layers": list(decision["affected_proof_layers"]),
+        "required_validation": decision["required_validation"],
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return VALIDATION_IMPACT_IDENTITY_PREFIX + hashlib.sha256(encoded).hexdigest()
+
+
+def _validation_impact_section(
+    *,
+    baseline: str,
+    change_summary: str,
+    decided_by: str,
+    decision: dict[str, object],
+) -> str:
+    layers = decision["affected_proof_layers"]
+    rendered_layers = ", ".join(str(layer) for layer in layers) if layers else "None"
+    decision_identity = _validation_impact_identity(
+        baseline=baseline,
+        change_summary=change_summary,
+        decided_by=decided_by,
+        decision=decision,
+    )
+    return (
+        "## Validation Impact\n\n"
+        f"- Baseline proof: {baseline.strip()}\n"
+        f"- Change summary: {change_summary.strip()}\n"
+        f"- Impact: {decision['classification']}\n"
+        f"- Invalidated proof layers: {rendered_layers}\n"
+        f"- Required validation: {decision['required_validation']}\n"
+        f"- Validation verdict: {decision['validation_verdict']}\n"
+        f"- Decided by: {decided_by.strip()}\n"
+        f"- Change identity: {decision_identity}\n"
+    )
+
+
+def _upsert_markdown_section(
+    text: str,
+    *,
+    heading: str,
+    section: str,
+    before_heading: str | None = None,
+) -> str:
+    lines = text.splitlines(keepends=True)
+    target = f"## {heading}".lower()
+    start: int | None = None
+    end: int | None = None
+    for index, line in enumerate(lines):
+        stripped = line.strip()
+        if stripped.lower() == target:
+            start = index
+            continue
+        if start is not None and index > start and stripped.startswith("## "):
+            end = index
+            break
+    replacement = section.rstrip() + "\n\n"
+    if start is not None:
+        section_end = len(lines) if end is None else end
+        return "".join(lines[:start]) + replacement + "".join(lines[section_end:])
+    if before_heading is not None:
+        before_target = f"## {before_heading}".lower()
+        for index, line in enumerate(lines):
+            if line.strip().lower() == before_target:
+                return "".join(lines[:index]) + replacement + "".join(lines[index:])
+    return text.rstrip() + "\n\n" + replacement
+
+
 def _remove_markdown_section(text: str, heading: str) -> str:
     target = f"## {heading}".lower()
     lines = text.splitlines()
@@ -5066,6 +14392,12 @@ def _approval_envelope_issues(
     values = _parse_key_value_section(section)
     issues: list[str] = []
 
+    if _intent_contract_mode(requirements_text) == "full" and not _approval_value_is_yes(
+        values.get("intent reviewed and accurately reflected", "")
+    ):
+        issues.append(
+            "owner input required: the plain-language Intent has not been confirmed as accurate."
+        )
     if not _approval_value_is_yes(values.get("requirements reviewed by owner", "")):
         issues.append("owner input required: requirements have not been reviewed by the owner.")
     if not _approval_value_is_yes(values.get("acceptance criteria reviewed by owner", "")):
@@ -5119,9 +14451,11 @@ def _approval_block(
     decomposition: bool,
     implementation: bool,
     artifact_identity: str,
+    intent_reviewed: str,
 ) -> str:
     return (
         "## Owner Approval\n\n"
+        f"- Intent reviewed and accurately reflected: {intent_reviewed}\n"
         "- Requirements reviewed by owner: Yes\n"
         "- Acceptance criteria reviewed by owner: Yes\n"
         f"- Approved for decomposition: {'Yes' if decomposition else 'No'}\n"
@@ -5155,6 +14489,11 @@ def _requirements_with_approval_envelope(
         decomposition=decomposition,
         implementation=implementation,
         artifact_identity=artifact_identity,
+        intent_reviewed=(
+            "Yes"
+            if _intent_contract_mode(without_approval) == "full"
+            else "Not required (legacy contract)"
+        ),
     )
     marker = "\n## Goal\n"
     if marker in without_approval:
@@ -5254,7 +14593,12 @@ def _epic_lifecycle_gate_issues(root: Path, epic_id: str, target_status: str) ->
     )
     contract_issues = _epic_contract_issues(epic_dir, requirements_text)
     if target_status == "Ready":
-        return [*readiness_issues, *approval_issues, *contract_issues]
+        audit_issues = (
+            _intent_audit_gate_issues(epic_dir)
+            if _decomposition_plan_path(epic_dir).exists()
+            else []
+        )
+        return [*readiness_issues, *approval_issues, *contract_issues, *audit_issues]
 
     epic_dir, audit_rows, audit_gaps = _epic_audit_rows(root, epic_id)
     mapping_gaps = [
@@ -5263,7 +14607,13 @@ def _epic_lifecycle_gate_issues(root: Path, epic_id: str, target_status: str) ->
         if row["Child Rows"] == "None" and row["Deferral"] == "None"
     ]
     if target_status == "In Progress":
-        return [*readiness_issues, *approval_issues, *contract_issues, *mapping_gaps]
+        return [
+            *readiness_issues,
+            *approval_issues,
+            *contract_issues,
+            *mapping_gaps,
+            *_intent_audit_gate_issues(epic_dir),
+        ]
     if target_status == "Closeout":
         return [*audit_gaps, *_epic_retro_issues(epic_dir)]
     return [f"unsupported epic lifecycle status: {target_status}"]
@@ -5335,9 +14685,15 @@ def _update_global_epic_status(
 
 
 def _epic_child_implementation_template(
-    task_id: str, title: str, parent_ac_coverage: str, child_charter: str = ""
+    task_id: str,
+    title: str,
+    parent_ac_coverage: str,
+    child_charter: str = "",
+    *,
+    root: Path | None = None,
 ) -> str:
     parent_ac_value = parent_ac_coverage or "____"
+    repository_id = _template_repository_id(root)
     return (
         f"## User Story\n\n"
         f"As a ____, I want ____, so that ____.\n\n"
@@ -5348,15 +14704,25 @@ def _epic_child_implementation_template(
         f"- [ ] AC1: Covers parent AC(s) {parent_ac_value}: ____\n\n"
         f"## Validation\n\n"
         f"- AC1 / parent AC(s) {parent_ac_value}: ____\n\n"
+        f"## Repository Evidence\n\n"
+        f"| Repository | Branch / PR | Validation | Delivery | Evidence |\n"
+        f"| ---------- | ----------- | ---------- | -------- | -------- |\n"
+        f"| {repository_id} | not recorded | not recorded | not recorded | not recorded |\n\n"
         f"## Task List\n\n"
-        f"| ID | Title | Description | Acceptance Criteria | User Verification | Status |\n"
-        f"| --: | ----- | ----------- | ------------------- | ----------------- | ------ |\n"
-        f"| 1 | ____ | ____ | AC1 / parent AC(s) {parent_ac_value}: ____ | ____ | To Do |\n\n"
+        f"| ID | Title | Description | Acceptance Criteria | User Verification | Status | Dependencies | Write Scope | Parallel Safe | Execution Needs |\n"
+        f"| --: | ----- | ----------- | ------------------- | ----------------- | ------ | ------------ | ----------- | ------------- | --------------- |\n"
+        f"| 1 | ____ | ____ | AC1 / parent AC(s) {parent_ac_value}: ____ | ____ | To Do | | ____ | No | bounded-return |\n\n"
         f"## Parent AC Evidence\n\n"
         f"- {parent_ac_value}: Pending implementation evidence. Recipe-triggered claims must "
         f"also be backed by `{STRUCTURED_EVIDENCE_FILENAME}`.\n\n"
         f"## QA & Code Review\n\n"
+        f"- Intent QA contract: adversarial\n"
         f"- Verdict: ____\n"
+        f"- Intent adversarial verdict: ____\n"
+        f"- Could every AC pass while the approved user job remains undone: ____\n"
+        f"- Intent audit state: ____\n"
+        f"- Outcome journey evidence: ____\n"
+        f"- Reviewer independence: ____\n"
         f"- Evidence: ____\n"
         f"- Findings: ____\n\n"
         f"## Retro\n\n"
@@ -5371,50 +14737,45 @@ def _epic_child_implementation_template(
 
 
 def _structured_evidence_template(task_id: str, parent_ac_coverage: str) -> str:
-    parent_ac_ids = sorted(
-        _extract_ac_ids(parent_ac_coverage),
-        key=lambda ac_id: int(ac_id[2:]),
-    )
-    if not parent_ac_ids:
-        parent_ac_ids = [parent_ac_coverage or "____"]
     return json.dumps(
         {
             "task_id": task_id,
-            "claims": [
-                {
-                    "id": f"CLM-{index:03d}",
-                    "parent_ac": parent_ac,
-                    "claim": "____",
-                    "recipe": "visual-reference-fidelity",
-                    "status": "pending",
-                    "commit": "____",
-                    "timestamp": "____",
-                    "reference_artifact": "____",
-                    "delivered_artifact": "____",
-                    "comparison_method": "____",
-                    "evidence_artifact": "____",
-                    "evidence_artifact_hash": "____",
-                    "invalid_substitutes": [],
-                }
-                for index, parent_ac in enumerate(parent_ac_ids, start=1)
-            ],
+            "claims": [],
         },
         indent=2,
     ) + "\n"
 
 
 def _epic_child_requirements_template(
-    task_id: str, title: str, parent_ac_coverage: str, child_charter: str = ""
+    task_id: str,
+    title: str,
+    parent_ac_coverage: str,
+    child_charter: str = "",
+    *,
+    root: Path | None = None,
 ) -> str:
     parent_ac_value = parent_ac_coverage or "____"
+    repository_id = _template_repository_id(root)
     return (
         f"# Requirements\n\n"
         f"## Summary\n\n"
         f"- Task: {task_id}\n"
         f"- Title: {title}\n"
         f"- Parent AC Coverage: {parent_ac_value}\n"
-        f"- Last updated: {date.today().isoformat()}\n\n"
+        f"- Last updated: {date.today().isoformat()}\n"
+        f"- Intent contract: full\n\n"
+        f"## Intent\n\n"
+        f"State the child outcome in one or two plain-language sentences without narrowing the parent Intent.\n\n"
+        f"## Intent Spine\n\n"
+        f"- OC1 — Completion capability: ____\n"
+        f"- OC2 — Material capabilities: ____\n"
+        f"- OC3 — Success journey: ____\n"
+        f"- OC4 — Successful-but-wrong result: ____\n"
+        f"- OC5 — Exclusions: ____\n"
+        f"- OC6 — Assumptions: ____\n"
+        f"- OC7 — Authority source: Parent Epic Intent and approved decomposition row.\n\n"
         f"## Owner Approval\n\n"
+        f"- Intent reviewed and accurately reflected: Inherited from parent epic envelope when unchanged\n"
         f"- Requirements reviewed by owner: No\n"
         f"- Acceptance criteria reviewed by owner: No\n"
         f"- Approved for decomposition: No\n"
@@ -5431,6 +14792,9 @@ def _epic_child_requirements_template(
         f"List what is explicitly out-of-scope.\n\n"
         f"## Users & Context\n\n"
         f"Who is affected and in what situation?\n\n"
+        f"## Repository Scope\n\n"
+        f"- Primary repository: {repository_id}\n"
+        f"- Repositories touched: {repository_id}\n\n"
         f"## Requirements (Outcome-Focused)\n\n"
         f"- ____\n\n"
         f"## Acceptance Criteria (Verifiable)\n\n"
@@ -5449,10 +14813,20 @@ def _implementation_task_table_rows(
 ) -> tuple[bool, list[dict[str, str]], list[int]]:
     lines = docs_text.splitlines()
     header_idx: int | None = None
+    table_columns: tuple[str, ...] | None = None
     for idx, line in enumerate(lines):
         cells = _parse_markdown_table_cells(line)
+        if cells == list(DELEGATION_EXECUTION_NEEDS_TASK_COLUMNS):
+            header_idx = idx
+            table_columns = DELEGATION_EXECUTION_NEEDS_TASK_COLUMNS
+            break
+        if cells == list(DELEGATION_IMPLEMENTATION_TASK_COLUMNS):
+            header_idx = idx
+            table_columns = DELEGATION_IMPLEMENTATION_TASK_COLUMNS
+            break
         if cells == list(IMPLEMENTATION_TASK_COLUMNS):
             header_idx = idx
+            table_columns = IMPLEMENTATION_TASK_COLUMNS
             break
 
     if header_idx is None:
@@ -5465,11 +14839,21 @@ def _implementation_task_table_rows(
         cells = _parse_markdown_table_cells(lines[row_idx])
         if cells is None:
             break
-        if len(cells) != len(IMPLEMENTATION_TASK_COLUMNS):
+        assert table_columns is not None
+        if len(cells) != len(table_columns):
             malformed_rows.append(row_idx + 1)
             row_idx += 1
             continue
-        row = dict(zip(IMPLEMENTATION_TASK_COLUMNS, cells))
+        row = dict(zip(table_columns, cells))
+        row["_delegation_metadata"] = (
+            "present"
+            if table_columns
+            in (
+                DELEGATION_IMPLEMENTATION_TASK_COLUMNS,
+                DELEGATION_EXECUTION_NEEDS_TASK_COLUMNS,
+            )
+            else "legacy"
+        )
         row["_line_idx"] = str(row_idx + 1)
         rows.append(row)
         row_idx += 1
@@ -5477,7 +14861,79 @@ def _implementation_task_table_rows(
     return True, rows, malformed_rows
 
 
-def _has_qa_review_evidence(text: str) -> bool:
+def _task_testing_integrity_issues(docs_text: str) -> tuple[str, ...]:
+    """Return integrity issues that ordinary force is never allowed to bypass."""
+    lines = docs_text.splitlines()
+    task_list_headings = [
+        idx for idx, line in enumerate(lines) if line.strip() == "## Task List"
+    ]
+    if len(task_list_headings) != 1:
+        return ("Task IMPLEMENTATION.md must contain exactly one canonical ## Task List section.",)
+
+    section_start = task_list_headings[0] + 1
+    section_end = len(lines)
+    for idx in range(section_start, len(lines)):
+        if lines[idx].startswith("## "):
+            section_end = idx
+            break
+    section_lines = lines[section_start:section_end]
+    supported_headers = [
+        idx
+        for idx, line in enumerate(section_lines)
+        if _parse_markdown_table_cells(line)
+        in (
+            list(DELEGATION_EXECUTION_NEEDS_TASK_COLUMNS),
+            list(DELEGATION_IMPLEMENTATION_TASK_COLUMNS),
+            list(IMPLEMENTATION_TASK_COLUMNS),
+        )
+    ]
+    if len(supported_headers) != 1:
+        return ("Canonical Task List must contain exactly one supported implementation table.",)
+
+    table_text = "\n".join(section_lines[supported_headers[0] :])
+    table_found, rows, malformed_rows = _implementation_task_table_rows(table_text)
+    if not table_found:
+        return ("Task IMPLEMENTATION.md has no supported Task List table.",)
+    if malformed_rows:
+        return (
+            "Task List has malformed rows at lines: "
+            + ", ".join(str(line) for line in malformed_rows)
+            + ".",
+        )
+    if not rows:
+        return ("Task List must contain at least one required implementation row.",)
+
+    first_non_table = supported_headers[0] + 2 + len(rows) + len(malformed_rows)
+    trailing_table_lines = [
+        section_start + idx + 1
+        for idx, line in enumerate(section_lines[first_non_table:], start=first_non_table)
+        if _parse_markdown_table_cells(line) is not None
+    ]
+    if trailing_table_lines:
+        return (
+            "Canonical Task List contains unexpected trailing or duplicate table rows at lines: "
+            + ", ".join(str(line) for line in trailing_table_lines)
+            + ".",
+        )
+    incomplete = tuple(
+        row.get("ID", "row").strip() or "row"
+        for row in rows
+        if row.get("Status", "").strip() != "Done"
+    )
+    if incomplete:
+        return (
+            "Task cannot move to Testing until every required implementation row is Done; "
+            "incomplete: " + ", ".join(incomplete) + ". Ordinary --force cannot bypass "
+            "this integrity gate.",
+        )
+    return ()
+
+
+def _has_qa_review_evidence(
+    text: str,
+    *,
+    requirements_text: str | None = None,
+) -> bool:
     section = _markdown_section(text, "QA & Code Review")
     if not section or "____" in section:
         return False
@@ -5760,6 +15216,27 @@ READINESS_REQUIRED_SECTIONS = (
     "Validation Plan",
 )
 
+INTENT_CONTRACT_MODES = {"full", "compact"}
+INTENT_SPINE_FIELDS = {
+    "OC1": "completion capability",
+    "OC2": "material capabilities",
+    "OC3": "success journey",
+    "OC4": "successful-but-wrong result",
+    "OC5": "exclusions",
+    "OC6": "assumptions",
+    "OC7": "authority source",
+}
+GENERIC_INTENTS = {
+    "build the feature",
+    "complete this task",
+    "deliver the requested outcome",
+    "do the work",
+    "finish the epic",
+    "fix the bug",
+    "follow the workflow",
+    "implement the requirements",
+}
+
 
 def _section_has_placeholder(section: str) -> bool:
     lowered = section.lower()
@@ -5770,8 +15247,558 @@ def _section_has_placeholder(section: str) -> bool:
         "who is affected and in what situation",
         "how we will verify",
         "as a ____",
+        "state the owner's desired outcome",
+        "state the bounded correction and restored outcome",
+        "state the child outcome",
     )
     return any(phrase in lowered for phrase in placeholder_phrases)
+
+
+def _intent_contract_mode(requirements_text: str) -> str | None:
+    summary = _parse_key_value_section(_markdown_section(requirements_text, "Summary"))
+    mode = summary.get("intent contract", "").strip().lower()
+    return mode or None
+
+
+def _intent_plain_text(requirements_text: str) -> str:
+    return " ".join(
+        line.strip()
+        for line in _markdown_section(requirements_text, "Intent").splitlines()
+        if line.strip()
+    )
+
+
+def _normalized_intent_text(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", value.lower()).strip()
+
+
+def _intent_sentence_count(value: str) -> int:
+    return len(re.findall(r"[.!?](?=\s|$)", value.strip()))
+
+
+def _intent_spine_records(requirements_text: str) -> list[tuple[str, str, str]]:
+    records: list[tuple[str, str, str]] = []
+    for logical_item, _first_line in _flat_markdown_bullet_records(
+        _markdown_section(requirements_text, "Intent Spine")
+    ):
+        match = re.match(r"^(OC\d+)\s*[—-]\s*([^:]+):\s*(.+)$", logical_item)
+        if not match:
+            continue
+        records.append((match.group(1), match.group(2).strip(), match.group(3).strip()))
+    return records
+
+
+def _intent_spine_values(requirements_text: str) -> dict[str, tuple[str, str]]:
+    return {
+        commitment_id: (label, value)
+        for commitment_id, label, value in _intent_spine_records(requirements_text)
+    }
+
+
+def _intent_contract_issues(requirements_text: str) -> list[str]:
+    mode = _intent_contract_mode(requirements_text)
+    if mode is None:
+        return []
+    if mode not in INTENT_CONTRACT_MODES:
+        return ["set `Intent contract` to `full` or `compact`"]
+
+    issues: list[str] = []
+    intent = _intent_plain_text(requirements_text)
+    if not intent:
+        issues.append("add `## Intent` with the owner's desired outcome")
+    elif _section_has_placeholder(intent):
+        issues.append("replace placeholder content under `## Intent`")
+    else:
+        normalized = _normalized_intent_text(intent)
+        summary = _parse_key_value_section(_markdown_section(requirements_text, "Summary"))
+        title = _normalized_intent_text(summary.get("title", ""))
+        if normalized in GENERIC_INTENTS or normalized in {title, f"deliver {title}"}:
+            issues.append(
+                "replace procedural or circular `## Intent` text with the owner's actual outcome"
+            )
+        if len(re.findall(r"\b[\w'-]+\b", intent)) < 8:
+            issues.append("make `## Intent` substantive enough to identify the desired outcome")
+        sentence_count = _intent_sentence_count(intent)
+        if sentence_count not in {1, 2}:
+            issues.append("keep `## Intent` to one or two complete plain-language sentences")
+
+    if mode == "compact":
+        return issues
+
+    spine_section = _markdown_section(requirements_text, "Intent Spine")
+    if not spine_section:
+        issues.append("add `## Intent Spine` with stable OC1-OC7 commitments")
+        return issues
+    spine_values = _intent_spine_values(requirements_text)
+    spine_ids = [record[0] for record in _intent_spine_records(requirements_text)]
+    duplicate_ids = sorted(
+        commitment_id
+        for commitment_id in set(spine_ids)
+        if spine_ids.count(commitment_id) > 1
+    )
+    if duplicate_ids:
+        issues.append(
+            "remove duplicate Intent Spine commitment IDs: " + ", ".join(duplicate_ids)
+        )
+    for commitment_id, expected_label in INTENT_SPINE_FIELDS.items():
+        parsed = spine_values.get(commitment_id)
+        if parsed is None:
+            issues.append(
+                f"add `{commitment_id} — {expected_label.title()}` to `## Intent Spine`"
+            )
+            continue
+        label, value = parsed
+        if _normalized_intent_text(label) != _normalized_intent_text(expected_label):
+            issues.append(
+                f"label {commitment_id} as `{expected_label}` in `## Intent Spine`"
+            )
+        if not value or _section_has_placeholder(value):
+            issues.append(f"replace placeholder content for {commitment_id} in `## Intent Spine`")
+    return issues
+
+
+def _format_intent_approval_summary(requirements_text: str) -> str:
+    issues = _intent_contract_issues(requirements_text)
+    if _intent_contract_mode(requirements_text) != "full":
+        issues = [
+            "add the current full Intent contract before requesting meaning-first approval",
+            *issues,
+        ]
+    if issues:
+        raise ValueError("; ".join(dict.fromkeys(issues)))
+
+    intent = _intent_plain_text(requirements_text)
+    spine = _intent_spine_values(requirements_text)
+
+    def value(commitment_id: str) -> str:
+        return spine[commitment_id][1]
+
+    return (
+        "Approval synopsis\n\n"
+        "Intent\n"
+        f"{intent}\n\n"
+        "At completion\n"
+        f"{value('OC1')}\n\n"
+        "Material capabilities\n"
+        f"{value('OC2')}\n\n"
+        "Proof journey\n"
+        f"{value('OC3')}\n\n"
+        "A green result that would still be wrong\n"
+        f"{value('OC4')}\n\n"
+        "Still outside this work\n"
+        f"{value('OC5')}\n\n"
+        "Material assumptions\n"
+        f"{value('OC6')}\n\n"
+        "Approval question\n"
+        "Does this Intent accurately capture what you want and what success means?\n\n"
+        "Provenance note\n"
+        "The workflow records artifact identity after approval, but IDs and hashes are not the "
+        "meaning being approved.\n"
+    )
+
+
+INTENT_AUDIT_CLASSIFICATIONS = {
+    "preserved",
+    "narrowed",
+    "proxy",
+    "omitted",
+    "broadened",
+    "amended",
+    "deferred",
+    "unknown",
+}
+INTENT_AUDIT_DRIFT_CLASSIFICATIONS = {"narrowed", "proxy", "omitted", "broadened"}
+INTENT_AUDIT_VERDICTS = {"pass", "changes-requested", "review-required"}
+
+
+def _intent_audit_path(epic_dir: Path) -> Path:
+    return epic_dir / INTENT_AUDIT_FILENAME
+
+
+def _intent_audit_source_paths(epic_dir: Path) -> list[Path]:
+    paths = [
+        epic_dir / "REQUIREMENTS.md",
+        epic_dir / EPIC_CONTRACT_FILENAME,
+        epic_dir / DECOMPOSITION_PLAN_FILENAME,
+        epic_dir / EPIC_AMENDMENTS_FILENAME,
+    ]
+    for child_dir in sorted(path for path in epic_dir.iterdir() if path.is_dir()):
+        paths.extend((child_dir / "REQUIREMENTS.md", child_dir / "IMPLEMENTATION.md"))
+    return sorted((path for path in paths if path.exists()), key=lambda path: path.as_posix())
+
+
+def _intent_audit_source_identity(epic_dir: Path) -> str:
+    records = []
+    for path in _intent_audit_source_paths(epic_dir):
+        records.append(
+            {
+                "path": path.relative_to(epic_dir).as_posix(),
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            }
+        )
+    encoded = json.dumps(records, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return APPROVAL_IDENTITY_PREFIX + hashlib.sha256(encoded).hexdigest()
+
+
+def _intent_audit_template(epic_dir: Path) -> str:
+    requirements_path = epic_dir / "REQUIREMENTS.md"
+    requirements_text = (
+        requirements_path.read_text(encoding="utf-8") if requirements_path.exists() else ""
+    )
+    commitments = []
+    for commitment_id, label, value in _intent_spine_records(requirements_text):
+        commitments.append(
+            {
+                "id": commitment_id,
+                "classification": "unknown",
+                "disposition": "active",
+                "material": commitment_id in {"OC1", "OC2", "OC3", "OC4"},
+                "parent_acs": [],
+                "child_owners": [],
+                "required_outcome_proof": "",
+                "source_locations": [f"REQUIREMENTS.md#intent-spine-{commitment_id.lower()}"],
+                "target_locations": [],
+                "user_visible_consequence": value,
+                "lost_capability": "",
+                "amendment": None,
+            }
+        )
+    payload = {
+        "schema_version": INTENT_AUDIT_SCHEMA_VERSION,
+        "artifact_identity": _intent_audit_source_identity(epic_dir),
+        "reviewed_by": "",
+        "reviewed_at": "",
+        "review_source": "",
+        "verdict": "review-required",
+        "commitments": commitments,
+    }
+    return json.dumps(payload, indent=2, sort_keys=True) + "\n"
+
+
+def _load_intent_audit(epic_dir: Path) -> tuple[dict[str, object] | None, list[str]]:
+    audit_path = _intent_audit_path(epic_dir)
+    if not audit_path.exists():
+        return None, [f"{INTENT_AUDIT_FILENAME} is missing"]
+    try:
+        payload = json.loads(audit_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return None, [f"{INTENT_AUDIT_FILENAME} is invalid JSON: {exc}"]
+    if not isinstance(payload, dict):
+        return None, [f"{INTENT_AUDIT_FILENAME} must contain a JSON object"]
+    return payload, []
+
+
+def _intent_audit_location_issues(
+    epic_dir: Path, value: object, *, field: str, commitment_id: str
+) -> list[str]:
+    if not isinstance(value, list) or not value:
+        return [f"{commitment_id} must record non-empty `{field}`"]
+    issues: list[str] = []
+    for location in value:
+        if not isinstance(location, str) or not location.strip():
+            issues.append(f"{commitment_id} `{field}` contains an invalid location")
+            continue
+        path_part = location.split("#", 1)[0]
+        location_path = Path(path_part)
+        if location_path.is_absolute() or ".." in location_path.parts:
+            issues.append(f"{commitment_id} `{field}` must use repository-relative locations")
+        elif not (epic_dir / location_path).exists():
+            issues.append(
+                f"{commitment_id} `{field}` location does not exist: {location}"
+            )
+    return issues
+
+
+def _intent_audit_amendment_issues(
+    amendment: object, *, commitment_id: str, lost_capability: str
+) -> list[str]:
+    if not isinstance(amendment, dict):
+        capability_detail = (
+            f"; lost or added capability: {lost_capability.strip()}"
+            if lost_capability.strip()
+            else ""
+        )
+        return [
+            f"{commitment_id} material drift requires an owner-approved amendment identifying "
+            "the lost or added capability"
+            + capability_detail
+        ]
+    issues: list[str] = []
+    required = ("approved_by", "decision_date", "source", "capability_change")
+    for field in required:
+        value = amendment.get(field)
+        if not isinstance(value, str) or _approval_source_invalid(value):
+            issues.append(f"{commitment_id} amendment must record substantive `{field}`")
+    decision_date = amendment.get("decision_date")
+    if isinstance(decision_date, str) and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", decision_date):
+        issues.append(f"{commitment_id} amendment `decision_date` must use YYYY-MM-DD")
+    approved_by = amendment.get("approved_by")
+    if isinstance(approved_by, str) and "agent" in approved_by.lower():
+        issues.append(f"{commitment_id} amendment must name the approving owner, not an agent")
+    if not lost_capability.strip() and amendment.get("capability_change", "").strip() == "":
+        issues.append(f"{commitment_id} amendment must plainly identify the capability change")
+    return issues
+
+
+def _intent_audit_evaluation(epic_dir: Path) -> dict[str, object]:
+    current_identity = _intent_audit_source_identity(epic_dir)
+    payload, load_issues = _load_intent_audit(epic_dir)
+    if payload is None:
+        return {
+            "schema_version": INTENT_AUDIT_SCHEMA_VERSION,
+            "state": "unknown",
+            "current_identity": current_identity,
+            "audit_identity": None,
+            "verdict": "review-required",
+            "issues": load_issues,
+            "commitments": [],
+        }
+
+    issues: list[str] = []
+    if payload.get("schema_version") != INTENT_AUDIT_SCHEMA_VERSION:
+        issues.append(
+            f"schema_version must be {INTENT_AUDIT_SCHEMA_VERSION}"
+        )
+    audit_identity = payload.get("artifact_identity")
+    if not isinstance(audit_identity, str) or not audit_identity.startswith(APPROVAL_IDENTITY_PREFIX):
+        issues.append("artifact_identity must be a sha256 identity")
+    for field in ("reviewed_by", "reviewed_at", "review_source"):
+        value = payload.get(field)
+        if not isinstance(value, str) or _approval_source_invalid(value):
+            issues.append(f"record substantive `{field}`")
+    reviewed_at = payload.get("reviewed_at")
+    if isinstance(reviewed_at, str) and reviewed_at and not re.fullmatch(
+        r"\d{4}-\d{2}-\d{2}", reviewed_at
+    ):
+        issues.append("reviewed_at must use YYYY-MM-DD")
+    verdict = payload.get("verdict")
+    if verdict not in INTENT_AUDIT_VERDICTS:
+        issues.append(
+            "verdict must be pass, changes-requested, or review-required"
+        )
+
+    requirements_text = (epic_dir / "REQUIREMENTS.md").read_text(encoding="utf-8")
+    expected_ids = set(_intent_spine_values(requirements_text))
+    parent_ac_ids = _extract_parent_ac_ids_from_requirements(requirements_text)
+    tracker_path = epic_dir / "TRACKER.md"
+    child_rows = {
+        row.get("ID", ""): row
+        for row in (_epic_tracker_rows(tracker_path)[2] if tracker_path.exists() else [])
+    }
+    child_ids = set(child_rows)
+    commitments = payload.get("commitments")
+    normalized_commitments: list[dict[str, object]] = []
+    if not isinstance(commitments, list):
+        issues.append("commitments must be a JSON array")
+        commitments = []
+    seen_ids: list[str] = []
+    unresolved_drift: list[str] = []
+    unknown_ids: list[str] = []
+    for raw in commitments:
+        if not isinstance(raw, dict):
+            issues.append("each commitment audit record must be a JSON object")
+            continue
+        record = dict(raw)
+        commitment_id = str(record.get("id", "")).strip()
+        seen_ids.append(commitment_id)
+        classification = record.get("classification")
+        disposition = record.get("disposition")
+        material = record.get("material")
+        if classification not in INTENT_AUDIT_CLASSIFICATIONS:
+            issues.append(f"{commitment_id or 'commitment'} has invalid classification")
+        if disposition not in {"active", "amended", "deferred"}:
+            issues.append(
+                f"{commitment_id or 'commitment'} disposition must be active, amended, or deferred"
+            )
+        if not isinstance(material, bool):
+            issues.append(f"{commitment_id or 'commitment'} must record boolean `material`")
+        parent_acs = record.get("parent_acs")
+        if not isinstance(parent_acs, list) or not parent_acs:
+            issues.append(f"{commitment_id or 'commitment'} must map one or more parent ACs")
+        else:
+            invalid_acs = sorted(
+                str(ac_id) for ac_id in parent_acs if str(ac_id) not in parent_ac_ids
+            )
+            if invalid_acs:
+                issues.append(
+                    f"{commitment_id} maps unknown parent ACs: {', '.join(invalid_acs)}"
+                )
+        child_owners = record.get("child_owners")
+        if not isinstance(child_owners, list) or not child_owners:
+            issues.append(f"{commitment_id or 'commitment'} must map one or more child owners")
+        else:
+            invalid_children = sorted(
+                str(child_id) for child_id in child_owners if str(child_id) not in child_ids
+            )
+            if invalid_children:
+                issues.append(
+                    f"{commitment_id} maps unknown child owners: {', '.join(invalid_children)}"
+                )
+            if isinstance(parent_acs, list):
+                uncovered_owners = sorted(
+                    str(child_id)
+                    for child_id in child_owners
+                    if str(child_id) in child_rows
+                    and not (
+                        _extract_ac_ids(
+                            _extract_parent_ac_coverage(child_rows[str(child_id)])
+                        )
+                        & {str(ac_id) for ac_id in parent_acs}
+                    )
+                )
+                if uncovered_owners:
+                    issues.append(
+                        f"{commitment_id} child owners lack matching mapped parent ACs: "
+                        + ", ".join(uncovered_owners)
+                    )
+        for field in ("required_outcome_proof", "user_visible_consequence"):
+            value = record.get(field)
+            if not isinstance(value, str) or not _section_has_substantive_text(value):
+                issues.append(f"{commitment_id or 'commitment'} must record substantive `{field}`")
+        issues.extend(
+            _intent_audit_location_issues(
+                epic_dir,
+                record.get("source_locations"),
+                field="source_locations",
+                commitment_id=commitment_id or "commitment",
+            )
+        )
+        issues.extend(
+            _intent_audit_location_issues(
+                epic_dir,
+                record.get("target_locations"),
+                field="target_locations",
+                commitment_id=commitment_id or "commitment",
+            )
+        )
+        lost_capability = record.get("lost_capability", "")
+        if not isinstance(lost_capability, str):
+            issues.append(f"{commitment_id or 'commitment'} `lost_capability` must be text")
+            lost_capability = ""
+        if classification == "unknown":
+            unknown_ids.append(commitment_id)
+        if material is True and classification in INTENT_AUDIT_DRIFT_CLASSIFICATIONS:
+            amendment_issues = _intent_audit_amendment_issues(
+                record.get("amendment"),
+                commitment_id=commitment_id,
+                lost_capability=lost_capability,
+            )
+            if amendment_issues:
+                unresolved_drift.append(commitment_id)
+                issues.extend(amendment_issues)
+                if not lost_capability.strip():
+                    issues.append(
+                        f"{commitment_id} must name the lost or added user-visible capability"
+                    )
+            elif disposition not in {"amended", "deferred"}:
+                unresolved_drift.append(commitment_id)
+                issues.append(
+                    f"{commitment_id} authorized material drift requires disposition "
+                    "`amended` or `deferred`"
+                )
+        if classification in {"amended", "deferred"}:
+            expected_disposition = classification
+            if disposition != expected_disposition:
+                issues.append(
+                    f"{commitment_id} classification `{classification}` requires disposition "
+                    f"`{expected_disposition}`"
+                )
+            issues.extend(
+                _intent_audit_amendment_issues(
+                    record.get("amendment"),
+                    commitment_id=commitment_id,
+                    lost_capability=lost_capability,
+                )
+            )
+        normalized_commitments.append(record)
+
+    duplicate_ids = sorted(
+        commitment_id for commitment_id in set(seen_ids) if seen_ids.count(commitment_id) > 1
+    )
+    if duplicate_ids:
+        issues.append("duplicate commitment records: " + ", ".join(duplicate_ids))
+    missing_ids = sorted(expected_ids - set(seen_ids))
+    extra_ids = sorted(set(seen_ids) - expected_ids)
+    if missing_ids:
+        issues.append("missing commitment coverage: " + ", ".join(missing_ids))
+    if extra_ids:
+        issues.append("unknown commitment coverage: " + ", ".join(extra_ids))
+
+    if audit_identity != current_identity:
+        state = "stale"
+    elif unresolved_drift or verdict == "changes-requested":
+        state = "changes-requested"
+    elif issues or unknown_ids or verdict != "pass":
+        state = "review-required"
+    else:
+        state = "current"
+    return {
+        "schema_version": INTENT_AUDIT_SCHEMA_VERSION,
+        "state": state,
+        "current_identity": current_identity,
+        "audit_identity": audit_identity,
+        "verdict": verdict,
+        "reviewed_by": payload.get("reviewed_by"),
+        "reviewed_at": payload.get("reviewed_at"),
+        "review_source": payload.get("review_source"),
+        "issues": list(dict.fromkeys(issues)),
+        "unresolved_drift": unresolved_drift,
+        "commitments": normalized_commitments,
+    }
+
+
+def _intent_audit_gate_issues(epic_dir: Path) -> list[str]:
+    requirements_path = epic_dir / "REQUIREMENTS.md"
+    if not requirements_path.exists():
+        return [f"missing epic requirements file: {requirements_path}"]
+    requirements_text = requirements_path.read_text(encoding="utf-8")
+    if _intent_contract_mode(requirements_text) != "full":
+        return []
+    evaluation = _intent_audit_evaluation(epic_dir)
+    if evaluation["state"] == "current":
+        return []
+    details = evaluation.get("issues", [])
+    detail = f" ({'; '.join(str(issue) for issue in details[:3])})" if details else ""
+    return [
+        f"intent audit is {evaluation['state']}{detail}; review `{INTENT_AUDIT_FILENAME}` "
+        "against the current requirements, decomposition and child plans"
+    ]
+
+
+def _format_intent_audit_human(epic_id: str, evaluation: dict[str, object]) -> str:
+    lines = [
+        "Intent audit",
+        f"Epic: {epic_id}",
+        f"State: {evaluation['state']}",
+        f"Verdict: {evaluation.get('verdict') or 'review-required'}",
+        f"Reviewed by: {evaluation.get('reviewed_by') or 'not recorded'}",
+        f"Audit identity: {evaluation.get('audit_identity') or 'not recorded'}",
+        f"Current identity: {evaluation['current_identity']}",
+        "Commitments:",
+    ]
+    for record in evaluation.get("commitments", []):
+        if not isinstance(record, dict):
+            continue
+        lines.append(
+            f"- {record.get('id', 'unknown')}: {record.get('classification', 'unknown')}; "
+            f"disposition={record.get('disposition', 'unknown')}; "
+            f"material={'yes' if record.get('material') is True else 'no'}; "
+            f"owners={','.join(str(value) for value in record.get('child_owners', [])) or 'none'}; "
+            f"consequence={record.get('user_visible_consequence') or 'not recorded'}"
+        )
+    issues = evaluation.get("issues", [])
+    if issues:
+        lines.append("Findings:")
+        lines.extend(f"- {issue}" for issue in issues)
+    next_actions = {
+        "current": "Proceed inside the audited Intent envelope.",
+        "stale": "Refresh the audit against the current source identity.",
+        "unknown": f"Create and review `{INTENT_AUDIT_FILENAME}`.",
+        "review-required": "Complete the sourced commitment coverage and semantic review.",
+        "changes-requested": "Restore the capability or record a current owner-approved amendment.",
+    }
+    lines.append(f"Next action: {next_actions[str(evaluation['state'])]}")
+    return "\n".join(lines)
 
 
 def _section_has_substantive_text(section: str) -> bool:
@@ -5800,7 +15827,10 @@ def _open_questions_resolved(section: str) -> bool:
 
 
 def _requirements_readiness_issues(requirements_text: str) -> list[str]:
-    issues: list[str] = []
+    issues = [
+        f"owner input required: {issue}."
+        for issue in _intent_contract_issues(requirements_text)
+    ]
     for heading in READINESS_REQUIRED_SECTIONS:
         section = _markdown_section(requirements_text, heading)
         if not section:
@@ -5991,11 +16021,211 @@ def _task_ready_issues_for_paths(
         return [f"agent action required: create implementation file `{implementation_path.name}`."]
     requirements_text = requirements_path.read_text(encoding="utf-8")
     implementation_text = implementation_path.read_text(encoding="utf-8")
-    return _task_readiness_issues(
+    issues = _task_readiness_issues(
         requirements_text=requirements_text,
         implementation_text=implementation_text,
         parent_ac_ids=parent_ac_ids,
     )
+    root = next(
+        (
+            parent
+            for parent in requirements_path.parents
+            if (parent / ".project-workflow").is_dir()
+        ),
+        None,
+    )
+    if root is not None:
+        issues.extend(_repository_scope_issues(root, requirements_text))
+    epic_dir = requirements_path.parent.parent
+    if _epic_contract_path(epic_dir).exists():
+        issues.extend(
+            _legacy_truncated_child_charter_issues(
+                epic_dir=epic_dir,
+                requirements_text=requirements_text,
+                implementation_text=implementation_text,
+            )
+        )
+    return issues
+
+
+def _repository_scope_values(requirements_text: str) -> tuple[str | None, tuple[str, ...]]:
+    section = _markdown_section(requirements_text, "Repository Scope")
+    primary_match = re.search(
+        r"(?im)^\s*-\s*Primary repository:\s*(.+?)\s*$",
+        section,
+    )
+    touched_match = re.search(
+        r"(?im)^\s*-\s*Repositories touched:\s*(.+?)\s*$",
+        section,
+    )
+    primary = primary_match.group(1).strip().strip("`") if primary_match else None
+    touched = (
+        tuple(
+            value.strip().strip("`")
+            for value in touched_match.group(1).split(",")
+            if value.strip()
+        )
+        if touched_match
+        else ()
+    )
+    if primary is None and not touched:
+        fix_plan = _fix_values(requirements_text, "Fix Plan")
+        fix_primary = fix_plan.get("primary repo")
+        fix_touched = fix_plan.get("repos touched", "")
+        primary = fix_primary.strip().strip("`") if fix_primary else None
+        touched = tuple(
+            value.strip().strip("`")
+            for value in _split_fix_repos(fix_touched)
+            if value.strip()
+        )
+    return primary, touched
+
+
+def _repository_scope_issues(root: Path, requirements_text: str) -> list[str]:
+    config = _load_workflow_config(root)
+    if config.workspace is None:
+        return []
+    registered = {
+        repository.repository_id for repository in config.workspace.repositories
+    }
+    primary, touched = _repository_scope_values(requirements_text)
+    issues: list[str] = []
+    if primary is None or primary in {"____", "not recorded"}:
+        issues.append(
+            "agent action required: record `Primary repository` in the Repository Scope section."
+        )
+    elif primary not in registered:
+        issues.append(
+            f"agent action required: primary repository `{primary}` is not registered in "
+            ".project-workflow/config.json."
+        )
+    if not touched or any(value in {"____", "not recorded"} for value in touched):
+        issues.append(
+            "agent action required: record `Repositories touched` in the Repository Scope section."
+        )
+    else:
+        duplicates = sorted(
+            value for value in set(touched) if touched.count(value) > 1
+        )
+        if duplicates:
+            issues.append(
+                "agent action required: remove duplicate repository scope entries: "
+                + ", ".join(duplicates)
+                + "."
+            )
+        unknown = sorted(set(touched) - registered)
+        if unknown:
+            issues.append(
+                "agent action required: repository scope contains unregistered repositories: "
+                + ", ".join(unknown)
+                + "."
+            )
+        if primary is not None and primary not in touched:
+            issues.append(
+                f"agent action required: primary repository `{primary}` must also appear in "
+                "`Repositories touched`."
+            )
+    return issues
+
+
+def _repository_evidence_rows(implementation_text: str) -> dict[str, dict[str, str]]:
+    section = _markdown_section(implementation_text, "Repository Evidence")
+    rows: dict[str, dict[str, str]] = {}
+    for line in section.splitlines():
+        cells = _parse_markdown_table_cells(line)
+        if cells is None or len(cells) != 5:
+            continue
+        if cells[0] in {"Repository", "----------"} or set(cells[0]) <= {"-", ":"}:
+            continue
+        rows[cells[0].strip("`")] = {
+            "branch_pr": cells[1],
+            "validation": cells[2],
+            "delivery": cells[3],
+            "evidence": cells[4],
+        }
+    return rows
+
+
+def _repository_evidence_duplicate_ids(implementation_text: str) -> set[str]:
+    section = _markdown_section(implementation_text, "Repository Evidence")
+    repository_ids: list[str] = []
+    for line in section.splitlines():
+        cells = _parse_markdown_table_cells(line)
+        if cells is None or len(cells) != 5:
+            continue
+        if cells[0] in {"Repository", "----------"} or set(cells[0]) <= {"-", ":"}:
+            continue
+        repository_ids.append(cells[0].strip("`"))
+    return {
+        repository_id
+        for repository_id in set(repository_ids)
+        if repository_ids.count(repository_id) > 1
+    }
+
+
+def _repository_evidence_issues(
+    root: Path,
+    requirements_text: str,
+    implementation_text: str,
+) -> list[str]:
+    config = _load_workflow_config(root)
+    if config.workspace is None:
+        return []
+    _primary, touched = _repository_scope_values(requirements_text)
+    rows = _repository_evidence_rows(implementation_text)
+    issues: list[str] = []
+    duplicates = sorted(_repository_evidence_duplicate_ids(implementation_text))
+    if duplicates:
+        issues.append(
+            "agent action required: remove duplicate Repository Evidence rows for: "
+            + ", ".join(duplicates)
+            + "."
+        )
+    registered = {
+        repository.repository_id for repository in config.workspace.repositories
+    }
+    unknown = sorted(set(rows) - registered)
+    if unknown:
+        issues.append(
+            "agent action required: Repository Evidence contains unregistered repositories: "
+            + ", ".join(unknown)
+            + "."
+        )
+    out_of_scope = sorted(set(rows) - set(touched))
+    if out_of_scope:
+        issues.append(
+            "agent action required: Repository Evidence contains repositories outside the "
+            "recorded scope: "
+            + ", ".join(out_of_scope)
+            + "."
+        )
+    missing = sorted(set(touched) - set(rows))
+    if missing:
+        issues.append(
+            "agent action required: add Repository Evidence rows for: "
+            + ", ".join(missing)
+            + "."
+        )
+    universal_placeholders = {"", "____"}
+    proof_placeholders = {*universal_placeholders, "not recorded"}
+    for repository_id in sorted(set(touched) & set(rows)):
+        missing_fields = [
+            field.replace("_", " / " if field == "branch_pr" else " ")
+            for field, value in rows[repository_id].items()
+            if value.strip().lower()
+            in (
+                proof_placeholders
+                if field in {"validation", "evidence"}
+                else universal_placeholders
+            )
+        ]
+        if missing_fields:
+            issues.append(
+                f"agent action required: repository `{repository_id}` must record "
+                + ", ".join(missing_fields)
+                + " evidence."
+            )
+    return issues
 
 
 def _resolve_fix_doc(
@@ -6017,6 +16247,16 @@ def _resolve_fix_doc(
 
 
 def _fix_workspace_targets(root: Path) -> set[str] | None:
+    config = _load_workflow_config(root)
+    if config.workspace is not None:
+        targets: set[str] = set()
+        for repository in config.workspace.repositories:
+            targets.add(repository.repository_id)
+            targets.add(repository.path)
+        return targets
+
+    # Compatibility only: older installations may still have the pre-registry
+    # workspace.json metadata used by Fix triage.
     workspace_path = root / ".project-workflow" / "workspace.json"
     if not workspace_path.exists():
         return None
@@ -6048,7 +16288,7 @@ def _split_fix_repos(value: str) -> list[str]:
 def _fix_triage_issues(
     root: Path, fix_text: str, *, require_active_disposition: bool = True
 ) -> list[str]:
-    issues: list[str] = []
+    issues = _intent_contract_issues(fix_text)
     required_fields = {
         "Report": (
             "observed or requested",
@@ -6147,7 +16387,7 @@ def _fix_hotfix_safety_issues(root: Path, fix_text: str) -> list[str]:
 
 
 def _fix_closeout_issues(root: Path, fix_text: str) -> list[str]:
-    issues: list[str] = []
+    issues = _repository_evidence_issues(root, fix_text, fix_text)
     verification = _fix_values(fix_text, "Verification")
     for field in (
         "delivered scope",
@@ -6227,6 +16467,10 @@ def _update_fix_tracker_status(
             issues = _fix_triage_issues(root, fix_text)
             if issues:
                 raise SystemExit(_format_readiness_block(fix_id, issues))
+        if new_status == "Review":
+            repository_issues = _repository_evidence_issues(root, fix_text, fix_text)
+            if repository_issues:
+                raise SystemExit(_format_readiness_block(fix_id, repository_issues))
         if new_status == "Complete":
             raise SystemExit("Use `project fix close` to complete a Fix.")
         if new_status == "N/A":
@@ -6289,6 +16533,10 @@ def _update_global_tracker_row_status(
         requirements_text = (
             requirements_path.read_text(encoding="utf-8") if requirements_path.exists() else ""
         )
+        if new_status == "Testing":
+            testing_issues = _task_testing_integrity_issues(docs_text)
+            if testing_issues:
+                raise SystemExit(_format_readiness_block(row_id, list(testing_issues)))
         if new_status == "Analysing" and not force and not _is_discovery_work(requirements_text):
             approval_issues = _approval_envelope_issues(
                 requirements_text,
@@ -6303,6 +16551,13 @@ def _update_global_tracker_row_status(
             )
             if structured_issues:
                 raise SystemExit(_format_readiness_block(row_id, structured_issues))
+            repository_issues = _repository_evidence_issues(
+                root,
+                requirements_text,
+                docs_text,
+            )
+            if repository_issues:
+                raise SystemExit(_format_readiness_block(row_id, repository_issues))
         if new_status == "Complete":
             if current_status != "Review":
                 raise SystemExit(
@@ -6315,11 +16570,22 @@ def _update_global_tracker_row_status(
                     "pre-adoption evidence as untrusted; refresh evidence or re-adopt with "
                     "--evidence-refreshed."
                 )
-            if not _has_qa_review_evidence(docs_text):
+            if not _has_qa_review_evidence(
+                docs_text,
+                requirements_text=requirements_text,
+            ):
                 raise SystemExit(
                     f"{row_id} cannot move to Complete without non-placeholder "
                     "QA/code-review evidence."
                 )
+            intent_qa_issues = _intent_qa_review_issues(docs_text)
+            if intent_qa_issues:
+                raise SystemExit(_format_readiness_block(row_id, intent_qa_issues))
+            owner_acceptance_issues = _owner_acceptance_completion_issues(
+                docs_path.parent / STRUCTURED_EVIDENCE_FILENAME
+            )
+            if owner_acceptance_issues:
+                raise SystemExit(_format_readiness_block(row_id, owner_acceptance_issues))
 
         if not _status_transition_allowed(current_status, new_status):
             if not force:
@@ -6489,6 +16755,18 @@ def _update_epic_child_status(
                 f"Invalid target status '{new_status}'. "
                 f"Allowed: {', '.join(EPIC_TRACKER_STATUSES)}."
             )
+        if new_status == "Testing":
+            docs_rel = _clean_markdown_cell_path(row.get("Docs", ""))
+            if not docs_rel:
+                raise SystemExit(f"{row_id} cannot move to Testing without a docs path.")
+            docs_path = root / ".project-workflow" / docs_rel
+            if not docs_path.exists():
+                raise SystemExit(f"{row_id} docs path does not exist: {docs_path}")
+            testing_issues = _task_testing_integrity_issues(
+                docs_path.read_text(encoding="utf-8")
+            )
+            if testing_issues:
+                raise SystemExit(_format_readiness_block(row_id, list(testing_issues)))
         if not force and not _epic_status_transition_allowed(current_status, new_status):
             raise SystemExit(
                 f"Illegal epic status transition for {row_id}: "
@@ -6525,11 +16803,34 @@ def _update_epic_child_status(
             )
             if structured_issues:
                 raise SystemExit(_format_readiness_block(row_id, structured_issues))
-            if not _has_qa_review_evidence(docs_text):
+            owner_acceptance_issues = _owner_acceptance_completion_issues(
+                docs_path.parent / STRUCTURED_EVIDENCE_FILENAME
+            )
+            if owner_acceptance_issues:
+                raise SystemExit(_format_readiness_block(row_id, owner_acceptance_issues))
+            requirements_text = (
+                requirements_path.read_text(encoding="utf-8")
+                if requirements_path.exists()
+                else ""
+            )
+            repository_issues = _repository_evidence_issues(
+                root,
+                requirements_text,
+                docs_text,
+            )
+            if repository_issues:
+                raise SystemExit(_format_readiness_block(row_id, repository_issues))
+            if not _has_qa_review_evidence(
+                docs_text,
+                requirements_text=requirements_text,
+            ):
                 raise SystemExit(
                     f"{row_id} cannot move to Complete without non-placeholder "
                     "QA/code-review evidence."
                 )
+            intent_qa_issues = _intent_qa_review_issues(docs_text)
+            if intent_qa_issues:
+                raise SystemExit(_format_readiness_block(row_id, intent_qa_issues))
             missing_parent_evidence = [
                 ac_id
                 for ac_id in sorted(parent_ac_ids)
@@ -6564,6 +16865,15 @@ def _update_epic_child_status(
                         requirements_path=requirements_path,
                         implementation_path=docs_path,
                         parent_ac_ids=parent_ac_ids,
+                    )
+                )
+                requirements_text = requirements_path.read_text(encoding="utf-8")
+                implementation_text = docs_path.read_text(encoding="utf-8")
+                readiness_issues.extend(
+                    _repository_evidence_issues(
+                        root,
+                        requirements_text,
+                        implementation_text,
                     )
                 )
             if readiness_issues:
@@ -6836,6 +17146,21 @@ def _prompt_filename_to_cursor_agent_name(prompt_file: str) -> str:
     return _prompt_filename_to_agent_name(prompt_file)
 
 
+def _host_native_prompt_body(body: str, *, host: str) -> str:
+    """Replace Copilot input interpolation with explicit host-native request values."""
+    rendered = re.sub(
+        r"\$\{input:([A-Za-z][A-Za-z0-9_-]*)(?::[^}]*)?\}",
+        lambda match: f"<{match.group(1)}>",
+        body,
+    )
+    return (
+        f"Invocation contract ({host}): supply values such as `<taskId>` or `<scope>` "
+        "in the user request or current conversation. Treat angle-bracket values as required "
+        "request fields, not literal text.\n\n"
+        + rendered.lstrip()
+    )
+
+
 def _to_claude_agent_markdown(prompt_content: str, agent_name: str) -> str:
     """Convert packaged prompt markdown into Claude subagent markdown format."""
     frontmatter, body = _split_frontmatter(prompt_content)
@@ -6846,7 +17171,7 @@ def _to_claude_agent_markdown(prompt_content: str, agent_name: str) -> str:
         f"name: {agent_name}\n"
         f"description: \"{escaped_description}\"\n"
         "---\n\n"
-        f"{body.lstrip()}"
+        f"{_host_native_prompt_body(body, host='Claude Code')}"
     )
 
 
@@ -6860,7 +17185,7 @@ def _to_cursor_agent_markdown(prompt_content: str, agent_name: str) -> str:
         f"name: {agent_name}\n"
         f"description: \"{escaped_description}\"\n"
         "---\n\n"
-        f"{body.lstrip()}"
+        f"{_host_native_prompt_body(body, host='Cursor')}"
     )
 
 
@@ -7000,10 +17325,23 @@ def _doctor_check_source_mirrors(root: Path, issues: list[DoctorIssue]) -> None:
     local_cli_dir = root / ".project-workflow" / "cli"
     packaged_template_dir = root / "src" / "project_workflow" / "templates"
     mirror_pairs = (
-        (local_cli_dir / "workflow.py", packaged_template_dir / "workflow.py"),
-        (local_cli_dir / "workflow", packaged_template_dir / "workflow"),
+        (
+            local_cli_dir / "workflow.py",
+            packaged_template_dir / "workflow.py",
+            "Local workflow CLI differs from packaged template",
+        ),
+        (
+            local_cli_dir / "workflow",
+            packaged_template_dir / "workflow",
+            "Local workflow CLI differs from packaged template",
+        ),
+        (
+            root / ".agents/skills/project-delegate/SKILL.md",
+            root / "src/project_workflow/codex/skills/project-delegate/SKILL.md",
+            "Installed Codex Delegate skill differs from packaged source",
+        ),
     )
-    for local_path, packaged_path in mirror_pairs:
+    for local_path, packaged_path, mismatch_label in mirror_pairs:
         if not local_path.exists() or not packaged_path.exists():
             continue
         if not matches_packaged(local_path, packaged_path):
@@ -7011,7 +17349,85 @@ def _doctor_check_source_mirrors(root: Path, issues: list[DoctorIssue]) -> None:
                 issues,
                 "error",
                 local_path,
-                f"Local workflow CLI differs from packaged template: {packaged_path}",
+                f"{mismatch_label}: {packaged_path}",
+            )
+
+
+def _doctor_check_delegate_semantics(root: Path, issues: list[DoctorIssue]) -> None:
+    required = (
+        "task or epic",
+        "verified",
+        "unsupported",
+        "unknown",
+        "available child",
+        "coordinator",
+        "descendants",
+        "unrelated",
+        "independent qa",
+    )
+    candidates = (
+        root / "src/project_workflow/prompts/Delegate.prompt.md",
+        root / "src/project_workflow/codex/skills/project-delegate/SKILL.md",
+        root / ".github/prompts/Delegate.prompt.md",
+        root / ".agents/skills/project-delegate/SKILL.md",
+        root / ".claude/agents/project-delegate.md",
+        root / ".cursor/agents/project-delegate.md",
+    )
+    for path in candidates:
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8")
+        relative = path.relative_to(root).as_posix()
+        if relative.startswith((".agents/skills/", ".github/prompts/")) and not _is_generated_content(
+            text
+        ):
+            # A user-owned active collision is reported by the pending-update check.
+            continue
+        lowered = text.lower()
+        missing = [term for term in required if term not in lowered]
+        stale = any(
+            term in lowered
+            for term in (
+                "workers:4",
+                "worker limit",
+                "on first work-item failure",
+                "enter fail-fast mode",
+            )
+        )
+        placeholder_leak = relative.startswith((".claude/agents/", ".cursor/agents/")) and (
+            "${input:" in text
+        )
+        if missing or stale or placeholder_leak:
+            details = []
+            if missing:
+                details.append("missing " + ", ".join(missing))
+            if stale:
+                details.append("contains stale fixed-capacity or blanket-failure guidance")
+            if placeholder_leak:
+                details.append("contains GitHub Copilot input placeholders")
+            _add_issue(
+                issues,
+                "error",
+                path,
+                "Delegate semantic asset is invalid: " + "; ".join(details) + ".",
+                code="PW_GENERATED_ASSET_DRIFT",
+                remediation_owner="project-workflow",
+                mechanically_upgradeable=True,
+            )
+
+    compatibility = _repository_compatibility(root)
+    if compatibility.manifest is not None and compatibility.manifest.asset_version >= 2:
+        ignore_path = root / ".project-workflow/.gitignore"
+        ignore_text = ignore_path.read_text(encoding="utf-8") if ignore_path.is_file() else ""
+        if "runtime/delegations/" not in {line.strip() for line in ignore_text.splitlines()}:
+            _add_issue(
+                issues,
+                "error",
+                ignore_path,
+                "Delegate runtime handles are not protected by the managed workflow ignore.",
+                code="PW_GENERATED_ASSET_DRIFT",
+                remediation_owner="project-workflow",
+                mechanically_upgradeable=True,
             )
 
 
@@ -7045,6 +17461,31 @@ def _doctor_check_namespace_config(root: Path, issues: list[DoctorIssue]) -> Wor
     except SystemExit as exc:
         _add_issue(issues, "error", config_path, str(exc))
         return None
+
+
+def _doctor_check_workspace_authority(
+    root: Path,
+    config: WorkflowConfig | None,
+    issues: list[DoctorIssue],
+) -> None:
+    if config is None or config.workspace is None:
+        return
+    for repository in config.workspace.repositories:
+        if repository.repository_id == config.workspace.authority_repository:
+            continue
+        workflow_path = repository.resolved_path / ".project-workflow"
+        if workflow_path.exists():
+            _add_issue(
+                issues,
+                "error",
+                workflow_path,
+                f"Registered non-authority repository '{repository.repository_id}' contains "
+                "a competing .project-workflow state. Remove or archive the child workflow "
+                "state outside the repository and keep the parent authority authoritative.",
+                code="PW_WORKSPACE_AUTHORITY_CONFLICT",
+                remediation_owner="owner",
+                mechanically_upgradeable=False,
+            )
 
 
 def _doctor_check_row_namespace(
@@ -7155,8 +17596,13 @@ def _doctor_check_task_doc(
         _add_issue(issues, "error", docs_path, f"Could not read docs for {row_id}: {exc}")
         return
 
+    requirements_path = docs_path.parent / "REQUIREMENTS.md"
+    requirements_text: str | None = None
+    if requirements_path.exists():
+        requirements_text = requirements_path.read_text(encoding="utf-8")
     has_completion_evidence = _has_qa_review_evidence(
-        docs_text
+        docs_text,
+        requirements_text=requirements_text,
     ) or _has_epic_acceptance_audit_evidence(docs_path, row_id)
     if status == "Complete" and not has_completion_evidence:
         _add_issue(
@@ -7165,11 +17611,15 @@ def _doctor_check_task_doc(
             docs_path,
             f"{row_id} is Complete but lacks non-placeholder QA/code-review evidence.",
         )
+    if status == "Complete":
+        for intent_qa_issue in _intent_qa_review_issues(docs_text):
+            _add_issue(
+                issues,
+                "warning",
+                docs_path,
+                f"{row_id} intent-adversarial QA: {intent_qa_issue}.",
+            )
 
-    requirements_path = docs_path.parent / "REQUIREMENTS.md"
-    requirements_text: str | None = None
-    if requirements_path.exists():
-        requirements_text = requirements_path.read_text(encoding="utf-8")
     if requirements_text is not None and status in ("Review", "Complete"):
         if _legacy_adoption_evidence_untrusted(requirements_text):
             _add_issue(
@@ -7197,6 +17647,17 @@ def _doctor_check_task_doc(
                 docs_path,
                 f"{row_id} {evidence_issue}",
             )
+        for repository_issue in _repository_evidence_issues(
+            root,
+            requirements_text or "",
+            docs_text,
+        ):
+            _add_issue(
+                issues,
+                "error",
+                docs_path,
+                f"{row_id} {repository_issue}",
+            )
     if parent_requirements_path is not None and status in (
         "Approved",
         "In Progress",
@@ -7214,6 +17675,18 @@ def _doctor_check_task_doc(
                 parent_requirements_path,
                 f"{row_id} parent approval envelope: {approval_issue}",
             )
+        if status != "Complete" and requirements_text is not None:
+            for charter_issue in _legacy_truncated_child_charter_issues(
+                epic_dir=parent_requirements_path.parent,
+                requirements_text=requirements_text,
+                implementation_text=docs_text,
+            ):
+                _add_issue(
+                    issues,
+                    "error",
+                    docs_path,
+                    f"{row_id} child charter integrity: {charter_issue}",
+                )
     elif requirements_text is not None and not _is_discovery_work(requirements_text, docs_text):
         approval_required = False
         require_decomposition = False
@@ -7260,6 +17733,18 @@ def _doctor_check_task_doc(
                     docs_path,
                     f"{row_id} readiness gate: {readiness_issue}",
                 )
+    if (
+        docs_path.name == "IMPLEMENTATION.md"
+        and requirements_text is not None
+        and _status_requires_task_readiness(status)
+    ):
+        for repository_issue in _repository_scope_issues(root, requirements_text):
+            _add_issue(
+                issues,
+                "error",
+                requirements_path,
+                f"{row_id} repository scope: {repository_issue}",
+            )
     if docs_path.name == "REQUIREMENTS.md" and row_id.startswith(f"{EPIC_ID_PREFIX}-"):
         if status not in ("To Do", "N/A"):
             for readiness_issue in _epic_requirements_readiness_issues(docs_text):
@@ -7349,6 +17834,18 @@ def _doctor_check_fix_doc(
             triage_issues = [str(exc)]
         for triage_issue in triage_issues:
             _add_issue(issues, "error", fix_path, f"{row_id} triage: {triage_issue}.")
+    if status in {"Review", "Complete"}:
+        for repository_issue in _repository_evidence_issues(
+            root,
+            fix_text,
+            fix_text,
+        ):
+            _add_issue(
+                issues,
+                "error",
+                fix_path,
+                f"{row_id} {repository_issue}",
+            )
     if status == "Complete":
         for closeout_issue in _fix_closeout_issues(root, fix_text):
             _add_issue(issues, "error", fix_path, f"{row_id} closeout: {closeout_issue}.")
@@ -7460,6 +17957,35 @@ def _doctor_check_epic_trackers(
                 _epic_contract_path(epic_tracker_path.parent),
                 f"{epic_tracker_path.parent.name} epic contract: {contract_issue}",
             )
+        active_audit_statuses = {
+            row.get("Status", "") for row in rows
+        } & {"In Progress", "Testing", "Review", "Complete"}
+        parent_requirements_text = (
+            parent_requirements_path.read_text(encoding="utf-8")
+            if parent_requirements_path.exists()
+            else ""
+        )
+        if active_audit_statuses and _intent_contract_mode(parent_requirements_text) == "full":
+            audit_evaluation = _intent_audit_evaluation(epic_tracker_path.parent)
+            if audit_evaluation["state"] != "current":
+                severity = (
+                    "error"
+                    if active_audit_statuses & {"Review", "Complete"}
+                    else "warning"
+                )
+                _add_issue(
+                    issues,
+                    severity,
+                    _intent_audit_path(epic_tracker_path.parent),
+                    f"{epic_tracker_path.parent.name} intent audit is "
+                    f"{audit_evaluation['state']}; run `epic intent-audit --epic-id "
+                    f"{epic_tracker_path.parent.name.split('-', 2)[0]}-"
+                    f"{epic_tracker_path.parent.name.split('-', 2)[1]}` and refresh the "
+                    "sourced semantic review.",
+                    code="PW_INTENT_AUDIT_NOT_CURRENT",
+                    remediation_owner="agent",
+                    mechanically_upgradeable=False,
+                )
         for row in rows:
             row_id = row["ID"]
             _doctor_check_row_id_format(
@@ -7586,7 +18112,9 @@ def run_doctor(root: Path) -> list[DoctorIssue]:
     issues: list[DoctorIssue] = []
     _doctor_check_repository_compatibility(root, issues)
     config = _doctor_check_namespace_config(root, issues)
+    _doctor_check_workspace_authority(root, config, issues)
     _doctor_check_source_mirrors(root, issues)
+    _doctor_check_delegate_semantics(root, issues)
     _doctor_check_pending_generated_updates(root, issues)
     _doctor_check_backlog(root, issues, config=config)
     _doctor_check_duplicate_tracker_ids(root, issues)
@@ -8040,13 +18568,13 @@ def cmd_backlog_promote(args: argparse.Namespace) -> None:
         task_dir.mkdir(parents=True, exist_ok=True)
         _write_file(
             task_dir / "IMPLEMENTATION.md",
-            _implementation_template(spec.task_id, spec.title),
+            _implementation_template(spec.task_id, spec.title, root=root),
             overwrite=True,
         )
         _write_file(
             task_dir / "REQUIREMENTS.md",
             _requirements_with_backlog_source(
-                _requirements_template(spec.task_id, spec.title),
+                _requirements_template(spec.task_id, spec.title, root=root),
                 source_row,
             ),
             overwrite=True,
@@ -8080,7 +18608,7 @@ def cmd_backlog_promote(args: argparse.Namespace) -> None:
         _write_file(
             epic_dir / "REQUIREMENTS.md",
             _requirements_with_backlog_source(
-                _requirements_template(spec.task_id, spec.title),
+                _requirements_template(spec.task_id, spec.title, root=root),
                 source_row,
             ),
             overwrite=True,
@@ -8089,6 +18617,11 @@ def cmd_backlog_promote(args: argparse.Namespace) -> None:
         _write_file(epic_dir / "DEFERRALS.md", _epic_deferrals_template(), overwrite=True)
         _write_file(epic_dir / EPIC_AMENDMENTS_FILENAME, _epic_amendments_template(), overwrite=True)
         _write_file(epic_dir / "RETRO.md", _epic_retro_template(spec.task_id, spec.title), overwrite=True)
+        _write_file(
+            _intent_audit_path(epic_dir),
+            _intent_audit_template(epic_dir),
+            overwrite=True,
+        )
         _write_acceptance_map(root, spec.task_id)
         docs_rel = f"tasks/{spec.task_folder_name}/REQUIREMENTS.md"
         _update_tracker(
@@ -8158,6 +18691,7 @@ def cmd_project_init(args: argparse.Namespace) -> None:
     # Create directories
     tasks_dir.mkdir(parents=True, exist_ok=True)
     cli_dir.mkdir(parents=True, exist_ok=True)
+    print(f"✓ {_ensure_delegation_runtime_ignore(cwd)}")
 
     # Create initial TRACKER.md if missing
     if not tracker_path.exists():
@@ -8292,7 +18826,7 @@ def cmd_fix_init(args: argparse.Namespace) -> None:
     if fix_dir.exists():
         raise SystemExit(f"Fix folder already exists: {fix_dir}")
     fix_dir.mkdir(parents=True, exist_ok=False)
-    fix_text = _fix_template(fix_id, args.title)
+    fix_text = _fix_template(fix_id, args.title, root=root)
     if args.classification:
         fix_text = _replace_fix_field(
             fix_text, "Classification", "Type", args.classification
@@ -8425,13 +18959,13 @@ def cmd_fix_promote(args: argparse.Namespace) -> None:
         promoted_dir.mkdir(parents=True, exist_ok=False)
         _write_file(
             promoted_dir / "IMPLEMENTATION.md",
-            _implementation_template(promoted_id, title),
+            _implementation_template(promoted_id, title, root=root),
             overwrite=True,
         )
         _write_file(
             promoted_dir / "REQUIREMENTS.md",
             _requirements_with_fix_source(
-                _requirements_template(promoted_id, title), fix_id, args.reason
+                _requirements_template(promoted_id, title, root=root), fix_id, args.reason
             ),
             overwrite=True,
         )
@@ -8446,7 +18980,7 @@ def cmd_fix_promote(args: argparse.Namespace) -> None:
         _write_file(
             promoted_dir / "REQUIREMENTS.md",
             _requirements_with_fix_source(
-                _requirements_template(promoted_id, title), fix_id, args.reason
+                _requirements_template(promoted_id, title, root=root), fix_id, args.reason
             ),
             overwrite=True,
         )
@@ -8552,9 +19086,17 @@ def cmd_task_init(args: argparse.Namespace) -> None:
 
     task_dir.mkdir(parents=True, exist_ok=True)
     if args.overwrite or not impl_path.exists():
-        _write_file(impl_path, _implementation_template(spec.task_id, spec.title), overwrite=True)
+        _write_file(
+            impl_path,
+            _implementation_template(spec.task_id, spec.title, root=cwd),
+            overwrite=True,
+        )
     if args.overwrite or not reqs_path.exists():
-        _write_file(reqs_path, _requirements_template(spec.task_id, spec.title), overwrite=True)
+        _write_file(
+            reqs_path,
+            _requirements_template(spec.task_id, spec.title, root=cwd),
+            overwrite=True,
+        )
 
     docs_rel = f"tasks/{spec.task_folder_name}/IMPLEMENTATION.md"
     if args.update_tracker:
@@ -8600,6 +19142,26 @@ def cmd_task_status(args: argparse.Namespace) -> None:
             print(f"Forced transition reason: {args.reason.strip()}")
 
 
+def cmd_task_approval_summary(args: argparse.Namespace) -> None:
+    """Render the meaning-first approval synopsis for one standalone task."""
+    cwd = Path.cwd()
+    tracker_path = cwd / ".project-workflow" / "TRACKER.md"
+    if not tracker_path.exists():
+        raise SystemExit(f"Missing tracker file: {tracker_path}")
+    task_id = _normalize_task_status_id(args.id, root=cwd)
+    requirements_path, _implementation_path, _row = _resolve_global_task_docs(
+        root=cwd,
+        tracker_path=tracker_path,
+        task_id=task_id,
+    )
+    requirements_text = requirements_path.read_text(encoding="utf-8")
+    try:
+        summary = _format_intent_approval_summary(requirements_text)
+    except ValueError as exc:
+        raise SystemExit(f"{task_id} approval synopsis is not ready: {exc}") from exc
+    print(summary, end="")
+
+
 def cmd_task_approve_requirements(args: argparse.Namespace) -> None:
     """Record an owner approval envelope for one standalone task."""
     cwd = Path.cwd()
@@ -8635,6 +19197,8 @@ def cmd_task_approve_requirements(args: argparse.Namespace) -> None:
     )
     requirements_path.write_text(updated, encoding="utf-8")
     print(f"Recorded owner approval envelope for {task_id}: {requirements_path}")
+    if _intent_contract_mode(requirements_text) == "full":
+        print(f"Approved Intent: {_intent_plain_text(requirements_text)}")
 
 
 def cmd_task_adopt(args: argparse.Namespace) -> None:
@@ -8747,7 +19311,11 @@ def cmd_epic_init(args: argparse.Namespace) -> None:
 
     epic_dir.mkdir(parents=True, exist_ok=True)
     if args.overwrite or not reqs_path.exists():
-        _write_file(reqs_path, _requirements_template(spec.task_id, spec.title), overwrite=True)
+        _write_file(
+            reqs_path,
+            _requirements_template(spec.task_id, spec.title, root=cwd),
+            overwrite=True,
+        )
     if args.overwrite or not contract_path.exists():
         _write_file(
             contract_path,
@@ -8762,6 +19330,13 @@ def cmd_epic_init(args: argparse.Namespace) -> None:
         _write_file(amendments_path, _epic_amendments_template(), overwrite=True)
     if args.overwrite or not retro_path.exists():
         _write_file(retro_path, _epic_retro_template(spec.task_id, spec.title), overwrite=True)
+    intent_audit_path = _intent_audit_path(epic_dir)
+    if args.overwrite or not intent_audit_path.exists():
+        _write_file(
+            intent_audit_path,
+            _intent_audit_template(epic_dir),
+            overwrite=True,
+        )
     map_path = _write_acceptance_map(cwd, spec.task_id)
 
     docs_rel = f"tasks/{spec.task_folder_name}/REQUIREMENTS.md"
@@ -8876,6 +19451,33 @@ def cmd_epic_approve(args: argparse.Namespace) -> None:
     print(f"Refreshed acceptance map: {map_path}")
 
 
+def cmd_epic_approval_summary(args: argparse.Namespace) -> None:
+    """Render the meaning-first approval synopsis for one Epic."""
+    cwd = Path.cwd()
+    tasks_dir = cwd / ".project-workflow" / "tasks"
+    epic_dir = _resolve_epic_dir(tasks_dir, args.epic_id)
+    requirements_path = epic_dir / "REQUIREMENTS.md"
+    if not requirements_path.exists():
+        raise SystemExit(f"Missing epic requirements file: {requirements_path}")
+    requirements_text = requirements_path.read_text(encoding="utf-8")
+    try:
+        summary = _format_intent_approval_summary(requirements_text)
+    except ValueError as exc:
+        raise SystemExit(f"{args.epic_id} approval synopsis is not ready: {exc}") from exc
+    print(summary, end="")
+
+
+def cmd_epic_intent_audit(args: argparse.Namespace) -> None:
+    """Inspect the current sourced Intent audit without mutating workflow state."""
+    cwd = Path.cwd()
+    epic_dir = _resolve_epic_dir(cwd / ".project-workflow" / "tasks", args.epic_id)
+    evaluation = _intent_audit_evaluation(epic_dir)
+    if args.format == "json":
+        print(json.dumps(evaluation, indent=2, sort_keys=True))
+    else:
+        print(_format_intent_audit_human(args.epic_id, evaluation))
+
+
 def cmd_epic_approve_requirements(args: argparse.Namespace) -> None:
     """Record an owner approval envelope for one epic."""
     cwd = Path.cwd()
@@ -8900,6 +19502,8 @@ def cmd_epic_approve_requirements(args: argparse.Namespace) -> None:
     )
     requirements_path.write_text(updated, encoding="utf-8")
     print(f"Recorded owner approval envelope for {args.epic_id}: {requirements_path}")
+    if _intent_contract_mode(requirements_text) == "full":
+        print(f"Approved Intent: {_intent_plain_text(requirements_text)}")
 
 
 def cmd_epic_adopt(args: argparse.Namespace) -> None:
@@ -8979,6 +19583,7 @@ def cmd_epic_ready_child(args: argparse.Namespace) -> None:
         implementation_path=implementation_path,
         parent_ac_ids=parent_ac_ids,
     )
+    readiness_issues.extend(_intent_audit_gate_issues(epic_dir))
     if readiness_issues:
         raise SystemExit(_format_readiness_block(args.id, readiness_issues))
     print(f"{args.id} readiness gate passed.")
@@ -9005,6 +19610,10 @@ def cmd_epic_status(args: argparse.Namespace) -> None:
         if contract_issues:
             raise SystemExit(_format_readiness_block(args.epic_id, contract_issues))
         _require_decomposition_plan_authority(epic_dir, target)
+    if args.to in {"Review", "Complete"}:
+        audit_issues = _intent_audit_gate_issues(epic_dir)
+        if audit_issues:
+            raise SystemExit(_format_readiness_block(args.id, audit_issues))
     previous, current = _update_epic_child_status(
         root=cwd,
         epic_tracker_path=epic_tracker_path,
@@ -9088,12 +19697,13 @@ def cmd_epic_decompose(args: argparse.Namespace) -> None:
                 row["Proposed Child"].rstrip("."),
                 _normalize_ac_list(row["Parent ACs"]),
                 "Proposed Child Work",
+                row.get("Dependencies", ""),
             )
             for row in proposed_child_rows[: args.limit]
         ]
     else:
         candidates = [
-            (title, ac_id, "Generated from REQUIREMENTS.md")
+            (title, ac_id, "Generated from REQUIREMENTS.md", "")
             for title, ac_id in _decompose_epic_requirements_to_titles(
                 requirements_text, limit=args.limit
             )
@@ -9115,7 +19725,7 @@ def cmd_epic_decompose(args: argparse.Namespace) -> None:
 
     rows_to_add: list[dict[str, str]] = []
     plan_rows: list[dict[str, str]] = []
-    for title, ac_id, source in candidates:
+    for title, ac_id, source, dependencies in candidates:
         if forced_prefix:
             child_prefix = forced_prefix
             classification_note = f"Prefix {child_prefix}: forced by --prefix"
@@ -9141,6 +19751,7 @@ def cmd_epic_decompose(args: argparse.Namespace) -> None:
                 "Title": title,
                 "Parent ACs": ac_id or "",
                 "Source": source,
+                "Dependencies": dependencies,
             }
         )
         rows_to_add.append(
@@ -9264,6 +19875,7 @@ def cmd_epic_scaffold_child(args: argparse.Namespace) -> None:
                 child_spec.title,
                 parent_ac_coverage,
                 child_charter,
+                root=cwd,
             ),
             overwrite=True,
         )
@@ -9275,6 +19887,7 @@ def cmd_epic_scaffold_child(args: argparse.Namespace) -> None:
                 child_spec.title,
                 parent_ac_coverage,
                 child_charter,
+                root=cwd,
             ),
             overwrite=True,
         )
@@ -9359,6 +19972,68 @@ def cmd_epic_closeout(args: argparse.Namespace) -> None:
         print("Global epic status was not changed. Re-run with --complete to mark Complete.")
 
 
+def _add_delegate_plan_arguments(command_parser: argparse.ArgumentParser) -> None:
+    command_parser.add_argument(
+        "--id",
+        action="append",
+        required=True,
+        help="Exactly one existing approved Epic or Task ID; repeated IDs are rejected",
+    )
+    command_parser.add_argument(
+        "--unit",
+        action="append",
+        help="Select one approved execution unit; repeat for a dependency-closed subset",
+    )
+    command_parser.add_argument(
+        "--requested-concurrency",
+        type=int,
+        default=1,
+        help="Requested execution concurrency (default: 1)",
+    )
+    command_parser.add_argument(
+        "--available-child-capacity",
+        type=int,
+        default=0,
+        help="Observed available child slots, excluding the coordinator (default: 0)",
+    )
+    command_parser.add_argument(
+        "--observed-capability",
+        action="append",
+        choices=DELEGATION_CAPABILITIES,
+        help=(
+            "Runtime-observed verified host capability; repeat as needed. This legacy-compatible "
+            "flag is the verified state in the tri-state capability matrix."
+        ),
+    )
+    command_parser.add_argument(
+        "--unsupported-capability",
+        action="append",
+        choices=DELEGATION_CAPABILITIES,
+        help="Runtime-observed unsupported host capability; repeat as needed",
+    )
+    command_parser.add_argument(
+        "--capability-source",
+        default="not observed",
+        help=(
+            "Dated adapter observation provenance containing YYYY-MM-DD; required when "
+            "capabilities are supplied"
+        ),
+    )
+    command_parser.add_argument(
+        "--persistent-task-authority",
+        help=(
+            "Explicit owner-authority provenance required before an Epic plan may advise "
+            "persistent task execution"
+        ),
+    )
+    command_parser.add_argument(
+        "--format",
+        choices=("human", "json"),
+        default="human",
+        help="Output format (default: human)",
+    )
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="project",
@@ -9366,6 +20041,11 @@ def build_parser() -> argparse.ArgumentParser:
             "Project workflow: Spec-driven development for GitHub Copilot, "
             "Claude Code, OpenAI Codex, and Cursor."
         ),
+    )
+    parser.add_argument(
+        "--version",
+        action="version",
+        version=f"%(prog)s {CURRENT_PACKAGE_VERSION}",
     )
 
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -9414,6 +20094,123 @@ def build_parser() -> argparse.ArgumentParser:
             help="Output format (default: human)",
         )
         doctor_parser.set_defaults(func=cmd_doctor)
+
+    status_parser = subparsers.add_parser(
+        "status",
+        help="Report operational state and the next safe action without mutation",
+        description=(
+            "Report installation, Git, health, active work, proof, delivery, sources, "
+            "and the next safe action without mutation."
+        ),
+    )
+    status_parser.add_argument(
+        "--root",
+        help="Repository root to inspect (default: current directory)",
+    )
+    status_parser.add_argument(
+        "--id",
+        help="Focus the report and action resolver on one active work-item ID",
+    )
+    status_parser.add_argument(
+        "--repository",
+        help="Inspect one registered workspace repository by ID",
+    )
+    status_parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="Treat visible Doctor warnings as blocking health findings",
+    )
+    status_parser.add_argument(
+        "--format",
+        choices=("human", "json"),
+        default="human",
+        help="Output format (default: human)",
+    )
+    status_parser.set_defaults(func=cmd_status)
+
+    validation_parser = subparsers.add_parser(
+        "validation",
+        help="Record whether a later change invalidates prior proof",
+    )
+    validation_sub = validation_parser.add_subparsers(
+        dest="validation_command", required=True
+    )
+    validation_impact_parser = validation_sub.add_parser(
+        "impact",
+        help="Classify later change impact and record the smallest sufficient proof scope",
+    )
+    validation_impact_parser.add_argument(
+        "--root", help="Repository root (default: current directory)"
+    )
+    validation_impact_parser.add_argument(
+        "--id", required=True, help="Active Task, Epic child, or Fix ID"
+    )
+    validation_impact_parser.add_argument(
+        "--baseline", required=True, help="Identity of the last sufficient passing proof"
+    )
+    validation_impact_parser.add_argument(
+        "--change-summary", required=True, help="Exact change since the baseline proof"
+    )
+    validation_impact_parser.add_argument(
+        "--classification",
+        required=True,
+        choices=VALIDATION_IMPACT_CLASSIFICATIONS,
+        help="Whether the later change leaves proof unaffected, affects named proof, or is ambiguous",
+    )
+    validation_impact_parser.add_argument(
+        "--proof-layer",
+        action="append",
+        choices=OPERATIONAL_STATUS_PROOF_LAYER_NAMES,
+        help="Invalidated existing proof layer; repeat when more than one is affected",
+    )
+    validation_impact_parser.add_argument(
+        "--validation-verdict",
+        required=True,
+        choices=VALIDATION_IMPACT_VERDICTS,
+        help="Current result of the required validation scope",
+    )
+    validation_impact_parser.add_argument(
+        "--decided-by", required=True, help="Identity recording the impact decision"
+    )
+    validation_impact_parser.add_argument(
+        "--format",
+        choices=("human", "json"),
+        default="human",
+        help="Output format (default: human)",
+    )
+    validation_impact_parser.set_defaults(func=cmd_validation_impact)
+
+    delegate_parser = subparsers.add_parser(
+        "delegate",
+        help="Inspect a validated delegation graph and its ignored runtime state",
+    )
+    delegate_sub = delegate_parser.add_subparsers(dest="delegate_command", required=True)
+    delegate_plan_parser = delegate_sub.add_parser(
+        "plan", help="Build a deterministic read-only delegation plan"
+    )
+    _add_delegate_plan_arguments(delegate_plan_parser)
+    delegate_plan_parser.set_defaults(func=cmd_delegate_plan)
+    delegate_status_parser = delegate_sub.add_parser(
+        "status", help="Report canonical plan and machine-local runtime state read-only"
+    )
+    _add_delegate_plan_arguments(delegate_status_parser)
+    delegate_status_parser.set_defaults(func=cmd_delegate_status)
+    delegate_state_init_parser = delegate_sub.add_parser(
+        "state-init", help="Initialize ignored machine-local delegation runtime state"
+    )
+    _add_delegate_plan_arguments(delegate_state_init_parser)
+    delegate_state_init_parser.set_defaults(func=cmd_delegate_state_init)
+    delegate_state_reconcile_parser = delegate_sub.add_parser(
+        "state-reconcile",
+        help="Reconcile ignored runtime state with host-observed handles",
+    )
+    _add_delegate_plan_arguments(delegate_state_reconcile_parser)
+    delegate_state_reconcile_parser.add_argument(
+        "--observed-handles",
+        required=True,
+        help="JSON object mapping unit IDs to observed kind/id/worktree/state handles",
+    )
+    delegate_state_reconcile_parser.set_defaults(func=cmd_delegate_state_reconcile)
 
     upgrade_parser = subparsers.add_parser(
         "upgrade",
@@ -9777,6 +20574,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     task_status_parser.set_defaults(func=cmd_task_status)
 
+    task_approval_summary_parser = task_sub.add_parser(
+        "approval-summary",
+        help="Render the plain-language Intent synopsis for owner confirmation",
+    )
+    task_approval_summary_parser.add_argument(
+        "--id", required=True, help="Task ID (e.g. TASK-001)"
+    )
+    task_approval_summary_parser.set_defaults(func=cmd_task_approval_summary)
+
     task_approve_requirements_parser = task_sub.add_parser(
         "approve-requirements",
         help="Record owner approval for one task requirements/AC envelope",
@@ -9887,6 +20693,30 @@ def build_parser() -> argparse.ArgumentParser:
     epic_approve_parser.add_argument("--epic-id", required=True, help="Epic ID (e.g. EPIC-001)")
     epic_approve_parser.add_argument("--id", required=True, help="Row ID in epic TRACKER.md")
     epic_approve_parser.set_defaults(func=cmd_epic_approve)
+
+    epic_approval_summary_parser = epic_sub.add_parser(
+        "approval-summary",
+        help="Render the plain-language Intent synopsis for owner confirmation",
+    )
+    epic_approval_summary_parser.add_argument(
+        "--epic-id", required=True, help="Epic ID (e.g. EPIC-001)"
+    )
+    epic_approval_summary_parser.set_defaults(func=cmd_epic_approval_summary)
+
+    epic_intent_audit_parser = epic_sub.add_parser(
+        "intent-audit",
+        help="Inspect sourced intent coverage, drift classifications, and freshness read-only",
+    )
+    epic_intent_audit_parser.add_argument(
+        "--epic-id", required=True, help="Epic ID (e.g. EPIC-001)"
+    )
+    epic_intent_audit_parser.add_argument(
+        "--format",
+        choices=("human", "json"),
+        default="human",
+        help="Output format (default: human)",
+    )
+    epic_intent_audit_parser.set_defaults(func=cmd_epic_intent_audit)
 
     epic_approve_requirements_parser = epic_sub.add_parser(
         "approve-requirements",

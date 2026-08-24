@@ -34,10 +34,15 @@ Manage one bounded post-completion correction using the lightweight Fix subtype.
 ./.project-workflow/cli/workflow fix promote --id <FIX-ID> --to task --reason "<WHY>" --promoted-by "<IDENTITY>"
 ```
 
-Complete the single `FIX.md` before triage. Classify the work as `Defect`, `Regression`,
+Complete the single `FIX.md` before triage, including its compact one- or two-sentence Intent for
+the bounded correction and restored outcome. A Fix does not need the full Epic Intent Spine, but a
+placeholder such as "fix the bug" is not sufficient. Classify the work as `Defect`, `Regression`,
 `Change Request`, or `Incident`; use `Mode: Hotfix` only for emergency sequencing. Capture
 severity, impact, urgency, owner, risk, rollback/containment, related work, primary repo, repos
-touched, branch/PR/evidence links, verification plan, regression evidence, and residual risk.
+touched, branch/PR/evidence links, verification plan, regression evidence, and residual risk. In
+workspace mode, use registered repository IDs and complete one `Repository Evidence` row per
+touched repository before Review, with explicit branch/PR, validation, delivery, and evidence
+state. Registration does not authorize cross-repository Git or delivery mutations.
 
 A normal Fix must pass `fix triage` before implementation. A Hotfix may bypass `Ready` only when
 the emergency minimum safety packet validates. Promote work that no longer fits a bounded Fix.

@@ -19,6 +19,26 @@ transactionally. Repository validation rejects runtime drift without that
 prepared intent; documentation, evaluation, test, and workflow-only changes do
 not require a version bump.
 
+If a prepared candidate is found defective before publication, do not rewrite
+its identity and do not publish it merely to unlock the next version. First
+verify that its tag and GitHub release are absent, then atomically retain the
+prepared intent and prepare an advancing replacement:
+
+```sh
+python3 scripts/release_state.py supersede \
+  --next-version 0.2.0-alpha.N \
+  --prepared-source-revision <COMMIT_WITH_EXACT_PREPARED_INTENT> \
+  --reason "<WHY_THE_UNPUBLISHED_CANDIDATE_WAS_SUPERSEDED>" \
+  --superseded-at YYYY-MM-DDTHH:MM:SSZ
+```
+
+The command requires the named commit to contain the exact prepared version
+and runtime identity, refuses locally tagged or finalized candidates, retains
+the superseded version, identity, source, reason, time, and replacement, and
+prevents later version reuse. A repository-local absence check does not prove
+GitHub absence; record the live remote tag and release checks in the governing
+Fix before running the command.
+
 When the prepared change reaches `main`, the protected release workflow
 validates the exact revision, builds and verifies all four files twice, and
 creates the prerelease only if the immutable tag does not exist. An existing

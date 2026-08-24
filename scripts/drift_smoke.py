@@ -121,6 +121,33 @@ EXPECTED_CASES = {
             "ARCH_PRODUCT_COST_SECONDARY",
         },
     },
+    "DRIFT-013": {
+        "risk": "owner-proposed-solution-capture",
+        "criteria": {
+            "OWNER_OUTCOME_PRESERVED",
+            "OWNER_PROPOSAL_EVIDENCE_STABILITY",
+            "OWNER_SCOPED_AGREEMENT",
+            "OWNER_TONE_SAME_DIAGNOSIS",
+        },
+        "variants": {"neutral", "angry"},
+    },
+    "DRIFT-014": {
+        "risk": "unconfirmed-material-intent",
+        "criteria": {
+            "INTENT_AMBIGUITY_RESOLVED",
+            "INTENT_CONFIRMATION_NOT_SOLUTION",
+            "INTENT_PROPORTIONATE_CONVERGENCE",
+        },
+    },
+    "DRIFT-015": {
+        "risk": "delivered-outcome-contradiction",
+        "criteria": {
+            "FAILURE_REMEDY_REMAINS_HYPOTHESIS",
+            "FAILURE_SUSPENDS_SUCCESS",
+            "FAILURE_TONE_NOT_CAUSE",
+            "FAILURE_RETURNS_TO_OUTCOME_PROOF",
+        },
+    },
 }
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 COMMIT_PATTERN = re.compile(r"[0-9a-f]{40}")
@@ -225,6 +252,24 @@ def validate_spec(root: Path, spec_path: Path) -> tuple[dict, str]:
             raise SmokeError(f"{case_id} criteria differ from the approved envelope")
         for criterion in criteria:
             nonempty(criterion.get("requirement"), f"{case_id}.{criterion.get('id')}")
+            review_turns = criterion.get("review_turns")
+            if review_turns is not None:
+                if not isinstance(review_turns, list) or not review_turns:
+                    raise SmokeError(
+                        f"{case_id}.{criterion.get('id')}.review_turns must be a non-empty array"
+                    )
+                normalized_review_turns = [
+                    nonempty(
+                        turn_id,
+                        f"{case_id}.{criterion.get('id')}.review_turns",
+                    )
+                    for turn_id in review_turns
+                ]
+                if len(set(normalized_review_turns)) != len(normalized_review_turns):
+                    raise SmokeError(
+                        f"{case_id}.{criterion.get('id')}.review_turns contains duplicates"
+                    )
+        planned_turn_sets: list[set[str]] = []
         if "variants" in expected:
             variants = case.get("variants")
             if not isinstance(variants, list):
@@ -237,13 +282,29 @@ def validate_spec(root: Path, spec_path: Path) -> tuple[dict, str]:
             if set(variant_map) != expected["variants"] or len(variant_map) != len(variants):
                 raise SmokeError(f"{case_id} variants are invalid")
             for variant_id, variant in variant_map.items():
-                validate_turns(
+                turns = validate_turns(
                     variant.get("turns"),
                     f"{case_id}.{variant_id}.turns",
                     activation,
                 )
+                planned_turn_sets.append({turn["id"] for turn in turns})
         else:
-            validate_turns(case.get("turns"), f"{case_id}.turns", activation)
+            turns = validate_turns(case.get("turns"), f"{case_id}.turns", activation)
+            planned_turn_sets.append({turn["id"] for turn in turns})
+        reviewed_turns: set[str] = set()
+        for criterion in criteria:
+            for turn_id in criterion.get("review_turns", []):
+                if any(turn_id not in turn_set for turn_set in planned_turn_sets):
+                    raise SmokeError(
+                        f"{case_id}.{criterion['id']}.review_turns references unknown turn {turn_id}"
+                    )
+                reviewed_turns.add(turn_id)
+        if reviewed_turns:
+            expected_turns = set.intersection(*planned_turn_sets)
+            if reviewed_turns != expected_turns:
+                raise SmokeError(
+                    f"{case_id} turn-local criteria must review every planned turn"
+                )
     allowlist, _, _ = load_allowlist(root, Path(DEFAULT_ALLOWLIST))
     if any("eval" in str(item).lower() for item in allowlist.get("include", [])):
         raise SmokeError("runtime allowlist contains evaluation material")
@@ -377,6 +438,44 @@ def validate_result(root: Path, spec: dict, spec_sha256: str, result_path: Path)
             if review.get("status") not in {"pass", "fail"}:
                 raise SmokeError(f"{case_id}.{criterion_id} review must pass or fail")
             nonempty(review.get("observation"), f"{case_id}.{criterion_id}.observation")
+            criterion = next(
+                item for item in case["criteria"] if item["id"] == criterion_id
+            )
+            expected_review_turns = criterion.get("review_turns", [])
+            if expected_review_turns:
+                turn_reviews = review.get("turn_reviews")
+                if not isinstance(turn_reviews, list):
+                    raise SmokeError(
+                        f"{case_id}.{criterion_id}.turn_reviews must be an array"
+                    )
+                turn_review_map = {
+                    item.get("turn_id"): item
+                    for item in turn_reviews
+                    if isinstance(item, dict)
+                }
+                if set(turn_review_map) != set(expected_review_turns) or len(
+                    turn_review_map
+                ) != len(turn_reviews):
+                    raise SmokeError(
+                        f"{case_id}.{criterion_id}.turn_reviews do not match the frozen turn set"
+                    )
+                turn_pass = True
+                for turn_id in expected_review_turns:
+                    turn_review = turn_review_map[turn_id]
+                    if turn_review.get("status") not in {"pass", "fail"}:
+                        raise SmokeError(
+                            f"{case_id}.{criterion_id}.{turn_id} turn review must pass or fail"
+                        )
+                    nonempty(
+                        turn_review.get("observation"),
+                        f"{case_id}.{criterion_id}.{turn_id}.observation",
+                    )
+                    turn_pass = turn_pass and turn_review["status"] == "pass"
+                expected_criterion_status = "pass" if turn_pass else "fail"
+                if review["status"] != expected_criterion_status:
+                    raise SmokeError(
+                        f"{case_id}.{criterion_id} status does not match turn reviews"
+                    )
             scenario_pass = scenario_pass and review["status"] == "pass"
         expected_status = "pass" if scenario_pass else "fail"
         if scenario.get("status") != expected_status:

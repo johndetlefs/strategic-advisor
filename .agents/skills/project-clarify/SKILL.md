@@ -46,3 +46,6 @@ as the normal autonomous consistency pass.
     identity, or scope materially, return the changed envelope to the owner for re-approval.
 12. When the post-plan pass is clean, run `task ready`, move the task to `Ready`, and continue when
     implementation is authorized.
+13. For a full-contract Epic child, run the parent `epic intent-audit` read-only and treat stale,
+    unknown, review-required or changes-requested state as a real narrowing or coverage gap. Name
+    the exact user-visible capability consequence; AC consistency is not Intent fidelity.

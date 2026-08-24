@@ -25,6 +25,7 @@ Use this lens to decide whether a project or product should continue, be tested,
 - Delivery evidence: capacity, quality, cycle time, operational load, cost to complete, cost to maintain, and remaining work.
 - Constraint and dependency evidence: decision rights, technical limits, legal or policy requirements, upstream owners, procurement, distribution, and critical dates.
 - Failed, null, and contradictory results as well as successes. Record who produced each item, how it was measured, and what it can actually establish.
+- A direct or credibly reported run through the required user journey overrides a lower-layer green proxy for that outcome. Suspend the affected complete, fixed, validated, or release claim; preserve the intended outcome; and distinguish the observed contradiction from any proposed cause or rewrite.
 - Remaining cost and foregone alternatives. Treat past spend as history, not as a reason to spend the next unit.
 
 ## Causal mechanisms
@@ -33,6 +34,7 @@ Use this lens to decide whether a project or product should continue, be tested,
 - Identify necessary links, bottlenecks, feedback loops, delays, substitution effects, and ways local improvement can damage the wider system.
 - Separate evidence that the problem exists from evidence that this intervention solves it and from evidence that the result can scale.
 - Use bounded experiments to discriminate between live causal explanations. Prefer a test of the weakest load-bearing assumption over more delivery against an untested chain.
+- After a delivered outcome contradiction, return to the exact failed journey and locate the first causal divergence before prescribing further implementation. Test smaller explanations and containment alongside any subsystem rewrite; anger or lost trust changes the interaction and assurance burden, not the technical cause.
 - Model dependencies as causal requirements with owners, incentives, failure modes, and alternatives—not as dates on a plan.
 
 ## Stakeholder agency

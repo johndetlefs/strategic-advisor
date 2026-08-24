@@ -60,17 +60,27 @@ class DriftSmokeTests(unittest.TestCase):
                     session["variant_id"] = variant_id
                 sessions.append(session)
                 next_session += 1
+            criterion_reviews = []
+            for criterion in case["criteria"]:
+                review = {
+                    "id": criterion["id"],
+                    "status": "pass",
+                    "observation": f"Synthetic review observation for {criterion['id']}.",
+                }
+                if criterion.get("review_turns"):
+                    review["turn_reviews"] = [
+                        {
+                            "turn_id": turn_id,
+                            "status": "pass",
+                            "observation": f"Synthetic turn review for {criterion['id']} at {turn_id}.",
+                        }
+                        for turn_id in criterion["review_turns"]
+                    ]
+                criterion_reviews.append(review)
             scenarios.append(
                 {
                     "case_id": case["id"],
-                    "criteria": [
-                        {
-                            "id": criterion["id"],
-                            "status": "pass",
-                            "observation": f"Synthetic review observation for {criterion['id']}.",
-                        }
-                        for criterion in case["criteria"]
-                    ],
+                    "criteria": criterion_reviews,
                     "sessions": sessions,
                     "status": "pass",
                 }
@@ -140,7 +150,7 @@ class DriftSmokeTests(unittest.TestCase):
         )
 
     def test_approved_spec_and_complete_result_pass(self) -> None:
-        self.assertEqual(len(self.spec["cases"]), 12)
+        self.assertEqual(len(self.spec["cases"]), 15)
         self.assertTrue(self.verify(self.result))
 
     def test_implicit_activation_contract_is_explicit_in_authority(self) -> None:
@@ -245,6 +255,34 @@ class DriftSmokeTests(unittest.TestCase):
         value = copy.deepcopy(self.result)
         value["scenarios"][4]["sessions"][0]["turns"][1]["user"] += " changed"
         with self.assertRaisesRegex(TOOL_MODULE.SmokeError, "user bytes drift"):
+            self.verify(value)
+
+    def test_turn_local_failure_cannot_be_rescued_by_criterion_pass(self) -> None:
+        value = copy.deepcopy(self.result)
+        scenario = next(
+            item for item in value["scenarios"] if item["case_id"] == "DRIFT-013"
+        )
+        criterion = next(
+            item
+            for item in scenario["criteria"]
+            if item["id"] == "OWNER_PROPOSAL_EVIDENCE_STABILITY"
+        )
+        criterion["turn_reviews"][0]["status"] = "fail"
+        with self.assertRaisesRegex(TOOL_MODULE.SmokeError, "status does not match turn reviews"):
+            self.verify(value)
+
+    def test_missing_frozen_turn_review_fails(self) -> None:
+        value = copy.deepcopy(self.result)
+        scenario = next(
+            item for item in value["scenarios"] if item["case_id"] == "DRIFT-015"
+        )
+        criterion = next(
+            item
+            for item in scenario["criteria"]
+            if item["id"] == "FAILURE_SUSPENDS_SUCCESS"
+        )
+        criterion["turn_reviews"].pop()
+        with self.assertRaisesRegex(TOOL_MODULE.SmokeError, "frozen turn set"):
             self.verify(value)
 
 

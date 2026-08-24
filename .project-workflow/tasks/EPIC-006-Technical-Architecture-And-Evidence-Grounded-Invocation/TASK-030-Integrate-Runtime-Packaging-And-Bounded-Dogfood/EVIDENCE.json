@@ -42,10 +42,10 @@
       "commit": "3ddf77aee9719416b5c6520adaa858b4a787aead",
       "timestamp": "2026-08-14T02:50:00Z",
       "execution_target": "Canonical product contract and cross-artifact claims validator",
-      "source_artifact": "PRODUCT-CONTRACT.md sha256:931a2b27ef99f283e3be2bb35ca1e4473b2661f6967cc8f77da34099e4fc6a5d",
+      "source_artifact": "Retained PRODUCT-CONTRACT.v0.2.0-alpha.4.md from source commit 3ddf77aee9719416b5c6520adaa858b4a787aead sha256:931a2b27ef99f283e3be2bb35ca1e4473b2661f6967cc8f77da34099e4fc6a5d",
       "observation_method": "Run claims, links, skill and lens scopes and inspect the capability registry and aligned product documents.",
       "target_used_source_proof": "All seven validation scopes passed with domain.technical-architecture implemented-not-validated and no supported capability promotion.",
-      "evidence_artifact": "../../../../PRODUCT-CONTRACT.md",
+      "evidence_artifact": "PRODUCT-CONTRACT.v0.2.0-alpha.4.md",
       "evidence_artifact_hash": "sha256:931a2b27ef99f283e3be2bb35ca1e4473b2661f6967cc8f77da34099e4fc6a5d",
       "invalid_substitutes": []
     },

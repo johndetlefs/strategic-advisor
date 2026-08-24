@@ -49,6 +49,8 @@ class PublishReleaseTests(unittest.TestCase):
             f"publish_release_fixture_{id(self)}", PUBLISH_RELEASE
         )
         authority, _ = self.module.release_state.load_authority(self.root)
+        authority["schema_version"] = 2
+        authority["superseded"] = []
         authority["state"] = "prepared"
         authority["distribution"]["version"] = "0.2.0-alpha.4"
         changes = {
@@ -191,6 +193,7 @@ class PublishReleaseTests(unittest.TestCase):
         self.assertEqual(
             finalized["current_public"]["version"], self.version
         )
+        self.assertEqual(finalized["superseded"], [])
         self.assertTrue(
             (
                 self.root

@@ -30,16 +30,53 @@ Run the post-implementation quality gate for a project-workflow task.
 4. Run `./.project-workflow/cli/workflow task status --id <TASK-ID> --to Review` before review work begins.
 5. Map every relevant acceptance criterion ID to validation evidence.
 6. If requirements or claims trigger a proof recipe, verify child-local `EVIDENCE.json` has passing structured claim records. QA prose cannot satisfy recipe-triggered visual/reference fidelity, external contract alignment, deployed artifact alignment, runtime target/source, or responsive visual behavior claims.
+   For `user-outcome-journey`, inspect the exact actor, normal entry point, starting state, material
+   operations, resulting artifact/state, observations, source/revision, environment and invalid
+   substitutes. Tests, builds, screenshots, internal data, debug-only controls, related
+   environments and one canary cannot alone prove a broader user job.
 7. Run any missing narrow validation needed to support the review. Do not ask the user to manually test behavior that the agent can validate directly with available commands, tests, scripts, or local tools.
 8. Review the changed code for correctness, scope control, maintainability, edge cases, tests, docs, security, permissions, privacy, data integrity, and operational risk.
-9. Record results in `IMPLEMENTATION.md` under `## QA & Code Review` with date, reviewed areas, validation evidence, findings, and verdict. Clearly separate verified evidence from deferred setup, owner-only actions, unavailable connector/OAuth checks, and invalid substitutes.
-10. Run `./.project-workflow/cli/workflow doctor` and include any workflow-state warnings or errors in the review output.
-11. If findings exist, report them first with severity and file references. Keep status as `Review` or set `Blocked` for release-blocking issues.
-12. If review passes, say so. Run `./.project-workflow/cli/workflow task status --id <TASK-ID> --to Complete` only when the user explicitly asks to complete the task after review.
-13. After completion, route to `project-retro`.
+9. In workspace mode, verify every touched repository has an explicit `Repository Evidence` row
+   and that its branch/PR, validation, delivery, and evidence claims match repository-scoped
+   read-only Git/status proof. Treat `not applicable` and `not authorized` as boundaries, not as
+   delivered proof.
+10. Record results in `IMPLEMENTATION.md` under `## QA & Code Review` with date, reviewed areas, validation evidence, findings, and verdict. Clearly separate verified evidence from deferred setup, owner-only actions, unavailable connector/OAuth checks, and invalid substitutes.
+    For an adversarial Intent QA contract, also record `Intent adversarial verdict`, answer whether
+    every AC could pass while the approved user job remains undone, record the current Intent audit,
+    cite outcome-journey evidence, and state reviewer independence. If the answer is Yes or unknown,
+    the only honest verdict is `Changes requested`.
+11. Run `./.project-workflow/cli/workflow doctor` and include any workflow-state warnings or errors in the review output.
+12. If findings exist, report them first with severity and file references. Keep status as `Review` or set `Blocked` for release-blocking issues.
+13. If review passes, say so. Run `./.project-workflow/cli/workflow task status --id <TASK-ID> --to Complete` only when the user explicitly asks to complete the task after review.
+14. After completion, route to `project-retro`.
+
+## Continuation And Validation Sufficiency
+
+- Once the approved Intent, in-scope acceptance criteria, required proof, and QA verdict pass, stop
+  review-oriented investigation and report the result.
+- Continue or reopen work only when a finding shows that the owner cannot accomplish the approved
+  Intent, a material delivery claim is false, an explicitly required lifecycle stage is blocked,
+  or a material safety, security, privacy, data-integrity, or hard-to-reverse risk exists. Record
+  adjacent improvements, optional consistency work, speculative hardening, and non-material
+  diagnostics as separate follow-ups instead of extending the current review.
+- Identify the affected proof layer for every blocking finding. Rerun broad or full-suite checks,
+  packaging, deployment, or cross-host journeys only when the correction can affect that layer or
+  the approved delivery stage requires it; do not repeat them merely for additional reassurance.
+- A post-proof `workflow validation impact` decision never commissions another review. An
+  `unaffected` decision advances, an `affected` decision permits one named validation pass, and an
+  `ambiguous` decision returns one concise question to the owner.
+- Run independent QA once for the approved work item when its requirements require that gate.
+  Findings may trigger affected validation, but never a fresh open-ended review. Another reviewer
+  invocation requires a new material change, an explicit high-consequence requirement, or direct
+  owner authorization.
 
 ## Verdicts
 
 - `Pass`: no blocking findings and validation evidence covers the acceptance criteria by AC ID.
 - `Pass with follow-ups`: safe to complete, but separate follow-up work is recommended.
 - `Changes requested`: completion is blocked until findings are addressed.
+
+For delegated work, independently inspect coordinator-verified worker identity, exact source/worktree,
+allowed diff, validations, evidence, capability/capacity provenance, descendant blocking, runtime
+privacy, and single-writer behavior. Neither worker assertions nor Delegate's aggregate report replace
+this QA gate.

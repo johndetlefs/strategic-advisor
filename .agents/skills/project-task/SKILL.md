@@ -10,9 +10,10 @@ Create the minimal workflow artifacts for one new task.
 
 Project Workflow is owner-directed and agent-operated: the owner provides product context and decisions conversationally, while the agent runs commands and records workflow state.
 
-Task creation is only scaffolding. Requirements and ACs still need one explicit owner confirmation
-before planning; record that confirmation with `task approve-requirements` after requirements are
-ready. The agent then normally plans, clarifies, validates readiness, and moves to `Ready`
+Task creation is only scaffolding. Draft the scaffolded one- or two-sentence Intent first, then use
+`task approval-summary` so the owner confirms the meaning and success journey rather than task or
+AC IDs. Record that confirmation with `task approve-requirements` after requirements are ready.
+The agent then normally plans, clarifies, validates readiness, and moves to `Ready`
 autonomously. Do not repeatedly ask for approval inside the unchanged envelope.
 
 ## Invocation Rules
@@ -69,6 +70,6 @@ With branch:
 4. Run `./.project-workflow/cli/workflow doctor` and report any workflow-state warnings or errors.
 5. Report the created task folder, assigned task ID, tracker update, and branch name if one was created.
 6. Continue to requirements capture when the user is ready, then proceed through owner
-   confirmation, `task approve-requirements`, planning, post-plan clarification, `task ready`,
-   `Ready`, implementation, QA/code review, and retro. Pause after scaffolding only when the user
-   explicitly requested setup/review-only work.
+   confirmation of the `task approval-summary` meaning, `task approve-requirements`, planning,
+   post-plan clarification, `task ready`, `Ready`, implementation, QA/code review, and retro.
+   Pause after scaffolding only when the user explicitly requested setup/review-only work.

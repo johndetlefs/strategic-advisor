@@ -10,6 +10,7 @@ and verified.
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import os
 import re
@@ -43,10 +44,44 @@ VERSION_PATTERN = re.compile(
 )
 SHA256_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 REVISION_PATTERN = re.compile(r"^[0-9a-f]{40}$")
+UTC_TIMESTAMP_PATTERN = re.compile(
+    r"^[0-9]{4}-(0[1-9]|1[0-2])-([0-2][0-9]|3[01])T"
+    r"([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$"
+)
+MAX_SUPERSESSION_REASON_LENGTH = 500
 
 
 class ReleaseStateError(ValueError):
     """Committed distribution state violates the release contract."""
+
+
+def validate_supersession_reason(value: object) -> str:
+    if (
+        not isinstance(value, str)
+        or value != value.strip()
+        or not value
+        or len(value) > MAX_SUPERSESSION_REASON_LENGTH
+        or any(ord(character) < 32 for character in value)
+    ):
+        raise ReleaseStateError(
+            "supersession reason must be trimmed, non-empty plain text of at most "
+            f"{MAX_SUPERSESSION_REASON_LENGTH} characters"
+        )
+    return value
+
+
+def validate_utc_timestamp(value: object, label: str) -> str:
+    if not isinstance(value, str) or not UTC_TIMESTAMP_PATTERN.fullmatch(value):
+        raise ReleaseStateError(
+            f"{label} must be a UTC timestamp such as 2026-08-24T01:02:03Z"
+        )
+    try:
+        datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
+    except ValueError as error:
+        raise ReleaseStateError(
+            f"{label} must be a valid UTC calendar timestamp"
+        ) from error
+    return value
 
 
 def rendered_json_bytes(value: object) -> bytes:
@@ -78,13 +113,33 @@ def _require_exact_keys(value: object, keys: set[str], label: str) -> dict:
 
 
 def validate_authority(value: object) -> dict:
-    authority = _require_exact_keys(
-        value,
-        {"current_public", "distribution", "schema_version", "state"},
-        "distribution authority",
-    )
-    if authority["schema_version"] != 1:
-        raise ReleaseStateError("distribution schema_version must be 1")
+    if not isinstance(value, dict):
+        raise ReleaseStateError("distribution authority must be a JSON object")
+    schema_version = value.get("schema_version")
+    if schema_version == 1:
+        authority = _require_exact_keys(
+            value,
+            {"current_public", "distribution", "schema_version", "state"},
+            "distribution authority",
+        )
+        superseded: list[dict] = []
+    elif schema_version == 2:
+        authority = _require_exact_keys(
+            value,
+            {
+                "current_public",
+                "distribution",
+                "schema_version",
+                "state",
+                "superseded",
+            },
+            "distribution authority",
+        )
+        if not isinstance(authority["superseded"], list):
+            raise ReleaseStateError("superseded release history must be a list")
+        superseded = authority["superseded"]
+    else:
+        raise ReleaseStateError("distribution schema_version must be 1 or 2")
     if authority["state"] not in {"prepared", "published"}:
         raise ReleaseStateError("distribution state must be prepared or published")
     distribution = _require_exact_keys(
@@ -119,13 +174,70 @@ def validate_authority(value: object) -> dict:
         raise ReleaseStateError("current_public tag must equal v<version>")
     if current.get("evidence") != f"evidence/releases/v{current.get('version')}.json":
         raise ReleaseStateError("current_public evidence path must match its version")
-    if authority["state"] == "prepared" and not distribution_key > current_key:
+
+    superseded_keys: list[tuple[int, int, int, int, int]] = []
+    replacement_keys: list[tuple[int, int, int, int, int]] = []
+    previous_key: tuple[int, int, int, int, int] | None = None
+    for index, raw_record in enumerate(superseded):
+        record = _require_exact_keys(
+            raw_record,
+            {
+                "reason",
+                "replacement_version",
+                "runtime_package_identity_sha256",
+                "source_revision",
+                "superseded_at",
+                "version",
+            },
+            f"superseded[{index}]",
+        )
+        record_key = version_key(record.get("version"))
+        replacement_key = version_key(record.get("replacement_version"))
+        validate_supersession_reason(record.get("reason"))
+        if not SHA256_PATTERN.fullmatch(
+            str(record.get("runtime_package_identity_sha256", ""))
+        ):
+            raise ReleaseStateError("superseded runtime identity must be SHA-256")
+        if not REVISION_PATTERN.fullmatch(str(record.get("source_revision", ""))):
+            raise ReleaseStateError("superseded source_revision must be a Git SHA-1")
+        validate_utc_timestamp(record.get("superseded_at"), "superseded_at")
+        if replacement_key <= record_key:
+            raise ReleaseStateError(
+                "a superseded replacement_version must advance the superseded version"
+            )
+        if previous_key is not None and record_key <= previous_key:
+            raise ReleaseStateError(
+                "superseded release history must be strictly version-ordered"
+            )
+        previous_key = record_key
+        superseded_keys.append(record_key)
+        replacement_keys.append(replacement_key)
+
+    if distribution_key in superseded_keys or current_key in superseded_keys:
         raise ReleaseStateError(
-            "a prepared distribution version must advance current_public"
+            "current or prepared distribution version cannot also be superseded"
+        )
+    latest_used_key = max([current_key, *superseded_keys])
+    latest_known_key = max(current_key, distribution_key, *superseded_keys)
+    if any(key > latest_known_key for key in replacement_keys):
+        raise ReleaseStateError(
+            "a superseded replacement_version cannot exceed the latest retained "
+            "distribution version"
+        )
+    if authority["state"] == "prepared" and not distribution_key > latest_used_key:
+        raise ReleaseStateError(
+            "a prepared distribution version must advance current_public and "
+            "superseded history"
         )
     if authority["state"] == "published" and distribution_key != current_key:
         raise ReleaseStateError(
             "a published distribution version must equal current_public"
+        )
+    if authority["state"] == "published" and any(
+        record_key >= current_key for record_key in superseded_keys
+    ):
+        raise ReleaseStateError(
+            "published current_public must advance superseded release history"
         )
     return authority
 
@@ -381,12 +493,112 @@ def _git_output(root: Path, arguments: Sequence[str]) -> str:
     return result.stdout.strip()
 
 
-def ensure_version_unused(root: Path, version: str) -> None:
+def _git_bytes(root: Path, arguments: Sequence[str]) -> bytes:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), *arguments],
+            check=False,
+            capture_output=True,
+            timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError) as error:
+        raise ReleaseStateError("Git is unavailable") from error
+    if result.returncode != 0:
+        message = result.stderr.decode("utf-8", errors="replace").strip()
+        raise ReleaseStateError(message or "Git command failed")
+    return result.stdout
+
+
+def ensure_revision_is_ancestor(root: Path, revision: str) -> None:
+    try:
+        result = subprocess.run(
+            ["git", "-C", str(root), "merge-base", "--is-ancestor", revision, "HEAD"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError) as error:
+        raise ReleaseStateError("Git is unavailable") from error
+    if result.returncode == 1:
+        raise ReleaseStateError(
+            "prepared source revision must be an ancestor of the current source"
+        )
+    if result.returncode != 0:
+        raise ReleaseStateError(result.stderr.strip() or "Git command failed")
+
+
+def ensure_version_unused(
+    root: Path, version: str, authority: Mapping[str, object] | None = None
+) -> None:
     tag = f"v{version}"
     if _git_output(root, ["tag", "--list", tag]):
         raise ReleaseStateError(f"version is already used by local tag {tag}")
     if (root / "evidence" / "releases" / f"{tag}.json").exists():
         raise ReleaseStateError(f"version is already used by retained release evidence: {tag}")
+    if authority is None:
+        authority, _ = load_authority(root)
+    if any(
+        record.get("version") == version
+        for record in authority.get("superseded", [])
+    ):
+        raise ReleaseStateError(
+            f"version is already used by a superseded prepared candidate: {tag}"
+        )
+
+
+def ensure_prepared_unpublished(root: Path, authority: Mapping[str, object]) -> None:
+    version = authority["distribution"]["version"]
+    tag = f"v{version}"
+    if _git_output(root, ["tag", "--list", tag]):
+        raise ReleaseStateError(
+            f"prepared candidate already has local tag {tag}; it cannot be superseded"
+        )
+    evidence = root / "evidence" / "releases" / f"{tag}.json"
+    if evidence.exists() or evidence.is_symlink():
+        raise ReleaseStateError(
+            f"prepared candidate has retained release evidence for {tag}; it cannot "
+            "be superseded"
+        )
+
+
+def committed_authority(root: Path, revision: str) -> dict:
+    if not REVISION_PATTERN.fullmatch(revision):
+        raise ReleaseStateError("prepared source revision must be a Git SHA-1")
+    ensure_revision_is_ancestor(root, revision)
+    content = _git_bytes(root, ["show", f"{revision}:{AUTHORITY_PATH.as_posix()}"])
+    try:
+        parsed = json.loads(content.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ReleaseStateError(
+            "prepared source revision does not contain valid distribution authority"
+        ) from error
+    authority = validate_authority(parsed)
+    if content != rendered_json_bytes(authority):
+        raise ReleaseStateError(
+            "prepared source revision distribution authority is not canonical"
+        )
+    return authority
+
+
+def validate_superseded_provenance(
+    root: Path, authority: Mapping[str, object]
+) -> None:
+    for record in authority.get("superseded", []):
+        source_authority = committed_authority(root, record["source_revision"])
+        expected_distribution = {
+            "runtime_package_identity_sha256": record[
+                "runtime_package_identity_sha256"
+            ],
+            "version": record["version"],
+        }
+        if (
+            source_authority["state"] != "prepared"
+            or source_authority["distribution"] != expected_distribution
+        ):
+            raise ReleaseStateError(
+                "superseded history source does not contain its exact prepared intent"
+            )
 
 
 def _transactional_write(changes: Mapping[Path, bytes]) -> None:
@@ -430,7 +642,7 @@ def prepare(root: Path, version: str) -> dict:
         authority["current_public"]["version"]
     ):
         raise ReleaseStateError("prepared version must advance current_public")
-    ensure_version_unused(root, version)
+    ensure_version_unused(root, version, authority)
     updated = json.loads(json.dumps(authority))
     updated["state"] = "prepared"
     updated["distribution"] = {
@@ -443,7 +655,68 @@ def prepare(root: Path, version: str) -> dict:
         **synchronized_documents(root, updated),
     }
     _transactional_write(changes)
-    validate(root)
+    validate(root, verify_superseded_provenance=True)
+    return updated
+
+
+def supersede(
+    root: Path,
+    *,
+    next_version: str,
+    prepared_source_revision: str,
+    reason: str,
+    superseded_at: str,
+) -> dict:
+    authority, _ = load_authority(root)
+    if authority["state"] != "prepared":
+        raise ReleaseStateError(
+            "only a prepared distribution can be superseded before publication"
+        )
+    prepared = authority["distribution"]
+    if version_key(next_version) <= version_key(prepared["version"]):
+        raise ReleaseStateError(
+            "replacement version must advance the prepared candidate"
+        )
+    validate_supersession_reason(reason)
+    validate_utc_timestamp(superseded_at, "superseded-at")
+    ensure_version_unused(root, next_version, authority)
+    ensure_prepared_unpublished(root, authority)
+    source_authority = committed_authority(root, prepared_source_revision)
+    if (
+        source_authority["state"] != "prepared"
+        or source_authority["distribution"] != prepared
+    ):
+        raise ReleaseStateError(
+            "prepared source revision does not contain the exact current prepared intent"
+        )
+
+    updated = json.loads(json.dumps(authority))
+    if updated["schema_version"] == 1:
+        updated["schema_version"] = 2
+        updated["superseded"] = []
+    updated["superseded"].append(
+        {
+            "reason": reason,
+            "replacement_version": next_version,
+            "runtime_package_identity_sha256": prepared[
+                "runtime_package_identity_sha256"
+            ],
+            "source_revision": prepared_source_revision,
+            "superseded_at": superseded_at,
+            "version": prepared["version"],
+        }
+    )
+    updated["distribution"] = {
+        "runtime_package_identity_sha256": runtime_identity(root),
+        "version": next_version,
+    }
+    validate_authority(updated)
+    changes = {
+        root / Path(*AUTHORITY_PATH.parts): rendered_json_bytes(updated),
+        **synchronized_documents(root, updated),
+    }
+    _transactional_write(changes)
+    validate(root, verify_superseded_provenance=True)
     return updated
 
 
@@ -509,12 +782,16 @@ def finalize(root: Path, evidence_path: Path) -> dict:
         **synchronized_documents(root, updated),
     }
     _transactional_write(changes)
-    validate(root)
+    validate(root, verify_superseded_provenance=True)
     return updated
 
 
-def validate(root: Path) -> dict:
+def validate(
+    root: Path, *, verify_superseded_provenance: bool = False
+) -> dict:
     authority, _ = load_authority(root)
+    if verify_superseded_provenance:
+        validate_superseded_provenance(root, authority)
     validate_runtime_binding(root, authority)
     validate_documents(root, authority)
     return authority
@@ -535,6 +812,11 @@ def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:
     subparsers.add_parser("sync")
     prepare_parser = subparsers.add_parser("prepare")
     prepare_parser.add_argument("--version", required=True)
+    supersede_parser = subparsers.add_parser("supersede")
+    supersede_parser.add_argument("--next-version", required=True)
+    supersede_parser.add_argument("--prepared-source-revision", required=True)
+    supersede_parser.add_argument("--reason", required=True)
+    supersede_parser.add_argument("--superseded-at", required=True)
     finalize_parser = subparsers.add_parser("finalize")
     finalize_parser.add_argument("--evidence", type=Path, required=True)
     return parser.parse_args(argv)
@@ -546,12 +828,20 @@ def main(argv: Sequence[str] | None = None) -> int:
         root = args.root.resolve()
         if args.command == "prepare":
             result = prepare(root, args.version)
+        elif args.command == "supersede":
+            result = supersede(
+                root,
+                next_version=args.next_version,
+                prepared_source_revision=args.prepared_source_revision,
+                reason=args.reason,
+                superseded_at=args.superseded_at,
+            )
         elif args.command == "finalize":
             result = finalize(root, args.evidence.resolve())
         elif args.command == "sync":
             result = synchronize(root)
         else:
-            result = validate(root)
+            result = validate(root, verify_superseded_provenance=True)
     except (OSError, ReleaseStateError, runtime_package.PackagingError) as error:
         print(f"ERROR [RELEASE_STATE]: {error}", file=sys.stderr)
         return 1

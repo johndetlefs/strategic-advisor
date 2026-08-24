@@ -25,7 +25,7 @@ from release_state import ReleaseStateError, validate as validate_release_state
 
 
 SCOPES = ("skill", "lenses", "evals", "pilots", "privacy", "claims", "links")
-CURRENT_DRIFT_RUN = "run-005"
+CURRENT_DRIFT_RUN = "run-006"
 PUBLIC_ARTIFACTS = (
     "README.md",
     "INSTALL.md",
@@ -2277,6 +2277,11 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "drift-smoke/run-005/result.json",
             "drift-smoke/run-005/runtime-package-manifest.json",
             "drift-smoke/run-005/source-access.json",
+            "drift-smoke/run-006-baseline/observation.json",
+            "drift-smoke/run-006-baseline/runtime-package-manifest.json",
+            "drift-smoke/run-006/result.json",
+            "drift-smoke/run-006/runtime-package-manifest.json",
+            "drift-smoke/run-006/source-access.json",
         }
         actual_evidence = {
             path.relative_to(evaluation_evidence_root).as_posix()
