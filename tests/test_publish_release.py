@@ -52,7 +52,7 @@ class PublishReleaseTests(unittest.TestCase):
         authority["schema_version"] = 2
         authority["superseded"] = []
         authority["state"] = "prepared"
-        authority["distribution"]["version"] = "0.2.0-alpha.4"
+        authority["distribution"]["version"] = "0.2.0-alpha.6"
         changes = {
             self.root / "distribution.json": (
                 self.module.release_state.rendered_json_bytes(authority)

@@ -4,7 +4,7 @@
 
 - Fix: FIX-004
 - Title: Prevent Owner-Led Recommendation Drift
-- Status: Review
+- Status: Complete
 - Created: 2026-08-24
 - Intent contract: compact
 
@@ -56,7 +56,7 @@ Strategic Advisor must keep its diagnosis and recommendation tied to the owner's
 - Affected target: Canonical Strategic Advisor conversational runtime, bounded actual-turn drift-smoke specification/verifier/tests, and fresh exact-runtime drift evidence.
 - Primary repo: .
 - Repos touched: .
-- Branch, PR, and evidence links: `codex/fix-004-owner-led-recommendation-drift`; candidate commit `1cc2826eda9c2270a88f1cec35e5a167bc1ab6fa`; [PR #18](https://github.com/johndetlefs/strategic-advisor/pull/18); retained evidence under `evidence/evaluations/drift-smoke/run-006/`.
+- Branch, PR, and evidence links: Released source `83af2dc6542819d3b7c6f99121ed494646308caf`; merged [PR #18](https://github.com/johndetlefs/strategic-advisor/pull/18); [v0.2.0-alpha.5](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.5); retained drift evidence under `evidence/evaluations/drift-smoke/run-006/`; release evidence under `evidence/releases/v0.2.0-alpha.5.json` in this closeout changeset.
 - Verification plan: Add new public-synthetic cases and deterministic turn-review enforcement before runtime edits; confirm the exact current runtime fails at least one newly frozen criterion or record honestly if it does not; implement the bounded runtime correction; run focused drift-smoke/runtime tests, full deterministic validation and unit tests; build the exact runtime package; execute every frozen scenario in isolated fresh/resumed Codex CLI sessions; review every precommitted criterion, including first-proposal turns; verify the retained result and run Project Workflow Doctor.
 
 ### Repository Links
@@ -69,16 +69,16 @@ Strategic Advisor must keep its diagnosis and recommendation tied to the owner's
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | Pushed `codex/fix-004-owner-led-recommendation-drift`; PR #18 | Behavioural, release-state, claims, aggregate, 149-test, seven-scope validator, run-006, Doctor, compilation, diff, and two clean byte-identical candidate builds pass | Alpha.5 prepared; branch pushed and PR open; merge, publication, finalization, and installation pending | `run-006-baseline`, exact-runtime `run-006`, `distribution.json`, FIX-005 review, clean build from `1cc2826...` |
+| . | Main source `83af2dc...`; PR #18 merged; closeout branch `codex/fix-004-alpha5-closeout` | Behavioural, release-state, claims, aggregate, 149-test, seven-scope validator, run-006, Doctor, compilation, diff, and exact clean/public package gates pass | Alpha.5 published; workflow and independent fresh-download verification pass; this changeset finalizes public state; exact public skill installed and byte-compared; prior installation retained as backup | `run-006-baseline`; `run-006`; `distribution.json`; `evidence/releases/v0.2.0-alpha.5.json`; release workflow run 32708209229 |
 
 ## Verification
 
 - Delivered scope: Upgraded this branch's Project Workflow installation from 0.1.1 to 0.6.0; added explicit material-decision-state, outcome-ambiguity, owner-proposal, recommendation-delta, scoped-agreement, and delivered-journey reset rules to the canonical runtime; expanded the frozen drift authority from 12 to 15 groups; required exact per-turn reviews for the three new groups; retained the failing previous-runtime baseline and passing corrected-runtime run-006.
-- Verification result: Behavioural and bounded deterministic implementation proof passes. `build_evals.py --check` reports 56 cases; the 15-group run-006 verifier and all seven validator scopes pass; the complete unit suite passes 149 tests; compilation, diff check, and Workflow Doctor pass. FIX-005 immutably retained unpublished alpha.4 at runtime `0dd72075...` and prepared alpha.5 against corrected runtime `85398afb...`; the prior release-state, claims, and aggregate failures are resolved.
+- Verification result: Behavioural and bounded deterministic implementation proof passes. `build_evals.py --check` reports 56 cases; the 15-group run-006 verifier and all seven validator scopes pass; the complete unit suite passes 149 tests; compilation, diff check, and Workflow Doctor pass. FIX-005 immutably retained unpublished alpha.4 at runtime `0dd72075...`; alpha.5 published from exact source `83af2dc...` at corrected runtime `85398afb...`; the release workflow built twice, fresh-downloaded, and verified all assets; independent local verification produced byte-identical evidence `65284b...`; the active personal skill tree exactly matches the verified public ZIP.
 - Adjacent behavior checked: DRIFT-001 through DRIFT-012 all passed on the corrected exact runtime, including three implicit-positive architecture sessions with proven technical-lens reads and one direct-assistance session with no Strategic Advisor read. The latter used `--ignore-user-config` after discarded host-memory lookups violated the synthetic visibility boundary. Existing evaluation inventory, privacy, lenses, pilots, links, runtime packaging, and installation-artifact unit coverage showed no independent regression.
-- Original acceptance criteria result: Not applicable
+- Original acceptance criteria result: Not applicable — this Fix restores a cross-turn behavioural invariant after FIX-002/EPIC-006 rather than reopening either completed work item's original acceptance criteria; its compact Intent, frozen regression cases, and named delivery proof govern closure.
 - Regression evidence: The retained `run-006-baseline` binds the exact prior runtime `0dd72075...` to a DRIFT-013 failure: neutral T2 refused implementation pending a trace, neutral T3 upgraded to building a minimal orchestration layer after only repeated preference, while the matched angry final did not. Corrected runtime `85398afb...` passed all 15 groups, 17 source-bound sessions, 48 actual turns, every frozen criterion, and every new turn-local review.
-- Residual risk: This proves bounded behaviour only for the retained synthetic cases, Codex CLI version, model, source, and date. It does not establish universal objectivity, skilled-versus-unskilled improvement, independent human validation, cross-host parity, real-task effectiveness, adoption, or support. Protected-main integration, GitHub publication, fresh-download verification, finalization, and current personal installation remain unproven and are required before closeout.
+- Residual risk: This proves bounded behaviour only for the retained synthetic cases, Codex CLI version, model, source, and date. It does not establish universal objectivity, skilled-versus-unskilled improvement, independent human validation, cross-host parity, real-task effectiveness, adoption, or support. The installed skill becomes available to new Codex turns; this release does not prove that every future host/model response will comply.
 
 ## QA & Code Review
 
@@ -87,14 +87,22 @@ Strategic Advisor must keep its diagnosis and recommendation tied to the owner's
 - Validation evidence: `git diff --check`; `build_evals.py --check` (56 current cases); frozen 15-group exact-runtime run-006 verifier; all seven validator scopes; `python3 -m unittest discover -s tests` (149 pass); compilation; Workflow Doctor; exact alpha.4/alpha.5 release-state and live absence evidence recorded in FIX-005.
 - Findings:
   - **Resolved — release/distribution sequence:** FIX-005 added and exercised the authorised pre-publication supersession transition. Alpha.4 remains immutably recorded with its original version, runtime identity, source, reason, timestamp, and alpha.5 replacement; it was not published or reused. Alpha.5 is prepared against the corrected runtime and every previously affected release/claims/aggregate gate passes.
-  - **Proof boundary — delivery pending:** Run-006 is bound by exact frozen-spec and runtime identities and is now included in pushed PR #18. Protected-main merge, public publication, fresh download, finalization, and installed-runtime verification remain the only closeout work.
+  - **Delivered — source, public artifact, and personal installation:** PR #18 merged at exact source `83af2dc...`; release workflow run 32708209229 published and fresh-verified alpha.5; independently downloaded assets and retained evidence matched; the closeout changeset finalizes public state; the active personal installation exactly matches the public standalone ZIP, with the prior directory retained as a timestamped backup.
   - No independent runtime-logic, regression-authority, per-turn-verifier, privacy, lens, pilot, link, or workflow finding remains in the bounded correction.
-- Verdict: **Pass for local implementation and prepared alpha.5 state.** No code or behavioural finding remains; completion is withheld only until the named integration, public verification, finalization, and installed-runtime delivery stages pass.
+- Verdict: **Pass.** The bounded correction, immutable release, fresh-download proof, finalization record, and exact personal installation are complete within the stated proof boundary.
 
 ## Outcome
 
-- Disposition: Pending
-- Decision: ____
-- Closed by: ____
-- Closed date: ____
+- Disposition: Fixed
+- Decision: Released and installed the source-bound owner-led recommendation-drift correction as v0.2.0-alpha.5 with retained failing baseline and passing run-006.
+- Closed by: Codex (owner-authorised)
+- Closed date: 2026-08-24
 - Promoted to: None
+
+## Retro
+
+- Date: 2026-08-24
+- Reusable lessons: Test recommendation stability at the first unsupported owner-proposal turn, not only the final answer; preserve the material decision state across messy turns; treat emotion as an assurance signal rather than causal evidence; suspend success/readiness when the delivered journey contradicts it.
+- Durable assets updated: Canonical Strategic Advisor runtime and response references; DRIFT-013 through DRIFT-015; per-turn drift verifier/tests; retained prior-runtime failure and corrected-runtime run-006; evaluation status; Project Workflow 0.6.0 guidance.
+- Follow-up suggestions: None created. EPIC-001 already owns comparative and real-pilot evidence; this Fix does not duplicate or claim those outcomes.
+- Missed in-scope work: None.

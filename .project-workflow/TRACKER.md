@@ -12,5 +12,5 @@
 | TASK-025 | Automate Current Runtime Distribution | Complete | `tasks/TASK-025-Automate-Current-Runtime-Distribution/IMPLEMENTATION.md` |
 | EPIC-006 | Technical Architecture And Evidence-Grounded Invocation | Complete | `tasks/EPIC-006-Technical-Architecture-And-Evidence-Grounded-Invocation/REQUIREMENTS.md` |
 | FIX-003 | Align Public Architecture And Drift Claims | Complete | `tasks/FIX-003-Align-Public-Architecture-And-Drift-Claims/FIX.md` |
-| FIX-004 | Prevent Owner-Led Recommendation Drift | Review | `tasks/FIX-004-Prevent-Owner-Led-Recommendation-Drift/FIX.md` |
-| FIX-005 | Supersede Unpublished Prepared Release | Review | `tasks/FIX-005-Supersede-Unpublished-Prepared-Release/FIX.md` |
+| FIX-004 | Prevent Owner-Led Recommendation Drift | Complete | `tasks/FIX-004-Prevent-Owner-Led-Recommendation-Drift/FIX.md` |
+| FIX-005 | Supersede Unpublished Prepared Release | Complete | `tasks/FIX-005-Supersede-Unpublished-Prepared-Release/FIX.md` |
