@@ -14,8 +14,7 @@ The design is one canonical reality protocol, an owner-controlled personal-conte
 | Field | Current state |
 | --- | --- |
 | Maturity | Pre-release |
-| Early-access distribution | [`v0.2.0-alpha.3` GitHub prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.3) |
-| Prepared distribution | `v0.2.0-alpha.5` is release intent only until the protected-main workflow publishes and a fresh public download verifies. |
+| Early-access distribution | [`v0.2.0-alpha.5` GitHub prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.5) |
 <!-- strategic-advisor-distribution:end -->
 | Canonical product | [`skills/strategic-advisor/`](skills/strategic-advisor/) |
 | Supported installation | None |

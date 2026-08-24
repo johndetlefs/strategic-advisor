@@ -4,7 +4,7 @@
 
 - Fix: FIX-005
 - Title: Supersede Unpublished Prepared Release
-- Status: Review
+- Status: Complete
 - Created: 2026-08-24
 - Intent contract: compact
 
@@ -56,29 +56,29 @@ Permit an immutable prepared release candidate that has not been published to be
 - Affected target: `scripts/release_state.py`, distribution authority/schema, release-state and aggregate validation tests, release documentation, and the alpha.5 preparation/publication sequence.
 - Primary repo: .
 - Repos touched: .
-- Branch, PR, and evidence links: `codex/fix-004-owner-led-recommendation-drift`; candidate commit `1cc2826eda9c2270a88f1cec35e5a167bc1ab6fa`; [PR #18](https://github.com/johndetlefs/strategic-advisor/pull/18); release pending; retained FIX-004 drift evidence under `evidence/evaluations/drift-smoke/run-006/`.
+- Branch, PR, and evidence links: Released source `83af2dc6542819d3b7c6f99121ed494646308caf`; merged [PR #18](https://github.com/johndetlefs/strategic-advisor/pull/18); [v0.2.0-alpha.5](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.5); release evidence under `evidence/releases/v0.2.0-alpha.5.json` in this closeout changeset.
 - Verification plan: Freeze transition tests first; prove refusal for non-prepared, reused/non-advancing versions, invalid source/reason/time, mismatched committed intent, and transactional failure; prove exact superseded record plus alpha.5 preparation; run release/package/claims tests, complete unit and validator suites, clean deterministic builds, Workflow Doctor, protected-main publication, fresh-download verification, finalization, and installed-runtime identity verification.
 
 ### Repository Links
 
 | Repo | Branch | PR | Evidence |
 |---|---|---|---|
-| . | `codex/fix-004-owner-led-recommendation-drift` | [#18](https://github.com/johndetlefs/strategic-advisor/pull/18) | Unit/validator/run-006/two-build evidence pass; release pending |
+| . | `codex/fix-004-owner-led-recommendation-drift` | [#18](https://github.com/johndetlefs/strategic-advisor/pull/18) | Unit/validator/run-006/two-build evidence pass; [alpha.5 release](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.5) and retained evidence pass |
 
 ## Repository Evidence
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | Pushed `codex/fix-004-owner-led-recommendation-drift`; PR #18 | Focused release-state/publication suites and complete 149-test suite pass; seven validator scopes, 56-case rebuild, run-006 verifier, Doctor, compilation, diff check, and two clean byte-identical candidate builds pass | Alpha.4 retained as superseded and alpha.5 prepared; merge, publication, finalization, and installation pending | `distribution.json`; FIX-004 `run-006`; clean build from `1cc2826...`; commands recorded below |
+| . | Main source `83af2dc...`; PR #18 merged; closeout branch `codex/fix-004-alpha5-closeout` | Focused release-state/publication suites and complete 149-test suite pass; seven validator scopes, 56-case rebuild, run-006 verifier, Doctor, compilation, diff check, exact clean build, and public download verification pass | Alpha.4 retained as superseded; alpha.5 published and independently fresh-verified; this changeset finalizes public state; exact public skill installed with recoverable backup | `distribution.json`; `evidence/releases/v0.2.0-alpha.5.json`; FIX-004 `run-006`; workflow run 32708209229 |
 
 ## Verification
 
 - Delivered scope: Added schema-v2 immutable superseded-candidate history and an atomic `release_state.py supersede` transition; froze success, refusal, source-proof, invalid-input, tagged-candidate, version-reuse, history-preservation, and transactional-rollback coverage; documented the maintainer route; live-verified alpha.4 had no local tag, remote tag, or GitHub release; recorded exact alpha.4 intent from `9dbc7d7...`; superseded alpha.4 and prepared alpha.5 against runtime `85398afb...`.
-- Verification result: `release_state.py check` passes with alpha.5 prepared and alpha.4 retained; `build_evals.py --check` reports 56 current cases; the 15-group run-006 verifier and all seven `validate.py` scopes pass; focused release-state/publication suites pass (12 tests); the complete unit suite passes (149 tests); compilation, `git diff --check`, and Workflow Doctor pass.
+- Verification result: `release_state.py check` passes with alpha.5 current public and alpha.4 retained; `build_evals.py --check` reports 56 current cases; the 15-group run-006 verifier and all seven `validate.py` scopes pass; focused release-state/publication suites pass (12 tests); the complete unit suite passes (149 tests); compilation, `git diff --check`, and Workflow Doctor pass. Workflow run 32708209229 and an independent local pass both fresh-downloaded and verified the exact four public assets; their canonical evidence files are byte-identical at `65284b...`.
 - Adjacent behavior checked: Existing prepare/finalize, public-release verification, deterministic install packaging, runtime-binding, documentation synchronization, claims derivation, and superseded-history preservation remain covered. FIX-004's corrected runtime identity remains exactly `85398afb...`.
-- Original acceptance criteria result: Not applicable
+- Original acceptance criteria result: Not applicable — this is a newly identified bounded release-lifecycle defect with no originating acceptance-criteria set; its compact Intent, transition invariants, and publication/finalization proof govern closure.
 - Regression evidence: Prior code refused alpha.5 with `current distribution is already prepared; publish and finalize it first`. New tests prove an exact committed prepared candidate can be retained and replaced atomically, while published, tagged, unproven, invalid, reused, non-advancing, and partially written transitions fail closed.
-- Residual risk: Local evidence does not prove protected-main merge, GitHub publication, fresh public download, finalization, or personal installation. Those delivery stages remain mandatory before either Fix is closed.
+- Residual risk: The lifecycle now preserves and verifies the exact recorded supersession, but a repository-local transition still requires maintainers to perform and record the documented live GitHub tag/release absence check. Publication and package proof do not establish host behaviour, support, adoption, parity, or effectiveness.
 
 ## QA & Code Review
 
@@ -86,12 +86,20 @@ Permit an immutable prepared release candidate that has not been published to be
 - Reviewed areas: Release authority schema compatibility; immutable history invariants; exact committed-source verification; ancestor/source constraints; unpublished/tag/evidence refusal; version advancement and reuse; atomic writes and rollback; document synchronization; standard-library/source-archive portability; finalize history preservation; FIX-004 runtime and evaluation continuity; historical Project Workflow evidence integrity; privacy and scope.
 - Validation evidence: `python3 scripts/release_state.py check`; `python3 scripts/build_evals.py --check`; `python3 scripts/drift_smoke.py verify-result --result evidence/evaluations/drift-smoke/run-006/result.json`; `python3 scripts/validate.py`; `python3 -m unittest discover -s tests` (149 pass); `python3 -m py_compile`; `git diff --check`; `./.project-workflow/cli/workflow doctor`; live local/remote tag and GitHub release absence checks for alpha.4 and alpha.5.
 - Findings: No blocking implementation finding remains. Review initially found that historical provenance re-opening had been applied too broadly to portable validator fixtures; it was narrowed so ordinary structural/package validation remains Git-independent while repository `release_state.py check` and mutating transitions verify committed supersession provenance. Updating the current product contract also exposed a stale historical evidence pointer; the exact alpha.4 contract bytes were retained under TASK-030 and its original hash was verified instead of rewriting the historical claim.
-- Verdict: **Pass for local implementation and prepared alpha.5 state.** Completion remains pending protected-main integration, immutable publication, fresh-download verification, finalization, and personal-install verification.
+- Verdict: **Pass.** The bounded lifecycle defect is corrected, exercised on alpha.4, published as alpha.5, freshly verified, finalized in this changeset, and installed exactly on the personal Codex host.
 
 ## Outcome
 
-- Disposition: Pending
-- Decision: ____
-- Closed by: ____
-- Closed date: ____
+- Disposition: Fixed
+- Decision: Added an auditable pre-publication supersession transition, retained alpha.4 immutably, and released/finalized alpha.5 without version reuse.
+- Closed by: Codex (owner-authorised)
+- Closed date: 2026-08-24
 - Promoted to: None
+
+## Retro
+
+- Date: 2026-08-24
+- Reusable lessons: A release state machine needs an explicit pre-publication supersession path; immutable version identity and honest abandonment are compatible when the prior version, hash, source, reason, timestamp, and replacement remain retained; finalized-state tests must advance from the current public baseline rather than hard-code the version being released.
+- Durable assets updated: Distribution schema and command; transactional/provenance/reuse tests; publication/finalization history test; finalized-state-independent fixtures; contributor release guidance; retained alpha.4 contract evidence.
+- Follow-up suggestions: None. Remote publication absence remains an explicit live maintainer check because local repository state cannot prove GitHub absence.
+- Missed in-scope work: None.
