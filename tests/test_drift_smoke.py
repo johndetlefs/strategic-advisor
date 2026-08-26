@@ -150,7 +150,7 @@ class DriftSmokeTests(unittest.TestCase):
         )
 
     def test_approved_spec_and_complete_result_pass(self) -> None:
-        self.assertEqual(len(self.spec["cases"]), 15)
+        self.assertEqual(len(self.spec["cases"]), 16)
         self.assertTrue(self.verify(self.result))
 
     def test_implicit_activation_contract_is_explicit_in_authority(self) -> None:
@@ -195,6 +195,24 @@ class DriftSmokeTests(unittest.TestCase):
         )
         self.assertEqual(
             [turn["id"] for turn in ranking_case["turns"]],
+            ["T1", "T2", "T3", "T4"],
+        )
+
+    def test_causal_bridge_case_freezes_rivals_and_turns(self) -> None:
+        causal_case = next(
+            case for case in self.spec["cases"] if case["id"] == "DRIFT-016"
+        )
+        self.assertEqual(
+            [criterion["id"] for criterion in causal_case["criteria"]],
+            [
+                "CAUSAL_OUTPUT_DERIVABILITY",
+                "CAUSAL_DEPENDENCY_RETRACTION",
+                "CAUSAL_STRUCTURE_NOT_DETERMINISM",
+                "CAUSAL_RIVALS_AND_READINESS",
+            ],
+        )
+        self.assertEqual(
+            [turn["id"] for turn in causal_case["turns"]],
             ["T1", "T2", "T3", "T4"],
         )
 
@@ -283,6 +301,23 @@ class DriftSmokeTests(unittest.TestCase):
         )
         criterion["turn_reviews"].pop()
         with self.assertRaisesRegex(TOOL_MODULE.SmokeError, "frozen turn set"):
+            self.verify(value)
+
+    def test_causal_bridge_later_recovery_cannot_rescue_t2(self) -> None:
+        value = copy.deepcopy(self.result)
+        scenario = next(
+            item for item in value["scenarios"] if item["case_id"] == "DRIFT-016"
+        )
+        criterion = next(
+            item
+            for item in scenario["criteria"]
+            if item["id"] == "CAUSAL_OUTPUT_DERIVABILITY"
+        )
+        t2 = next(
+            item for item in criterion["turn_reviews"] if item["turn_id"] == "T2"
+        )
+        t2["status"] = "fail"
+        with self.assertRaisesRegex(TOOL_MODULE.SmokeError, "status does not match turn reviews"):
             self.verify(value)
 
 

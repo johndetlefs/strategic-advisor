@@ -1,0 +1,17 @@
+{"kind": "client_send", "payload": {"id": 0, "method": "initialize"}, "seq": 1}
+{"kind": "server_identity", "payload": {"userAgent": "Codex Desktop/0.148.0-alpha.9 (Mac OS 26.5.2; arm64) dumb (sa_task_031_probe; 0.1.0)"}, "seq": 2}
+{"kind": "client_send", "payload": {"id": null, "method": "initialized"}, "seq": 3}
+{"kind": "client_send", "payload": {"id": 10, "method": "hooks/list"}, "seq": 4}
+{"kind": "hooks_list", "payload": [{"currentHash": "sha256:2481103aaed2f1289d81e032622d36b853c517d701290cc14bdc572316f79fab", "enabled": true, "eventName": "stop", "executionMode": "sync", "handlerType": "command", "source": "sessionFlags", "trustStatus": "untrusted"}], "seq": 7}
+{"kind": "client_send", "payload": {"id": 1, "method": "thread/start"}, "seq": 8}
+{"kind": "client_send", "payload": {"id": 2, "method": "turn/start", "prompt": "Respond with exactly ORIGINAL_DRAFT_UNCHECKED and no other text."}, "seq": 31}
+{"kind": "item/started", "payload": {"itemId": "msg_0b7df817e293d259016a8e7156b9dc87d0bc2a267442d187bc", "phase": "final_answer", "text": ""}, "seq": 54}
+{"kind": "item/agentMessage/delta", "payload": {"delta": "OR", "itemId": "msg_0b7df817e293d259016a8e7156b9dc87d0bc2a267442d187bc"}, "seq": 55}
+{"kind": "item/agentMessage/delta", "payload": {"delta": "IGINAL", "itemId": "msg_0b7df817e293d259016a8e7156b9dc87d0bc2a267442d187bc"}, "seq": 56}
+{"kind": "item/agentMessage/delta", "payload": {"delta": "_D", "itemId": "msg_0b7df817e293d259016a8e7156b9dc87d0bc2a267442d187bc"}, "seq": 57}
+{"kind": "item/agentMessage/delta", "payload": {"delta": "RAFT", "itemId": "msg_0b7df817e293d259016a8e7156b9dc87d0bc2a267442d187bc"}, "seq": 58}
+{"kind": "item/agentMessage/delta", "payload": {"delta": "_UN", "itemId": "msg_0b7df817e293d259016a8e7156b9dc87d0bc2a267442d187bc"}, "seq": 59}
+{"kind": "item/agentMessage/delta", "payload": {"delta": "CHECK", "itemId": "msg_0b7df817e293d259016a8e7156b9dc87d0bc2a267442d187bc"}, "seq": 60}
+{"kind": "item/agentMessage/delta", "payload": {"delta": "ED", "itemId": "msg_0b7df817e293d259016a8e7156b9dc87d0bc2a267442d187bc"}, "seq": 61}
+{"kind": "item/completed", "payload": {"itemId": "msg_0b7df817e293d259016a8e7156b9dc87d0bc2a267442d187bc", "phase": "final_answer", "text": "ORIGINAL_DRAFT_UNCHECKED"}, "seq": 62}
+{"kind": "turn/completed", "payload": {"threadId": "01a03c6a-a8e4-78a1-a1c7-83149f97dd94", "turn": {"completedAt": 1787720022, "durationMs": 4729, "error": null, "id": "01a03c6a-a949-7361-99eb-310818ea8d2b", "items": [{"id": "msg_0b7df817e293d259016a8e7156b9dc87d0bc2a267442d187bc", "memoryCitation": null, "phase": "final_answer", "text": "ORIGINAL_DRAFT_UNCHECKED", "type": "agentMessage"}], "itemsView": "summary", "startedAt": 1787720018, "status": "completed"}}, "seq": 66}

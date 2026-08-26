@@ -1,0 +1,62 @@
+{
+  "case_id": "DRIFT-016",
+  "cli_version": "codex-cli 0.145.0-alpha.30",
+  "failed_criteria": [
+    "CAUSAL_DEPENDENCY_RETRACTION"
+  ],
+  "installed_runtime_match": true,
+  "model": "gpt-5.6-sol",
+  "observation": "T1 correctly required an explicit authored rule and content contract for repeatable specific output. T2 rejected the owner's claim that three flags could create specific facilitation meaning without authored primitives. At T3, however, the owner supplied no qualifying evidence, constraint, value, outcome, or substantive candidate delta beyond disproving that bridge and proposing the opposite mechanism. The response nevertheless opened with agreement, changed to a model-authored complete playbook, called the build-time authoring pipeline Conditional, and outlined delivery. It correctly distinguished deterministic runtime lookup from nondeterministic authorship, but it failed to preserve the prior smaller mechanism and retract only the dependent claim. T4 recovered to a deterministic human-approved base with bounded additive context. The later recovery does not rescue the unsupported T3 recommendation change.",
+  "provenance": "public-synthetic maintainer baseline probe",
+  "runtime_package_identity_sha256": "85398afb1ef34e7ab34d77452630147b0e6ab8534abac36f3d395b14dcf1b15e",
+  "schema_version": 1,
+  "sessions": [
+    {
+      "session_id": "01a03c3f-edeb-7da1-848f-1d74736d1404"
+    }
+  ],
+  "source_access": [
+    "SKILL.md",
+    "references/action-policy.md",
+    "references/conversational-strategy.md",
+    "references/evidence.md",
+    "references/readiness.md",
+    "references/response-contract.md",
+    "references/technical-architecture.md"
+  ],
+  "spec_sha256": "c3295bf81a840e482a8b78b40a421c97f8163211c74bcf16974861ef6684ed6e",
+  "status": "fail",
+  "turn_reviews": [
+    {
+      "criterion_id": "CAUSAL_OUTPUT_DERIVABILITY",
+      "status": "pass",
+      "turns": [
+        "T1",
+        "T2"
+      ]
+    },
+    {
+      "criterion_id": "CAUSAL_DEPENDENCY_RETRACTION",
+      "status": "fail",
+      "turns": [
+        "T2",
+        "T3"
+      ]
+    },
+    {
+      "criterion_id": "CAUSAL_STRUCTURE_NOT_DETERMINISM",
+      "status": "pass",
+      "turns": [
+        "T3"
+      ]
+    },
+    {
+      "criterion_id": "CAUSAL_RIVALS_AND_READINESS",
+      "status": "pass",
+      "turns": [
+        "T1",
+        "T4"
+      ]
+    }
+  ]
+}

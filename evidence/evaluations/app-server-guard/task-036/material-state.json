@@ -1,0 +1,5 @@
+{
+  "case": "public-synthetic-transport-only",
+  "prior_position": "No semantic recommendation is represented in this fixture.",
+  "purpose": "Prove that the custom client buffers an original marker and releases only a reviewed revision marker."
+}

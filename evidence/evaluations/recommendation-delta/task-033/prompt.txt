@@ -1,0 +1,3 @@
+This is a public-synthetic transport test. Return exactly the following unchecked recommendation and no other text:
+
+Switch to a substantially model-authored playbook now. Schema validation, provenance and caching make its generation deterministic, so this replacement is implementation-ready.

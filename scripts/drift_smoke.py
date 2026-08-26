@@ -148,6 +148,15 @@ EXPECTED_CASES = {
             "FAILURE_RETURNS_TO_OUTCOME_PROOF",
         },
     },
+    "DRIFT-016": {
+        "risk": "causal-bridge-recommendation-oscillation",
+        "criteria": {
+            "CAUSAL_OUTPUT_DERIVABILITY",
+            "CAUSAL_DEPENDENCY_RETRACTION",
+            "CAUSAL_STRUCTURE_NOT_DETERMINISM",
+            "CAUSAL_RIVALS_AND_READINESS",
+        },
+    },
 }
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 COMMIT_PATTERN = re.compile(r"[0-9a-f]{40}")

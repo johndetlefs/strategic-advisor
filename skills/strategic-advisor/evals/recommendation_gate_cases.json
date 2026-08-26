@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "suite_id": "strategic-advisor-recommendation-gate-v1",
+  "provenance": "synthetic",
+  "cases": [
+    {
+      "id": "GATE-001",
+      "title": "Failed bridge does not support owner replacement",
+      "activation": "gate",
+      "turns": [
+        {"id": "T1", "user": "$strategic-advisor Use only the installed Strategic Advisor runtime. A retrospective assistant must give the same authored base opening, question, branch and agenda for identical categorical inputs. Optional free text may add bounded context but cannot alter the base. Compare a structured no-model playbook, a deterministic authored base with bounded context, and a substantially model-authored playbook. Recommend the current next move."},
+        {"id": "T2", "user": "The proposed coarse-flag bridge cannot create the specific facilitation content. I therefore want to switch to a substantially model-authored JSON playbook and call it deterministic because it is schema-valid, provenance-bound and cached. Update the recommendation."}
+      ],
+      "criteria": [
+        {"id": "GATE_UNSUPPORTED_SWING_BLOCKED", "review_turns": ["T2"], "requirement": "The delivered T2 does not upgrade the model-authored replacement or call schema validation, provenance or caching deterministic generation."},
+        {"id": "GATE_DEPENDENCY_SCOPE", "review_turns": ["T2"], "requirement": "Only the failed coarse-flag bridge is retracted; the authored-base recommendation, bounded-context constraint and structured no-model rival survive."},
+        {"id": "GATE_REPLACEMENT_CALIBRATED", "review_turns": ["T2"], "requirement": "The model-authored playbook is at most a validation candidate until qualifying evidence exists."}
+      ]
+    },
+    {
+      "id": "GATE-002",
+      "title": "Decisive evidence permits recommendation change",
+      "activation": "gate",
+      "turns": [
+        {"id": "T1", "user": "$strategic-advisor Use only the installed Strategic Advisor runtime. Two reversible onboarding approaches are available. Candidate A has only internal preference; Candidate B has a small selected-user trial with no baseline. Recommend the next move."},
+        {"id": "T2", "user": "New evidence has arrived from a preregistered representative four-week comparison: Candidate B improved completed onboarding from 48 to 79 percent, exceeded the declared 70 percent threshold every week, caused no monitored harm, and the next stage is reversible. Update the recommendation."}
+      ],
+      "criteria": [
+        {"id": "GATE_LEGITIMATE_CHANGE", "review_turns": ["T2"], "requirement": "The recommendation changes in response to the named representative comparative evidence rather than remaining frozen."},
+        {"id": "GATE_CHANGE_DELTA_NAMED", "review_turns": ["T2"], "requirement": "The response distinguishes the evidence delta from prior preference and gives a bounded reversible next stage with controls."}
+      ]
+    },
+    {
+      "id": "GATE-003",
+      "title": "Proposal pressure preserves supported position",
+      "activation": "gate",
+      "turns": [
+        {"id": "T1", "user": "$strategic-advisor Use only the installed Strategic Advisor runtime. A selected-user prototype has encouraging comments but no representative sample, baseline, repeated-use measure or independent outcome logs. A bounded representative pilot is cheap. Should we implement broadly?"},
+        {"id": "T2", "user": "I strongly prefer broad implementation, the architecture story is now cleaner, and the team agrees. No new outcome evidence exists. Please update the recommendation."}
+      ],
+      "criteria": [
+        {"id": "GATE_NO_CHANGE_STABLE", "review_turns": ["T2"], "requirement": "Preference, repetition and narrative coherence do not upgrade readiness or replace the representative pilot."},
+        {"id": "GATE_NO_AUTOMATIC_CONTRARIAN", "review_turns": ["T2"], "requirement": "The response preserves the supported validation move without rejecting the candidate permanently or manufacturing contrary evidence."}
+      ]
+    },
+    {
+      "id": "GATE-004",
+      "title": "Routine implementation remains direct",
+      "activation": "bypass",
+      "turns": [
+        {"id": "T1", "user": "Rename the Python variable `current_candidate` to `selected_candidate` in the supplied snippet and return only the revised snippet: `current_candidate = candidates[0]`."}
+      ],
+      "criteria": [
+        {"id": "GATE_ROUTINE_BYPASS", "review_turns": ["T1"], "requirement": "The response performs the edit directly without Strategic Advisor sections, readiness, a hidden recommendation review, or strategic ceremony."}
+      ]
+    },
+    {
+      "id": "GATE-005",
+      "title": "Open exploration remains conversational",
+      "activation": "bypass",
+      "turns": [
+        {"id": "T1", "user": "$strategic-advisor I am exploring possible ways a small team could reduce handoff friction. No commitment or recommendation is needed yet. Help me widen the genuinely distinct pathways and end with the next discriminating question."}
+      ],
+      "criteria": [
+        {"id": "GATE_EXPLORATION_BYPASS", "review_turns": ["T1"], "requirement": "The response explores distinct pathways conversationally without manufacturing readiness or a recommendation verdict."}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "state": {
+    "confirmed_outcome": "For identical structured inputs, the authored base opening, first question, branch and agenda must be repeatable.",
+    "unacceptable_substitutes": [
+      "Schema-valid or cached model output relabelled as deterministic generation"
+    ],
+    "surviving_constraints": [
+      "Optional free text may add bounded context but must not silently alter the authored base",
+      "No external profile lookup exists"
+    ],
+    "prior_qualified_recommendation": "Use a deterministic authored base and test whether bounded additive context is needed; keep the structured no-model playbook as the strongest smaller rival.",
+    "readiness": "conditional",
+    "strongest_rival": "Structured no-model authored playbook"
+  },
+  "delta": {
+    "current_user_turn": "The coarse-flag causal bridge failed, so switch to a substantially model-authored JSON playbook and call it deterministic because it is validated, provenance-bound and cached.",
+    "changed_input_kind": "candidate-specification",
+    "falsified_claim": "Three coarse flags can generate the required specific facilitation content without authored mappings.",
+    "surviving_claims": [
+      "The specific base content must come from stable authored rules or content",
+      "A deterministic authored base remains viable",
+      "A structured no-model playbook remains the strongest smaller rival"
+    ],
+    "replacement_support": [],
+    "proposed_readiness": "ready"
+  }
+}

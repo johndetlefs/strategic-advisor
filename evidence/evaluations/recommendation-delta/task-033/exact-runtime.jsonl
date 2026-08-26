@@ -1,0 +1,170 @@
+{"kind": "guard_start", "payload": {"app_server_binary_sha256": "6170ff5578170ee9b74ad92bfcff96e6186f41d02b60815a7c2b01ad424c754f", "controller_sha256": "83fea32b59a70153d0b4f06c93773eb2758d71a2c93db2aa07b8d36bf75fc549", "cwd_sha256": "5ab8c5fa25a732f276e4c2302705a3ff1a5f17e96c91a2d7947e9079f52401ac", "gate_contract_sha256": "27bd2700b1dae7a4b49ea94c60469da9e19f41b6d36fdfdb6454f41e1282d420", "material_state_sha256": "64ba9de7c0688d2a5a7781751f52d23c8a90de71acc8aafcbe85e452955d3f99", "model": "gpt-5.6-luna", "prompt_sha256": "0eea8db343da8dd45fa4c539f1111f3820f6dbdd208c4d0894e4dd637e410055", "reviewer_identity": {"command_sha256": "0f5ecaa7bfc4bec513f0e2d1ede060b9aced0289f7e43b1270fbde59d41f8a78", "file_identities": {"0": "sha256:179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818", "1": "sha256:a56c821a21c5bec703e98a859ff582fd192b397f7310cf0c2d8a1af78177946a"}}, "schema_version": 1, "thread_approval_policy": "never", "thread_sandbox": "read-only"}, "seq": 1}
+{"kind": "app_server_started", "payload": {"pid_recorded": true}, "seq": 2}
+{"kind": "client_send", "payload": {"method": "initialize", "request_id": 1}, "seq": 3}
+{"kind": "client_send", "payload": {"method": "initialized", "request_id": -1}, "seq": 4}
+{"kind": "client_send", "payload": {"method": "thread/start", "request_id": 2}, "seq": 5}
+{"kind": "server_event", "payload": {"method": "remoteControl/status/changed"}, "seq": 6}
+{"kind": "app_server_stderr", "payload": {"length": 202, "sha256": "d1618bbfa0b1e7b3df1b3bf1dc12e461348be54edb192209daa87fe799c23057"}, "seq": 7}
+{"kind": "app_server_stderr", "payload": {"length": 202, "sha256": "cf70bfbfacf9bc2fd34d1825616e4db7c2228b5f1728467848cbef79c88c77a6"}, "seq": 8}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "a26a6de75439af3a6de2f1480e6e822f5df9baca91122e4931b2d47a82c44162"}, "seq": 9}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "2d130cdbadcfc62503eb735c095636a79a3edc85df24985774b60050eb0f48a3"}, "seq": 10}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "7207bca11011ee03b939f96529c76a592985364b4ea850dfb186bb6832313c7e"}, "seq": 11}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "d5a3723118d9654737d7da0d201a3ade1cff211eccbbcef39d4cf14217ed1d5a"}, "seq": 12}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "e65fe2bd1d05c3b9c72b81a75458f63560a7343935eb403569b42cce1d56ba08"}, "seq": 13}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "e0bb960e4c46e763699bcf13310dd00a34897fac72675be5581e1bd377c384ad"}, "seq": 14}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "6d36e62dfc680c0813cb89fe4c344f7bb559a4eeb4aa44036589fa085d9e2dd4"}, "seq": 15}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "f548a627df6cacbb577312969fbbeb09c9230a0357832775d73bac1fbd040d84"}, "seq": 16}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "847f6b34eaf9b2fe9ab757d57eec1928c238def7e99a800e92cbdd3a0dd2cdc1"}, "seq": 17}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "98490f02ab483e7f46c48a564b2405a43851947fa9d47383b149dd1daac5f3dd"}, "seq": 18}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "d16aa3a3c97b2fa5b3d3e811b1f487cc20a54fc5949a4af246c08cee685a55a2"}, "seq": 19}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "aa8f612f398fb90bb65e9b12609cc49ba59c42dc815af1ed9bcbca2df9b41273"}, "seq": 20}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "8097ff2d000c392b707ed5499ea73352c3fc17bb201e485e7874edc91072ffaf"}, "seq": 21}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "c5a70770b07085a743d8733bb29e3978c362238650f24cb5d644a811c789cd4d"}, "seq": 22}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "2fb930f91967f418b3bc4f605d2ef12d5281c086a791e2ebde99de32aff3c009"}, "seq": 23}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "e9a254cd247cd5e98b264e30c9dff8329cdbacf6c7b6a25b83776a8b9cdc5395"}, "seq": 24}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "d166a90898dfb034a1fdb01b3a3b71be1fb85bc7571c75aea413c6f0673ef323"}, "seq": 25}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "8ff1cdaf2122eaac4145d6c26add6f66361a2debd43f2271b79fecefc9d31979"}, "seq": 26}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "3b9f415bce44691b777e89f003f6e47de255e5f0f029ca494cbcbbdfecd0c577"}, "seq": 27}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "c440bc11be4770e2b7d35ac00090cb16679d8f8511dbd08973517d0b535ecdca"}, "seq": 28}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "a5b53f74404c83a3c52ea7806d21a59520449e7d79e0775ed8b1990a0a3677a7"}, "seq": 29}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "b336bc74fa365179c638a04c8ab5e0229d35479aa1c1d2eb5bb177f881ea1446"}, "seq": 30}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "0a60da3f156c22ff45a4be876298d82608e6caa1242db06c000c03600560ccfb"}, "seq": 31}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "474deda88456e369b0dd25771d4215a22d444c2f830422b43ad70dac1dc63b83"}, "seq": 32}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "f1cf4ee85eff22e0bdff9bdbb506e3a5e3e9c083bb13a6354122dcae495fea94"}, "seq": 33}
+{"kind": "thread_started", "payload": {"thread_id_sha256": "0d1f1b025120145522e279323ffb081b9394287d1cd3ae4961fd98ed67162e04"}, "seq": 34}
+{"kind": "client_send", "payload": {"method": "turn/start", "request_id": 3}, "seq": 35}
+{"kind": "server_event", "payload": {"method": "thread/started"}, "seq": 36}
+{"kind": "server_event", "payload": {"method": "warning"}, "seq": 37}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 38}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 39}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 40}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 41}
+{"kind": "server_event", "payload": {"method": "thread/status/changed"}, "seq": 42}
+{"kind": "server_event", "payload": {"method": "turn/started"}, "seq": 43}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 44}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 45}
+{"kind": "app_server_stderr", "payload": {"length": 202, "sha256": "c3b32ee63be222d35ed005e4fc710aa62a3ea4ce6b6815ba6cba5957b1238ac9"}, "seq": 46}
+{"kind": "app_server_stderr", "payload": {"length": 202, "sha256": "ee7cb5e35ceb4273ed7121f0c92e86b15725c0042217916396489c6ed3d5ea19"}, "seq": 47}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 48}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 49}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 50}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 51}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 52}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 53}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 54}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 55}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 56}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 57}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 58}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 59}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 60}
+{"kind": "server_event", "payload": {"content_length": 6, "content_sha256": "39921a740bf2b67802a2042e1f87e9dec566131c2458aba5683e2827ced0d2c3", "method": "item/agentMessage/delta"}, "seq": 61}
+{"kind": "server_event", "payload": {"content_length": 3, "content_sha256": "84d0f765cd51d373f02dd72c742454b26807b93f5a2655ba1c8d905236e43df0", "method": "item/agentMessage/delta"}, "seq": 62}
+{"kind": "server_event", "payload": {"content_length": 2, "content_sha256": "7de598b3ff8a99638e1f9bf49260baa0d98e069dde32d1f2e153adb5ce478242", "method": "item/agentMessage/delta"}, "seq": 63}
+{"kind": "server_event", "payload": {"content_length": 14, "content_sha256": "e324b1cc7862595ed8fc26fb19695d57668fd330b210f3e75ae2dc1ccd449856", "method": "item/agentMessage/delta"}, "seq": 64}
+{"kind": "server_event", "payload": {"content_length": 6, "content_sha256": "a791e1e893ea4260c77475725101fb4cc6ad85f6340f21f10b239184e318cd21", "method": "item/agentMessage/delta"}, "seq": 65}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "f1fbb27b490a2cf3b2ed151e6e88412def9555eb48c367bff4bff9bad7cc2aa4", "method": "item/agentMessage/delta"}, "seq": 66}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "4f1faff0f1c7b5ba41659741d62f9ccc4805213c74da8609ef45343913889e93", "method": "item/agentMessage/delta"}, "seq": 67}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "73464a02d1c5fde4ec466034de7590049f8b40cb807fa33bdf845e8311bbb4e7", "method": "item/agentMessage/delta"}, "seq": 68}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "92719fe0cf8cd51592af31ee8a5736d79f7273777fa3f7b70bfe993a4cd32180", "method": "item/agentMessage/delta"}, "seq": 69}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "4ea6cf4a6d308486c1d0b8c1aa2ea3a5e882a2ec4abf53893e43b95b29394fe2", "method": "item/agentMessage/delta"}, "seq": 70}
+{"kind": "server_event", "payload": {"content_length": 1, "content_sha256": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8", "method": "item/agentMessage/delta"}, "seq": 71}
+{"kind": "server_event", "payload": {"content_length": 7, "content_sha256": "b7fa25b388e7bff1ec5d3324c77a0341d2123f3791ff769b8d9146bd33892c54", "method": "item/agentMessage/delta"}, "seq": 72}
+{"kind": "server_event", "payload": {"content_length": 11, "content_sha256": "f2f2aed40ed066b6c57be75ea90f05902b199bca719046c19e9a5ecb5d0dad51", "method": "item/agentMessage/delta"}, "seq": 73}
+{"kind": "server_event", "payload": {"content_length": 1, "content_sha256": "d03502c43d74a30b936740a9517dc4ea2b2ad7168caa0a774cefe793ce0b33e7", "method": "item/agentMessage/delta"}, "seq": 74}
+{"kind": "server_event", "payload": {"content_length": 11, "content_sha256": "63a5179669f0082ccc8945db2ec3151c7ba894019e48a1b21051c80df0319529", "method": "item/agentMessage/delta"}, "seq": 75}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "2e5f769687c7731726bb738d6137d86e89691a3a164a80588c046c79ce99d749", "method": "item/agentMessage/delta"}, "seq": 76}
+{"kind": "server_event", "payload": {"content_length": 8, "content_sha256": "9c771a300dc37b37fe0a3473dcfc1f21fcabb2f9e9fbf6cf35e13245130e391a", "method": "item/agentMessage/delta"}, "seq": 77}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "d0cb7e2ad47e88156a15ff0b470311decf45139bfe6c077abd350b53dccf30b7", "method": "item/agentMessage/delta"}, "seq": 78}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "afea5a57cd2ba884f3e4b04acb8b793eb3522ce4c4d07cd0d5047424c32ea961", "method": "item/agentMessage/delta"}, "seq": 79}
+{"kind": "server_event", "payload": {"content_length": 11, "content_sha256": "245744d5ca5714a228395a270325655f0909a0e1bc7c3fa20e59e31f4e197b76", "method": "item/agentMessage/delta"}, "seq": 80}
+{"kind": "server_event", "payload": {"content_length": 14, "content_sha256": "7d869559f46888d7f86b327e27d9cf0c04f67ef65e2a795de4edb687d28f8d46", "method": "item/agentMessage/delta"}, "seq": 81}
+{"kind": "server_event", "payload": {"content_length": 1, "content_sha256": "d03502c43d74a30b936740a9517dc4ea2b2ad7168caa0a774cefe793ce0b33e7", "method": "item/agentMessage/delta"}, "seq": 82}
+{"kind": "server_event", "payload": {"content_length": 3, "content_sha256": "947a501ab5edae4e7212a15afc4cd19f5c91814571738a98d3e47d22a265207f", "method": "item/agentMessage/delta"}, "seq": 83}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "ea91ecc283cfee5274a5b1d806b1e0109d83c078e8a4b5f6b85442cf8330c06b", "method": "item/agentMessage/delta"}, "seq": 84}
+{"kind": "server_event", "payload": {"content_length": 12, "content_sha256": "b33c260ed8d585ab6bdec41c8996123d69cfd35eda2ebcbb3c68651a6e253852", "method": "item/agentMessage/delta"}, "seq": 85}
+{"kind": "server_event", "payload": {"content_length": 3, "content_sha256": "a8bdfde11f2443a17f53ad0c9eb033c86a916c4575fe9cbce4c6a0d5af432aed", "method": "item/agentMessage/delta"}, "seq": 86}
+{"kind": "server_event", "payload": {"content_length": 15, "content_sha256": "20fb14ff3974dd6739b347457bcd832ec78699aee5b5e6c94088ca607a9db548", "method": "item/agentMessage/delta"}, "seq": 87}
+{"kind": "server_event", "payload": {"content_length": 6, "content_sha256": "cd02b7ab63cb43d623c4e810d92c7042fd5e8b2123628b1af3e4a04a90bde8d9", "method": "item/agentMessage/delta"}, "seq": 88}
+{"kind": "server_event", "payload": {"content_length": 1, "content_sha256": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8", "method": "item/agentMessage/delta"}, "seq": 89}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 90}
+{"kind": "server_event", "payload": {"method": "thread/tokenUsage/updated"}, "seq": 91}
+{"kind": "server_event", "payload": {"method": "account/rateLimits/updated"}, "seq": 92}
+{"kind": "server_event", "payload": {"method": "thread/status/changed"}, "seq": 93}
+{"kind": "server_event", "payload": {"method": "turn/completed"}, "seq": 94}
+{"kind": "candidate_buffered", "payload": {"attempt": 1, "content_length": 176, "content_sha256": "a34d272327a16e277af79c0c031c4a6fde77b11c60a5b36538119f646d1de3bb"}, "seq": 95}
+{"kind": "review_completed", "payload": {"attempt": 1, "candidate_sha256": "a34d272327a16e277af79c0c031c4a6fde77b11c60a5b36538119f646d1de3bb", "decision": "revise", "reason_codes": ["unsupported_recommendation_change", "unsupported_readiness_upgrade", "candidate_specification_only", "strongest_rival_survives"], "review_envelope_sha256": "f5383bfba3df709e93039c46ab2377e36ecdecc6dec0d5c9be979a8154172f34"}, "seq": 96}
+{"kind": "client_send", "payload": {"method": "turn/start", "request_id": 4}, "seq": 97}
+{"kind": "server_event", "payload": {"method": "thread/status/changed"}, "seq": 98}
+{"kind": "server_event", "payload": {"method": "turn/started"}, "seq": 99}
+{"kind": "server_event", "payload": {"method": "warning"}, "seq": 100}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 101}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 102}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 103}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 104}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 105}
+{"kind": "server_event", "payload": {"content_length": 3, "content_sha256": "c36d819e7bc6d2b7da51394411c733db89c395987885ca6770167a3b9bc45c3c", "method": "item/agentMessage/delta"}, "seq": 106}
+{"kind": "server_event", "payload": {"content_length": 2, "content_sha256": "7de598b3ff8a99638e1f9bf49260baa0d98e069dde32d1f2e153adb5ce478242", "method": "item/agentMessage/delta"}, "seq": 107}
+{"kind": "server_event", "payload": {"content_length": 14, "content_sha256": "7d869559f46888d7f86b327e27d9cf0c04f67ef65e2a795de4edb687d28f8d46", "method": "item/agentMessage/delta"}, "seq": 108}
+{"kind": "server_event", "payload": {"content_length": 9, "content_sha256": "4a6ecd155d799665997f78bdd62d9b3a8ae0fbbddf4a2e6a775a980c84de36d4", "method": "item/agentMessage/delta"}, "seq": 109}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "6a1213f32d46ef93afa49dfbae2b7f8e662c51a4a8c7542b045f4e57e67441f5", "method": "item/agentMessage/delta"}, "seq": 110}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "2e5f769687c7731726bb738d6137d86e89691a3a164a80588c046c79ce99d749", "method": "item/agentMessage/delta"}, "seq": 111}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "eeb282539220fa206a1f16e69bfa9811c9dc8944bf0f04f9bcfb770366681712", "method": "item/agentMessage/delta"}, "seq": 112}
+{"kind": "server_event", "payload": {"content_length": 8, "content_sha256": "4ef3cf63b3225351539180331e277f78c68aefb13bb90f9cbd63e6049e2339db", "method": "item/agentMessage/delta"}, "seq": 113}
+{"kind": "server_event", "payload": {"content_length": 8, "content_sha256": "caee30e4b58ec38d5f577447b8284d68e20cec88c51ec456c28ebe7e211fa4f8", "method": "item/agentMessage/delta"}, "seq": 114}
+{"kind": "server_event", "payload": {"content_length": 9, "content_sha256": "cfbfc4f7d428b0382a103dbacb69fdb126b0671b0cf7764dadcd19eeabffa44b", "method": "item/agentMessage/delta"}, "seq": 115}
+{"kind": "server_event", "payload": {"content_length": 8, "content_sha256": "ca914ffdaeaa38e7c6ac3ff153a869e5da3c68ba589df6881d55db9ca86bba04", "method": "item/agentMessage/delta"}, "seq": 116}
+{"kind": "server_event", "payload": {"content_length": 3, "content_sha256": "a8bdfde11f2443a17f53ad0c9eb033c86a916c4575fe9cbce4c6a0d5af432aed", "method": "item/agentMessage/delta"}, "seq": 117}
+{"kind": "server_event", "payload": {"content_length": 7, "content_sha256": "16345f9a6f4d334e3a77815ec43055aa2e23e5747efaf750060e8248adfb9b7d", "method": "item/agentMessage/delta"}, "seq": 118}
+{"kind": "server_event", "payload": {"content_length": 1, "content_sha256": "41b805ea7ac014e23556e98bb374702a08344268f92489a02f0880849394a1e4", "method": "item/agentMessage/delta"}, "seq": 119}
+{"kind": "server_event", "payload": {"content_length": 9, "content_sha256": "d422020daac9cea756a4f20ab88e5c018dc5143c73eca80d84817a0175b0b637", "method": "item/agentMessage/delta"}, "seq": 120}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "ccebf23d241091891c8db84c6adaadb3a5be53e485f246a233db18b4cd88bcd7", "method": "item/agentMessage/delta"}, "seq": 121}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "42b013ab06a9a4c06a3d1d9b107b7f2ac4627fc89e07494cb4d2e6034e79b3e6", "method": "item/agentMessage/delta"}, "seq": 122}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "a254255bd603db099b6f7a1f2de42c9e4cdddbf3583143e374fe6df606caf765", "method": "item/agentMessage/delta"}, "seq": 123}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "46d449bd377a149eca54535dded7a6c059d50288ec3a78b057290247c947e242", "method": "item/agentMessage/delta"}, "seq": 124}
+{"kind": "server_event", "payload": {"content_length": 9, "content_sha256": "e727819862f42297963b2605013516eea282defd68538bb054ec78c179670787", "method": "item/agentMessage/delta"}, "seq": 125}
+{"kind": "server_event", "payload": {"content_length": 6, "content_sha256": "a00eb2c1f8f9b4258a48cab32162ae39c3b7d42edb0e5aef174219113ea2043b", "method": "item/agentMessage/delta"}, "seq": 126}
+{"kind": "server_event", "payload": {"content_length": 3, "content_sha256": "1d45e2ad4d859677b7c2032b82b979f04fffae2b5c982684215ec8cafa4015c8", "method": "item/agentMessage/delta"}, "seq": 127}
+{"kind": "server_event", "payload": {"content_length": 1, "content_sha256": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8", "method": "item/agentMessage/delta"}, "seq": 128}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "c6fa88fb56eec8044664299c2bfd3c9056851584677f1cc7b79b32524eabff3a", "method": "item/agentMessage/delta"}, "seq": 129}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "fe0663fd13cdb08743dca3d2d5d1168762556ea36f77d8ab6009306d12a6f351", "method": "item/agentMessage/delta"}, "seq": 130}
+{"kind": "server_event", "payload": {"content_length": 11, "content_sha256": "d4e5007c9ae36318e8c65fbedd45ed95297a41f0cb9ce36b5c07106bd9883e5a", "method": "item/agentMessage/delta"}, "seq": 131}
+{"kind": "server_event", "payload": {"content_length": 3, "content_sha256": "2f1b21c08a0e60e7d20c550a27ffefc84fe45f75dfdc309a77a77650d3dbece2", "method": "item/agentMessage/delta"}, "seq": 132}
+{"kind": "server_event", "payload": {"content_length": 6, "content_sha256": "51678c04cae5fa54ef7ac7db4504b0282c93a34b08855618a042c860822beabf", "method": "item/agentMessage/delta"}, "seq": 133}
+{"kind": "server_event", "payload": {"content_length": 9, "content_sha256": "4a6ecd155d799665997f78bdd62d9b3a8ae0fbbddf4a2e6a775a980c84de36d4", "method": "item/agentMessage/delta"}, "seq": 134}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "73464a02d1c5fde4ec466034de7590049f8b40cb807fa33bdf845e8311bbb4e7", "method": "item/agentMessage/delta"}, "seq": 135}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "92719fe0cf8cd51592af31ee8a5736d79f7273777fa3f7b70bfe993a4cd32180", "method": "item/agentMessage/delta"}, "seq": 136}
+{"kind": "server_event", "payload": {"content_length": 3, "content_sha256": "7efce6a15e82a94b954bc1731fdbfc95926f70388c82fcbc5fa9183e74395ada", "method": "item/agentMessage/delta"}, "seq": 137}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "fe0663fd13cdb08743dca3d2d5d1168762556ea36f77d8ab6009306d12a6f351", "method": "item/agentMessage/delta"}, "seq": 138}
+{"kind": "server_event", "payload": {"content_length": 10, "content_sha256": "28202ce107dabd574c01eefb53ecaf8dae1479d2586388bb160887e0cdc7e66b", "method": "item/agentMessage/delta"}, "seq": 139}
+{"kind": "server_event", "payload": {"content_length": 8, "content_sha256": "70245e0d1d10606c60a5f48da869573ffc2f4d27b48b0a7e7f89763fc7051239", "method": "item/agentMessage/delta"}, "seq": 140}
+{"kind": "server_event", "payload": {"content_length": 6, "content_sha256": "300a16285fc63474d0a8820089811b278be9a05994a2771999888a9de7e8a56a", "method": "item/agentMessage/delta"}, "seq": 141}
+{"kind": "server_event", "payload": {"content_length": 1, "content_sha256": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8", "method": "item/agentMessage/delta"}, "seq": 142}
+{"kind": "server_event", "payload": {"content_length": 2, "content_sha256": "5a8fc49b3d54c511d013a7c61c4b5e26b98c4b2367e6722d81956fbc1cec01c0", "method": "item/agentMessage/delta"}, "seq": 143}
+{"kind": "server_event", "payload": {"content_length": 14, "content_sha256": "e324b1cc7862595ed8fc26fb19695d57668fd330b210f3e75ae2dc1ccd449856", "method": "item/agentMessage/delta"}, "seq": 144}
+{"kind": "server_event", "payload": {"content_length": 6, "content_sha256": "a791e1e893ea4260c77475725101fb4cc6ad85f6340f21f10b239184e318cd21", "method": "item/agentMessage/delta"}, "seq": 145}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "f1fbb27b490a2cf3b2ed151e6e88412def9555eb48c367bff4bff9bad7cc2aa4", "method": "item/agentMessage/delta"}, "seq": 146}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "4f1faff0f1c7b5ba41659741d62f9ccc4805213c74da8609ef45343913889e93", "method": "item/agentMessage/delta"}, "seq": 147}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "5aa887673056073996350e613b7f329b82dbed12739fadf21a08198584f1c268", "method": "item/agentMessage/delta"}, "seq": 148}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "73464a02d1c5fde4ec466034de7590049f8b40cb807fa33bdf845e8311bbb4e7", "method": "item/agentMessage/delta"}, "seq": 149}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "92719fe0cf8cd51592af31ee8a5736d79f7273777fa3f7b70bfe993a4cd32180", "method": "item/agentMessage/delta"}, "seq": 150}
+{"kind": "server_event", "payload": {"content_length": 8, "content_sha256": "2f51985d48d17fc76d7195f20809a5d2780d3e577cd4b4e6fa90c64f8547d633", "method": "item/agentMessage/delta"}, "seq": 151}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "e850fc29bcd8f2f98d7354e6edfb6b182fb0b94e94079a33ffca9f1b75e26cb6", "method": "item/agentMessage/delta"}, "seq": 152}
+{"kind": "server_event", "payload": {"content_length": 2, "content_sha256": "7de598b3ff8a99638e1f9bf49260baa0d98e069dde32d1f2e153adb5ce478242", "method": "item/agentMessage/delta"}, "seq": 153}
+{"kind": "server_event", "payload": {"content_length": 11, "content_sha256": "f2f2aed40ed066b6c57be75ea90f05902b199bca719046c19e9a5ecb5d0dad51", "method": "item/agentMessage/delta"}, "seq": 154}
+{"kind": "server_event", "payload": {"content_length": 10, "content_sha256": "9bf82f83884ff7e44045b892b8e96c673544641c052c72d11a099f356971afe5", "method": "item/agentMessage/delta"}, "seq": 155}
+{"kind": "server_event", "payload": {"content_length": 1, "content_sha256": "d03502c43d74a30b936740a9517dc4ea2b2ad7168caa0a774cefe793ce0b33e7", "method": "item/agentMessage/delta"}, "seq": 156}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "46d449bd377a149eca54535dded7a6c059d50288ec3a78b057290247c947e242", "method": "item/agentMessage/delta"}, "seq": 157}
+{"kind": "server_event", "payload": {"content_length": 15, "content_sha256": "20fb14ff3974dd6739b347457bcd832ec78699aee5b5e6c94088ca607a9db548", "method": "item/agentMessage/delta"}, "seq": 158}
+{"kind": "server_event", "payload": {"content_length": 6, "content_sha256": "cd02b7ab63cb43d623c4e810d92c7042fd5e8b2123628b1af3e4a04a90bde8d9", "method": "item/agentMessage/delta"}, "seq": 159}
+{"kind": "server_event", "payload": {"content_length": 1, "content_sha256": "cdb4ee2aea69cc6a83331bbe96dc2caa9a299d21329efb0336fc02a82e1839a8", "method": "item/agentMessage/delta"}, "seq": 160}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 161}
+{"kind": "server_event", "payload": {"method": "thread/tokenUsage/updated"}, "seq": 162}
+{"kind": "server_event", "payload": {"method": "account/rateLimits/updated"}, "seq": 163}
+{"kind": "server_event", "payload": {"method": "thread/status/changed"}, "seq": 164}
+{"kind": "server_event", "payload": {"method": "turn/completed"}, "seq": 165}
+{"kind": "candidate_buffered", "payload": {"attempt": 2, "content_length": 320, "content_sha256": "d683f4944a10e9be9a801beb298f6bb63560d3a15de9c86aa4266965ccd8cbfa"}, "seq": 166}
+{"kind": "review_completed", "payload": {"attempt": 2, "candidate_sha256": "d683f4944a10e9be9a801beb298f6bb63560d3a15de9c86aa4266965ccd8cbfa", "decision": "pass", "reason_codes": ["recommendation_unchanged", "replacement_labeled_validation_candidate", "strongest_rival_preserved"], "review_envelope_sha256": "eda810def64d9c2fc55f6d8fb5354dbaeadec4dead9a30812cd484c83d900ed7"}, "seq": 167}
+{"kind": "answer_delivered", "payload": {"attempt": 2, "content_length": 320, "content_sha256": "d683f4944a10e9be9a801beb298f6bb63560d3a15de9c86aa4266965ccd8cbfa"}, "seq": 168}
+{"kind": "app_server_stopped", "payload": {"returncode": -15}, "seq": 169}
+{"kind": "guard_exit", "payload": {"delivered": true, "exit_status": 0, "failure_code": null}, "seq": 170}
