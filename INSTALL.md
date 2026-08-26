@@ -38,9 +38,7 @@ stored content current evidence or truth.
 
 <!-- strategic-advisor-download:start -->
 Download these four files together from the current
-[`v0.2.0-alpha.5` prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.5):
-
-`v0.2.0-alpha.6` is prepared release intent, not the current public download, until the protected-main workflow and fresh-download verification pass.
+[`v0.2.0-alpha.6` prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.6):
 <!-- strategic-advisor-download:end -->
 
 - `strategic-advisor.zip`
