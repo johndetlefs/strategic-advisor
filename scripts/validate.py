@@ -25,7 +25,7 @@ from release_state import ReleaseStateError, validate as validate_release_state
 
 
 SCOPES = ("skill", "lenses", "evals", "pilots", "privacy", "claims", "links")
-CURRENT_DRIFT_RUN = "run-006"
+CURRENT_DRIFT_RUN = "run-009"
 PUBLIC_ARTIFACTS = (
     "README.md",
     "INSTALL.md",
@@ -2282,6 +2282,31 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "drift-smoke/run-006/result.json",
             "drift-smoke/run-006/runtime-package-manifest.json",
             "drift-smoke/run-006/source-access.json",
+            "drift-smoke/run-007-baseline/observation.json",
+            "drift-smoke/run-007-baseline/runtime-package-manifest.json",
+            "drift-smoke/run-007-prompt-attempts/observation.json",
+            "drift-smoke/run-009/result.json",
+            "drift-smoke/run-009/runtime-package-manifest.json",
+            "drift-smoke/run-009/source-access.json",
+            "host-feasibility/task-031/probe/app-server-relevant-events.jsonl",
+            "host-feasibility/task-031/probe/app_server_probe.py",
+            "host-feasibility/task-031/probe/cli-error-relevant-events.jsonl",
+            "host-feasibility/task-031/probe/cli-success-relevant-events.jsonl",
+            "host-feasibility/task-031/probe/cli-timeout-relevant-events.jsonl",
+            "host-feasibility/task-031/probe/cli_probe.py",
+            "host-feasibility/task-031/probe/hook-relevant-events.jsonl",
+            "host-feasibility/task-031/probe/hooks.json",
+            "host-feasibility/task-031/probe/sanitize_probe_events.py",
+            "host-feasibility/task-031/probe/stop_hook_probe.py",
+            "app-server-guard/task-036/RUN-REPORT.md",
+            "app-server-guard/task-036/exact-runtime-revise.jsonl",
+            "app-server-guard/task-036/gate-contract.md",
+            "app-server-guard/task-036/material-state.json",
+            "app-server-guard/task-036/prompt.txt",
+            "recommendation-delta/task-033/RUN-REPORT.md",
+            "recommendation-delta/task-033/exact-runtime.jsonl",
+            "recommendation-delta/task-033/material-state.json",
+            "recommendation-delta/task-033/prompt.txt",
         }
         actual_evidence = {
             path.relative_to(evaluation_evidence_root).as_posix()

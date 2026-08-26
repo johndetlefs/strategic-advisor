@@ -1,0 +1,5 @@
+{"kind": "process_start", "payload": {"case": "success", "hook_timeout_seconds": 30, "prompt": "Respond with exactly ORIGINAL_DRAFT_UNCHECKED and no other text."}, "recorded_at_ns": 1787720106546671000, "seq": 1}
+{"kind": "stdout", "payload": {"item": {"id": "item_3", "text": "ORIGINAL_DRAFT_UNCHECKED", "type": "agent_message"}, "type": "item.completed"}, "recorded_at_ns": 1787720111765997000, "seq": 29}
+{"kind": "stdout", "payload": {"item": {"id": "item_4", "text": "REVISED_DRAFT_QUALIFIED", "type": "agent_message"}, "type": "item.completed"}, "recorded_at_ns": 1787720113710757000, "seq": 30}
+{"kind": "stdout", "payload": {"type": "turn.completed", "usage": {"cache_write_input_tokens": 0, "cached_input_tokens": 17152, "input_tokens": 35054, "output_tokens": 35, "reasoning_output_tokens": 11}}, "recorded_at_ns": 1787720113814775000, "seq": 31}
+{"kind": "process_exit", "payload": 0, "recorded_at_ns": 1787720114391906000, "seq": 32}

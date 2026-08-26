@@ -1,0 +1,98 @@
+{"kind": "guard_start", "payload": {"app_server_binary_sha256": "6170ff5578170ee9b74ad92bfcff96e6186f41d02b60815a7c2b01ad424c754f", "controller_sha256": "bd6353cf2a1b369a0ef0c1cfa9c0a6944ee45e6bbed5766510dbe9190080da21", "cwd_sha256": "5ab8c5fa25a732f276e4c2302705a3ff1a5f17e96c91a2d7947e9079f52401ac", "gate_contract_sha256": "fccf9c62ccd5723bce2dace55f4d8a29fa143814f56828efe35c08f15c9597a7", "material_state_sha256": "00bf8d36e2ff103744a5e6cbd4d3e5374eefb3f1a4c44fccebe865fcc4f2b481", "model": "gpt-5.6-luna", "prompt_sha256": "c61b0020211d17d58d83eb7b1abeb18e2ea163570890d96f1315093b6888c5dc", "reviewer_identity": {"command_sha256": "466e7ef94211c1b685e14c43254d535578d1061ca0a7c2ecf5ad7707d73f1d3a", "file_identities": {"0": "sha256:179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818", "1": "sha256:3213ea94114ed5d1188ec38b677817dd7056468fa6fb11551df461fa80255566"}}, "schema_version": 1, "thread_approval_policy": "never", "thread_sandbox": "read-only"}, "seq": 1}
+{"kind": "app_server_started", "payload": {"pid_recorded": true}, "seq": 2}
+{"kind": "client_send", "payload": {"method": "initialize", "request_id": 1}, "seq": 3}
+{"kind": "client_send", "payload": {"method": "initialized", "request_id": -1}, "seq": 4}
+{"kind": "client_send", "payload": {"method": "thread/start", "request_id": 2}, "seq": 5}
+{"kind": "server_event", "payload": {"method": "remoteControl/status/changed"}, "seq": 6}
+{"kind": "app_server_stderr", "payload": {"length": 202, "sha256": "39c373da1fe1ac8209efcb54e5d6e524aaa9373c1021b40cd0e34a949170a3dd"}, "seq": 7}
+{"kind": "app_server_stderr", "payload": {"length": 202, "sha256": "dc377795167a0a7ffc26a00f253a35aa816ed0aa9adb375c743c2c248bfd51be"}, "seq": 8}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "df199c42c391094601b571ddf21d2d54f2c2b4a919f7a5d9ce7ed3e6a3291ae1"}, "seq": 9}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "043a3e923c0002adf78896201c5f8f0c0bf88fa63fbbfc4c950db1c651eafc8b"}, "seq": 10}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "f8a58c8b92096b5d9e83338da21ec764c253d6b566d215377bf9358707760b5d"}, "seq": 11}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "2dafbee9e92be1b8717b4ee2597b398fb8e74f8bfec00359aed2eac04e555588"}, "seq": 12}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "ec2f04dacbac2e15f03a61d1107c67183fa6fc9cb92795987b46083e6d16b3f4"}, "seq": 13}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "565b98dd295f27f64dac8a372b833cb4cb876b032fa3a8ac28e10a011bb79aed"}, "seq": 14}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "3432d83ad9ea0c193e698fb7dbc756a5bf2ac17d1e9c75e39935351674072753"}, "seq": 15}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "c47b2c5f34defa7e29eb5aa99c837ddbe0a5b0746a0a5490fffba190c149ecaf"}, "seq": 16}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "58ddcacd60ac38fb68c8b5b565173e435664362017651be88e7ff72bb80a4702"}, "seq": 17}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "63d9ae20a6d57e7b776a63145e12c8ec7ff4e6deade91623174ae003d08a311a"}, "seq": 18}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "9256d8a6edba8dc2826952b126410392b633b6682e481f694c609ed81c755c3e"}, "seq": 19}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "80bf04d45ccab7d492f47bf6eed55d1f5ca56fb7b85f817bf5a83666495e9d12"}, "seq": 20}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "054b02c790a795c324b6d583221ef495726bcb7b4c159bd75da49e7dbaf6a203"}, "seq": 21}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "37e36bb6903e80a6c245447150a9fa0c9c722ffd6c6e1e9ada9a49099168e366"}, "seq": 22}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "cfa0491c8d9af0a7a7e871957722d7f724480b03c9737e447c46f909167fd682"}, "seq": 23}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "0822c030ae350531a4f835ae68e44b1c84c7fdf79e01b2e5ccaf97b093333a3a"}, "seq": 24}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "ca458d478671502dc0c6305b5b7a6a59e4bca60c4d1d203439d9b8fe82532928"}, "seq": 25}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "7ca4801aba76069a7ebf84b0fbd3ed7f56ccec7863636070091b00b9d1eab13c"}, "seq": 26}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "ed2b57231f6f8f81295be5aeefa8780a9e30ceb8fe0357f0399d72735320ad72"}, "seq": 27}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "49fe62fd02de4f9d2ad7c3c02560795987a98a4a3821c6880b76bfe3bc1b7d73"}, "seq": 28}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "2f54df0c2bfa49cca5378708b6b29b834a69c97a1f9e87f7d11e89fccb291735"}, "seq": 29}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "060310302c708a4979d56eb8805a988ee96f5339d40aa9651ca52a01e0e9c7ea"}, "seq": 30}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "8c162c231d6a0d368881dbac005a6bc7fff6f779bc8c5b9f66e9b64039c80919"}, "seq": 31}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "26ae31bef97fac3ffee81378bed00c2401558425634222cdf7f95fd176688a24"}, "seq": 32}
+{"kind": "app_server_stderr", "payload": {"length": 192, "sha256": "1e148ac602b2b94f1ce6cc743b53ade8b6f9453a809264c6c43243d390ddb343"}, "seq": 33}
+{"kind": "thread_started", "payload": {"thread_id_sha256": "cd2ddb9f76c5ae3a7c16d2e74f8675a7c6cd0cf7ee75dc1cac6c83718ec7e340"}, "seq": 34}
+{"kind": "client_send", "payload": {"method": "turn/start", "request_id": 3}, "seq": 35}
+{"kind": "server_event", "payload": {"method": "thread/started"}, "seq": 36}
+{"kind": "server_event", "payload": {"method": "warning"}, "seq": 37}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 38}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 39}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 40}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 41}
+{"kind": "server_event", "payload": {"method": "thread/status/changed"}, "seq": 42}
+{"kind": "server_event", "payload": {"method": "turn/started"}, "seq": 43}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 44}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 45}
+{"kind": "app_server_stderr", "payload": {"length": 202, "sha256": "f346eda01c57ffd0859842f50cb87b29a6d260b594932facfadaf608a044078c"}, "seq": 46}
+{"kind": "app_server_stderr", "payload": {"length": 202, "sha256": "9ce877ee4edddebc9db956171c76ba63dbcc67b37c2857c1fe60c82b28eaa281"}, "seq": 47}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 48}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 49}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 50}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 51}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 52}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 53}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 54}
+{"kind": "server_event", "payload": {"method": "mcpServer/startupStatus/updated"}, "seq": 55}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 56}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 57}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 58}
+{"kind": "server_event", "payload": {"content_length": 2, "content_sha256": "829e5b28af38ab3379fd0b4f3fd4f2f161326bb38dfeaf83bc97d08f60f84c88", "method": "item/agentMessage/delta"}, "seq": 59}
+{"kind": "server_event", "payload": {"content_length": 6, "content_sha256": "6e86b36debc68d3989d99d1b9410aaa2af720e2e08ed7a0c344dce443e4ed0a0", "method": "item/agentMessage/delta"}, "seq": 60}
+{"kind": "server_event", "payload": {"content_length": 2, "content_sha256": "b3cd4af688ebce619dcd2f8d6e5b072d691ff2d0fa6b07fe606a2e48eab285fa", "method": "item/agentMessage/delta"}, "seq": 61}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "7c659bd91b811132959edcb3362ff44f337acc2e99338facda4ab81ebc41a12e", "method": "item/agentMessage/delta"}, "seq": 62}
+{"kind": "server_event", "payload": {"content_length": 3, "content_sha256": "6e902725c794afaf8b7d5b2822f97550a05742b734188609a1cc54322c9f5210", "method": "item/agentMessage/delta"}, "seq": 63}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "2c12824b5f626268a103868c5645801df3b406ef91af87b6b51df1e6e7a622b2", "method": "item/agentMessage/delta"}, "seq": 64}
+{"kind": "server_event", "payload": {"content_length": 2, "content_sha256": "4ef203daf77cede7ee8bed0027c39a3edd824d4568ce007df04c4dc33ef02537", "method": "item/agentMessage/delta"}, "seq": 65}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 66}
+{"kind": "server_event", "payload": {"method": "thread/tokenUsage/updated"}, "seq": 67}
+{"kind": "server_event", "payload": {"method": "account/rateLimits/updated"}, "seq": 68}
+{"kind": "server_event", "payload": {"method": "thread/status/changed"}, "seq": 69}
+{"kind": "server_event", "payload": {"method": "turn/completed"}, "seq": 70}
+{"kind": "candidate_buffered", "payload": {"attempt": 1, "content_length": 24, "content_sha256": "457ea873bde0152417cdc0731649f7465fd550c7a6bc69b579e6b8a1d4fe5a9d"}, "seq": 71}
+{"kind": "review_completed", "payload": {"attempt": 1, "candidate_sha256": "457ea873bde0152417cdc0731649f7465fd550c7a6bc69b579e6b8a1d4fe5a9d", "decision": "revise", "reason_codes": ["fixture_revision"], "review_envelope_sha256": "d951b6cac23e7b9c7234daec65293e34f859f8ae58367f87334744003972f70f"}, "seq": 72}
+{"kind": "client_send", "payload": {"method": "turn/start", "request_id": 4}, "seq": 73}
+{"kind": "server_event", "payload": {"method": "thread/status/changed"}, "seq": 74}
+{"kind": "server_event", "payload": {"method": "turn/started"}, "seq": 75}
+{"kind": "server_event", "payload": {"method": "warning"}, "seq": 76}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 77}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 78}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 79}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 80}
+{"kind": "server_event", "payload": {"method": "item/started"}, "seq": 81}
+{"kind": "server_event", "payload": {"content_length": 2, "content_sha256": "b84b1b88dab63ec755c0c9f31c02aaef21b7e531bbb4cda5a62611c59e0dc8e3", "method": "item/agentMessage/delta"}, "seq": 82}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "96ce0ced08bb3848aabc91d360d171815e098163060c8d4b330a7768bb28697b", "method": "item/agentMessage/delta"}, "seq": 83}
+{"kind": "server_event", "payload": {"content_length": 2, "content_sha256": "b3cd4af688ebce619dcd2f8d6e5b072d691ff2d0fa6b07fe606a2e48eab285fa", "method": "item/agentMessage/delta"}, "seq": 84}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "7c659bd91b811132959edcb3362ff44f337acc2e99338facda4ab81ebc41a12e", "method": "item/agentMessage/delta"}, "seq": 85}
+{"kind": "server_event", "payload": {"content_length": 1, "content_sha256": "d2e2adf7177b7a8afddbc12d1634cf23ea1a71020f6a1308070a16400fb68fde", "method": "item/agentMessage/delta"}, "seq": 86}
+{"kind": "server_event", "payload": {"content_length": 4, "content_sha256": "347e821d6cb08a470989e6e82170cbcd1bba68110a1d1064fba5f3e3bde8366b", "method": "item/agentMessage/delta"}, "seq": 87}
+{"kind": "server_event", "payload": {"content_length": 5, "content_sha256": "4691e1ccd296cacaf71413a330b98c6db07cf1d095278ffd158f953694ed45a2", "method": "item/agentMessage/delta"}, "seq": 88}
+{"kind": "server_event", "payload": {"method": "item/completed"}, "seq": 89}
+{"kind": "server_event", "payload": {"method": "thread/tokenUsage/updated"}, "seq": 90}
+{"kind": "server_event", "payload": {"method": "account/rateLimits/updated"}, "seq": 91}
+{"kind": "server_event", "payload": {"method": "thread/status/changed"}, "seq": 92}
+{"kind": "server_event", "payload": {"method": "turn/completed"}, "seq": 93}
+{"kind": "candidate_buffered", "payload": {"attempt": 2, "content_length": 23, "content_sha256": "eb925ef4ba02178ad666382ce911420f5205177e8cc755cea69e27bbcb72e2bd"}, "seq": 94}
+{"kind": "review_completed", "payload": {"attempt": 2, "candidate_sha256": "eb925ef4ba02178ad666382ce911420f5205177e8cc755cea69e27bbcb72e2bd", "decision": "pass", "reason_codes": ["fixture_pass"], "review_envelope_sha256": "913aecb266af6475eba8b283f3a674d6b972c600140805f7a0bfe9a66a0705a5"}, "seq": 95}
+{"kind": "answer_delivered", "payload": {"attempt": 2, "content_length": 23, "content_sha256": "eb925ef4ba02178ad666382ce911420f5205177e8cc755cea69e27bbcb72e2bd"}, "seq": 96}
+{"kind": "app_server_stopped", "payload": {"returncode": -15}, "seq": 97}
+{"kind": "guard_exit", "payload": {"delivered": true, "exit_status": 0, "failure_code": null}, "seq": 98}

@@ -1,0 +1,17 @@
+{
+  "description": "TASK-031 public-synthetic Stop-hook probe",
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/python3 /private/tmp/sa-fix006-causal-bridge/evidence/evaluations/host-feasibility/task-031/probe/stop_hook_probe.py",
+            "timeout": 30,
+            "statusMessage": "Running TASK-031 synthetic draft review"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -117,7 +117,7 @@ class ValidatorFixtureTests(unittest.TestCase):
         path = self.fixture_root / "README.md"
         path.write_text(
             path.read_text(encoding="utf-8").replace(
-                "Bounded 15-scenario-group Codex drift smoke (run-006) passed",
+                "Bounded 16-scenario-group Codex drift smoke (run-009) passed",
                 "Bounded 7-scenario-group Codex drift smoke (run-004) passed",
                 1,
             ),
@@ -125,7 +125,7 @@ class ValidatorFixtureTests(unittest.TestCase):
         )
         result = self.run_validator("claims")
         self.assert_named_failure(result, "CLAIMS_PUBLIC_STATUS_DRIFT")
-        self.assertIn("15 scenario groups in run-006", result.stdout)
+        self.assertIn("16 scenario groups in run-009", result.stdout)
 
     def test_readme_lens_summary_follows_canonical_lens_title(self) -> None:
         lens = (
