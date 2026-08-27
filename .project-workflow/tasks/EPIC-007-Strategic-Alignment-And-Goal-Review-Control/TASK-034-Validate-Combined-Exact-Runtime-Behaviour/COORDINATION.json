@@ -1,23 +1,74 @@
 {
-  "boundary_decisions": [],
+  "boundary_decisions": [
+    {
+      "affected_units": [
+        "TASK-034",
+        "TASK-035"
+      ],
+      "amendment_identity": "owner-release-scope-2026-08-27",
+      "boundary": "before-review-or-complete",
+      "capability_change": "Owner-approved proof claim is aligned to the actual repaired-runtime diagnostic: SAGR-014 plus SAGR-013 only; untouched cases remain untested and no certification claim is made.",
+      "classification": "approved-change",
+      "decided_by": "EPIC-007 coordinator under explicit owner release directive",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:cb051aa1fb27b28920a00db784e851d6b9d1ce3cb462d4f81acedf455b7365a9",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:e1fda6e5d8d260545d7180e793d2625ac846524121a9f3bf08e9fc8a5e2e3879",
+      "source_revision": "d89b4a37dc6f63a7f264255784453fe2abdec868",
+      "user_consequence": "Independent QA passed the bounded claim, so TASK-034 may close without further target calls; TASK-035 must preserve the diagnostic boundary."
+    }
+  ],
   "decisions": [
-    "The original d51d7bf campaign stopped after SAGR-014 failed; raw receipts remain historical evidence.",
-    "The repaired-runtime release diagnostic is limited to SAGR-014 plus direct neighbour SAGR-013, using retained fresh receipts only."
+    "Independent read-only QA passed the exact two-case diagnostic and accepted the non-certification warning as the intended claim boundary."
   ],
   "host_facts": {
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:7bec6d2a7eefdca0a5e9ffbc0d043f697b7e0f3b2e50bd6de35ecf048b76ca88",
-  "last_boundary": null,
+  "intent_identity": "sha256:cb051aa1fb27b28920a00db784e851d6b9d1ce3cb462d4f81acedf455b7365a9",
+  "last_boundary": {
+    "affected_units": [
+      "TASK-034",
+      "TASK-035"
+    ],
+    "amendment_identity": "owner-release-scope-2026-08-27",
+    "boundary": "before-review-or-complete",
+    "capability_change": "Owner-approved proof claim is aligned to the actual repaired-runtime diagnostic: SAGR-014 plus SAGR-013 only; untouched cases remain untested and no certification claim is made.",
+    "classification": "approved-change",
+    "decided_by": "EPIC-007 coordinator under explicit owner release directive",
+    "decision_date": "2026-08-27",
+    "intent_identity": "sha256:cb051aa1fb27b28920a00db784e851d6b9d1ce3cb462d4f81acedf455b7365a9",
+    "relevant_ocs": [
+      "OC1",
+      "OC2",
+      "OC3",
+      "OC4",
+      "OC5",
+      "OC6",
+      "OC7"
+    ],
+    "shared_premises_valid": "yes",
+    "source_identity": "sha256:e1fda6e5d8d260545d7180e793d2625ac846524121a9f3bf08e9fc8a5e2e3879",
+    "source_revision": "d89b4a37dc6f63a7f264255784453fe2abdec868",
+    "user_consequence": "Independent QA passed the bounded claim, so TASK-034 may close without further target calls; TASK-035 must preserve the diagnostic boundary."
+  },
   "loaded_contract": {
     "asset_version": "7",
-    "context_id": "codex-current-task-2026-08-27-rebound",
+    "context_id": "codex-current-task-2026-08-27-final-qa",
     "contract_version": "2",
     "package_version": "0.8.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Diagnostic boundary reached; use the result only for the named decision.",
+  "next_action": "Refresh the existing canonical plan and Delegate packet for affected units: TASK-034, TASK-035",
   "outcome_checkpoint": {
     "checkpoint_unit": null,
     "claim_class": "mechanical",
@@ -25,14 +76,14 @@
     "required": false,
     "status": "not-required"
   },
-  "phase": "Bounded exact-runtime repair Testing",
+  "phase": "Independent QA passed; ready for Review",
   "repositories": {
     ".": {
-      "source_revision": "9891178541462d545f991555e0a34ee1405aba84"
+      "source_revision": "d89b4a37dc6f63a7f264255784453fe2abdec868"
     }
   },
   "schema_version": 2,
-  "source_revision": "9891178541462d545f991555e0a34ee1405aba84",
+  "source_revision": "d89b4a37dc6f63a7f264255784453fe2abdec868",
   "target_id": "TASK-034",
   "verification_campaign": {
     "adapter": {
@@ -52,7 +103,7 @@
     "current_stage": null,
     "diagnostic_decision": "If SAGR-014 and SAGR-013 pass, allow experimental alpha release with two-case repair-diagnostic wording only.",
     "impact": "known",
-    "intent_identity": "sha256:7bec6d2a7eefdca0a5e9ffbc0d043f697b7e0f3b2e50bd6de35ecf048b76ca88",
+    "intent_identity": "sha256:cb051aa1fb27b28920a00db784e851d6b9d1ce3cb462d4f81acedf455b7365a9",
     "limits": {
       "max_elapsed_seconds": 1200,
       "max_failures": 1,
@@ -62,24 +113,24 @@
     "next_action": "Diagnostic boundary reached; use the result only for the named decision.",
     "outcome": "pass",
     "proof_contract_identity": "sha256:1e81370b14905e9ca4d35920272ba9ec510362d2ac154d38033892849e884256",
-    "receipt_ledger_identity": "sha256:cc2a4d7c7c9daba0e008b0133399587f96d02871d3cee023e4a49d6d57b4578e",
+    "receipt_ledger_identity": "sha256:286e2203392e4824333385d9fce543affff96a0c01f24dba740425fd2fd3b157",
     "receipts": [
       {
         "artifact": "evidence/evaluations/goal-review/run-002-repair/deterministic.json",
         "candidate_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
         "elapsed_seconds": 4,
-        "evaluator_identity": "sa-repair-deterministic:9891178541462d545f991555e0a34ee1405aba84",
-        "intent_identity": "sha256:7bec6d2a7eefdca0a5e9ffbc0d043f697b7e0f3b2e50bd6de35ecf048b76ca88",
+        "evaluator_identity": "sa-repair-deterministic:d89b4a37dc6f63a7f264255784453fe2abdec868",
+        "intent_identity": "sha256:cb051aa1fb27b28920a00db784e851d6b9d1ce3cb462d4f81acedf455b7365a9",
         "outcome": "pass",
         "proof_contract_identity": "sha256:1e81370b14905e9ca4d35920272ba9ec510362d2ac154d38033892849e884256",
-        "receipt_identity": "sha256:36b3e8afe8af8ed575adce07b3f2cf275b27a277620a0d91a416b05b005f6707",
+        "receipt_identity": "sha256:2f81cd26c7cbe4cc74b64f5d82bb9bd4a760d58ef3ac97b0c077e5cef8f5af4b",
         "recorded_at": "2026-08-27",
         "regrade": false,
         "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
         "scope": [
           "17 runner controls; 54 alignment/goal-review/freeze/runtime tests; skill/privacy/links/freeze/diff checks"
         ],
-        "source_identity": "sha256:32ba2f610038a33d367a43af341d6cc56555af5e887ecee94d149a848a5ed36e",
+        "source_identity": "sha256:e1fda6e5d8d260545d7180e793d2625ac846524121a9f3bf08e9fc8a5e2e3879",
         "stage": "deterministic",
         "stage_complete": true,
         "target_calls": 0,
@@ -90,17 +141,17 @@
         "candidate_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
         "elapsed_seconds": 46,
         "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
-        "intent_identity": "sha256:7bec6d2a7eefdca0a5e9ffbc0d043f697b7e0f3b2e50bd6de35ecf048b76ca88",
+        "intent_identity": "sha256:cb051aa1fb27b28920a00db784e851d6b9d1ce3cb462d4f81acedf455b7365a9",
         "outcome": "pass",
         "proof_contract_identity": "sha256:1e81370b14905e9ca4d35920272ba9ec510362d2ac154d38033892849e884256",
-        "receipt_identity": "sha256:a19e5cddf91abb8fe438af09867ed6f62e0d5d7d75fb1d64bd08146db7ed6fce",
+        "receipt_identity": "sha256:b0b163c7a358cc35bd437414a72b95756017be27770b16e309afe80bd3ebd81e",
         "recorded_at": "2026-08-27",
         "regrade": false,
         "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
         "scope": [
           "SAGR-014 failed-case canary under corrected conditional-criterion evaluator"
         ],
-        "source_identity": "sha256:32ba2f610038a33d367a43af341d6cc56555af5e887ecee94d149a848a5ed36e",
+        "source_identity": "sha256:e1fda6e5d8d260545d7180e793d2625ac846524121a9f3bf08e9fc8a5e2e3879",
         "stage": "canary",
         "stage_complete": true,
         "target_calls": 1,
@@ -111,17 +162,17 @@
         "candidate_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
         "elapsed_seconds": 54,
         "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
-        "intent_identity": "sha256:7bec6d2a7eefdca0a5e9ffbc0d043f697b7e0f3b2e50bd6de35ecf048b76ca88",
+        "intent_identity": "sha256:cb051aa1fb27b28920a00db784e851d6b9d1ce3cb462d4f81acedf455b7365a9",
         "outcome": "pass",
         "proof_contract_identity": "sha256:1e81370b14905e9ca4d35920272ba9ec510362d2ac154d38033892849e884256",
-        "receipt_identity": "sha256:8fb41d07447af6cde7b54567f81fcbd0b834b81a9b4c347ed299c15dcc4003ab",
+        "receipt_identity": "sha256:939fa70393065122d2df9b030f2d336f8747765dfcdb465fbbea655531d5ff4d",
         "recorded_at": "2026-08-27",
         "regrade": false,
         "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
         "scope": [
           "SAGR-013 direct-neighbour activity-as-indicator case"
         ],
-        "source_identity": "sha256:32ba2f610038a33d367a43af341d6cc56555af5e887ecee94d149a848a5ed36e",
+        "source_identity": "sha256:e1fda6e5d8d260545d7180e793d2625ac846524121a9f3bf08e9fc8a5e2e3879",
         "stage": "affected",
         "stage_complete": true,
         "target_calls": 1,
@@ -129,7 +180,7 @@
       }
     ],
     "schema_version": 1,
-    "source_identity": "sha256:32ba2f610038a33d367a43af341d6cc56555af5e887ecee94d149a848a5ed36e",
+    "source_identity": "sha256:e1fda6e5d8d260545d7180e793d2625ac846524121a9f3bf08e9fc8a5e2e3879",
     "stages": [
       "deterministic",
       "canary",
