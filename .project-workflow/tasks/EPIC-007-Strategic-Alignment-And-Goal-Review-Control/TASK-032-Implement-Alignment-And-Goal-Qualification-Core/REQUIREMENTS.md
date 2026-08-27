@@ -66,7 +66,9 @@ causal paths without replacing readiness or interrupting routine assistance.
 - Strategy Workspace is the private durable strategic authority. Daily Checklist, Sunday and Project Workflow remain separate consumers or process systems with no implicit runtime, data or authority coupling.
 - Only synthetic, public or irreversibly sanitised cases may be committed. No private or reconstructable task, workspace, employer, client or household data enters public source, runtime, evaluation or package artifacts.
 - Exact proof claims remain separated across documented semantics, deterministic/static validation, exact-runtime synthetic behaviour, private real-task dogfood, package identity, publication, host activation, support, adoption and effectiveness.
-- The in-flight proportionate-verification-runner worktree is preserved and reconciled before runtime/evaluation implementation; this Epic does not absorb, overwrite or recreate it.
+- The proportionate-verification runner functionality is reconciled without
+  making its old PW 0.7 commit the integration ancestry; canonical PW 0.8
+  workflow assets and the replayed runner remain distinct.
 - The downstream Strategy Workspace process is a real v1 to dogfood and iterate, not a disposable pilot, but it remains a separate repository task.
 - An allowlisted runtime-byte change prepares the next immutable distribution in the same implementation branch. Push, PR, merge, publication, finalisation, activation and private-workspace mutation require separate authority and exact evidence.
 
@@ -179,9 +181,12 @@ pieces but lacks the complete selective ladder and re-clarification contract.
 
 ## Open Questions (Answer Needed)
 
-- None. The runner stream is durably committed at `82b44a0aabe81662917c44b8e99d3a2a6fd021c4`
-  from base `6d65830fa6d6fcc919957594c9ff1f2d763aab96`, and that exact commit is now an
-  ancestor of this local feature branch. It remains absent from `origin/main`.
+- None. Runner functionality from durable source
+  `82b44a0aabe81662917c44b8e99d3a2a6fd021c4` was replayed as
+  `a2baf342df16d15fbc8c14883fa4f686097bfc08` on the exact authority checkpoint
+  `4fdd1eed03df3408cef3f4fba817e29b668b1bac`. The old PW 0.7 runner commit is
+  not an ancestor of this branch. Canonical PW 0.8 assets were then applied at
+  `32bd8e36fb7c36455d45f9b9eaedd3b87cb3e3b4`.
 
 ## Decisions (Resolved)
 
@@ -189,8 +194,10 @@ pieces but lacks the complete selective ladder and re-clarification contract.
 - D2. Extend recommendation delta rather than add a goal subsystem.
 - D3. Research empirical forks and ask only owner-only choices.
 - D4. Preserve unaffected work and invalidate mismatched evidence.
-- D5. Deliberately base this local implementation on runner commit `82b44a0`;
-  do not imply that it is merged to `main`, published, released or installed.
+- D5. Deliberately base this local implementation on the replayed runner
+  functionality at `a2baf342` plus canonical PW 0.8 assets at `32bd8e3`; do not
+  imply that the Strategic Advisor branch is merged to `main`, published,
+  released or installed.
 
 ## Validation Plan
 

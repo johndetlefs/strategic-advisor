@@ -25,7 +25,9 @@ execute a proxy or lose settled intent when evidence changes the frame.
 - Strategy Workspace is the private durable strategic authority. Daily Checklist, Sunday and Project Workflow remain separate consumers or process systems with no implicit runtime, data or authority coupling.
 - Only synthetic, public or irreversibly sanitised cases may be committed. No private or reconstructable task, workspace, employer, client or household data enters public source, runtime, evaluation or package artifacts.
 - Exact proof claims remain separated across documented semantics, deterministic/static validation, exact-runtime synthetic behaviour, private real-task dogfood, package identity, publication, host activation, support, adoption and effectiveness.
-- The in-flight proportionate-verification-runner worktree is preserved and reconciled before runtime/evaluation implementation; this Epic does not absorb, overwrite or recreate it.
+- The proportionate-verification runner functionality is reconciled without
+  making its old PW 0.7 commit the integration ancestry; canonical PW 0.8
+  workflow assets and the replayed runner remain distinct.
 - The downstream Strategy Workspace process is a real v1 to dogfood and iterate, not a disposable pilot, but it remains a separate repository task.
 - An allowlisted runtime-byte change prepares the next immutable distribution in the same implementation branch. Push, PR, merge, publication, finalisation, activation and private-workspace mutation require separate authority and exact evidence.
 
@@ -88,7 +90,7 @@ execute a proxy or lose settled intent when evidence changes the frame.
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | `codex/strategic-alignment-goal-review`; runner `82b44a0` is an ancestor | Focused state/alignment/goal tests pass; full integration validation retains the exact unprepared-distribution blockers in `VALIDATION.md` | Local implementation only; no push, PR, main merge, package preparation, publication, activation or private-workspace mutation | Canonical diff, `VALIDATION.md`, TASK-031 freeze and coordination record |
+| . | `codex/strategic-alignment-goal-review-pw08`; exact authority `4fdd1ee`, runner replay `a2baf34`, PW 0.8 upgrade `32bd8e3` | Focused state/alignment/goal tests pass; full integration validation retains the exact unprepared-distribution blockers in `VALIDATION.md` | Local implementation only; no push, PR, main merge, package preparation, publication, activation or private-workspace mutation | Canonical diff, `VALIDATION.md`, TASK-031 freeze and coordination record |
 
 ## Task List
 

@@ -131,7 +131,8 @@
   ],
   "decisions": [
     "Owner approved the combined EPIC-007 meaning and implementation envelope on 2026-08-27.",
-    "Runner commit 82b44a0 is an explicit ancestor of this local branch; it is not on origin/main and no push, publication or activation is authorised.",
+    "Runner functionality from 82b44a0 was replayed as a2baf342df16d15fbc8c14883fa4f686097bfc08 on the exact 4fdd1ee authority checkpoint; the old PW 0.7 runner commit is not an ancestor of this reconciliation branch.",
+    "Canonical Project Workflow 0.8.0 assets were applied from fingerprint sha256:6fc570a341fbc4fceb3b859de1d5d6e0459a2e166a4b27f354a18a092e62cd2e at 32bd8e36fb7c36455d45f9b9eaedd3b87cb3e3b4; no Strategic Advisor push, merge, publication or activation is authorised here.",
     "TASK-034 owns exact-runtime behavioural proof; TASK-032 owns canonical semantics and deterministic validation only."
   ],
   "host_facts": {
@@ -168,13 +169,13 @@
     "user_consequence": "Preserve TASK-032 remediation at 905c1eb, do not start TASK-033 or behavioural evaluation, and resume only from the explicitly reconciled runner/base."
   },
   "loaded_contract": {
-    "asset_version": "6",
+    "asset_version": "7",
     "context_id": "01a04077-5cfa-7b93-bdcf-bf8a6dda8caf",
     "contract_version": "2",
-    "package_version": "0.7.0",
+    "package_version": "0.8.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Pause TASK-033 and runtime/evaluation work until the release coordinator reports the verified PW 0.8 runner integration base.",
+  "next_action": "Revalidate TASK-032 remediation and obtain affected-only independent QA before TASK-033.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-034",
     "claim_class": "user-facing",
@@ -182,14 +183,14 @@
     "required": true,
     "status": "pending"
   },
-  "phase": "TASK-032 QA remediation preserved; awaiting PW 0.8 runner reconciliation",
+  "phase": "TASK-032 affected-only QA re-review on PW 0.8 reconciliation",
   "repositories": {
     ".": {
-      "source_revision": "905c1ebb04f689e27e31f45ec1ee4d25ef9f27ae"
+      "source_revision": "b8c40301611be9b17f52fe9f822f5adfdf4a8d1a"
     }
   },
   "schema_version": 2,
-  "source_revision": "905c1ebb04f689e27e31f45ec1ee4d25ef9f27ae",
+  "source_revision": "b8c40301611be9b17f52fe9f822f5adfdf4a8d1a",
   "target_id": "EPIC-007",
   "work_item_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control"
 }
