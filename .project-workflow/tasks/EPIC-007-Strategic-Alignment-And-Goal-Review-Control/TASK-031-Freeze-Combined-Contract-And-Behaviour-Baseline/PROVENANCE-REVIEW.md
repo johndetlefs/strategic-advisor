@@ -30,13 +30,13 @@ owner scenarios.
 | SAGR-004 | Ambiguity with one shared robust next move | None | Pass |
 | SAGR-005 | Cheap empirical discrimination before owner choice | None | Pass |
 | SAGR-006 | Irreducible predictability/upside owner trade-off | None | Pass |
-| SAGR-007 | Research-created action-changing outcome fork | None | Pass |
+| SAGR-007 | Research-created action-changing outcome fork, owner answer and resumed state | None | Pass |
 | SAGR-008 | Scope change with selective evidence invalidation | None | Pass |
-| SAGR-009 | Headcount mechanism versus service outcome | None | Pass |
+| SAGR-009 | Seven object classes and the service outcome ladder | None | Pass |
 | SAGR-010 | Undefined trust aspiration outside execution | None | Pass |
 | SAGR-011 | Bounded discovery for an unvalidated market | None | Pass |
-| SAGR-012 | Operational goal versus unvalidated scanner action | None | Pass |
-| SAGR-013 | Activity labels versus evidenced candidate predictor | None | Pass |
+| SAGR-012 | Operational goal versus infeasible exact action and later unvalidated candidate | None | Pass |
+| SAGR-013 | Activity labels, evidenced candidate predictor and unsupported lag interpolation | None | Pass |
 | SAGR-014 | Training portal output versus time-to-independence outcome | None | Pass |
 | SAGR-015 | Easier toolkit output replacing unchanged customer goal | None | Pass |
 | SAGR-016 | Withdrawn regulation and opportunity-cost goal stop | None | Pass |

@@ -6,12 +6,31 @@
   "proof_layer": "exact-runtime-synthetic",
   "applicability": "Public synthetic behavioural evaluation of the exact installed Strategic Advisor runtime. It does not establish private real-task usefulness, comparative effectiveness, cross-host parity, adoption or support.",
   "case_count": 20,
-  "criterion_count": 31,
+  "criterion_count": 37,
   "multi_turn_case_ids": [
     "SAGR-007",
     "SAGR-008",
     "SAGR-018"
   ],
+  "stateful_case_ids": [
+    "SAGR-007",
+    "SAGR-008"
+  ],
+  "state_assertion_count": 3,
+  "control_pairs": {
+    "QUESTION_GATE": [
+      "SAGR-003",
+      "SAGR-004"
+    ],
+    "FORK_AUTHORITY": [
+      "SAGR-005",
+      "SAGR-006"
+    ],
+    "GOAL_CHANGE_BURDEN": [
+      "SAGR-015",
+      "SAGR-016"
+    ]
+  },
   "categories": {
     "aspiration-handling": "SAGR-010",
     "bounded-reconnaissance": "SAGR-002",
@@ -46,6 +65,8 @@
       "criterion_ids": [
         "DIRECT_NO_STRATEGY_CEREMONY"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     },
     {
@@ -60,6 +81,8 @@
         "RECON_SCAN_FIRST",
         "RECON_TARGETED_QUESTION_ONLY"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     },
     {
@@ -72,7 +95,12 @@
       ],
       "criterion_ids": [
         "ALIGN_OUTCOMES_EXPLICIT",
-        "ALIGN_QUESTION_CHANGES_ACTION"
+        "ALIGN_QUESTION_CHANGES_ACTION",
+        "ALIGN_DECISION_STATE_EXPLICIT"
+      ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [
+        "QUESTION_GATE"
       ],
       "forbidden_behavior_count": 2
     },
@@ -88,6 +116,10 @@
         "ROBUST_MOVE_SHARED",
         "ROBUST_NO_PREMATURE_OWNER_QUESTION"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [
+        "QUESTION_GATE"
+      ],
       "forbidden_behavior_count": 2
     },
     {
@@ -100,6 +132,10 @@
       ],
       "criterion_ids": [
         "EMPIRICAL_RESEARCH_FIRST"
+      ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [
+        "FORK_AUTHORITY"
       ],
       "forbidden_behavior_count": 2
     },
@@ -114,6 +150,10 @@
       "criterion_ids": [
         "OWNER_VALUE_EXPLICIT"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [
+        "FORK_AUTHORITY"
+      ],
       "forbidden_behavior_count": 2
     },
     {
@@ -123,13 +163,21 @@
       "activation": "gate",
       "turn_ids": [
         "T1",
-        "T2"
+        "T2",
+        "T3"
       ],
       "criterion_ids": [
         "RECLARIFY_DELTA_AND_ACTION",
-        "RECLARIFY_SETTLED_STATE"
+        "RECLARIFY_SETTLED_STATE",
+        "RECLARIFY_VERSIONED_OWNER_STATE",
+        "RECLARIFY_RESUME_WITHOUT_RESTART"
       ],
-      "forbidden_behavior_count": 2
+      "state_assertion_ids": [
+        "REOPEN_OUTCOME_AFTER_EVIDENCE",
+        "RESUME_CONFIRMED_OUTCOME"
+      ],
+      "control_pair_ids": [],
+      "forbidden_behavior_count": 3
     },
     {
       "id": "SAGR-008",
@@ -143,6 +191,10 @@
       "criterion_ids": [
         "INVALIDATE_PERFORMANCE_ONLY"
       ],
+      "state_assertion_ids": [
+        "INVALIDATE_SCOPE_DEPENDENT_EVIDENCE"
+      ],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     },
     {
@@ -154,9 +206,12 @@
         "T1"
       ],
       "criterion_ids": [
-        "PROXY_HEADCOUNT_CLASSIFIED",
-        "PROXY_ALTERNATIVE_ROUTES"
+        "GOAL_OBJECT_CLASSES_COMPLETE",
+        "PROXY_ALTERNATIVE_ROUTES",
+        "PROXY_CAUSAL_BRIDGE_REQUIRED"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     },
     {
@@ -170,6 +225,8 @@
       "criterion_ids": [
         "ASPIRATION_VISIBLE_NOT_OPERATIONAL"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     },
     {
@@ -184,6 +241,8 @@
         "DISCOVERY_COMPLETE_CONTRACT",
         "DISCOVERY_NOT_OPERATIONAL_READINESS"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     },
     {
@@ -195,9 +254,12 @@
         "T1"
       ],
       "criterion_ids": [
-        "OPERATIONAL_GOAL_DISTINCT"
+        "OPERATIONAL_GOAL_DISTINCT",
+        "ACTION_INFEASIBLE_AS_POSED"
       ],
-      "forbidden_behavior_count": 2
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
+      "forbidden_behavior_count": 3
     },
     {
       "id": "SAGR-013",
@@ -209,9 +271,12 @@
       ],
       "criterion_ids": [
         "INDICATOR_TASKS_REJECTED",
-        "INDICATOR_EVIDENCE_LIMITED"
+        "INDICATOR_EVIDENCE_LIMITED",
+        "LAG_INTERPOLATION_REJECTED"
       ],
-      "forbidden_behavior_count": 2
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
+      "forbidden_behavior_count": 3
     },
     {
       "id": "SAGR-014",
@@ -225,6 +290,8 @@
         "PROGRESS_OUTPUT_NOT_OUTCOME",
         "PROGRESS_ENABLER_BOUNDED"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     },
     {
@@ -237,6 +304,10 @@
       ],
       "criterion_ids": [
         "GOAL_CHANGE_CHALLENGED"
+      ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [
+        "GOAL_CHANGE_BURDEN"
       ],
       "forbidden_behavior_count": 2
     },
@@ -251,6 +322,10 @@
       "criterion_ids": [
         "GOAL_STOP_QUALIFYING_DELTA"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [
+        "GOAL_CHANGE_BURDEN"
+      ],
       "forbidden_behavior_count": 2
     },
     {
@@ -264,6 +339,8 @@
       "criterion_ids": [
         "EVENT_PREEMPTS_CADENCE"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     },
     {
@@ -279,6 +356,8 @@
         "WEEKLY_PATH_CORRECTION",
         "MONTHLY_GOAL_AND_PATH"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     },
     {
@@ -293,6 +372,8 @@
         "OWNER_REPORT_PROVENANCE",
         "SYSTEM_ABSENCE_NOT_FAILURE"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     },
     {
@@ -307,6 +388,8 @@
         "PROCESS_WASTE_NAMED",
         "PROCESS_REDUCE_OR_STOP"
       ],
+      "state_assertion_ids": [],
+      "control_pair_ids": [],
       "forbidden_behavior_count": 2
     }
   ],

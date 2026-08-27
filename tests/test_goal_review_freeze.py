@@ -27,6 +27,9 @@ class GoalReviewFreezeTests(unittest.TestCase):
         self.assertEqual(document["proof_layer"], "exact-runtime-synthetic")
         self.assertIn("does not establish", document["applicability"])
         self.assertEqual(set(document["categories"]), freeze.EXPECTED_CATEGORIES)
+        self.assertEqual(document["stateful_case_ids"], ["SAGR-007", "SAGR-008"])
+        self.assertEqual(document["state_assertion_count"], 3)
+        self.assertEqual(set(document["control_pairs"]), freeze.EXPECTED_CONTROL_PAIRS)
 
     def test_duplicate_case_id_fails(self) -> None:
         authority = copy.deepcopy(self.authority)
@@ -44,6 +47,30 @@ class GoalReviewFreezeTests(unittest.TestCase):
         authority = copy.deepcopy(self.authority)
         authority["cases"][0]["criteria"][0]["review_turns"] = ["T99"]
         with self.assertRaisesRegex(freeze.FreezeError, "unknown review turn"):
+            freeze.validate_authority(authority)
+
+    def test_reversed_multi_turn_order_fails(self) -> None:
+        authority = copy.deepcopy(self.authority)
+        authority["cases"][6]["turns"].reverse()
+        with self.assertRaisesRegex(freeze.FreezeError, "turns must be ordered"):
+            freeze.validate_authority(authority)
+
+    def test_placeholder_criterion_fails(self) -> None:
+        authority = copy.deepcopy(self.authority)
+        authority["cases"][0]["criteria"][0]["requirement"] = "x"
+        with self.assertRaisesRegex(freeze.FreezeError, "at least 60 characters"):
+            freeze.validate_authority(authority)
+
+    def test_missing_state_assertion_fails(self) -> None:
+        authority = copy.deepcopy(self.authority)
+        authority["cases"][6]["state_assertions"].pop()
+        with self.assertRaisesRegex(freeze.FreezeError, "state assertions differ"):
+            freeze.validate_authority(authority)
+
+    def test_control_pair_membership_is_fixed(self) -> None:
+        authority = copy.deepcopy(self.authority)
+        authority["control_pairs"][0]["case_ids"].reverse()
+        with self.assertRaisesRegex(freeze.FreezeError, "case_ids differ"):
             freeze.validate_authority(authority)
 
 

@@ -6,7 +6,7 @@
     "epic": "EPIC-007",
     "task": "TASK-031",
     "requirements_identity": "sha256:cdbd03660ff1ac27a395209ca8cf128a3894a8a581edcf7717974cdc8358235c",
-    "intent_audit_identity": "sha256:31e34c83c2ec1a2f9411b810cb901618a8fe32bffa56f23703ef660653c41439",
+    "intent_audit_identity": "sha256:96f2dc03f4351372e94175e53b9c6aeabbafbc6a37c9c3d762328e72421c81a3",
     "owner_approval": "John Detlefs, SA: Goal Review Workshop, 2026-08-27"
   },
   "untreated_repository_baseline": {
@@ -92,19 +92,53 @@
       "sha256": "3b3f9c0ff5e4050ed5b8dae1f5815278a980cd02a2dd0857f20e48bacc40e2b0"
     },
     {
+      "path": "evidence/evaluations/drift-smoke/run-009/result.json",
+      "sha256": "b22214f24601e1336039c132f7447f98df97a4b246efd69c4ebf7b59974d5500"
+    },
+    {
       "path": "distribution.json",
       "sha256": "009be258cb4ae54f794c6453062cd39cca984603448eb82c1f1790a191454bb0"
     }
   ],
   "frozen_case_authority": {
     "path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control/TASK-031-Freeze-Combined-Contract-And-Behaviour-Baseline/CASE-AUTHORITY.json",
-    "sha256": "6cf66d293e131d907fd0105fcbc79af03e2c2e4894c602c2be523635ea411539",
+    "sha256": "d94ab8fad7dab599ab045068152d7f67c48f569902d49f986bc4a6c673cb2274",
     "derived_inventory_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control/TASK-031-Freeze-Combined-Contract-And-Behaviour-Baseline/CASE-INVENTORY.json",
-    "derived_inventory_sha256": "c40b93c64293d124bf6b1ad4d8cc4eeee295b9ba955e38b96b427a70d1c639c5",
+    "derived_inventory_sha256": "c41908344bb5fd2bbb4a47661534530361eeb27fb14b72434e38805e8855bd2a",
     "case_count": 20,
-    "criterion_count": 31,
+    "criterion_count": 37,
     "data_classification": "synthetic",
     "treatment_output_seen": false
+  },
+  "frozen_support_artifacts": [
+    {
+      "path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control/TASK-031-Freeze-Combined-Contract-And-Behaviour-Baseline/CLAIM-PROOF-MATRIX.md",
+      "sha256": "ce35a7d82e68d12495f70c84d3c77fa6bfd5c4d4326f271caa01301cd14a5252"
+    },
+    {
+      "path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control/TASK-031-Freeze-Combined-Contract-And-Behaviour-Baseline/PROVENANCE-REVIEW.md",
+      "sha256": "ba974e4b56cf7f0402fdc24c225966789fda0e8d8a56cc544f0b59c353cf97a8"
+    }
+  ],
+  "execution_identity_contract": {
+    "model": "gpt-5.6-sol",
+    "host": "codex-cli",
+    "host_version": "codex-cli 0.148.0-alpha.9",
+    "baseline_result_path": "evidence/evaluations/drift-smoke/run-009/result.json",
+    "baseline_runtime_package_identity_sha256": "8944982b82ca7807f33258dcdb3907b36aa1cc2dff9ee21d54492a68bcc9ecbb",
+    "treatment_runtime_identity_state": "must-freeze-before-first-output",
+    "rule": "TASK-034 may use this frozen model and host only after it records the exact reconciled runner commit, treatment source revision, installed runtime-package identity and activation trace. Viewing a target output before those identities are sealed invalidates the run."
+  },
+  "freeze_scope": {
+    "authority_commit": "PENDING_CORRECTION_COMMIT",
+    "allowed_prefixes": [
+      ".project-workflow/TRACKER.md",
+      ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control",
+      "scripts/build_goal_review_freeze.py",
+      "tests/test_goal_review_freeze.py"
+    ],
+    "changed_path_count": 0,
+    "changed_paths_sha256": "PENDING_CORRECTION_COMMIT"
   },
   "proof_layers": {
     "documented_semantics": "Canonical source review after implementation; not behavioural proof.",
@@ -116,7 +150,7 @@
   "external_prerequisite": {
     "worktree": "/private/tmp/sa-verification-runner",
     "branch": "codex/proportionate-verification-runner",
-    "state_at_freeze": "uncommitted-under-final-integration-and-qa",
+    "state_at_freeze": "active-under-separate-proportionate-verification-programme; durable Strategic Advisor runner commit and integration base not yet reported",
     "rule": "Do not begin runtime or evaluation implementation until the owning task reports a durable commit/merge disposition and correct base. Do not copy or absorb the dirty worktree."
   }
 }
