@@ -19,7 +19,6 @@ from importlib.resources import files
 from pathlib import Path
 from typing import Mapping, Optional, Sequence
 
-
 AGENT_CHOICES = {
     "github-copilot": "GitHub Copilot",
     "claude-code": "Claude Code",
@@ -68,9 +67,9 @@ BACKLOG_ID_PREFIX = "BL"
 ID_PADDING = 3
 WORKFLOW_CONFIG_FILENAME = "config.json"
 WORKFLOW_MANIFEST_FILENAME = "manifest.json"
-CURRENT_PACKAGE_VERSION = "0.7.0"
+CURRENT_PACKAGE_VERSION = "0.8.0"
 CURRENT_MANIFEST_VERSION = 1
-CURRENT_ASSET_VERSION = 6
+CURRENT_ASSET_VERSION = 7
 CURRENT_SCHEMA_VERSION = 1
 COORDINATION_SCHEMA_VERSION = 2
 COORDINATION_CONTRACT_VERSION = 2
@@ -87,6 +86,45 @@ COORDINATION_DRIFT_CLASSIFICATIONS = (
     "drift-detected",
     "approved-change",
 )
+VERIFICATION_CAMPAIGN_SCHEMA_VERSION = 1
+VERIFICATION_CAMPAIGN_MODES = ("certification", "diagnostic")
+VERIFICATION_CAMPAIGN_STAGES = (
+    "deterministic",
+    "canary",
+    "affected",
+    "full",
+)
+VERIFICATION_RECEIPT_OUTCOMES = (
+    "pass",
+    "product-failure",
+    "evaluator-failure",
+    "provider-failure",
+    "harness-failure",
+    "limit-reached",
+)
+VERIFICATION_CAMPAIGN_OUTCOMES = (
+    "pending",
+    "pass",
+    "blocked",
+    "limit-reached",
+)
+VERIFICATION_OPERATIONAL_STATES = (
+    "implementation-required",
+    "verification-required",
+    "qa-required",
+    "delivery-ready",
+    "blocked",
+)
+VERIFICATION_ADAPTER_CAPABILITIES = (
+    "request-binding",
+    "selection",
+    "fail-fast",
+    "limits",
+    "typed-outcomes",
+    "checkpoint-resume",
+    "input-bound-receipts",
+    "transcript-regrade",
+)
 EARLY_OUTCOME_CLAIM_CLASSES = (
     "mechanical",
     "user-facing",
@@ -96,7 +134,7 @@ EARLY_OUTCOME_CLAIM_CLASSES = (
     "migration",
     "replacement",
 )
-SUPPORTED_ASSET_VERSIONS = (1, 2, 3, 4, 5, 6)
+SUPPORTED_ASSET_VERSIONS = (1, 2, 3, 4, 5, 6, 7)
 SUPPORTED_SCHEMA_VERSIONS = (0, 1)
 REPOSITORY_COMPATIBILITY_STATES = (
     "current",
@@ -733,9 +771,7 @@ MANAGED_BLOCK_START = "<!-- project-workflow:start -->"
 MANAGED_BLOCK_END = "<!-- project-workflow:end -->"
 CANONICAL_PACKAGE_SPEC = f"project-workflow=={CURRENT_PACKAGE_VERSION}"
 CANONICAL_INIT_COMMAND = f"uvx --from {CANONICAL_PACKAGE_SPEC} project init"
-CANONICAL_UPGRADE_COMMAND = (
-    f"uvx --from {CANONICAL_PACKAGE_SPEC} project upgrade"
-)
+CANONICAL_UPGRADE_COMMAND = f"uvx --from {CANONICAL_PACKAGE_SPEC} project upgrade"
 
 
 def _words(value: str) -> list[str]:
@@ -913,17 +949,20 @@ def _ensure_user_guidance_file(path: Path) -> str:
 
 
 def _default_workflow_config_text() -> str:
-    return json.dumps(
-        {
-            "task_id_prefixes": [TASK_ID_PREFIX],
-            "default_task_id_prefix": TASK_ID_PREFIX,
-            "id_generation": DEFAULT_ID_GENERATION,
-            "unique_id_length": DEFAULT_UNIQUE_ID_LENGTH,
-            "accepted_doctor_warnings": [],
-            "prefix_guidance": DEFAULT_PREFIX_GUIDANCE,
-        },
-        indent=2,
-    ) + "\n"
+    return (
+        json.dumps(
+            {
+                "task_id_prefixes": [TASK_ID_PREFIX],
+                "default_task_id_prefix": TASK_ID_PREFIX,
+                "id_generation": DEFAULT_ID_GENERATION,
+                "unique_id_length": DEFAULT_UNIQUE_ID_LENGTH,
+                "accepted_doctor_warnings": [],
+                "prefix_guidance": DEFAULT_PREFIX_GUIDANCE,
+            },
+            indent=2,
+        )
+        + "\n"
+    )
 
 
 def _ensure_user_config_file(path: Path) -> str:
@@ -943,11 +982,7 @@ def _ensure_delegation_runtime_ignore(root: Path) -> str:
         return f"Exists: {ignore_path} delegation runtime entry"
     separator = "" if not content or content.endswith("\n") else "\n"
     ignore_path.write_text(
-        content
-        + separator
-        + "\n# Machine-local delegation handles and leases\n"
-        + entry
-        + "\n",
+        content + separator + "\n# Machine-local delegation handles and leases\n" + entry + "\n",
         encoding="utf-8",
     )
     return f"Updated: {ignore_path} delegation runtime entry"
@@ -961,11 +996,7 @@ def _planned_delegation_runtime_ignore(root: Path) -> bytes:
         return content.encode("utf-8")
     separator = "" if not content or content.endswith("\n") else "\n"
     return (
-        content
-        + separator
-        + "\n# Machine-local delegation handles and leases\n"
-        + entry
-        + "\n"
+        content + separator + "\n# Machine-local delegation handles and leases\n" + entry + "\n"
     ).encode("utf-8")
 
 
@@ -1070,6 +1101,16 @@ def _managed_project_workflow_block() -> str:
         "context may continue after explicitly loading the current contract when there is no "
         "conflict or isolation need. Existing lifecycle transitions fail closed on missing, "
         "stale, or drifted decisions; handoff, drift, and checkpoints never create QA.\n"
+        "- At `coordinate init`, durably classify material verification as required or not required; "
+        "required work also records exact claims, stages, and scope. Before any verifier call, use "
+        "`coordinate verification-preflight`, then attach the matching exact-candidate campaign to "
+        "the existing coordination state. Run canonical cheap-to-expensive stages, certification fail-fast, separately "
+        "bounded diagnostics, finite non-waiving limits, input-bound typed receipts, and optional "
+        "manual or generic command/JSON adapters. Source changes require fresh affected proof; "
+        "evaluator-only changes regrade retained output with zero target calls; infrastructure gets "
+        "one bounded retry; unknown material impact requires full proof. The derived "
+        "implementation/verification/QA/delivery/blocked projection is read-only and never creates "
+        "another lifecycle or QA. Cheap work needs no campaign.\n"
         "- The coordinator alone writes shared workflow state and verifies worker identity, source, "
         "scope, validation, and evidence before satisfying dependencies. A failure blocks its "
         "descendants; unrelated branches continue only while shared premises remain valid. "
@@ -1536,8 +1577,7 @@ class TaskExecutionObligations:
                 )
             object.__setattr__(self, label.replace(" ", "_"), normalized)
         if any(
-            repository != "."
-            and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", repository)
+            repository != "." and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", repository)
             for repository in self.repositories
         ):
             raise TaskOrchestrationError(
@@ -1677,8 +1717,7 @@ def _task_orchestration_state_payload(state: TaskOrchestrationState) -> dict[str
         "used_handles": sorted(state.used_handles),
         "shared_state_revisions": [list(item) for item in state.shared_state_revisions],
         "integrated_paths": [
-            [revision, unit_id, list(paths)]
-            for revision, unit_id, paths in state.integrated_paths
+            [revision, unit_id, list(paths)] for revision, unit_id, paths in state.integrated_paths
         ],
         "units": {
             unit_id: {
@@ -1759,7 +1798,16 @@ def _task_orchestration_state_from_payload(payload: object) -> TaskOrchestration
         "blocked_by",
         "completion_provenance",
     }
-    valid_states = {"pending", "active", "returned", "done", "failed", "blocked", "halted", "orphaned"}
+    valid_states = {
+        "pending",
+        "active",
+        "returned",
+        "done",
+        "failed",
+        "blocked",
+        "halted",
+        "orphaned",
+    }
     for unit_id, raw in raw_units.items():
         if not isinstance(unit_id, str) or not isinstance(raw, dict) or set(raw) - unit_allowed:
             raise TaskOrchestrationError(
@@ -1805,9 +1853,7 @@ def _task_orchestration_state_from_payload(payload: object) -> TaskOrchestration
     used_handles = payload["used_handles"]
     assert isinstance(used_handles, list)
     if not all(isinstance(item, str) and item for item in used_handles):
-        raise TaskOrchestrationError(
-            "PW_TASK_RUNTIME_INVALID", "Task runtime handles are invalid."
-        )
+        raise TaskOrchestrationError("PW_TASK_RUNTIME_INVALID", "Task runtime handles are invalid.")
     raw_integrated = payload["integrated_paths"]
     assert isinstance(raw_integrated, list)
     integrated_paths: list[tuple[int, str, tuple[str, ...]]] = []
@@ -1895,9 +1941,7 @@ def _task_worker_scope_forbidden(scope: str) -> bool:
         return True
     if scope == ".project-workflow/cli/workflow.py":
         return False
-    return scope == "." or scope == ".project-workflow" or scope.startswith(
-        ".project-workflow/"
-    )
+    return scope == "." or scope == ".project-workflow" or scope.startswith(".project-workflow/")
 
 
 def _task_execution_fingerprint(
@@ -1955,9 +1999,7 @@ class TaskOrchestrator:
                 "PW_TASK_TARGET_REQUIRED", "Task orchestration requires exactly one Task target."
             )
         durable_surfaces = sorted(
-            unit.unit_id
-            for unit in plan.units
-            if unit.executor in {"persistent-task", "peer-team"}
+            unit.unit_id for unit in plan.units if unit.executor in {"persistent-task", "peer-team"}
         )
         if durable_surfaces:
             raise TaskOrchestrationError(
@@ -1988,9 +2030,7 @@ class TaskOrchestrator:
         self.capabilities = capabilities
         self._dependants = {
             unit_id: tuple(
-                candidate.unit_id
-                for candidate in plan.units
-                if unit_id in candidate.dependencies
+                candidate.unit_id for candidate in plan.units if unit_id in candidate.dependencies
             )
             for unit_id in self.units
         }
@@ -2007,9 +2047,7 @@ class TaskOrchestrator:
                     state=(
                         "done"
                         if unit.canonical_state == "complete"
-                        else "blocked"
-                        if unit.canonical_state == "blocked"
-                        else "pending"
+                        else "blocked" if unit.canonical_state == "blocked" else "pending"
                     ),
                     canonical_blocked=unit.canonical_state == "blocked",
                 )
@@ -2097,9 +2135,7 @@ class TaskOrchestrator:
                     "Persisted Task runtime target or worktree does not match this run.",
                 )
             if "task_orchestration" in state:
-                stored_task = _task_orchestration_state_from_payload(
-                    state["task_orchestration"]
-                )
+                stored_task = _task_orchestration_state_from_payload(state["task_orchestration"])
                 if stored_task.plan_fingerprint != self.state.plan_fingerprint:
                     raise TaskOrchestrationError(
                         "PW_TASK_RUNTIME_PLAN_MISMATCH",
@@ -2113,13 +2149,17 @@ class TaskOrchestrator:
             projected = (
                 "complete"
                 if run.state == "done"
-                else "active"
-                if run.state in {"active", "returned"}
-                else "orphaned"
-                if run.state == "orphaned"
-                else "blocked"
-                if run.state in {"failed", "blocked", "halted"}
-                else "pending"
+                else (
+                    "active"
+                    if run.state in {"active", "returned"}
+                    else (
+                        "orphaned"
+                        if run.state == "orphaned"
+                        else (
+                            "blocked" if run.state in {"failed", "blocked", "halted"} else "pending"
+                        )
+                    )
+                )
             )
             stored_units[unit_id] = {"state": projected, "handle": None}
         _write_delegation_runtime_state(root, self.plan, state)
@@ -2162,14 +2202,16 @@ class TaskOrchestrator:
         reserved_slots = sum(
             self.units[unit_id].required_child_slots
             for unit_id in actual_active
-            if self.units[unit_id].executor
-            in {"subagent", "persistent-task", "peer-team"}
+            if self.units[unit_id].executor in {"subagent", "persistent-task", "peer-team"}
         )
-        available_slots = max(0, min(
-            self.plan.requested_concurrency - reserved_slots,
-            self.plan.available_child_capacity - reserved_slots,
-            self.capabilities.available_child_capacity,
-        ))
+        available_slots = max(
+            0,
+            min(
+                self.plan.requested_concurrency - reserved_slots,
+                self.plan.available_child_capacity - reserved_slots,
+                self.capabilities.available_child_capacity,
+            ),
+        )
         exclusive_reserved = any(
             self.units[unit_id].executor == "coordinator"
             or self.units[unit_id].schedule == "sequential"
@@ -2181,9 +2223,7 @@ class TaskOrchestrator:
             run = self.state.units[unit.unit_id]
             if run.state in {"active", "returned", "done", "failed", "blocked", "halted"}:
                 decisions.append(
-                    TaskExecutorDecision(
-                        unit.unit_id, "none", False, f"Unit state is {run.state}."
-                    )
+                    TaskExecutorDecision(unit.unit_id, "none", False, f"Unit state is {run.state}.")
                 )
                 continue
             if run.state == "orphaned":
@@ -2198,9 +2238,7 @@ class TaskOrchestrator:
                 continue
             if not self.state.shared_premise_valid:
                 decisions.append(
-                    TaskExecutorDecision(
-                        unit.unit_id, "none", False, "Shared premise is invalid."
-                    )
+                    TaskExecutorDecision(unit.unit_id, "none", False, "Shared premise is invalid.")
                 )
                 continue
             if not self._dependencies_done(unit):
@@ -2243,7 +2281,8 @@ class TaskOrchestrator:
             elif unit.executor == "persistent-task":
                 required = {"persistent-task", "task-monitoring", "task-reconciliation"}
                 if unit.execution_needs.isolated_worktree and not {
-                    "persistent-task-isolated-worktree", "isolated-worktree"
+                    "persistent-task-isolated-worktree",
+                    "isolated-worktree",
                 }.intersection(runtime_capabilities):
                     required.add("persistent-task-isolated-worktree")
                 if unit.execution_needs.direct_owner_steering:
@@ -2255,7 +2294,9 @@ class TaskOrchestrator:
             else:
                 decisions.append(
                     TaskExecutorDecision(
-                        unit.unit_id, "none", False,
+                        unit.unit_id,
+                        "none",
+                        False,
                         f"Immutable delegation plan executor {unit.executor} is unsupported.",
                     )
                 )
@@ -2267,25 +2308,18 @@ class TaskOrchestrator:
             )
             if missing_plan or missing_runtime or source_mismatch:
                 reasons = [f"immutable plan lacks verified {item}" for item in missing_plan]
-                reasons.extend(
-                    f"current runtime lacks verified {item}" for item in missing_runtime
-                )
+                reasons.extend(f"current runtime lacks verified {item}" for item in missing_runtime)
                 if source_mismatch:
                     reasons.append("runtime capability source does not match the immutable plan")
                 decisions.append(
-                    TaskExecutorDecision(
-                        unit.unit_id, "none", False, "; ".join(reasons) + "."
-                    )
+                    TaskExecutorDecision(unit.unit_id, "none", False, "; ".join(reasons) + ".")
                 )
                 continue
             collision = any(self._scope_collision(unit.unit_id, item) for item in active)
             capacity = unit.required_child_slots <= available_slots
             parallel = unit.schedule == "parallel"
             launchable = (
-                not collision
-                and capacity
-                and not exclusive_reserved
-                and (parallel or not active)
+                not collision and capacity and not exclusive_reserved and (parallel or not active)
             )
             if launchable:
                 decisions.append(
@@ -2322,9 +2356,7 @@ class TaskOrchestrator:
                 )
         return tuple(decisions)
 
-    def launch(
-        self, unit_id: str, *, handle: str, coordinator_token: str
-    ) -> TaskWorkPacket:
+    def launch(self, unit_id: str, *, handle: str, coordinator_token: str) -> TaskWorkPacket:
         self._require_coordinator(coordinator_token)
         if unit_id not in self.units:
             raise TaskOrchestrationError("PW_TASK_UNIT_UNKNOWN", f"Unknown unit {unit_id}.")
@@ -2358,9 +2390,7 @@ class TaskOrchestrator:
                 f"{unit_id} overlaps in-flight work and was rejected before launch.",
             )
         if not decision.launchable:
-            raise TaskOrchestrationError(
-                "PW_TASK_NOT_LAUNCHABLE", f"{unit_id}: {decision.reason}"
-            )
+            raise TaskOrchestrationError("PW_TASK_NOT_LAUNCHABLE", f"{unit_id}: {decision.reason}")
         unit = self.units[unit_id]
         duty = self.obligations[unit_id]
         run.state = "active"
@@ -2493,7 +2523,9 @@ class TaskOrchestrator:
             item for item in duty.evidence if observed_evidence.get(item) is not True
         )
         if missing_validation:
-            issues.append("Required validation did not pass: " + ", ".join(missing_validation) + ".")
+            issues.append(
+                "Required validation did not pass: " + ", ".join(missing_validation) + "."
+            )
         if missing_evidence:
             issues.append("Required evidence is absent: " + ", ".join(missing_evidence) + ".")
         if issues:
@@ -2505,9 +2537,7 @@ class TaskOrchestrator:
         self.state.integration_revision += 1
         self.state.integrated_paths.append((self.state.integration_revision, unit_id, observed))
         newly_eligible = tuple(
-            item.unit_id
-            for item in self.decisions()
-            if item.launchable and item.executor != "none"
+            item.unit_id for item in self.decisions() if item.launchable and item.executor != "none"
         )
         return TaskVerificationResult(unit_id, True, "done", (), newly_eligible)
 
@@ -2523,9 +2553,7 @@ class TaskOrchestrator:
     ) -> TaskVerificationResult:
         self._require_coordinator(coordinator_token)
         if result.unit_id not in self.units:
-            raise TaskOrchestrationError(
-                "PW_TASK_UNIT_UNKNOWN", f"Unknown unit {result.unit_id}."
-            )
+            raise TaskOrchestrationError("PW_TASK_UNIT_UNKNOWN", f"Unknown unit {result.unit_id}.")
         unit = self.units[result.unit_id]
         run = self.state.units[result.unit_id]
         if run.state not in {"active", "returned"} or run.handle != result.handle:
@@ -2533,10 +2561,7 @@ class TaskOrchestrator:
                 "PW_TASK_RESULT_UNMATCHED",
                 "Returned work does not match the coordinator's active bounded handle.",
             )
-        if (
-            result.plan_fingerprint != self.state.plan_fingerprint
-            or result.attempt != run.attempt
-        ):
+        if result.plan_fingerprint != self.state.plan_fingerprint or result.attempt != run.attempt:
             raise TaskOrchestrationError(
                 "PW_TASK_RESULT_STALE",
                 "Returned work belongs to a different plan fingerprint or launch attempt.",
@@ -2598,9 +2623,7 @@ class TaskOrchestrator:
             path
             for path in observed
             if any(
-                _delegation_scope_overlap(path, prior)
-                for paths in intervening
-                for prior in paths
+                _delegation_scope_overlap(path, prior) for paths in intervening for prior in paths
             )
         )
         if collisions:
@@ -2611,7 +2634,9 @@ class TaskOrchestrator:
             item for item in duty.validations if observed_validations.get(item) is not True
         )
         if missing_validation:
-            issues.append("Required validation did not pass: " + ", ".join(missing_validation) + ".")
+            issues.append(
+                "Required validation did not pass: " + ", ".join(missing_validation) + "."
+            )
         missing_evidence = tuple(
             item for item in duty.evidence if observed_evidence.get(item) is not True
         )
@@ -2651,9 +2676,7 @@ class TaskOrchestrator:
             (self.state.integration_revision, result.unit_id, observed)
         )
         newly_eligible = tuple(
-            item.unit_id
-            for item in self.decisions()
-            if item.launchable and item.executor != "none"
+            item.unit_id for item in self.decisions() if item.launchable and item.executor != "none"
         )
         return TaskVerificationResult(result.unit_id, True, "done", (), newly_eligible)
 
@@ -2705,8 +2728,7 @@ class TaskOrchestrator:
         invalid_canonical = tuple(
             unit_id
             for unit_id in canonical
-            if unit_id not in self.units
-            or self.units[unit_id].canonical_state != "complete"
+            if unit_id not in self.units or self.units[unit_id].canonical_state != "complete"
         )
         if invalid_canonical:
             raise TaskOrchestrationError(
@@ -2822,8 +2844,7 @@ class EpicOrchestrationError(ValueError):
 
 def _epic_opaque_handle_valid(value: object) -> bool:
     return bool(
-        isinstance(value, str)
-        and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}", value)
+        isinstance(value, str) and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}", value)
     )
 
 
@@ -2851,9 +2872,7 @@ class EpicHostCapabilities:
                 self.reconciliation,
             )
         )
-        if claims_support and (
-            not self.current_session_verified or not self.source.strip()
-        ):
+        if claims_support and (not self.current_session_verified or not self.source.strip()):
             raise EpicOrchestrationError(
                 "PW_EPIC_CAPABILITY_UNVERIFIED",
                 "Epic host capabilities require a named current-session observation source.",
@@ -2938,8 +2957,7 @@ class EpicChildObligations:
             ) from error
         object.__setattr__(self, "write_scope", normalized_scope)
         if any(
-            repository != "."
-            and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", repository)
+            repository != "." and not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]*", repository)
             for repository in self.repositories
         ):
             raise EpicOrchestrationError(
@@ -3175,9 +3193,7 @@ def _epic_orchestration_state_payload(state: EpicOrchestrationState) -> dict[str
         "create_count": state.create_count,
         "used_intents": sorted(state.used_intents),
         "used_handles": sorted(state.used_handles),
-        "verified_paths": [
-            [unit_id, list(paths)] for unit_id, paths in state.verified_paths
-        ],
+        "verified_paths": [[unit_id, list(paths)] for unit_id, paths in state.verified_paths],
         "units": {
             unit_id: {
                 "state": run.state,
@@ -3220,9 +3236,18 @@ def _epic_orchestration_state_from_payload(payload: object) -> EpicOrchestration
             "PW_EPIC_RUNTIME_INVALID", "Epic orchestration runtime schema is invalid."
         )
     allowed = {
-        "schema_version", "target_id", "plan_fingerprint", "coordinator_hash",
-        "coordinator_worktree", "base_commit", "shared_premise_valid", "failure_seen",
-        "create_count", "used_intents", "used_handles", "units",
+        "schema_version",
+        "target_id",
+        "plan_fingerprint",
+        "coordinator_hash",
+        "coordinator_worktree",
+        "base_commit",
+        "shared_premise_valid",
+        "failure_seen",
+        "create_count",
+        "used_intents",
+        "used_handles",
+        "units",
     }
     allowed.add("integrated_paths" if schema_version == 1 else "verified_paths")
     if set(payload) - allowed:
@@ -3233,10 +3258,17 @@ def _epic_orchestration_state_from_payload(payload: object) -> EpicOrchestration
             + ".",
         )
     required_strings = (
-        "target_id", "plan_fingerprint", "coordinator_hash", "coordinator_worktree", "base_commit"
+        "target_id",
+        "plan_fingerprint",
+        "coordinator_hash",
+        "coordinator_worktree",
+        "base_commit",
     )
     if (
-        any(not isinstance(payload.get(key), str) or not payload.get(key) for key in required_strings)
+        any(
+            not isinstance(payload.get(key), str) or not payload.get(key)
+            for key in required_strings
+        )
         or not isinstance(payload.get("shared_premise_valid"), bool)
         or not isinstance(payload.get("failure_seen"), bool)
         or not isinstance(payload.get("create_count"), int)
@@ -3255,8 +3287,7 @@ def _epic_orchestration_state_from_payload(payload: object) -> EpicOrchestration
     used_intents = payload["used_intents"]
     used_handles = payload["used_handles"]
     if not all(
-        isinstance(item, str) and re.fullmatch(r"[0-9a-f]{64}", item)
-        for item in used_intents
+        isinstance(item, str) and re.fullmatch(r"[0-9a-f]{64}", item) for item in used_intents
     ) or not all(_epic_opaque_handle_valid(item) for item in used_handles):
         raise EpicOrchestrationError(
             "PW_EPIC_RUNTIME_INVALID", "Epic runtime intent or handle identities are invalid."
@@ -3270,14 +3301,15 @@ def _epic_orchestration_state_from_payload(payload: object) -> EpicOrchestration
         raise EpicOrchestrationError(
             "PW_EPIC_RUNTIME_INVALID", "Epic runtime creation identity counts are inconsistent."
         )
-    raw_verified = payload[
-        "integrated_paths" if schema_version == 1 else "verified_paths"
-    ]
+    raw_verified = payload["integrated_paths" if schema_version == 1 else "verified_paths"]
     verified_paths: list[tuple[str, tuple[str, ...]]] = []
     for item in raw_verified:
         if (
-            not isinstance(item, list) or len(item) != 2 or not isinstance(item[0], str)
-            or not isinstance(item[1], list) or not all(isinstance(path, str) for path in item[1])
+            not isinstance(item, list)
+            or len(item) != 2
+            or not isinstance(item[0], str)
+            or not isinstance(item[1], list)
+            or not all(isinstance(path, str) for path in item[1])
         ):
             raise EpicOrchestrationError(
                 "PW_EPIC_RUNTIME_INVALID", "Epic verified path history is invalid."
@@ -3285,20 +3317,44 @@ def _epic_orchestration_state_from_payload(payload: object) -> EpicOrchestration
         verified_paths.append((item[0], tuple(item[1])))
     units: dict[str, EpicUnitRun] = {}
     unit_allowed = {
-        "state", "attempt", "intent_id", "handle", "branch", "worktree", "base_commit",
-        "checkpointed", "issues", "blocked_by", "completion_provenance",
+        "state",
+        "attempt",
+        "intent_id",
+        "handle",
+        "branch",
+        "worktree",
+        "base_commit",
+        "checkpointed",
+        "issues",
+        "blocked_by",
+        "completion_provenance",
     }
     if schema_version == 2:
         unit_allowed.update(
             {
-                "executor", "visibility_class", "retention_policy", "disposition_state",
-                "disposition_receipt", "attention_reasons", "owner_promoted",
-                "explicit_retain_reason", "retirement_state", "retirement_intent_id",
-                "retirement_ack", "prior_handles",
+                "executor",
+                "visibility_class",
+                "retention_policy",
+                "disposition_state",
+                "disposition_receipt",
+                "attention_reasons",
+                "owner_promoted",
+                "explicit_retain_reason",
+                "retirement_state",
+                "retirement_intent_id",
+                "retirement_ack",
+                "prior_handles",
             }
         )
     valid_states = {
-        "pending", "active", "returned", "verified", "failed", "blocked", "halted", "orphaned"
+        "pending",
+        "active",
+        "returned",
+        "verified",
+        "failed",
+        "blocked",
+        "halted",
+        "orphaned",
     }
     raw_units = payload["units"]
     assert isinstance(raw_units, dict)
@@ -3308,30 +3364,37 @@ def _epic_orchestration_state_from_payload(payload: object) -> EpicOrchestration
                 "PW_EPIC_RUNTIME_PRIVATE_FIELD", f"{unit_id} runtime entry is malformed."
             )
         optional_strings = (
-            "intent_id", "handle", "branch", "worktree", "base_commit",
-            "completion_provenance", "disposition_receipt", "explicit_retain_reason",
-            "retirement_intent_id", "retirement_ack",
+            "intent_id",
+            "handle",
+            "branch",
+            "worktree",
+            "base_commit",
+            "completion_provenance",
+            "disposition_receipt",
+            "explicit_retain_reason",
+            "retirement_intent_id",
+            "retirement_ack",
         )
         intent_id = raw.get("intent_id")
         handle = raw.get("handle")
         if (
             raw.get("state") not in valid_states
-            or not isinstance(raw.get("attempt"), int) or raw.get("attempt", -1) < 0
-            or any(raw.get(key) is not None and not isinstance(raw.get(key), str) for key in optional_strings)
+            or not isinstance(raw.get("attempt"), int)
+            or raw.get("attempt", -1) < 0
+            or any(
+                raw.get(key) is not None and not isinstance(raw.get(key), str)
+                for key in optional_strings
+            )
             or not isinstance(raw.get("checkpointed"), bool)
             or not isinstance(raw.get("issues"), list)
             or not all(
-                isinstance(item, str)
-                and re.fullmatch(r"PW_EPIC_[A-Z0-9_]{1,64}", item)
+                isinstance(item, str) and re.fullmatch(r"PW_EPIC_[A-Z0-9_]{1,64}", item)
                 for item in raw.get("issues", [])
             )
             or not isinstance(raw.get("blocked_by"), list)
             or not all(isinstance(item, str) for item in raw.get("blocked_by", []))
             or intent_id is not None
-            and (
-                not re.fullmatch(r"[0-9a-f]{64}", intent_id)
-                or intent_id not in used_intents
-            )
+            and (not re.fullmatch(r"[0-9a-f]{64}", intent_id) or intent_id not in used_intents)
             or handle is not None
             and (not _epic_opaque_handle_valid(handle) or handle not in used_handles)
         ):
@@ -3352,9 +3415,15 @@ def _epic_orchestration_state_from_payload(payload: object) -> EpicOrchestration
                 or visibility_class not in {"ephemeral", "visible-retirable", "visible-retained"}
                 or retention_policy not in {"not-applicable", "retire-on-verified", "retain"}
                 or disposition_state not in {"pending", "integrated", "no-integration"}
-                or retirement_state not in {
-                    "not-applicable", "pending", "requested", "confirmed", "failed",
-                    "unknown", "retained",
+                or retirement_state
+                not in {
+                    "not-applicable",
+                    "pending",
+                    "requested",
+                    "confirmed",
+                    "failed",
+                    "unknown",
+                    "retained",
                 }
                 or not isinstance(attention_reasons, list)
                 or not all(
@@ -3380,19 +3449,23 @@ def _epic_orchestration_state_from_payload(payload: object) -> EpicOrchestration
             retention_policy = "retain" if launched else "not-applicable"
             disposition_state = "pending"
             retirement_state = "retained" if launched else "not-applicable"
-            attention_reasons = (
-                ["legacy-handle-unavailable"] if launched and handle is None else []
-            )
+            attention_reasons = ["legacy-handle-unavailable"] if launched and handle is None else []
             prior_handles = []
             retirement_intent_id = None
         units[unit_id] = EpicUnitRun(
-            state=str(raw["state"]), attempt=int(raw["attempt"]),
-            intent_id=raw.get("intent_id"), handle=raw.get("handle"),
-            branch=raw.get("branch"), worktree=raw.get("worktree"),
-            base_commit=raw.get("base_commit"), checkpointed=bool(raw["checkpointed"]),
-            issues=tuple(raw["issues"]), blocked_by=tuple(raw["blocked_by"]),
+            state=str(raw["state"]),
+            attempt=int(raw["attempt"]),
+            intent_id=raw.get("intent_id"),
+            handle=raw.get("handle"),
+            branch=raw.get("branch"),
+            worktree=raw.get("worktree"),
+            base_commit=raw.get("base_commit"),
+            checkpointed=bool(raw["checkpointed"]),
+            issues=tuple(raw["issues"]),
+            blocked_by=tuple(raw["blocked_by"]),
             completion_provenance=raw.get("completion_provenance"),
-            executor=str(executor), visibility_class=str(visibility_class),
+            executor=str(executor),
+            visibility_class=str(visibility_class),
             retention_policy=str(retention_policy),
             disposition_state=str(disposition_state),
             disposition_receipt=raw.get("disposition_receipt"),
@@ -3405,14 +3478,18 @@ def _epic_orchestration_state_from_payload(payload: object) -> EpicOrchestration
             prior_handles=tuple(prior_handles),
         )
     return EpicOrchestrationState(
-        schema_version=2, target_id=str(payload["target_id"]),
+        schema_version=2,
+        target_id=str(payload["target_id"]),
         plan_fingerprint=str(payload["plan_fingerprint"]),
         coordinator_hash=str(payload["coordinator_hash"]),
         coordinator_worktree=str(payload["coordinator_worktree"]),
-        base_commit=str(payload["base_commit"]), units=units,
+        base_commit=str(payload["base_commit"]),
+        units=units,
         shared_premise_valid=bool(payload["shared_premise_valid"]),
-        failure_seen=bool(payload["failure_seen"]), create_count=int(payload["create_count"]),
-        used_intents=set(used_intents), used_handles=set(used_handles),
+        failure_seen=bool(payload["failure_seen"]),
+        create_count=int(payload["create_count"]),
+        used_intents=set(used_intents),
+        used_handles=set(used_handles),
         verified_paths=verified_paths,
         migrated_from_version=1 if schema_version == 1 else None,
     )
@@ -3422,8 +3499,11 @@ def _epic_execution_fingerprint(
     plan: DelegationPlan, obligations: Mapping[str, EpicChildObligations], base_commit: str
 ) -> str:
     payload = {
-        "target": {"id": plan.target.target_id, "source": plan.target.source_path,
-                   "source_hash": plan.target.source_hash},
+        "target": {
+            "id": plan.target.target_id,
+            "source": plan.target.source_path,
+            "source_hash": plan.target.source_hash,
+        },
         "base_commit": base_commit,
         "execution_authority": {
             "requested_concurrency": plan.requested_concurrency,
@@ -3434,7 +3514,8 @@ def _epic_execution_fingerprint(
         },
         "units": [
             {
-                "id": unit.unit_id, "dependencies": unit.dependencies,
+                "id": unit.unit_id,
+                "dependencies": unit.dependencies,
                 "authority_acs": unit.authority_acs,
                 "execution_needs": unit.execution_needs.properties(),
                 "requested_executor": unit.requested_executor,
@@ -3463,8 +3544,11 @@ def _epic_execution_fingerprint_v1(
 ) -> str:
     """Reproduce the 0.4 runtime identity solely to migrate exact legacy state."""
     payload = {
-        "target": {"id": plan.target.target_id, "source": plan.target.source_path,
-                   "source_hash": plan.target.source_hash},
+        "target": {
+            "id": plan.target.target_id,
+            "source": plan.target.source_path,
+            "source_hash": plan.target.source_hash,
+        },
         "base_commit": base_commit,
         "execution_authority": {
             "requested_concurrency": plan.requested_concurrency,
@@ -3475,7 +3559,8 @@ def _epic_execution_fingerprint_v1(
         },
         "units": [
             {
-                "id": unit.unit_id, "dependencies": unit.dependencies,
+                "id": unit.unit_id,
+                "dependencies": unit.dependencies,
                 "authority_acs": unit.authority_acs,
                 "obligations": {
                     "parent_acs": obligations[unit.unit_id].parent_acs,
@@ -3497,9 +3582,14 @@ class EpicOrchestrator:
     """Coordinator-only state machine for durable capability-aware execution surfaces."""
 
     def __init__(
-        self, *, plan: DelegationPlan, obligations: Mapping[str, EpicChildObligations],
-        capabilities: EpicHostCapabilities, coordinator_token: str,
-        coordinator_worktree: Path, base_commit: str,
+        self,
+        *,
+        plan: DelegationPlan,
+        obligations: Mapping[str, EpicChildObligations],
+        capabilities: EpicHostCapabilities,
+        coordinator_token: str,
+        coordinator_worktree: Path,
+        base_commit: str,
     ) -> None:
         if plan.target.kind not in {"task", "epic"}:
             raise EpicOrchestrationError(
@@ -3527,9 +3617,8 @@ class EpicOrchestrator:
                 "Epic child obligations must match every selected canonical child exactly.",
             )
         for unit_id, duty in obligations.items():
-            if (
-                plan.target.kind == "epic"
-                and tuple(duty.parent_acs) != tuple(self.units[unit_id].authority_acs)
+            if plan.target.kind == "epic" and tuple(duty.parent_acs) != tuple(
+                self.units[unit_id].authority_acs
             ):
                 raise EpicOrchestrationError(
                     "PW_EPIC_AUTHORITY_MISMATCH",
@@ -3545,18 +3634,23 @@ class EpicOrchestrator:
         }
         fingerprint = _epic_execution_fingerprint(plan, obligations, base_commit)
         self.state = EpicOrchestrationState(
-            schema_version=2, target_id=plan.target.target_id,
+            schema_version=2,
+            target_id=plan.target.target_id,
             plan_fingerprint=fingerprint,
             coordinator_hash=self._token_hash(coordinator_token),
             coordinator_worktree=str(coordinator_worktree.resolve()),
             base_commit=base_commit,
             units={
                 unit.unit_id: EpicUnitRun(
-                    state=("verified" if unit.canonical_state == "complete" else
-                           "blocked" if unit.canonical_state == "blocked" else "pending"),
+                    state=(
+                        "verified"
+                        if unit.canonical_state == "complete"
+                        else "blocked" if unit.canonical_state == "blocked" else "pending"
+                    ),
                     completion_provenance=(
                         f"canonical:{plan.target.source_path}#{plan.target.source_hash}"
-                        if unit.canonical_state == "complete" else None
+                        if unit.canonical_state == "complete"
+                        else None
                     ),
                     executor=unit.executor,
                     visibility_class=unit.visibility_class,
@@ -3566,12 +3660,17 @@ class EpicOrchestrator:
                     ),
                     disposition_receipt=(
                         f"canonical:{plan.target.source_hash}"
-                        if unit.canonical_state == "complete" else None
+                        if unit.canonical_state == "complete"
+                        else None
                     ),
                     retirement_state=(
-                        "pending" if unit.visibility_class == "visible-retirable"
-                        else "retained" if unit.visibility_class == "visible-retained"
-                        else "not-applicable"
+                        "pending"
+                        if unit.visibility_class == "visible-retirable"
+                        else (
+                            "retained"
+                            if unit.visibility_class == "visible-retained"
+                            else "not-applicable"
+                        )
                     ),
                 )
                 for unit in plan.units
@@ -3691,12 +3790,14 @@ class EpicOrchestrator:
                 required.add("subagent-isolated-worktree")
         elif unit.executor == "persistent-task":
             required = {
-                "persistent-task", "task-monitoring", "task-reconciliation",
+                "persistent-task",
+                "task-monitoring",
+                "task-reconciliation",
             }
             if unit.execution_needs.isolated_worktree:
-                if not {
-                    "persistent-task-isolated-worktree", "isolated-worktree"
-                }.intersection(runtime):
+                if not {"persistent-task-isolated-worktree", "isolated-worktree"}.intersection(
+                    runtime
+                ):
                     required.add("persistent-task-isolated-worktree")
         elif unit.executor == "peer-team":
             required = {"peer-team", "peer-messaging"}
@@ -3718,21 +3819,29 @@ class EpicOrchestrator:
         unit = self.units[unit_id]
         duty = self.obligations[unit_id]
         return EpicChildWorkPacket(
-            target_id=self.state.target_id, target_kind=self.plan.target.kind,
+            target_id=self.state.target_id,
+            target_kind=self.plan.target.kind,
             target_source=self.plan.target.source_path,
             target_source_hash=self.plan.target.source_hash,
-            unit_id=unit_id, unit_title=unit.title, parent_acs=duty.parent_acs,
+            unit_id=unit_id,
+            unit_title=unit.title,
+            parent_acs=duty.parent_acs,
             verified_dependencies=tuple(
-                dependency for dependency in unit.dependencies
+                dependency
+                for dependency in unit.dependencies
                 if dependency not in self.state.units
                 or self.state.units[dependency].state == "verified"
             ),
-            repositories=duty.repositories, write_scope=duty.write_scope,
-            validations=duty.validations, evidence=duty.evidence,
+            repositories=duty.repositories,
+            write_scope=duty.write_scope,
+            validations=duty.validations,
+            evidence=duty.evidence,
             forbidden_actions=EPIC_CHILD_FORBIDDEN_ACTIONS,
             stop_conditions=EPIC_CHILD_STOP_CONDITIONS,
-            base_commit=self.state.base_commit, plan_fingerprint=self.state.plan_fingerprint,
-            executor=unit.executor, visibility_class=unit.visibility_class,
+            base_commit=self.state.base_commit,
+            plan_fingerprint=self.state.plan_fingerprint,
+            executor=unit.executor,
+            visibility_class=unit.visibility_class,
             retention_policy=unit.retention_policy,
             isolated_worktree_required=unit.execution_needs.isolated_worktree,
             attempt=attempt,
@@ -3749,20 +3858,23 @@ class EpicOrchestrator:
                 if self.state.units[unit.unit_id].state == "pending"
             }
         active = [
-            unit_id for unit_id, run in self.state.units.items()
+            unit_id
+            for unit_id, run in self.state.units.items()
             if run.state in {"active", "returned"}
         ]
         active_child_slots = sum(
             self.units[unit_id].required_child_slots
             for unit_id in active
-            if self.units[unit_id].executor
-            in {"subagent", "persistent-task", "peer-team"}
+            if self.units[unit_id].executor in {"subagent", "persistent-task", "peer-team"}
         )
-        available = max(0, min(
-            self.plan.requested_concurrency - active_child_slots,
-            self.plan.available_child_capacity - active_child_slots,
-            self.capabilities.available_child_capacity,
-        ))
+        available = max(
+            0,
+            min(
+                self.plan.requested_concurrency - active_child_slots,
+                self.plan.available_child_capacity - active_child_slots,
+                self.capabilities.available_child_capacity,
+            ),
+        )
         reserved = list(active)
         intents: list[EpicLaunchIntent] = []
         for unit in self.plan.units:
@@ -3778,9 +3890,7 @@ class EpicOrchestrator:
                 )
             unit_reasons.extend(self._surface_runtime_reasons(unit))
             collisions = [
-                other_id
-                for other_id in reserved
-                if self._scope_collision(unit.unit_id, other_id)
+                other_id for other_id in reserved if self._scope_collision(unit.unit_id, other_id)
             ]
             if collisions:
                 unit_reasons.append(
@@ -3802,9 +3912,12 @@ class EpicOrchestrator:
             intent_id = hashlib.sha256(identity.encode("utf-8")).hexdigest()
             intents.append(
                 EpicLaunchIntent(
-                    intent_id=intent_id, unit_id=unit.unit_id, attempt=attempt,
+                    intent_id=intent_id,
+                    unit_id=unit.unit_id,
+                    attempt=attempt,
                     executor=unit.executor,
-                    packet=packet, capability_source=self.capabilities.source,
+                    packet=packet,
+                    capability_source=self.capabilities.source,
                 )
             )
             reserved.append(unit.unit_id)
@@ -3818,8 +3931,10 @@ class EpicOrchestrator:
     def creation_intents(self) -> tuple[PersistentTaskCreationIntent, ...]:
         return tuple(
             PersistentTaskCreationIntent(
-                intent_id=intent.intent_id, unit_id=intent.unit_id,
-                attempt=intent.attempt, packet=intent.packet,
+                intent_id=intent.intent_id,
+                unit_id=intent.unit_id,
+                attempt=intent.attempt,
+                packet=intent.packet,
                 capability_source=intent.capability_source,
             )
             for intent in self.launch_intents()
@@ -3827,8 +3942,13 @@ class EpicOrchestrator:
         )
 
     def register_launch(
-        self, intent: EpicLaunchIntent, *, handle: str, branch: str,
-        worktree: Path, coordinator_token: str,
+        self,
+        intent: EpicLaunchIntent,
+        *,
+        handle: str,
+        branch: str,
+        worktree: Path,
+        coordinator_token: str,
     ) -> EpicChildWorkPacket:
         self._require_coordinator(coordinator_token)
         expected = {item.intent_id: item for item in self.launch_intents()}
@@ -3847,9 +3967,7 @@ class EpicOrchestrator:
                 "PW_EPIC_HANDLE_REUSE",
                 "Every delegated child requires a unique bounded opaque native handle.",
             )
-        named_branch = bool(
-            branch.strip() and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]*", branch)
-        )
+        named_branch = bool(branch.strip() and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._/-]*", branch))
         detached_identity = branch == f"detached@{self.state.base_commit}"
         if not named_branch and not detached_identity:
             raise EpicOrchestrationError(
@@ -3860,7 +3978,8 @@ class EpicOrchestrator:
         coordinator_worktree = Path(self.state.coordinator_worktree).resolve()
         if intent.packet.isolated_worktree_required and resolved_worktree == coordinator_worktree:
             raise EpicOrchestrationError(
-                "PW_EPIC_WORKTREE_NOT_ISOLATED", "This selected surface requires an isolated worktree."
+                "PW_EPIC_WORKTREE_NOT_ISOLATED",
+                "This selected surface requires an isolated worktree.",
             )
         for other in self.state.units.values():
             if (
@@ -3871,11 +3990,7 @@ class EpicOrchestrator:
                 raise EpicOrchestrationError(
                     "PW_EPIC_WORKTREE_REUSE", "Isolated child worktrees must be distinct."
                 )
-            if (
-                intent.executor == "persistent-task"
-                and named_branch
-                and other.branch == branch
-            ):
+            if intent.executor == "persistent-task" and named_branch and other.branch == branch:
                 raise EpicOrchestrationError(
                     "PW_EPIC_BRANCH_REUSE", "Persistent child branches must be distinct."
                 )
@@ -3895,11 +4010,17 @@ class EpicOrchestrator:
         return intent.packet
 
     def register_creation(
-        self, intent: PersistentTaskCreationIntent, *, handle: str, branch: str,
-        worktree: Path, coordinator_token: str,
+        self,
+        intent: PersistentTaskCreationIntent,
+        *,
+        handle: str,
+        branch: str,
+        worktree: Path,
+        coordinator_token: str,
     ) -> EpicChildWorkPacket:
         expected = {
-            item.intent_id: item for item in self.launch_intents()
+            item.intent_id: item
+            for item in self.launch_intents()
             if item.executor == "persistent-task"
         }
         launch = expected.get(intent.intent_id)
@@ -3909,7 +4030,10 @@ class EpicOrchestrator:
                 "Persistent task creation did not match a currently eligible bounded intent.",
             )
         return self.register_launch(
-            launch, handle=handle, branch=branch, worktree=worktree,
+            launch,
+            handle=handle,
+            branch=branch,
+            worktree=worktree,
             coordinator_token=coordinator_token,
         )
 
@@ -3927,9 +4051,7 @@ class EpicOrchestrator:
     def _fail(self, unit_id: str, issues: Sequence[str], *, shared: bool) -> None:
         run = self.state.units[unit_id]
         run.state = "failed"
-        run.issues = (
-            "PW_EPIC_SHARED_PREMISE_FAILED" if shared else "PW_EPIC_CHILD_FAILED",
-        )
+        run.issues = ("PW_EPIC_SHARED_PREMISE_FAILED" if shared else "PW_EPIC_CHILD_FAILED",)
         if run.visibility_class == "ephemeral":
             run.handle = None
         self.state.failure_seen = True
@@ -3955,19 +4077,28 @@ class EpicOrchestrator:
             raise EpicOrchestrationError("PW_EPIC_DIFF_INVALID", error.message) from error
 
     def verify_result(
-        self, result: EpicChildResult, *, observed_branch: str, observed_worktree: Path,
-        observed_base_commit: str, observed_head_commit: str,
-        observed_repositories: Sequence[str], observed_paths: Sequence[str],
+        self,
+        result: EpicChildResult,
+        *,
+        observed_branch: str,
+        observed_worktree: Path,
+        observed_base_commit: str,
+        observed_head_commit: str,
+        observed_repositories: Sequence[str],
+        observed_paths: Sequence[str],
         observed_validations: Mapping[str, bool],
-        observed_evidence: Mapping[str, bool], coordinator_token: str,
+        observed_evidence: Mapping[str, bool],
+        coordinator_token: str,
     ) -> TaskVerificationResult:
         self._require_coordinator(coordinator_token)
         if result.unit_id not in self.units:
             raise EpicOrchestrationError("PW_EPIC_UNIT_UNKNOWN", f"Unknown child {result.unit_id}.")
         run = self.state.units[result.unit_id]
         if (
-            run.state not in {"active", "returned"} or run.handle != result.handle
-            or run.attempt != result.attempt or result.plan_fingerprint != self.state.plan_fingerprint
+            run.state not in {"active", "returned"}
+            or run.handle != result.handle
+            or run.attempt != result.attempt
+            or result.plan_fingerprint != self.state.plan_fingerprint
         ):
             raise EpicOrchestrationError(
                 "PW_EPIC_RESULT_UNMATCHED",
@@ -3994,16 +4125,20 @@ class EpicOrchestrator:
             shared_failure = True
         identity_pairs = (
             (result.branch, observed_branch, run.branch, "branch"),
-            (str(Path(result.worktree).resolve()), str(observed_worktree.resolve()), run.worktree, "worktree"),
+            (
+                str(Path(result.worktree).resolve()),
+                str(observed_worktree.resolve()),
+                run.worktree,
+                "worktree",
+            ),
             (result.base_commit, observed_base_commit, run.base_commit, "base commit"),
         )
         for claimed_value, observed_value, expected_value, label in identity_pairs:
             if claimed_value != observed_value or observed_value != expected_value:
                 issues.append(f"Child {label} identity does not match coordinator observation.")
                 shared_failure = True
-        if (
-            result.head_commit != observed_head_commit
-            or not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", observed_head_commit)
+        if result.head_commit != observed_head_commit or not re.fullmatch(
+            r"(?:[0-9a-f]{40}|[0-9a-f]{64})", observed_head_commit
         ):
             issues.append("Child head commit identity is missing or does not match observation.")
             shared_failure = True
@@ -4018,18 +4153,18 @@ class EpicOrchestrator:
         if not observed:
             issues.append("Coordinator-observed child diff is empty.")
         outside = tuple(
-            path for path in observed
+            path
+            for path in observed
             if not any(path == scope or path.startswith(scope + "/") for scope in duty.write_scope)
         )
         if outside:
             issues.append("Out-of-scope paths: " + ", ".join(outside) + ".")
             shared_failure = True
         collisions = tuple(
-            path for path in observed
+            path
+            for path in observed
             if any(
-                set(duty.repositories).intersection(
-                    self.obligations[other_id].repositories
-                )
+                set(duty.repositories).intersection(self.obligations[other_id].repositories)
                 and _delegation_scope_overlap(path, prior)
                 for other_id, prior_paths in self.state.verified_paths
                 for prior in prior_paths
@@ -4045,19 +4180,26 @@ class EpicOrchestrator:
             item for item in duty.evidence if observed_evidence.get(item) is not True
         )
         if missing_validation:
-            issues.append("Required validation did not pass: " + ", ".join(missing_validation) + ".")
+            issues.append(
+                "Required validation did not pass: " + ", ".join(missing_validation) + "."
+            )
         if missing_evidence:
             issues.append("Required evidence is absent: " + ", ".join(missing_evidence) + ".")
         mismatched_claims = tuple(
-            item for item in duty.validations
+            item
+            for item in duty.validations
             if result.validations.get(item) is not observed_validations.get(item)
         ) + tuple(
-            item for item in duty.evidence
+            item
+            for item in duty.evidence
             if result.evidence.get(item) is not observed_evidence.get(item)
         )
         if mismatched_claims:
-            issues.append("Child claims disagree with coordinator observations: "
-                          + ", ".join(mismatched_claims) + ".")
+            issues.append(
+                "Child claims disagree with coordinator observations: "
+                + ", ".join(mismatched_claims)
+                + "."
+            )
         if not result.success:
             issues.append("Child reported failure.")
         if not result.shared_premise_valid:
@@ -4086,16 +4228,25 @@ class EpicOrchestrator:
         return normalized
 
     def complete_coordinator_unit(
-        self, unit_id: str, *, observed_paths: Sequence[str],
-        observed_validations: Mapping[str, bool], observed_evidence: Mapping[str, bool],
-        provenance: str, coordinator_token: str,
+        self,
+        unit_id: str,
+        *,
+        observed_paths: Sequence[str],
+        observed_validations: Mapping[str, bool],
+        observed_evidence: Mapping[str, bool],
+        provenance: str,
+        coordinator_token: str,
     ) -> TaskVerificationResult:
         self._require_coordinator(coordinator_token)
         unit = self.units.get(unit_id)
         if unit is None:
             raise EpicOrchestrationError("PW_EPIC_UNIT_UNKNOWN", f"Unknown child {unit_id}.")
         run = self.state.units[unit_id]
-        if unit.executor != "coordinator" or run.state != "pending" or not self._dependencies_verified(unit):
+        if (
+            unit.executor != "coordinator"
+            or run.state != "pending"
+            or not self._dependencies_verified(unit)
+        ):
             raise EpicOrchestrationError(
                 "PW_EPIC_COORDINATOR_EXECUTION_INVALID",
                 f"{unit_id} is not an eligible coordinator-owned unit.",
@@ -4105,7 +4256,8 @@ class EpicOrchestrator:
         duty = self.obligations[unit_id]
         issues: list[str] = []
         outside = tuple(
-            path for path in observed
+            path
+            for path in observed
             if not any(path == scope or path.startswith(scope + "/") for scope in duty.write_scope)
         )
         if outside:
@@ -4121,12 +4273,20 @@ class EpicOrchestrator:
         run.completion_provenance = durable_provenance
         self.state.verified_paths.append((unit_id, observed))
         return TaskVerificationResult(
-            unit_id, True, "verified", (),
+            unit_id,
+            True,
+            "verified",
+            (),
             tuple(intent.unit_id for intent in self.launch_intents()),
         )
 
     def record_durable_disposition(
-        self, unit_id: str, *, kind: str, receipt: str, coordinator_token: str,
+        self,
+        unit_id: str,
+        *,
+        kind: str,
+        receipt: str,
+        coordinator_token: str,
     ) -> tuple[str, ...]:
         self._require_coordinator(coordinator_token)
         run = self.state.units.get(unit_id)
@@ -4153,8 +4313,13 @@ class EpicOrchestrator:
         return tuple(intent.unit_id for intent in self.launch_intents())
 
     def retain_visible_task(
-        self, unit_id: str, *, reason: str, coordinator_token: str,
-        owner_promoted: bool = False, attention_reasons: Sequence[str] = (),
+        self,
+        unit_id: str,
+        *,
+        reason: str,
+        coordinator_token: str,
+        owner_promoted: bool = False,
+        attention_reasons: Sequence[str] = (),
     ) -> None:
         self._require_coordinator(coordinator_token)
         run = self.state.units.get(unit_id)
@@ -4169,8 +4334,7 @@ class EpicOrchestrator:
             item.strip().lower().replace("_", "-") for item in attention_reasons
         )
         if not re.fullmatch(r"[a-z][a-z0-9-]{0,63}", normalized_reason) or any(
-            not re.fullmatch(r"[a-z][a-z0-9-]{0,63}", item)
-            for item in normalized_attention
+            not re.fullmatch(r"[a-z][a-z0-9-]{0,63}", item) for item in normalized_attention
         ):
             raise EpicOrchestrationError(
                 "PW_EPIC_RETENTION_REASON_INVALID", "Retention reasons must be stable reason codes."
@@ -4217,22 +4381,31 @@ class EpicOrchestrator:
             if self._retirement_reasons(unit.unit_id):
                 continue
             assert run.handle is not None
-            intent_id = run.retirement_intent_id or hashlib.sha256(
-                (
-                    f"{self.state.plan_fingerprint}:{unit.unit_id}:{run.attempt}:"
-                    f"{run.handle}:retire"
-                ).encode("utf-8")
-            ).hexdigest()
+            intent_id = (
+                run.retirement_intent_id
+                or hashlib.sha256(
+                    (
+                        f"{self.state.plan_fingerprint}:{unit.unit_id}:{run.attempt}:"
+                        f"{run.handle}:retire"
+                    ).encode("utf-8")
+                ).hexdigest()
+            )
             intents.append(
                 EpicRetirementIntent(
-                    intent_id=intent_id, unit_id=unit.unit_id, attempt=run.attempt,
-                    handle=run.handle, capability_source=self.capabilities.source,
+                    intent_id=intent_id,
+                    unit_id=unit.unit_id,
+                    attempt=run.attempt,
+                    handle=run.handle,
+                    capability_source=self.capabilities.source,
                 )
             )
         return tuple(intents)
 
     def register_retirement_requested(
-        self, intent: EpicRetirementIntent, *, coordinator_token: str,
+        self,
+        intent: EpicRetirementIntent,
+        *,
+        coordinator_token: str,
     ) -> None:
         self._require_coordinator(coordinator_token)
         expected = {item.intent_id: item for item in self.retirement_intents()}
@@ -4250,8 +4423,13 @@ class EpicOrchestrator:
         run.retirement_state = "requested"
 
     def register_retirement_outcome(
-        self, intent: EpicRetirementIntent, *, observed_handle: str, outcome: str,
-        acknowledgement: str, coordinator_token: str,
+        self,
+        intent: EpicRetirementIntent,
+        *,
+        observed_handle: str,
+        outcome: str,
+        acknowledgement: str,
+        coordinator_token: str,
     ) -> None:
         self._require_coordinator(coordinator_token)
         run = self.state.units.get(intent.unit_id)
@@ -4294,7 +4472,10 @@ class EpicOrchestrator:
         run.retirement_ack = None
 
     def reconcile_retirements(
-        self, observations: Mapping[str, Mapping[str, object]], *, coordinator_token: str,
+        self,
+        observations: Mapping[str, Mapping[str, object]],
+        *,
+        coordinator_token: str,
     ) -> None:
         self._require_coordinator(coordinator_token)
         for unit_id, run in self.state.units.items():
@@ -4324,7 +4505,9 @@ class EpicOrchestrator:
         self._require_coordinator(coordinator_token)
         run = self.state.units.get(unit_id)
         if run is None or run.state not in {"active", "returned"}:
-            raise EpicOrchestrationError("PW_EPIC_CHECKPOINT_INVALID", f"{unit_id} is not in flight.")
+            raise EpicOrchestrationError(
+                "PW_EPIC_CHECKPOINT_INVALID", f"{unit_id} is not in flight."
+            )
         run.checkpointed = True
         if not self.state.shared_premise_valid:
             run.state = "halted"
@@ -4405,9 +4588,9 @@ class EpicOrchestrator:
         run.retirement_intent_id = None
         run.retirement_ack = None
         run.retirement_state = (
-            "pending" if run.visibility_class == "visible-retirable"
-            else "retained" if run.visibility_class == "visible-retained"
-            else "not-applicable"
+            "pending"
+            if run.visibility_class == "visible-retirable"
+            else "retained" if run.visibility_class == "visible-retained" else "not-applicable"
         )
         for descendant in self._descendants(unit_id):
             descendant_run = self.state.units[descendant]
@@ -4452,10 +4635,21 @@ class EpicOrchestrator:
         for unit_id, run in self.state.units.items():
             projected[unit_id] = {
                 "state": (
-                    "complete" if run.state == "verified" else
-                    "active" if run.state in {"active", "returned"} else
-                    "orphaned" if run.state == "orphaned" else
-                    "blocked" if run.state in {"failed", "blocked", "halted"} else "pending"
+                    "complete"
+                    if run.state == "verified"
+                    else (
+                        "active"
+                        if run.state in {"active", "returned"}
+                        else (
+                            "orphaned"
+                            if run.state == "orphaned"
+                            else (
+                                "blocked"
+                                if run.state in {"failed", "blocked", "halted"}
+                                else "pending"
+                            )
+                        )
+                    )
                 ),
                 "handle": None,
             }
@@ -4464,9 +4658,14 @@ class EpicOrchestrator:
 
     @classmethod
     def resume(
-        cls, *, root: Path, plan: DelegationPlan,
-        obligations: Mapping[str, EpicChildObligations], capabilities: EpicHostCapabilities,
-        coordinator_token: str, observations: Mapping[str, Mapping[str, object]],
+        cls,
+        *,
+        root: Path,
+        plan: DelegationPlan,
+        obligations: Mapping[str, EpicChildObligations],
+        capabilities: EpicHostCapabilities,
+        coordinator_token: str,
+        observations: Mapping[str, Mapping[str, object]],
         retirement_observations: Mapping[str, Mapping[str, object]] | None = None,
     ) -> EpicOrchestrator:
         stored = _load_delegation_runtime_state(root, plan.target.target_id)
@@ -4487,7 +4686,9 @@ class EpicOrchestrator:
                 "Persisted Epic runtime target, plan, or coordinator worktree does not match.",
             )
         instance = cls(
-            plan=plan, obligations=obligations, capabilities=capabilities,
+            plan=plan,
+            obligations=obligations,
+            capabilities=capabilities,
             coordinator_token=coordinator_token,
             coordinator_worktree=supplied_root,
             base_commit=restored.base_commit,
@@ -4529,8 +4730,13 @@ class EpicOrchestrator:
             )
 
     def assert_parent_closeout_allowed(
-        self, *, children_complete: bool, parent_audit_passed: bool,
-        deferrals_resolved: bool, retro_complete: bool, owner_completion_authority: bool,
+        self,
+        *,
+        children_complete: bool,
+        parent_audit_passed: bool,
+        deferrals_resolved: bool,
+        retro_complete: bool,
+        owner_completion_authority: bool,
     ) -> None:
         missing = []
         if not children_complete:
@@ -4551,8 +4757,13 @@ class EpicOrchestrator:
 
     def summary(self) -> dict[str, object]:
         groups = {
-            "verified": [], "failed": [], "blocked": [], "halted": [],
-            "in_flight": [], "orphaned": [], "unaffected": [],
+            "verified": [],
+            "failed": [],
+            "blocked": [],
+            "halted": [],
+            "in_flight": [],
+            "orphaned": [],
+            "unaffected": [],
         }
         for unit in self.plan.units:
             state = self.state.units[unit.unit_id].state
@@ -4567,7 +4778,8 @@ class EpicOrchestrator:
         retirement_intents = self.retirement_intents()
         retirement_ids = {intent.unit_id for intent in retirement_intents}
         return {
-            "schema_version": 2, "target_id": self.state.target_id,
+            "schema_version": 2,
+            "target_id": self.state.target_id,
             "shared_premise_valid": self.state.shared_premise_valid,
             "create_count": self.state.create_count,
             "capability_boundary": self.capability_boundary(),
@@ -4625,8 +4837,7 @@ def _require_operational_status_choice(
 ) -> None:
     if value not in choices:
         raise ValueError(
-            f"Unknown operational status {label}: {value}. "
-            f"Allowed: {', '.join(choices)}."
+            f"Unknown operational status {label}: {value}. " f"Allowed: {', '.join(choices)}."
         )
 
 
@@ -4674,9 +4885,7 @@ class OperationalStatusFact:
         if isinstance(self.value, tuple) and any(
             not isinstance(entry, str) or not entry.strip() for entry in self.value
         ):
-            raise ValueError(
-                "Operational status tuple fact values must contain non-empty strings."
-            )
+            raise ValueError("Operational status tuple fact values must contain non-empty strings.")
         if not isinstance(self.value, (str, int, bool, tuple)) and self.value is not None:
             raise ValueError(
                 "Operational status fact values must be text, integer, boolean, "
@@ -4699,9 +4908,7 @@ class OperationalStatusValue:
         if not allowed_states:
             dimensions = tuple(key for key, _values in OPERATIONAL_STATUS_DIMENSION_STATES)
             _require_operational_status_choice("dimension", self.dimension, dimensions)
-        _require_operational_status_choice(
-            f"{self.dimension} state", self.state, allowed_states
-        )
+        _require_operational_status_choice(f"{self.dimension} state", self.state, allowed_states)
         _require_operational_status_text("state summary", self.summary)
         _require_operational_status_sources("value", self.sources, allow_empty=True)
         if not isinstance(self.facts, tuple) or any(
@@ -4740,9 +4947,7 @@ class OperationalStatusRepository:
             not isinstance(fact, OperationalStatusFact) for fact in self.evidence
         ):
             raise ValueError("Operational status repository evidence is invalid.")
-        _require_operational_status_sources(
-            "repository evidence", self.sources, allow_empty=True
-        )
+        _require_operational_status_sources("repository evidence", self.sources, allow_empty=True)
 
 
 @dataclass(frozen=True)
@@ -4782,9 +4987,7 @@ class OperationalStatusWorkItem:
             "work item kind", self.kind, OPERATIONAL_STATUS_WORK_ITEM_KINDS
         )
         _require_operational_status_text("work item lifecycle", self.lifecycle)
-        _require_operational_status_text(
-            "work item operational meaning", self.operational_meaning
-        )
+        _require_operational_status_text("work item operational meaning", self.operational_meaning)
         _require_operational_status_sources("work item", self.sources, allow_empty=False)
         if not isinstance(self.facts, tuple) or any(
             not isinstance(fact, OperationalStatusFact) for fact in self.facts
@@ -4933,9 +5136,7 @@ class OperationalStatusSnapshot:
         )
         for label, values, expected_type in expected_types:
             if any(not isinstance(value, expected_type) for value in values):
-                raise ValueError(
-                    f"Operational status snapshot {label} contains an invalid record."
-                )
+                raise ValueError(f"Operational status snapshot {label} contains an invalid record.")
         if self.primary_action is not None and not isinstance(
             self.primary_action, OperationalStatusAction
         ):
@@ -5021,9 +5222,7 @@ def _operational_status_repository_payload(
             }
             for fact in repository.evidence
         ],
-        "sources": [
-            _operational_status_source_payload(source) for source in repository.sources
-        ],
+        "sources": [_operational_status_source_payload(source) for source in repository.sources],
     }
 
 
@@ -5036,9 +5235,7 @@ def _operational_status_work_item_payload(
         "kind": work_item.kind,
         "lifecycle": work_item.lifecycle,
         "operational_meaning": work_item.operational_meaning,
-        "sources": [
-            _operational_status_source_payload(source) for source in work_item.sources
-        ],
+        "sources": [_operational_status_source_payload(source) for source in work_item.sources],
         "facts": [
             {
                 "key": fact.key,
@@ -5051,9 +5248,7 @@ def _operational_status_work_item_payload(
                 "name": layer.name,
                 "state": layer.state,
                 "summary": layer.summary,
-                "sources": [
-                    _operational_status_source_payload(source) for source in layer.sources
-                ],
+                "sources": [_operational_status_source_payload(source) for source in layer.sources],
             }
             for layer in work_item.proof_layers
         ],
@@ -5100,23 +5295,17 @@ def operational_status_payload(snapshot: OperationalStatusSnapshot) -> dict[str,
         "proof": _operational_status_value_payload(snapshot.proof),
         "delivery": _operational_status_value_payload(snapshot.delivery),
         "active_work": [
-            _operational_status_work_item_payload(work_item)
-            for work_item in snapshot.active_work
+            _operational_status_work_item_payload(work_item) for work_item in snapshot.active_work
         ],
-        "findings": [
-            _operational_status_finding_payload(finding) for finding in snapshot.findings
-        ],
-        "blockers": [
-            _operational_status_finding_payload(blocker) for blocker in snapshot.blockers
-        ],
+        "findings": [_operational_status_finding_payload(finding) for finding in snapshot.findings],
+        "blockers": [_operational_status_finding_payload(blocker) for blocker in snapshot.blockers],
         "primary_action": (
             _operational_status_action_payload(snapshot.primary_action)
             if snapshot.primary_action is not None
             else None
         ),
         "secondary_actions": [
-            _operational_status_action_payload(action)
-            for action in snapshot.secondary_actions
+            _operational_status_action_payload(action) for action in snapshot.secondary_actions
         ],
     }
     if snapshot.workspace_authority is not None:
@@ -5138,12 +5327,10 @@ def operational_status_inspection_payload(
         "installation": _operational_status_value_payload(inspection.installation),
         "git": _operational_status_value_payload(inspection.git),
         "active_work": [
-            _operational_status_work_item_payload(work_item)
-            for work_item in inspection.active_work
+            _operational_status_work_item_payload(work_item) for work_item in inspection.active_work
         ],
         "findings": [
-            _operational_status_finding_payload(finding)
-            for finding in inspection.findings
+            _operational_status_finding_payload(finding) for finding in inspection.findings
         ],
     }
     if inspection.workspace_authority is not None:
@@ -5250,8 +5437,7 @@ def _parse_workflow_manifest(raw: object) -> WorkflowManifest:
 def _is_recognized_workflow_repository(root: Path) -> bool:
     workflow_dir = root / ".project-workflow"
     return workflow_dir.is_dir() and any(
-        (workflow_dir / relative_path).exists()
-        for relative_path in RECOGNIZED_WORKFLOW_PATHS
+        (workflow_dir / relative_path).exists() for relative_path in RECOGNIZED_WORKFLOW_PATHS
     )
 
 
@@ -5645,8 +5831,7 @@ def _inspect_operational_active_work(
         label="Global tracker",
     )
     findings = [
-        _operational_tracker_issue_finding(root, issue, "global-tracker")
-        for issue in parse_issues
+        _operational_tracker_issue_finding(root, issue, "global-tracker") for issue in parse_issues
     ]
     active_work: list[OperationalStatusWorkItem] = []
     seen_ids: dict[str, list[tuple[str, OperationalStatusSource]]] = {}
@@ -5726,9 +5911,7 @@ def _inspect_operational_active_work(
     tasks_dir = workflow_dir / "tasks"
     for parent_row in [*active_epic_rows, *terminal_epic_rows]:
         epic_id = parent_row["ID"].strip()
-        matches = sorted(
-            path for path in tasks_dir.glob(f"{epic_id}-*") if path.is_dir()
-        )
+        matches = sorted(path for path in tasks_dir.glob(f"{epic_id}-*") if path.is_dir())
         if len(matches) != 1:
             findings.append(
                 OperationalStatusFinding(
@@ -5858,9 +6041,7 @@ def inspect_operational_status_repository(
         repository_findings: list[OperationalStatusFinding] = []
         authority_git: OperationalStatusValue | None = None
         for repository in selected_repositories:
-            source_artifact = (
-                ".git" if repository.path == "." else f"{repository.path}/.git"
-            )
+            source_artifact = ".git" if repository.path == "." else f"{repository.path}/.git"
             repository_git, findings = _inspect_operational_git(
                 repository.resolved_path,
                 source_artifact=source_artifact,
@@ -5885,9 +6066,7 @@ def inspect_operational_status_repository(
                 )
             )
             repository_findings.extend(findings)
-            repository_findings.extend(
-                _workspace_git_state_findings(repository, repository_git)
-            )
+            repository_findings.extend(_workspace_git_state_findings(repository, repository_git))
             if repository.repository_id == workspace.authority_repository:
                 authority_git = repository_git
         if authority_git is None:
@@ -5988,11 +6167,7 @@ def _operational_repository_evidence(
             requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(
                 root, item
             )
-            scope_path = (
-                implementation_path
-                if item.kind == "fix"
-                else requirements_path
-            )
+            scope_path = implementation_path if item.kind == "fix" else requirements_path
             if scope_path is None or not scope_path.exists():
                 continue
             requirements_text = scope_path.read_text(encoding="utf-8")
@@ -6011,9 +6186,7 @@ def _operational_repository_evidence(
             )
             if implementation_path is None or not implementation_path.exists():
                 continue
-            rows = _repository_evidence_rows(
-                implementation_path.read_text(encoding="utf-8")
-            )
+            rows = _repository_evidence_rows(implementation_path.read_text(encoding="utf-8"))
             row = rows.get(repository.repository_id)
             if row is None:
                 continue
@@ -6100,15 +6273,11 @@ def _operational_relevant_repository_ids(
 ) -> set[str]:
     repository_ids: set[str] = set()
     for item in work_items:
-        requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(
-            root, item
-        )
+        requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(root, item)
         scope_path = implementation_path if item.kind == "fix" else requirements_path
         if scope_path is None or not scope_path.exists():
             continue
-        _primary, touched = _repository_scope_values(
-            scope_path.read_text(encoding="utf-8")
-        )
+        _primary, touched = _repository_scope_values(scope_path.read_text(encoding="utf-8"))
         repository_ids.update(touched)
     return repository_ids
 
@@ -6333,7 +6502,9 @@ def _operational_item_proof_layers(
             implementation_summary = "Every implementation task row is Done."
         elif item.lifecycle in {"Testing", "Review", "Complete"}:
             implementation_state = "fail"
-            implementation_summary = "Lifecycle advanced beyond implementation with unfinished rows."
+            implementation_summary = (
+                "Lifecycle advanced beyond implementation with unfinished rows."
+            )
         else:
             implementation_state = "pending"
             implementation_summary = "Implementation task rows remain in progress."
@@ -6350,10 +6521,14 @@ def _operational_item_proof_layers(
         else ()
     )
     if item.kind == "epic":
-        qa_pass = bool(epic_children) and len(epic_children) == len(child_rows) and all(
-            row.get("Status") == "Complete"
-            and _qa_passed(implementation_path.read_text(encoding="utf-8"))
-            for row, _requirements_path, implementation_path in epic_children
+        qa_pass = (
+            bool(epic_children)
+            and len(epic_children) == len(child_rows)
+            and all(
+                row.get("Status") == "Complete"
+                and _qa_passed(implementation_path.read_text(encoding="utf-8"))
+                for row, _requirements_path, implementation_path in epic_children
+            )
         )
         qa_summary_pass = "Every completed Epic child records a passing final QA disposition."
         qa_sources = tuple(
@@ -6384,8 +6559,10 @@ def _operational_item_proof_layers(
 
     if item.kind == "epic-child":
         parent_acs = set(_operational_work_item_facts(item).get("parent_acs", ()))
-        evidence_pass = bool(parent_acs) and bool(implementation_text) and all(
-            _parent_ac_evidence_present(implementation_text, ac_id) for ac_id in parent_acs
+        evidence_pass = (
+            bool(parent_acs)
+            and bool(implementation_text)
+            and all(_parent_ac_evidence_present(implementation_text, ac_id) for ac_id in parent_acs)
         )
         acceptance_state = "pass" if evidence_pass else "pending"
         acceptance_summary = (
@@ -6476,7 +6653,9 @@ def _operational_item_proof_layers(
             )
         else:
             evidence_state = "pass"
-            evidence_summary = "Every triggered parent proof recipe has valid passing child evidence."
+            evidence_summary = (
+                "Every triggered parent proof recipe has valid passing child evidence."
+            )
         evidence_sources = tuple(evidence_sources_list)
     else:
         evidence_issues = _structured_evidence_issues(
@@ -6504,9 +6683,11 @@ def _operational_item_proof_layers(
                 _operational_status_document_source(
                     root,
                     "structured-evidence",
-                    implementation_path.parent / STRUCTURED_EVIDENCE_FILENAME
-                    if implementation_path is not None
-                    else None,
+                    (
+                        implementation_path.parent / STRUCTURED_EVIDENCE_FILENAME
+                        if implementation_path is not None
+                        else None
+                    ),
                     fallback,
                 ),
             )
@@ -6540,9 +6721,7 @@ def _operational_aggregate_proof_state(
     return state
 
 
-def _operational_outcome_states(
-    root: Path, item: OperationalStatusWorkItem
-) -> tuple[str, str]:
+def _operational_outcome_states(root: Path, item: OperationalStatusWorkItem) -> tuple[str, str]:
     requirements_path, implementation_path, epic_dir = _operational_work_item_paths(root, item)
     if requirements_path is None:
         return "not-recorded", "not-recorded"
@@ -6650,9 +6829,7 @@ def classify_operational_proof(
                 "outcome_proof_state",
                 "owner_acceptance_state",
             }
-        ) + (
-            _operational_status_fact("aggregate_proof_state", aggregate_state),
-        )
+        ) + (_operational_status_fact("aggregate_proof_state", aggregate_state),)
         outcome_state, owner_acceptance_state = _operational_outcome_states(root, item)
         item_facts = item_facts + (
             _operational_status_fact("outcome_proof_state", outcome_state),
@@ -6790,10 +6967,7 @@ def _operational_receipt_state(payload: object) -> str | None:
     if (
         isinstance(publication, dict)
         and publication.get("status") in {"verified", "published"}
-        and all(
-            publication.get(key)
-            for key in ("target", "source", "observed_at", "result")
-        )
+        and all(publication.get(key) for key in ("target", "source", "observed_at", "result"))
     ):
         return "published"
     return "released"
@@ -6829,14 +7003,17 @@ def classify_operational_delivery(
             (
                 candidate
                 for candidate in ("main", "master")
-                if _operational_git_optional(["rev-parse", "--verify", candidate], root)
-                is not None
+                if _operational_git_optional(["rev-parse", "--verify", candidate], root) is not None
             ),
             None,
         )
-        if target is not None and _operational_git_optional(
-            ["merge-base", "--is-ancestor", tracker_branch, target], root
-        ) is not None:
+        if (
+            target is not None
+            and _operational_git_optional(
+                ["merge-base", "--is-ancestor", tracker_branch, target], root
+            )
+            is not None
+        ):
             state = "integrated"
             summary = f"Git proves {tracker_branch} is contained in {target}."
             sources.append(OperationalStatusSource("git", ".git", f"{tracker_branch} -> {target}"))
@@ -7038,9 +7215,7 @@ def _operational_validation_impact_action(
     _requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(root, item)
     if implementation_path is None or not implementation_path.exists():
         return None
-    decision, issues = _validation_impact_from_text(
-        implementation_path.read_text(encoding="utf-8")
-    )
+    decision, issues = _validation_impact_from_text(implementation_path.read_text(encoding="utf-8"))
     if issues:
         return _operational_action_candidate(
             "missing-workflow-gate",
@@ -7179,9 +7354,7 @@ def _operational_coordination_action(
                 "agent",
                 str(status["next_action"]),
                 source,
-                command=(
-                    f"./.project-workflow/cli/workflow coordinate status --id {item.item_id}"
-                ),
+                command=(f"./.project-workflow/cli/workflow coordinate status --id {item.item_id}"),
             ),
             work_order=work_order,
             item_id=item.item_id,
@@ -7201,6 +7374,45 @@ def _operational_coordination_action(
             work_order=work_order,
             item_id=item.item_id,
         )
+    verification = status.get("verification")
+    if isinstance(verification, dict):
+        operational_state = verification.get("operational_state")
+        if operational_state == "blocked":
+            return _operational_action_candidate(
+                "blocking-current-finding",
+                _operational_action(
+                    "PW_STATUS_VERIFICATION_BLOCKED",
+                    f"Resolve material verification for {item.item_id}",
+                    "agent",
+                    str(verification["next_action"]),
+                    source,
+                    command=(
+                        "./.project-workflow/cli/workflow coordinate "
+                        f"verification-preflight --id {item.item_id} "
+                        "--material-verification yes"
+                    ),
+                ),
+                work_order=work_order,
+                item_id=item.item_id,
+            )
+        if operational_state == "verification-required":
+            return _operational_action_candidate(
+                "missing-workflow-gate",
+                _operational_action(
+                    "PW_STATUS_VERIFICATION_REQUIRED",
+                    f"Complete material verification for {item.item_id}",
+                    "agent",
+                    str(verification["next_action"]),
+                    source,
+                    command=(
+                        "./.project-workflow/cli/workflow coordinate "
+                        f"verification-preflight --id {item.item_id} "
+                        "--material-verification yes"
+                    ),
+                ),
+                work_order=work_order,
+                item_id=item.item_id,
+            )
     return None
 
 
@@ -7355,7 +7567,11 @@ def _operational_item_action(
     if qa is not None and qa.state != "pass" and item.lifecycle in {"Review", "Complete"}:
         if qa.state == "not-required":
             qa = None
-    if qa is not None and qa.state not in {"pass", "not-required"} and item.lifecycle in {"Review", "Complete"}:
+    if (
+        qa is not None
+        and qa.state not in {"pass", "not-required"}
+        and item.lifecycle in {"Review", "Complete"}
+    ):
         return _operational_action_candidate(
             "missing-workflow-gate",
             _operational_action(
@@ -7451,9 +7667,7 @@ def _operational_item_action(
         elif item.lifecycle == "Closeout":
             code = "PW_STATUS_COMPLETE_EPIC"
             title = "Complete Epic closeout"
-            command = (
-                f"./.project-workflow/cli/workflow epic closeout --epic-id {item.item_id}"
-            )
+            command = f"./.project-workflow/cli/workflow epic closeout --epic-id {item.item_id}"
     elif item.kind == "fix":
         transitions = {
             "Ready": ("PW_STATUS_START_FIX", "Start Fix", "In Progress"),
@@ -7582,8 +7796,7 @@ def _operational_backlog_candidate(
     eligible = [
         (order, row)
         for order, row in enumerate(rows)
-        if row.get("Status") in {"Accepted", "Proposed"}
-        and not row.get("Promoted To", "").strip()
+        if row.get("Status") in {"Accepted", "Proposed"} and not row.get("Promoted To", "").strip()
     ]
     if not eligible:
         return None
@@ -7608,9 +7821,7 @@ def _operational_backlog_candidate(
                 f"({row.get('Priority', 'Unset')}, file order {order + 1})."
             ),
             (source,),
-            request=(
-                f"Confirm whether to promote or otherwise advance {row_id}: {title}."
-            ),
+            request=(f"Confirm whether to promote or otherwise advance {row_id}: {title}."),
         ),
         work_order=order,
         item_id=row_id,
@@ -7648,11 +7859,7 @@ def resolve_operational_actions(
                     f"Locate work item {focus_id}",
                     "agent",
                     f"The active operational projection contains no item named {focus_id}.",
-                    (
-                        OperationalStatusSource(
-                            "global-tracker", ".project-workflow/TRACKER.md"
-                        ),
-                    ),
+                    (OperationalStatusSource("global-tracker", ".project-workflow/TRACKER.md"),),
                     request=(
                         f"Check the item ID and its tracker lifecycle, then rerun status for "
                         f"{focus_id}."
@@ -7675,19 +7882,13 @@ def resolve_operational_actions(
                     "No repository action is required",
                     "owner",
                     "No compatibility blocker, active-work gate, or actionable backlog item was found.",
-                    (
-                        OperationalStatusSource(
-                            "global-tracker", ".project-workflow/TRACKER.md"
-                        ),
-                    ),
+                    (OperationalStatusSource("global-tracker", ".project-workflow/TRACKER.md"),),
                     request="Select a future outcome when more work is desired.",
                 ),
             )
         )
 
-    rank = {
-        name: index for index, name in enumerate(OPERATIONAL_STATUS_ACTION_PRECEDENCE)
-    }
+    rank = {name: index for index, name in enumerate(OPERATIONAL_STATUS_ACTION_PRECEDENCE)}
     ordered = sorted(
         candidates,
         key=lambda candidate: (
@@ -7760,9 +7961,7 @@ def build_operational_status_snapshot(
         repository_id=repository_id,
     )
     selected = tuple(
-        item
-        for item in inspection.active_work
-        if focus_id is None or item.item_id == focus_id
+        item for item in inspection.active_work if focus_id is None or item.item_id == focus_id
     )
     selected_repositories = inspection.repositories
     if inspection.workspace_authority is not None and focus_id is not None:
@@ -7792,11 +7991,7 @@ def build_operational_status_snapshot(
         item_facts = item.facts
         item_sources = item.sources
         owner_epic = next(
-            (
-                str(fact.value)
-                for fact in item.facts
-                if fact.key == "owner_epic" and fact.value
-            ),
+            (str(fact.value) for fact in item.facts if fact.key == "owner_epic" and fact.value),
             None,
         )
         intent_epic_id = item.item_id if item.kind == "epic" else owner_epic
@@ -7811,9 +8006,7 @@ def build_operational_status_snapshot(
                 if _intent_contract_mode(intent_requirements) == "full":
                     intent_evaluation = _intent_audit_evaluation(intent_epic_dir)
                     item_facts = item_facts + (
-                        _operational_status_fact(
-                            "intent_audit_state", intent_evaluation["state"]
-                        ),
+                        _operational_status_fact("intent_audit_state", intent_evaluation["state"]),
                     )
                     item_sources = item_sources + (
                         OperationalStatusSource(
@@ -7956,37 +8149,21 @@ def render_operational_status_human(snapshot: OperationalStatusSnapshot) -> str:
     if snapshot.active_work:
         for item in snapshot.active_work:
             aggregate_proof = next(
-                (
-                    fact.value
-                    for fact in item.facts
-                    if fact.key == "aggregate_proof_state"
-                ),
+                (fact.value for fact in item.facts if fact.key == "aggregate_proof_state"),
                 "not-recorded",
             )
             delivery_state = item.delivery.state if item.delivery is not None else "unknown"
             intent_state = next(
-                (
-                    fact.value
-                    for fact in item.facts
-                    if fact.key == "intent_audit_state"
-                ),
+                (fact.value for fact in item.facts if fact.key == "intent_audit_state"),
                 None,
             )
             intent_suffix = f"; intent {intent_state}" if intent_state else ""
             outcome_state = next(
-                (
-                    fact.value
-                    for fact in item.facts
-                    if fact.key == "outcome_proof_state"
-                ),
+                (fact.value for fact in item.facts if fact.key == "outcome_proof_state"),
                 "not-recorded",
             )
             owner_acceptance_state = next(
-                (
-                    fact.value
-                    for fact in item.facts
-                    if fact.key == "owner_acceptance_state"
-                ),
+                (fact.value for fact in item.facts if fact.key == "owner_acceptance_state"),
                 "not-recorded",
             )
             lines.append(
@@ -8019,8 +8196,7 @@ def render_operational_status_human(snapshot: OperationalStatusSnapshot) -> str:
 
     lines.extend(("", "Sources"))
     lines.extend(
-        f"- {source.kind}: {source.artifact}"
-        + (f" — {source.detail}" if source.detail else "")
+        f"- {source.kind}: {source.artifact}" + (f" — {source.detail}" if source.detail else "")
         for source in _operational_human_sources(snapshot)
     )
     return "\n".join(lines) + "\n"
@@ -8045,19 +8221,13 @@ def cmd_validation_impact(args: argparse.Namespace) -> None:
     inspection = inspect_operational_status_repository(root)
     matches = tuple(item for item in inspection.active_work if item.item_id == args.id)
     if not matches:
-        raise SystemExit(
-            f"Active operational state contains no work item named '{args.id}'."
-        )
+        raise SystemExit(f"Active operational state contains no work item named '{args.id}'.")
     if len(matches) > 1:
         raise SystemExit(f"Active operational state contains duplicate ID '{args.id}'.")
     item = matches[0]
-    requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(
-        root, item
-    )
+    requirements_path, implementation_path, _epic_dir = _operational_work_item_paths(root, item)
     if implementation_path is None or not implementation_path.exists():
-        raise SystemExit(
-            f"{args.id} has no implementation or Fix document for an impact decision."
-        )
+        raise SystemExit(f"{args.id} has no implementation or Fix document for an impact decision.")
     try:
         decision = _validation_impact_decision(
             classification=args.classification,
@@ -8343,9 +8513,7 @@ def _managed_asset_upgrade_outputs(
                     f"Managed asset target has an unsafe parent: {relative.as_posix()}.",
                 )
         if path.is_symlink() or (
-            path.exists()
-            and not path.is_file()
-            and not (allow_directory and path.is_dir())
+            path.exists() and not path.is_file() and not (allow_directory and path.is_dir())
         ):
             raise UpgradeApplyFailure(
                 "PW_UPGRADE_MANAGED_ASSET_INVALID_TARGET",
@@ -8447,9 +8615,7 @@ def _managed_asset_upgrade_outputs(
             record_generated(
                 f".claude/agents/{agent_name}.md",
                 f"prompts/{prompt_file}",
-                transform=lambda content, name=agent_name: _to_claude_agent_markdown(
-                    content, name
-                ),
+                transform=lambda content, name=agent_name: _to_claude_agent_markdown(content, name),
             )
         record_retired(root / ".claude" / "agents" / "project-scaffold.md")
     elif selected_agent == "codex":
@@ -8468,9 +8634,7 @@ def _managed_asset_upgrade_outputs(
             record_generated(
                 f".cursor/agents/{agent_name}.md",
                 f"prompts/{prompt_file}",
-                transform=lambda content, name=agent_name: _to_cursor_agent_markdown(
-                    content, name
-                ),
+                transform=lambda content, name=agent_name: _to_cursor_agent_markdown(content, name),
             )
         record_retired(root / ".cursor" / "agents" / "project-scaffold.md")
         record_generated(
@@ -8592,9 +8756,7 @@ def _build_upgrade_plan(
         "steps": steps,
         "target_files": target_files,
         "preconditions": preconditions,
-        "blockers": [
-            {"code": blocker.code, "message": blocker.message} for blocker in blockers
-        ],
+        "blockers": [{"code": blocker.code, "message": blocker.message} for blocker in blockers],
         "owner_decisions": _upgrade_owner_decisions(root),
         "expected_outputs": [],
     }
@@ -8615,9 +8777,11 @@ def _build_upgrade_plan(
             payload["expected_outputs"] = [
                 {
                     "artifact": target,
-                    "expected": ABSENT_FILE_HASH
-                    if content is None
-                    else "sha256:" + hashlib.sha256(content).hexdigest(),
+                    "expected": (
+                        ABSENT_FILE_HASH
+                        if content is None
+                        else "sha256:" + hashlib.sha256(content).hexdigest()
+                    ),
                 }
                 for target, content in outputs.items()
             ]
@@ -8632,9 +8796,7 @@ def _build_repository_upgrade_plan(root: Path, selected_agent: str) -> dict[str,
     executable_files: tuple[str, ...] = ()
     if not blockers:
         try:
-            asset_outputs, executable_files = _managed_asset_upgrade_outputs(
-                root, selected_agent
-            )
+            asset_outputs, executable_files = _managed_asset_upgrade_outputs(root, selected_agent)
         except UpgradeApplyFailure as failure:
             blockers.append({"code": failure.code, "message": failure.message})
 
@@ -8695,9 +8857,11 @@ def _build_repository_upgrade_plan(root: Path, selected_agent: str) -> dict[str,
             payload["expected_outputs"] = [
                 {
                     "artifact": target,
-                    "expected": ABSENT_FILE_HASH
-                    if outputs[target] is None
-                    else "sha256:" + hashlib.sha256(outputs[target]).hexdigest(),
+                    "expected": (
+                        ABSENT_FILE_HASH
+                        if outputs[target] is None
+                        else "sha256:" + hashlib.sha256(outputs[target]).hexdigest()
+                    ),
                 }
                 for target in target_files
             ]
@@ -8743,9 +8907,7 @@ def _format_upgrade_plan_human(plan: dict[str, object]) -> str:
     expected_outputs = plan.get("expected_outputs", [])
     if expected_outputs:
         lines.append("expected outputs:")
-        lines.extend(
-            f"- {output['artifact']}: {output['expected']}" for output in expected_outputs
-        )
+        lines.extend(f"- {output['artifact']}: {output['expected']}" for output in expected_outputs)
     if blockers:
         lines.append("blockers:")
         lines.extend(f"- {blocker['code']}: {blocker['message']}" for blocker in blockers)
@@ -8895,7 +9057,9 @@ def _atomic_replace_target(path: Path, content: bytes | None) -> None:
         if path.exists():
             path.unlink()
         return
-    descriptor, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
+    descriptor, temp_name = tempfile.mkstemp(
+        prefix=f".{path.name}.", suffix=".tmp", dir=path.parent
+    )
     temp_path = Path(temp_name)
     try:
         with os.fdopen(descriptor, "wb") as handle:
@@ -8969,14 +9133,12 @@ def _upgrade_apply_result(
         "schema_version": UPGRADE_APPLY_RESULT_SCHEMA_VERSION,
         "status": status,
         "plan_fingerprint": plan["plan_fingerprint"],
-        "applied_migrations": [step["migration_id"] for step in plan["steps"]]
-        if status == "applied"
-        else [],
+        "applied_migrations": (
+            [step["migration_id"] for step in plan["steps"]] if status == "applied" else []
+        ),
         "changed_files": changed_files or [],
         "noop": status == "noop",
-        "failure": None
-        if failure is None
-        else {"code": failure.code, "message": failure.message},
+        "failure": None if failure is None else {"code": failure.code, "message": failure.message},
     }
 
 
@@ -8998,9 +9160,11 @@ def _apply_upgrade_plan(
         actual_outputs = [
             {
                 "artifact": target,
-                "expected": ABSENT_FILE_HASH
-                if content is None
-                else "sha256:" + hashlib.sha256(content).hexdigest(),
+                "expected": (
+                    ABSENT_FILE_HASH
+                    if content is None
+                    else "sha256:" + hashlib.sha256(content).hexdigest()
+                ),
             }
             for target, content in outputs.items()
         ]
@@ -9040,9 +9204,7 @@ def _apply_repository_upgrade_plan(
         if not plan["target_files"]:
             result = _upgrade_apply_result(plan=plan, status="noop")
         else:
-            asset_outputs, executable_files = _managed_asset_upgrade_outputs(
-                root, selected_agent
-            )
+            asset_outputs, executable_files = _managed_asset_upgrade_outputs(root, selected_agent)
             outputs = _compute_upgrade_outputs(
                 root,
                 plan,
@@ -9052,9 +9214,11 @@ def _apply_repository_upgrade_plan(
             actual_outputs = [
                 {
                     "artifact": target,
-                    "expected": ABSENT_FILE_HASH
-                    if outputs[target] is None
-                    else "sha256:" + hashlib.sha256(outputs[target]).hexdigest(),
+                    "expected": (
+                        ABSENT_FILE_HASH
+                        if outputs[target] is None
+                        else "sha256:" + hashlib.sha256(outputs[target]).hexdigest()
+                    ),
                 }
                 for target in plan["target_files"]
             ]
@@ -9086,9 +9250,7 @@ def _apply_repository_upgrade_plan(
         result["post_upgrade"] = {
             "repository_state": post_compatibility.state,
             "finding_count": len(post_issues),
-            "owner_finding_count": sum(
-                issue.remediation_owner == "owner" for issue in post_issues
-            ),
+            "owner_finding_count": sum(issue.remediation_owner == "owner" for issue in post_issues),
         }
         return result
     except UpgradeApplyFailure as failure:
@@ -9312,7 +9474,9 @@ def _smoke_bomb_plan_outputs(
     outputs: dict[str, bytes | None] = {}
     blockers: list[SmokeBombBlocker] = []
 
-    def record(path: Path, after: bytes | None, *, reason: str, ownership: str, source: str) -> None:
+    def record(
+        path: Path, after: bytes | None, *, reason: str, ownership: str, source: str
+    ) -> None:
         if not _smoke_bomb_target_is_safe(root, path):
             blockers.append(
                 SmokeBombBlocker(
@@ -9698,9 +9862,7 @@ def _build_smoke_bomb_plan(
         root, client_agents, validation_commands
     )
     blockers.extend(output_blockers)
-    planned_inventory, archive_blockers = _smoke_bomb_planned_archive(
-        root, outputs, client_agents
-    )
+    planned_inventory, archive_blockers = _smoke_bomb_planned_archive(root, outputs, client_agents)
     blockers.extend(archive_blockers)
     plan: dict[str, object] = {
         "schema_version": SMOKE_BOMB_PLAN_SCHEMA_VERSION,
@@ -9718,11 +9880,11 @@ def _build_smoke_bomb_plan(
             "included_paths": planned_inventory,
             "entry_count": len(planned_inventory),
         },
-        "warnings": [
-            "Current branch appears to be the default branch; use a disposable Smoke Bomb branch."
-        ]
-        if identity["on_default_branch"]
-        else [],
+        "warnings": (
+            ["Current branch appears to be the default branch; use a disposable Smoke Bomb branch."]
+            if identity["on_default_branch"]
+            else []
+        ),
         "blockers": [
             {"code": blocker.code, "message": blocker.message}
             for blocker in sorted(blockers, key=lambda value: (value.code, value.message))
@@ -9830,13 +9992,7 @@ def _smoke_bomb_inventory(root: Path) -> list[str]:
             "PW_SMOKE_BOMB_ARCHIVE_BLOCKED",
             "Unable to inventory tracked and non-ignored worktree files.",
         ) from exc
-    paths = sorted(
-        {
-            value.decode("utf-8")
-            for value in completed.stdout.split(b"\0")
-            if value
-        }
-    )
+    paths = sorted({value.decode("utf-8") for value in completed.stdout.split(b"\0") if value})
     return [relative for relative in paths if (root / relative).exists()]
 
 
@@ -10103,9 +10259,7 @@ def _format_smoke_bomb_result_human(result: dict[str, object]) -> str:
     if result["changed_files"]:
         lines.append("changed files: " + ", ".join(result["changed_files"]))
     for validation in result["validation"]:
-        lines.append(
-            f"validation ({validation['exit_code']}): {validation['command']}"
-        )
+        lines.append(f"validation ({validation['exit_code']}): {validation['command']}")
     if result["archive"]:
         lines.append(f"ZIP: {result['archive']['path']}")
         lines.append(f"SHA-256: {result['archive']['sha256']}")
@@ -10128,9 +10282,7 @@ def cmd_smoke_bomb(args: argparse.Namespace) -> None:
         raise SystemExit("--plan-fingerprint requires --apply.")
     if args.apply and not args.plan_fingerprint:
         raise SystemExit("--apply requires --plan-fingerprint <SHA256>.")
-    plan, outputs = _build_smoke_bomb_plan(
-        root, client_agents, validation_commands, output_path
-    )
+    plan, outputs = _build_smoke_bomb_plan(root, client_agents, validation_commands, output_path)
     if not args.apply:
         if args.format == "json":
             print(json.dumps(plan, indent=2))
@@ -10250,9 +10402,7 @@ def _normalize_task_id_prefix(prefix: str) -> str:
         FIX_ID_PREFIX: "fixes",
     }
     if normalized in reserved:
-        raise SystemExit(
-            f"Task ID prefix '{normalized}' is reserved for {reserved[normalized]}."
-        )
+        raise SystemExit(f"Task ID prefix '{normalized}' is reserved for {reserved[normalized]}.")
     return normalized
 
 
@@ -10262,8 +10412,7 @@ def _normalize_id_generation_mode(value: str) -> str:
         normalized = "unique"
     if normalized not in ID_GENERATION_MODES:
         raise SystemExit(
-            f"Invalid ID generation mode '{value}'. "
-            f"Allowed: {', '.join(ID_GENERATION_MODES)}."
+            f"Invalid ID generation mode '{value}'. " f"Allowed: {', '.join(ID_GENERATION_MODES)}."
         )
     return normalized
 
@@ -10287,9 +10436,7 @@ def _load_workspace_definition(
 
     raw_repositories = raw_workspace.get("repositories")
     if not isinstance(raw_repositories, list) or not raw_repositories:
-        raise SystemExit(
-            f"{config_path} field 'workspace.repositories' must be a non-empty list."
-        )
+        raise SystemExit(f"{config_path} field 'workspace.repositories' must be a non-empty list.")
 
     root_resolved = root.resolve()
     repositories: list[WorkspaceRepository] = []
@@ -10306,9 +10453,7 @@ def _load_workspace_definition(
         if not isinstance(repository_id, str) or not re.fullmatch(
             r"[a-z][a-z0-9-]*", repository_id
         ):
-            raise SystemExit(
-                f"{config_path} {label} field 'id' must be a lowercase slug."
-            )
+            raise SystemExit(f"{config_path} {label} field 'id' must be a lowercase slug.")
         if repository_id in repository_ids:
             raise SystemExit(
                 f"{config_path} workspace repository ID '{repository_id}' is duplicated."
@@ -10387,9 +10532,7 @@ def _load_workspace_definition(
             "because the parent repository owns .project-workflow."
         )
     control_repositories = [
-        repository.repository_id
-        for repository in repositories
-        if repository.role == "control"
+        repository.repository_id for repository in repositories if repository.role == "control"
     ]
     if control_repositories != [authority]:
         raise SystemExit(
@@ -10484,9 +10627,7 @@ def _load_workflow_config(root: Path) -> WorkflowConfig:
                 )
             id_generation[raw_kind] = _normalize_id_generation_mode(raw_mode)
     else:
-        raise SystemExit(
-            f"{config_path} field 'id_generation' must be a string or an object."
-        )
+        raise SystemExit(f"{config_path} field 'id_generation' must be a string or an object.")
 
     raw_unique_id_length = raw.get("unique_id_length", DEFAULT_UNIQUE_ID_LENGTH)
     if not isinstance(raw_unique_id_length, int) or isinstance(raw_unique_id_length, bool):
@@ -10864,11 +11005,7 @@ def _replace_fix_field(text: str, heading: str, key: str, value: str) -> str:
 
 
 def _tracker_template() -> str:
-    return (
-        "# Stories\n\n"
-        "| ID | Title | Status | Docs |\n"
-        "|---|---|---|---|\n"
-    )
+    return "# Stories\n\n" "| ID | Title | Status | Docs |\n" "|---|---|---|---|\n"
 
 
 def _backlog_template() -> str:
@@ -10879,9 +11016,7 @@ def _backlog_template() -> str:
         "Backlog status is not implementation status. `Accepted` means worth keeping or "
         "preparing, not ready to implement. After promotion, active execution status lives "
         "in `.project-workflow/TRACKER.md` or the relevant epic tracker.\n\n"
-        "Allowed `Type` values: "
-        + ", ".join(f"`{value}`" for value in BACKLOG_TYPES)
-        + ".\n\n"
+        "Allowed `Type` values: " + ", ".join(f"`{value}`" for value in BACKLOG_TYPES) + ".\n\n"
         "Allowed `Priority` values: "
         + ", ".join(f"`{value}`" for value in BACKLOG_PRIORITIES)
         + ".\n\n"
@@ -10986,8 +11121,7 @@ def _markdown_section(text: str, heading: str) -> str:
 
 def _extract_ac_ids(text: str) -> set[str]:
     return {
-        f"AC{match.group(1)}"
-        for match in re.finditer(r"\bAC\s*(\d+)\b", text, flags=re.IGNORECASE)
+        f"AC{match.group(1)}" for match in re.finditer(r"\bAC\s*(\d+)\b", text, flags=re.IGNORECASE)
     }
 
 
@@ -10997,9 +11131,7 @@ def _extract_workflow_ref_ids(text: str, *, config: WorkflowConfig) -> set[str]:
         for match in re.finditer(r"\b[A-Z][A-Z0-9]*-[A-Z0-9]+\b", text, re.IGNORECASE)
     }
     return {
-        candidate
-        for candidate in candidates
-        if _valid_workflow_ref_id(candidate, config=config)
+        candidate for candidate in candidates if _valid_workflow_ref_id(candidate, config=config)
     }
 
 
@@ -11032,10 +11164,9 @@ def _extract_parent_ac_coverage(row: dict[str, str]) -> str:
 
 
 def _extract_parent_ac_ids_from_requirements(requirements_text: str) -> set[str]:
-    return (
-        _extract_ac_ids(_markdown_section(requirements_text, "Acceptance Criteria (Verifiable)"))
-        | _extract_ac_ids(_markdown_section(requirements_text, "Acceptance Criteria"))
-    )
+    return _extract_ac_ids(
+        _markdown_section(requirements_text, "Acceptance Criteria (Verifiable)")
+    ) | _extract_ac_ids(_markdown_section(requirements_text, "Acceptance Criteria"))
 
 
 def _extract_parent_ac_ids_from_epic_rows(rows: list[dict[str, str]]) -> set[str]:
@@ -11316,9 +11447,7 @@ def _epic_contract_issues(epic_dir: Path, requirements_text: str) -> list[str]:
 
     owner_rows = _epic_contract_proof_owner_rows(contract_text)
     if not owner_rows:
-        issues.append(
-            f"{EPIC_CONTRACT_FILENAME} must include parent AC proof owner rows."
-        )
+        issues.append(f"{EPIC_CONTRACT_FILENAME} must include parent AC proof owner rows.")
     else:
         for row in owner_rows:
             row_text = " ".join(row.values())
@@ -11400,8 +11529,7 @@ def _format_decomposition_plan(
                 parent_acs=_normalize_ac_list(row.get("Parent ACs", "")),
                 source=row.get("Source", "Decomposition plan"),
                 dependencies=row.get("Dependencies", ""),
-                execution_needs=row.get("Execution Needs", "bounded-return")
-                or "bounded-return",
+                execution_needs=row.get("Execution Needs", "bounded-return") or "bounded-return",
             )
         )
     lines.extend(
@@ -11657,9 +11785,7 @@ def _delegation_execution_needs(
     """Parse optional execution needs without inferring any host capability."""
     normalized = value.strip()
     if not normalized or normalized.lower() in {"none", "n/a", "-"}:
-        return DelegationExecutionNeeds(
-            earned_surface_required=require_earned_surface
-        )
+        return DelegationExecutionNeeds(earned_surface_required=require_earned_surface)
 
     tokens: list[str] = []
     peer_group: str | None = None
@@ -11735,9 +11861,7 @@ def _delegation_execution_needs(
         elif token in DELEGATION_EXECUTION_NEED_TOKENS:
             canonical = token
             durable_resume = durable_resume or token == "durable-resume"
-            direct_owner_steering = (
-                direct_owner_steering or token == "direct-owner-steering"
-            )
+            direct_owner_steering = direct_owner_steering or token == "direct-owner-steering"
             isolated_worktree = isolated_worktree or token == "isolated-worktree"
         else:
             raise _delegation_error(
@@ -11826,9 +11950,7 @@ def _delegation_task_units(root: Path, implementation_path: Path) -> tuple[Deleg
                 dependencies=_delegation_dependency_ids(
                     row.get("Dependencies", ""), unit_id=unit_id
                 ),
-                write_scope=_delegation_write_scope(
-                    row.get("Write Scope", ""), unit_id=unit_id
-                ),
+                write_scope=_delegation_write_scope(row.get("Write Scope", ""), unit_id=unit_id),
                 parallel_safe=_delegation_parallel_safe(
                     row.get("Parallel Safe", ""), unit_id=unit_id
                 ),
@@ -11844,9 +11966,7 @@ def _delegation_task_units(root: Path, implementation_path: Path) -> tuple[Deleg
                 execution_needs=_delegation_execution_needs(
                     row.get("Execution Needs", ""),
                     unit_id=unit_id,
-                    require_earned_surface=(
-                        row.get("_execution_needs_metadata") == "present"
-                    ),
+                    require_earned_surface=(row.get("_execution_needs_metadata") == "present"),
                 ),
                 repository_scope=repository_scope,
             )
@@ -11902,14 +12022,11 @@ def _delegation_epic_units(
                 "PW_DELEGATION_UNPLANNED_UNIT",
                 f"Authorized child {unit_id} is missing from the Epic tracker.",
             )
-        authority_issues = _decomposition_plan_authority_issues(
-            epic_dir=epic_dir, row=tracker_row
-        )
+        authority_issues = _decomposition_plan_authority_issues(epic_dir=epic_dir, row=tracker_row)
         if authority_issues:
             raise _delegation_error(
                 "PW_DELEGATION_AUTHORITY_MISMATCH",
-                f"{unit_id} does not match decomposition authority: "
-                + "; ".join(authority_issues),
+                f"{unit_id} does not match decomposition authority: " + "; ".join(authority_issues),
             )
         child_write_scope: tuple[str, ...] = ()
         child_repository_scope: tuple[str, ...] = (".",)
@@ -11921,8 +12038,10 @@ def _delegation_epic_units(
                 _found, child_rows, child_malformed = _implementation_task_table_rows(
                     child_implementation.read_text(encoding="utf-8")
                 )
-                if not child_malformed and child_rows and all(
-                    child.get("_delegation_metadata") == "present" for child in child_rows
+                if (
+                    not child_malformed
+                    and child_rows
+                    and all(child.get("_delegation_metadata") == "present" for child in child_rows)
                 ):
                     child_write_scope = tuple(
                         dict.fromkeys(
@@ -11943,9 +12062,7 @@ def _delegation_epic_units(
                 ),
                 write_scope=child_write_scope,
                 parallel_safe=True,
-                canonical_state=_delegation_canonical_state(
-                    tracker_row.get("Status", "")
-                ),
+                canonical_state=_delegation_canonical_state(tracker_row.get("Status", "")),
                 source_order=order,
                 source_path=source_path,
                 authority_acs=tuple(
@@ -11975,17 +12092,13 @@ def _delegation_repository_scope(implementation_path: Path) -> tuple[str, ...]:
     requirements_path = implementation_path.parent / "REQUIREMENTS.md"
     if not requirements_path.exists():
         return (".",)
-    primary, touched = _repository_scope_values(
-        requirements_path.read_text(encoding="utf-8")
-    )
+    primary, touched = _repository_scope_values(requirements_path.read_text(encoding="utf-8"))
     values = touched or ((primary,) if primary else ())
     normalized = tuple(dict.fromkeys(value for value in values if value))
     return normalized or (".",)
 
 
-def _delegation_has_path(
-    dependencies: dict[str, tuple[str, ...]], start: str, target: str
-) -> bool:
+def _delegation_has_path(dependencies: dict[str, tuple[str, ...]], start: str, target: str) -> bool:
     pending = list(dependencies.get(start, ()))
     seen: set[str] = set()
     while pending:
@@ -12018,9 +12131,7 @@ def _delegation_capability_matrix(
     if conflicts:
         raise _delegation_error(
             "PW_DELEGATION_CAPABILITY_CONFLICT",
-            "Capabilities cannot be both verified and unsupported: "
-            + ", ".join(conflicts)
-            + ".",
+            "Capabilities cannot be both verified and unsupported: " + ", ".join(conflicts) + ".",
         )
     source = capability_source.strip()
     if (verified or unsupported) and source.lower() in {"", "not observed", "unknown"}:
@@ -12082,10 +12193,7 @@ def _delegation_capability_issue(
     observations: Mapping[str, DelegationCapabilityObservation],
 ) -> str:
     observation = observations[capability]
-    return (
-        f"{capability} capability is {observation.state} "
-        f"({observation.provenance})"
-    )
+    return f"{capability} capability is {observation.state} " f"({observation.provenance})"
 
 
 def _delegation_select_executor(
@@ -12109,8 +12217,10 @@ def _delegation_select_executor(
         requested_executor: str | None = None,
         blocking_reasons: tuple[str, ...] = (),
     ) -> DelegationExecutorDecision:
-        required_child_slots = 2 if executor == "peer-team" else (
-            1 if executor in {"subagent", "persistent-task"} else 0
+        required_child_slots = (
+            2
+            if executor == "peer-team"
+            else (1 if executor in {"subagent", "persistent-task"} else 0)
         )
         schedule = (
             "parallel"
@@ -12125,11 +12235,15 @@ def _delegation_select_executor(
                 "task-retirement-reconciliation"
             )
             owner_retained = unit.execution_needs.direct_owner_steering
-            visibility_class = "visible-retained" if owner_retained else (
-                "visible-retirable" if retirement_verified else "visible-retained"
+            visibility_class = (
+                "visible-retained"
+                if owner_retained
+                else ("visible-retirable" if retirement_verified else "visible-retained")
             )
-            retention_policy = "retain" if owner_retained else (
-                "retire-on-verified" if retirement_verified else "retain"
+            retention_policy = (
+                "retain"
+                if owner_retained
+                else ("retire-on-verified" if retirement_verified else "retain")
             )
         else:
             visibility_class = "ephemeral"
@@ -12146,9 +12260,7 @@ def _delegation_select_executor(
         )
 
     needs = unit.execution_needs
-    coordinator_owned = any(
-        _task_worker_scope_forbidden(scope) for scope in unit.write_scope
-    )
+    coordinator_owned = any(_task_worker_scope_forbidden(scope) for scope in unit.write_scope)
     binding_needs = (
         needs.durable_resume
         or needs.direct_owner_steering
@@ -12248,18 +12360,16 @@ def _delegation_select_executor(
         "task-reconciliation",
     ]
     if needs.isolated_worktree:
-        persistent_isolation_verified = verified(
-            "persistent-task-isolated-worktree"
-        ) or verified("isolated-worktree")
+        persistent_isolation_verified = verified("persistent-task-isolated-worktree") or verified(
+            "isolated-worktree"
+        )
     else:
         persistent_isolation_verified = True
     if needs.direct_owner_steering:
         persistent_capabilities.append("persistent-task-owner-steering")
 
     if needs.isolated_worktree and not persistent_required:
-        subagent_isolated = verified("subagent") and verified(
-            "subagent-isolated-worktree"
-        )
+        subagent_isolated = verified("subagent") and verified("subagent-isolated-worktree")
         if subagent_isolated and available_child_capacity > 0:
             return result(
                 "subagent",
@@ -12275,9 +12385,7 @@ def _delegation_select_executor(
         ]
         if needs.isolated_worktree and not persistent_isolation_verified:
             issues.append(
-                _delegation_capability_issue(
-                    "persistent-task-isolated-worktree", observations
-                )
+                _delegation_capability_issue("persistent-task-isolated-worktree", observations)
                 + "; legacy isolated-worktree capability is also not verified"
             )
         if not _delegation_explicit_authority(persistent_task_authority):
@@ -12289,9 +12397,7 @@ def _delegation_select_executor(
             return result("none", reason, blocking_reasons=(reason,))
         return result(
             "persistent-task",
-            "Selected verified persistent-task surface for "
-            + ", ".join(needs.tokens)
-            + ".",
+            "Selected verified persistent-task surface for " + ", ".join(needs.tokens) + ".",
         )
 
     if verified("subagent") and available_child_capacity > 0:
@@ -12306,8 +12412,7 @@ def _delegation_select_executor(
         fallback_issues.append("subagent child capacity is exhausted")
     return result(
         "coordinator",
-        "; ".join(fallback_issues)
-        + "; coordinator sequential fallback satisfies bounded-return.",
+        "; ".join(fallback_issues) + "; coordinator sequential fallback satisfies bounded-return.",
     )
 
 
@@ -12337,9 +12442,7 @@ def build_delegation_plan(
         unsupported_capabilities=unsupported_capabilities,
         capability_source=capability_source,
     )
-    capabilities = tuple(
-        item.capability for item in capability_matrix if item.state == "verified"
-    )
+    capabilities = tuple(item.capability for item in capability_matrix if item.state == "verified")
 
     by_id: dict[str, DelegationUnit] = {}
     for unit in units:
@@ -12365,7 +12468,9 @@ def build_delegation_plan(
                     f"{unit.unit_id} depends on missing unit {dependency}.",
                 )
 
-    ordered_source_ids = [unit.unit_id for unit in sorted(units, key=lambda item: item.source_order)]
+    ordered_source_ids = [
+        unit.unit_id for unit in sorted(units, key=lambda item: item.source_order)
+    ]
     indegree = {unit_id: len(dependencies[unit_id]) for unit_id in ordered_source_ids}
     dependents: dict[str, list[str]] = {unit_id: [] for unit_id in ordered_source_ids}
     for unit_id, dependency_ids in dependencies.items():
@@ -12376,9 +12481,7 @@ def build_delegation_plan(
     while ready:
         unit_id = ready.pop(0)
         topological.append(unit_id)
-        for dependent in sorted(
-            dependents[unit_id], key=lambda item: by_id[item].source_order
-        ):
+        for dependent in sorted(dependents[unit_id], key=lambda item: by_id[item].source_order):
             indegree[dependent] -= 1
             if indegree[dependent] == 0:
                 ready.append(dependent)
@@ -12418,9 +12521,9 @@ def build_delegation_plan(
     ]
     for index, left in enumerate(selected_parallel):
         for right in selected_parallel[index + 1 :]:
-            if _delegation_has_path(dependencies, left.unit_id, right.unit_id) or _delegation_has_path(
-                dependencies, right.unit_id, left.unit_id
-            ):
+            if _delegation_has_path(
+                dependencies, left.unit_id, right.unit_id
+            ) or _delegation_has_path(dependencies, right.unit_id, left.unit_id):
                 continue
             if not set(left.repository_scope).intersection(right.repository_scope):
                 continue
@@ -12439,9 +12542,7 @@ def build_delegation_plan(
                     "Write Scope prefixes: " + ", ".join(overlaps) + ".",
                 )
 
-    completed = {
-        unit_id for unit_id, unit in by_id.items() if unit.canonical_state == "complete"
-    }
+    completed = {unit_id for unit_id, unit in by_id.items() if unit.canonical_state == "complete"}
     planned_units: list[DelegationPlannedUnit] = []
     eligible: list[str] = []
     blocked: list[str] = []
@@ -12459,8 +12560,7 @@ def build_delegation_plan(
             readiness = "complete"
             executor = decision.executor
             executor_reason = (
-                "Canonical workflow state is complete; no launch is eligible. "
-                + decision.reason
+                "Canonical workflow state is complete; no launch is eligible. " + decision.reason
             )
             schedule = decision.schedule
             visibility_class = decision.visibility_class
@@ -12594,9 +12694,7 @@ def build_delegation_plan(
 
 def _delegation_approved_lifecycle(kind: str, lifecycle: str) -> bool:
     rejected = {"", "To Do", "Analysing", "Proposed", "N/A"}
-    return lifecycle not in rejected and (
-        kind in {"task", "epic-child", "epic"}
-    )
+    return lifecycle not in rejected and (kind in {"task", "epic-child", "epic"})
 
 
 def _resolve_delegation_target(
@@ -12826,8 +12924,7 @@ def _format_delegation_plan_human(plan: DelegationPlan, *, heading: str = "Deleg
                 f"{item.capability}={item.state} ({item.provenance})"
                 for item in plan.capability_matrix
             ),
-            "Persistent task authority: "
-            + (plan.persistent_task_authority or "not authorized"),
+            "Persistent task authority: " + (plan.persistent_task_authority or "not authorized"),
         ]
     )
     return "\n".join(lines)
@@ -13065,10 +13162,15 @@ def reconcile_delegation_runtime_state(
                     f"canonical:{plan.target.source_path}#{plan.target.source_hash}"
                 )
             elif run.state in {"active", "returned"}:
-                expected_kind = "subagent" if run.executor in {
-                    "bounded-subagent",
-                    "sequential-worker",
-                } else run.executor
+                expected_kind = (
+                    "subagent"
+                    if run.executor
+                    in {
+                        "bounded-subagent",
+                        "sequential-worker",
+                    }
+                    else run.executor
+                )
                 identity_matches = (
                     observed is not None
                     and observed["id"] == run.handle
@@ -13096,20 +13198,26 @@ def reconcile_delegation_runtime_state(
             projected = (
                 "complete"
                 if run.state == "done"
-                else "active"
-                if run.state in {"active", "returned"}
-                else "orphaned"
-                if run.state == "orphaned"
-                else "blocked"
-                if run.state in {"failed", "blocked", "halted"}
-                else "pending"
+                else (
+                    "active"
+                    if run.state in {"active", "returned"}
+                    else (
+                        "orphaned"
+                        if run.state == "orphaned"
+                        else (
+                            "blocked" if run.state in {"failed", "blocked", "halted"} else "pending"
+                        )
+                    )
+                )
             )
             projected_units[unit_id] = {"state": projected, "handle": None}
         result["units"] = projected_units
     return result
 
 
-def _write_delegation_runtime_state(root: Path, plan: DelegationPlan, state: dict[str, object]) -> None:
+def _write_delegation_runtime_state(
+    root: Path, plan: DelegationPlan, state: dict[str, object]
+) -> None:
     if not _delegation_runtime_is_ignored(root):
         raise _delegation_error(
             "PW_DELEGATION_RUNTIME_NOT_IGNORED",
@@ -13139,17 +13247,13 @@ def _delegation_status_payload(
         task_runtime = None
         epic_runtime = None
         if "task_orchestration" in state:
-            task_runtime = _task_orchestration_state_from_payload(
-                state["task_orchestration"]
-            )
+            task_runtime = _task_orchestration_state_from_payload(state["task_orchestration"])
             units = {
                 unit_id: {"state": run.state, "handle": run.handle}
                 for unit_id, run in task_runtime.units.items()
             }
         elif "epic_orchestration" in state:
-            epic_runtime = _epic_orchestration_state_from_payload(
-                state["epic_orchestration"]
-            )
+            epic_runtime = _epic_orchestration_state_from_payload(state["epic_orchestration"])
             units = {
                 unit_id: {"state": run.state, "handle": run.handle}
                 for unit_id, run in epic_runtime.units.items()
@@ -13162,9 +13266,7 @@ def _delegation_status_payload(
         payload["eligible_units"] = [
             unit_id for unit_id in plan.eligible_units if unit_id not in unavailable
         ]
-        payload["blocked_units"] = list(
-            dict.fromkeys([*plan.blocked_units, *sorted(unavailable)])
-        )
+        payload["blocked_units"] = list(dict.fromkeys([*plan.blocked_units, *sorted(unavailable)]))
         plan_units = payload["units"]
         assert isinstance(plan_units, list)
         for plan_unit in plan_units:
@@ -13176,9 +13278,11 @@ def _delegation_status_payload(
             if runtime_state != "pending":
                 plan_unit["readiness"] = runtime_state
                 plan_unit["blocking_reasons"] = [
-                    "Runtime handle is active; resume without relaunch."
-                    if runtime_state == "active"
-                    else "Runtime Task state is not launch-eligible; reconcile or resume it."
+                    (
+                        "Runtime handle is active; resume without relaunch."
+                        if runtime_state == "active"
+                        else "Runtime Task state is not launch-eligible; reconcile or resume it."
+                    )
                 ]
         payload["runtime_summary"] = {
             "initialized": True,
@@ -13207,8 +13311,7 @@ def _delegation_status_payload(
                         if run.state == "done"
                     ),
                     "attempts": {
-                        unit_id: run.attempt
-                        for unit_id, run in sorted(task_runtime.units.items())
+                        unit_id: run.attempt for unit_id, run in sorted(task_runtime.units.items())
                     },
                     "no_relaunch": sorted(unavailable),
                 }
@@ -13217,16 +13320,17 @@ def _delegation_status_payload(
             payload["runtime_summary"].update(
                 {
                     "returned": sorted(
-                        unit_id for unit_id, run in epic_runtime.units.items()
+                        unit_id
+                        for unit_id, run in epic_runtime.units.items()
                         if run.state == "returned"
                     ),
                     "completed": sorted(
-                        unit_id for unit_id, run in epic_runtime.units.items()
+                        unit_id
+                        for unit_id, run in epic_runtime.units.items()
                         if run.state == "verified"
                     ),
                     "attempts": {
-                        unit_id: run.attempt
-                        for unit_id, run in sorted(epic_runtime.units.items())
+                        unit_id: run.attempt for unit_id, run in sorted(epic_runtime.units.items())
                     },
                     "create_count": epic_runtime.create_count,
                     "lifecycle": {
@@ -13244,20 +13348,24 @@ def _delegation_status_payload(
                         for unit_id, run in sorted(epic_runtime.units.items())
                     },
                     "retirement_confirmed": sorted(
-                        unit_id for unit_id, run in epic_runtime.units.items()
+                        unit_id
+                        for unit_id, run in epic_runtime.units.items()
                         if run.retirement_state == "confirmed"
                     ),
                     "retirement_pending": sorted(
-                        unit_id for unit_id, run in epic_runtime.units.items()
+                        unit_id
+                        for unit_id, run in epic_runtime.units.items()
                         if run.retirement_state in {"pending", "requested", "failed", "unknown"}
                     ),
                     "visible_retained": sorted(
-                        unit_id for unit_id, run in epic_runtime.units.items()
+                        unit_id
+                        for unit_id, run in epic_runtime.units.items()
                         if run.visibility_class.startswith("visible-")
                         and run.retirement_state != "confirmed"
                     ),
                     "no_relaunch": sorted(
-                        unit_id for unit_id, run in epic_runtime.units.items()
+                        unit_id
+                        for unit_id, run in epic_runtime.units.items()
                         if run.state != "pending"
                     ),
                 }
@@ -13267,9 +13375,7 @@ def _delegation_status_payload(
 
 def _coordination_work_item_dir(root: Path, target_id: str) -> Path:
     tasks_dir = root / ".project-workflow" / "tasks"
-    matches = sorted(
-        path for path in tasks_dir.rglob(f"{target_id}-*") if path.is_dir()
-    )
+    matches = sorted(path for path in tasks_dir.rglob(f"{target_id}-*") if path.is_dir())
     if not matches:
         raise ValueError(f"No work-item folder found for {target_id}.")
     if len(matches) > 1:
@@ -13325,11 +13431,226 @@ def _coordination_required_text(value: object, field_name: str) -> str:
 
 
 def _coordination_string_list(value: object, field_name: str) -> list[str]:
-    if not isinstance(value, list) or not value or any(
-        not isinstance(item, str) or not item.strip() for item in value
+    if (
+        not isinstance(value, list)
+        or not value
+        or any(not isinstance(item, str) or not item.strip() for item in value)
     ):
         raise ValueError(f"{field_name} must be a non-empty string list.")
     return list(dict.fromkeys(item.strip() for item in value))
+
+
+def _verification_optional_limit(value: object, field_name: str) -> int | None:
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, int) or value <= 0:
+        raise ValueError(f"{field_name} must be a positive integer or null.")
+    return value
+
+
+def _verification_identity(payload: Mapping[str, object]) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return "sha256:" + hashlib.sha256(encoded).hexdigest()
+
+
+def _verification_receipt_ledger_identity(receipts: list[object]) -> str:
+    return _verification_identity(
+        {
+            "receipt_identities": [
+                receipt.get("receipt_identity") for receipt in receipts if isinstance(receipt, dict)
+            ]
+        }
+    )
+
+
+def _verification_validate_requirement(requirement: object) -> None:
+    if not isinstance(requirement, dict) or not isinstance(requirement.get("required"), bool):
+        raise ValueError("verification_requirement must declare required as boolean.")
+    claims = requirement.get("claims")
+    stages = requirement.get("stages")
+    affected_scope = requirement.get("affected_scope")
+    if requirement["required"] is False:
+        if claims != [] or stages != [] or affected_scope != []:
+            raise ValueError(
+                "A non-material verification requirement cannot declare claims, stages, or scope."
+            )
+        if requirement.get("proof_contract_identity") is not None:
+            raise ValueError(
+                "A non-material verification requirement cannot declare a proof contract."
+            )
+        return
+    parsed_claims = _coordination_string_list(claims, "verification_requirement.claims")
+    parsed_stages = _coordination_string_list(stages, "verification_requirement.stages")
+    unknown_stages = [stage for stage in parsed_stages if stage not in VERIFICATION_CAMPAIGN_STAGES]
+    if unknown_stages:
+        raise ValueError(
+            "verification_requirement.stages contains unknown stages: " + ", ".join(unknown_stages)
+        )
+    indexes = [VERIFICATION_CAMPAIGN_STAGES.index(stage) for stage in parsed_stages]
+    if indexes != sorted(indexes):
+        raise ValueError("verification_requirement.stages must use canonical stage order.")
+    parsed_scope = _coordination_string_list(
+        affected_scope, "verification_requirement.affected_scope"
+    )
+    expected = _verification_identity(
+        {
+            "claims": parsed_claims,
+            "stages": parsed_stages,
+            "affected_scope": parsed_scope,
+        }
+    )
+    if requirement.get("proof_contract_identity") != expected:
+        raise ValueError("verification_requirement.proof_contract_identity is stale or malformed.")
+
+
+def _verification_validate_campaign(campaign: object) -> None:
+    if not isinstance(campaign, dict):
+        raise ValueError("verification_campaign must be an object when present.")
+    if campaign.get("schema_version") != VERIFICATION_CAMPAIGN_SCHEMA_VERSION:
+        raise ValueError(
+            "verification_campaign.schema_version must be "
+            f"{VERIFICATION_CAMPAIGN_SCHEMA_VERSION}."
+        )
+    for field_name in (
+        "candidate_identity",
+        "intent_identity",
+        "source_identity",
+        "proof_contract_identity",
+        "next_action",
+    ):
+        _coordination_required_text(campaign.get(field_name), f"verification_campaign.{field_name}")
+    mode = campaign.get("mode")
+    if mode not in VERIFICATION_CAMPAIGN_MODES:
+        raise ValueError("verification_campaign.mode is invalid.")
+    if campaign.get("impact") not in {"known", "unknown"}:
+        raise ValueError("verification_campaign.impact is invalid.")
+    claims = _coordination_string_list(campaign.get("claims"), "verification_campaign.claims")
+    stages = _coordination_string_list(campaign.get("stages"), "verification_campaign.stages")
+    unknown_stages = [stage for stage in stages if stage not in VERIFICATION_CAMPAIGN_STAGES]
+    if unknown_stages:
+        raise ValueError(
+            "verification_campaign.stages contains unknown stages: " + ", ".join(unknown_stages)
+        )
+    indexes = [VERIFICATION_CAMPAIGN_STAGES.index(stage) for stage in stages]
+    if indexes != sorted(indexes):
+        raise ValueError("verification_campaign.stages must use canonical stage order.")
+    if mode == "certification" and "full" not in stages:
+        raise ValueError("A certification campaign must include the full stage.")
+    affected_scope = _coordination_string_list(
+        campaign.get("affected_scope"), "verification_campaign.affected_scope"
+    )
+    limits = campaign.get("limits")
+    if not isinstance(limits, dict):
+        raise ValueError("verification_campaign.limits must be an object.")
+    parsed_limits = {
+        key: _verification_optional_limit(limits.get(key), f"verification_campaign.limits.{key}")
+        for key in ("max_failures", "max_target_calls", "max_elapsed_seconds")
+    }
+    if not any(value is not None for value in parsed_limits.values()):
+        raise ValueError("A material verification campaign requires at least one finite limit.")
+    diagnostic_decision = campaign.get("diagnostic_decision")
+    if mode == "diagnostic":
+        _coordination_required_text(
+            diagnostic_decision, "verification_campaign.diagnostic_decision"
+        )
+    elif diagnostic_decision is not None:
+        raise ValueError(
+            "verification_campaign.diagnostic_decision is valid only in diagnostic mode."
+        )
+    adapter = campaign.get("adapter")
+    if not isinstance(adapter, dict) or adapter.get("kind") not in {"manual", "command"}:
+        raise ValueError("verification_campaign.adapter.kind must be manual or command.")
+    capabilities = adapter.get("capabilities")
+    if not isinstance(capabilities, list) or any(
+        capability not in VERIFICATION_ADAPTER_CAPABILITIES for capability in capabilities
+    ):
+        raise ValueError("verification_campaign.adapter.capabilities is invalid.")
+    if len(capabilities) != len(set(capabilities)):
+        raise ValueError("verification_campaign.adapter.capabilities contains duplicates.")
+    adapter_command = adapter.get("command")
+    manual_command = adapter.get("manual_command")
+    if adapter.get("kind") == "command":
+        if (
+            not isinstance(adapter_command, list)
+            or not adapter_command
+            or any(not isinstance(part, str) or not part.strip() for part in adapter_command)
+        ):
+            raise ValueError(
+                "verification_campaign.adapter.command must be a non-empty argument list."
+            )
+        if manual_command is not None:
+            raise ValueError(
+                "verification_campaign.adapter.manual_command is invalid for command adapters."
+            )
+    else:
+        _coordination_required_text(manual_command, "verification_campaign.adapter.manual_command")
+        if adapter_command is not None:
+            raise ValueError(
+                "verification_campaign.adapter.command is invalid for manual adapters."
+            )
+    receipts = campaign.get("receipts")
+    if not isinstance(receipts, list):
+        raise ValueError("verification_campaign.receipts must be a list.")
+    seen_receipts: set[str] = set()
+    for index, receipt in enumerate(receipts):
+        prefix = f"verification_campaign.receipts[{index}]"
+        if not isinstance(receipt, dict):
+            raise ValueError(f"{prefix} must be an object.")
+        for field_name in (
+            "receipt_identity",
+            "candidate_identity",
+            "intent_identity",
+            "source_identity",
+            "proof_contract_identity",
+            "stage",
+            "runtime_identity",
+            "target_identity",
+            "evaluator_identity",
+            "artifact",
+            "recorded_at",
+        ):
+            _coordination_required_text(receipt.get(field_name), f"{prefix}.{field_name}")
+        _coordination_string_list(receipt.get("scope"), f"{prefix}.scope")
+        request_identity = receipt.get("request_identity")
+        if adapter.get("kind") == "command":
+            _coordination_required_text(request_identity, f"{prefix}.request_identity")
+        elif request_identity is not None:
+            raise ValueError(f"{prefix}.request_identity is valid only for command adapters.")
+        if receipt["receipt_identity"] in seen_receipts:
+            raise ValueError("verification_campaign contains duplicate receipt identities.")
+        seen_receipts.add(str(receipt["receipt_identity"]))
+        if receipt.get("stage") not in stages:
+            raise ValueError(f"{prefix}.stage is outside the campaign stages.")
+        if receipt.get("outcome") not in VERIFICATION_RECEIPT_OUTCOMES:
+            raise ValueError(f"{prefix}.outcome is invalid.")
+        for field_name in ("target_calls", "elapsed_seconds"):
+            value = receipt.get(field_name)
+            if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+                raise ValueError(f"{prefix}.{field_name} must be a non-negative integer.")
+        if not isinstance(receipt.get("stage_complete"), bool):
+            raise ValueError(f"{prefix}.stage_complete must be boolean.")
+        if not isinstance(receipt.get("regrade"), bool):
+            raise ValueError(f"{prefix}.regrade must be boolean.")
+        receipt_base = {key: value for key, value in receipt.items() if key != "receipt_identity"}
+        if receipt.get("receipt_identity") != _verification_identity(receipt_base):
+            raise ValueError(f"{prefix}.receipt_identity is stale or malformed.")
+    if campaign.get("receipt_ledger_identity") != _verification_receipt_ledger_identity(receipts):
+        raise ValueError("verification_campaign.receipt_ledger_identity is stale or malformed.")
+    outcome = campaign.get("outcome")
+    if outcome not in VERIFICATION_CAMPAIGN_OUTCOMES:
+        raise ValueError("verification_campaign.outcome is invalid.")
+    current_stage = campaign.get("current_stage")
+    if current_stage is not None and current_stage not in stages:
+        raise ValueError("verification_campaign.current_stage is invalid.")
+    expected_contract_identity = _verification_identity(
+        {
+            "claims": claims,
+            "stages": stages,
+            "affected_scope": affected_scope,
+        }
+    )
+    if campaign.get("proof_contract_identity") != expected_contract_identity:
+        raise ValueError("verification_campaign.proof_contract_identity is stale or malformed.")
 
 
 def _coordination_load_state(root: Path, target_id: str) -> dict[str, object]:
@@ -13347,9 +13668,7 @@ def _coordination_validate_state(payload: object, *, target_id: str | None = Non
     if not isinstance(payload, dict):
         raise ValueError("Coordination state must be a JSON object.")
     if payload.get("schema_version") != COORDINATION_SCHEMA_VERSION:
-        raise ValueError(
-            f"Coordination schema_version must be {COORDINATION_SCHEMA_VERSION}."
-        )
+        raise ValueError(f"Coordination schema_version must be {COORDINATION_SCHEMA_VERSION}.")
     actual_target = _coordination_required_text(payload.get("target_id"), "target_id")
     if target_id is not None and actual_target != target_id:
         raise ValueError(
@@ -13395,11 +13714,30 @@ def _coordination_validate_state(payload: object, *, target_id: str | None = Non
         raise ValueError("outcome_checkpoint must be an object.")
     if checkpoint.get("status") not in {"not-required", "pending", "pass", "fail"}:
         raise ValueError("outcome_checkpoint.status is invalid.")
+    campaign = payload.get("verification_campaign")
+    requirement = payload.get("verification_requirement")
+    if requirement is not None:
+        _verification_validate_requirement(requirement)
+    if campaign is not None:
+        _verification_validate_campaign(campaign)
+        if isinstance(requirement, dict):
+            if requirement.get("required") is not True:
+                raise ValueError(
+                    "A verification campaign cannot exist when material verification is not required."
+                )
+            for campaign_field, requirement_field in (
+                ("claims", "claims"),
+                ("stages", "stages"),
+                ("affected_scope", "affected_scope"),
+                ("proof_contract_identity", "proof_contract_identity"),
+            ):
+                if campaign.get(campaign_field) != requirement.get(requirement_field):
+                    raise ValueError(
+                        "verification_campaign does not match the durable verification requirement."
+                    )
 
 
-def _coordination_write_state(
-    root: Path, target_id: str, payload: dict[str, object]
-) -> Path:
+def _coordination_write_state(root: Path, target_id: str, payload: dict[str, object]) -> Path:
     _coordination_validate_state(payload, target_id=target_id)
     path = _coordination_state_path(root, target_id)
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -13452,7 +13790,9 @@ def _coordination_preflight_payload(
         )
     else:
         contract_state = "compatible"
-        reasons.append("Declared coordination contract is current; package or asset provenance differs.")
+        reasons.append(
+            "Declared coordination contract is current; package or asset provenance differs."
+        )
     if (
         contract_state == "stale"
         and repository_identity["package_version"] == CURRENT_PACKAGE_VERSION
@@ -13599,6 +13939,335 @@ def _coordination_source_identity(state: Mapping[str, object]) -> str:
     return "sha256:" + hashlib.sha256(encoded).hexdigest()
 
 
+def _verification_work_item_layers(
+    root: Path, target_id: str
+) -> tuple[str, dict[str, OperationalStatusProofLayer]]:
+    work_items, _findings = _inspect_operational_active_work(root)
+    matches = [item for item in work_items if item.item_id == target_id]
+    if len(matches) != 1:
+        raise ValueError(
+            f"Operational lifecycle contains {len(matches)} work items named {target_id}; "
+            "exactly one is required."
+        )
+    item = matches[0]
+    layers = {layer.name: layer for layer in _operational_item_proof_layers(root, item)}
+    return item.lifecycle, layers
+
+
+def _verification_completed_stages(campaign: Mapping[str, object]) -> list[str]:
+    mode = str(campaign.get("mode"))
+    completed: list[str] = []
+    receipts = campaign.get("receipts", [])
+    assert isinstance(receipts, list)
+    for stage in campaign.get("stages", []):
+        stage_receipts = [
+            receipt
+            for receipt in receipts
+            if isinstance(receipt, dict) and receipt.get("stage") == stage
+        ]
+        if mode == "certification":
+            stage_complete = any(
+                receipt.get("outcome") == "pass" and receipt.get("stage_complete") is True
+                for receipt in stage_receipts
+            )
+        else:
+            stage_complete = any(
+                receipt.get("stage_complete") is True
+                and receipt.get("outcome") in {"pass", "product-failure"}
+                for receipt in stage_receipts
+            )
+        if stage_complete:
+            completed.append(str(stage))
+    return completed
+
+
+def _verification_campaign_currentness(
+    root: Path, target_id: str, state: Mapping[str, object], campaign: Mapping[str, object]
+) -> tuple[bool, list[str]]:
+    reasons: list[str] = []
+    current_intent = _coordination_artifact_identity(root, target_id)
+    current_source = _coordination_source_identity(state)
+    if campaign.get("intent_identity") != current_intent:
+        reasons.append("approved Intent authority changed after campaign initialization")
+    if campaign.get("source_identity") != current_source:
+        reasons.append("candidate source identity changed after campaign initialization")
+    receipts = campaign.get("receipts", [])
+    assert isinstance(receipts, list)
+    for receipt in receipts:
+        assert isinstance(receipt, dict)
+        for field_name, expected in (
+            ("candidate_identity", campaign.get("candidate_identity")),
+            ("intent_identity", campaign.get("intent_identity")),
+            ("source_identity", campaign.get("source_identity")),
+            ("proof_contract_identity", campaign.get("proof_contract_identity")),
+        ):
+            if receipt.get(field_name) != expected:
+                reasons.append(
+                    f"receipt {receipt.get('receipt_identity', 'unknown')} has stale {field_name}"
+                )
+    return not reasons, reasons
+
+
+def _verification_campaign_projection(
+    root: Path,
+    target_id: str,
+    state: Mapping[str, object],
+    *,
+    material_verification: bool | None = None,
+) -> dict[str, object]:
+    campaign = state.get("verification_campaign")
+    requirement = state.get("verification_requirement")
+    if isinstance(requirement, dict):
+        material_required = requirement.get("required") is True
+        required_stages = [str(stage) for stage in requirement.get("stages", [])]
+        required_scope = [str(scope) for scope in requirement.get("affected_scope", [])]
+    else:
+        material_required = bool(material_verification)
+        required_stages = []
+        required_scope = []
+    lifecycle, layers = _verification_work_item_layers(root, target_id)
+    implementation = layers.get("implementation")
+    qa = layers.get("qa-review")
+    implementation_pass = implementation is not None and implementation.state == "pass"
+    qa_pass = qa is not None and qa.state == "pass"
+    if campaign is None:
+        if not implementation_pass:
+            operational_state = "implementation-required"
+            next_action = "Complete the approved implementation before material verification."
+        elif material_required:
+            operational_state = "verification-required"
+            next_action = "Initialize the required material verification campaign."
+        elif not qa_pass:
+            operational_state = "qa-required"
+            next_action = "Run the one existing independent QA gate."
+        else:
+            operational_state = "delivery-ready"
+            next_action = "Use current delivery evidence; do not reopen unchanged proof."
+        return {
+            "operational_state": operational_state,
+            "lifecycle": lifecycle,
+            "campaign_required": material_required,
+            "campaign_present": False,
+            "campaign_current": None,
+            "completed_stages": [],
+            "missing_stages": required_stages,
+            "required_scope": required_scope,
+            "target_calls": 0,
+            "elapsed_seconds": 0,
+            "failures": 0,
+            "qa_verdict": "pass" if qa_pass else "not-passed",
+            "next_action": next_action,
+            "reasons": [],
+        }
+    assert isinstance(campaign, dict)
+    _verification_validate_campaign(campaign)
+    current, currentness_reasons = _verification_campaign_currentness(
+        root, target_id, state, campaign
+    )
+    stages = [str(stage) for stage in campaign["stages"]]
+    completed = _verification_completed_stages(campaign)
+    missing = [stage for stage in stages if stage not in completed]
+    receipts = campaign["receipts"]
+    assert isinstance(receipts, list)
+    target_calls = sum(
+        int(receipt["target_calls"]) for receipt in receipts if isinstance(receipt, dict)
+    )
+    elapsed_seconds = sum(
+        int(receipt["elapsed_seconds"]) for receipt in receipts if isinstance(receipt, dict)
+    )
+    failures = sum(
+        1
+        for receipt in receipts
+        if isinstance(receipt, dict) and receipt.get("outcome") == "product-failure"
+    )
+    campaign_outcome = str(campaign["outcome"])
+    if not implementation_pass:
+        operational_state = "implementation-required"
+        next_action = "Complete the approved implementation; verifier invocation is not authorized."
+    elif not current or campaign_outcome in {"blocked", "limit-reached"}:
+        operational_state = "blocked"
+        next_action = str(campaign["next_action"])
+    elif campaign.get("mode") == "diagnostic":
+        operational_state = "verification-required"
+        next_action = (
+            "Diagnostic evidence cannot certify delivery; initialize a current certification "
+            "campaign after the named decision is resolved."
+            if not missing
+            else str(campaign["next_action"])
+        )
+    elif missing:
+        operational_state = "verification-required"
+        next_action = str(campaign["next_action"])
+    elif not qa_pass:
+        operational_state = "qa-required"
+        next_action = "Run the one existing independent QA gate without broadening verification."
+    else:
+        operational_state = "delivery-ready"
+        next_action = "Use current delivery evidence; do not rerun unchanged verification or QA."
+    assert operational_state in VERIFICATION_OPERATIONAL_STATES
+    return {
+        "operational_state": operational_state,
+        "lifecycle": lifecycle,
+        "campaign_required": True,
+        "campaign_present": True,
+        "campaign_current": current,
+        "candidate_identity": campaign["candidate_identity"],
+        "mode": campaign["mode"],
+        "certifying": campaign["mode"] == "certification",
+        "campaign_outcome": campaign_outcome,
+        "completed_stages": completed,
+        "missing_stages": missing,
+        "required_scope": campaign["affected_scope"],
+        "limits": campaign["limits"],
+        "target_calls": target_calls,
+        "elapsed_seconds": elapsed_seconds,
+        "failures": failures,
+        "qa_verdict": "pass" if qa_pass else "not-passed",
+        "next_action": next_action,
+        "reasons": currentness_reasons,
+    }
+
+
+def _verification_adapter_required_capabilities(
+    *, mode: str, stages: list[str], limits: Mapping[str, object]
+) -> set[str]:
+    required = {"request-binding", "typed-outcomes", "input-bound-receipts"}
+    if any(stage in {"canary", "affected"} for stage in stages):
+        required.add("selection")
+    if mode == "certification":
+        required.add("fail-fast")
+    if any(value is not None for value in limits.values()):
+        required.add("limits")
+    return required
+
+
+def _verification_recompute_campaign(campaign: dict[str, object]) -> None:
+    completed = _verification_completed_stages(campaign)
+    stages = [str(stage) for stage in campaign["stages"]]
+    receipts = campaign["receipts"]
+    assert isinstance(receipts, list)
+    limits = campaign["limits"]
+    assert isinstance(limits, dict)
+    failures = sum(
+        1
+        for receipt in receipts
+        if isinstance(receipt, dict) and receipt.get("outcome") == "product-failure"
+    )
+    target_calls = sum(
+        int(receipt["target_calls"]) for receipt in receipts if isinstance(receipt, dict)
+    )
+    elapsed = sum(
+        int(receipt["elapsed_seconds"]) for receipt in receipts if isinstance(receipt, dict)
+    )
+    limit_reasons: list[str] = []
+    for key, actual in (
+        ("max_failures", failures),
+        ("max_target_calls", target_calls),
+        ("max_elapsed_seconds", elapsed),
+    ):
+        maximum = limits.get(key)
+        if maximum is not None and (
+            actual > int(maximum) or (actual == int(maximum) and len(completed) < len(stages))
+        ):
+            limit_reasons.append(f"{key} reached or exceeded ({actual}/{maximum})")
+    latest = receipts[-1] if receipts else None
+    if isinstance(latest, dict) and latest.get("outcome") == "limit-reached":
+        campaign["outcome"] = "limit-reached"
+        campaign["next_action"] = (
+            "Verifier limit reached with required proof still missing; record a current "
+            "scope/limit decision. No pass is implied."
+        )
+    elif limit_reasons:
+        campaign["outcome"] = "limit-reached"
+        campaign["next_action"] = (
+            "Campaign limit reached with required proof still missing: "
+            + "; ".join(limit_reasons)
+            + ". Record a current scope/limit decision; no pass is implied."
+        )
+    elif (
+        isinstance(latest, dict)
+        and latest.get("outcome") == "product-failure"
+        and campaign["mode"] == "certification"
+    ):
+        campaign["outcome"] = "blocked"
+        campaign["next_action"] = (
+            "Return the blocking product/assertion failure to implementation; create a new "
+            "candidate campaign after correction."
+        )
+    elif isinstance(latest, dict) and latest.get("outcome") == "evaluator-failure":
+        campaign["outcome"] = "blocked"
+        campaign["next_action"] = (
+            "Repair the evaluator and regrade the retained target output with zero target calls."
+        )
+    elif isinstance(latest, dict) and latest.get("outcome") in {
+        "provider-failure",
+        "harness-failure",
+    }:
+        stage = latest.get("stage")
+        infrastructure_failures = sum(
+            1
+            for receipt in receipts
+            if isinstance(receipt, dict)
+            and receipt.get("stage") == stage
+            and receipt.get("outcome") in {"provider-failure", "harness-failure"}
+        )
+        if infrastructure_failures > 1:
+            campaign["outcome"] = "blocked"
+            campaign["next_action"] = (
+                "The one bounded infrastructure retry is exhausted; repair or replan before "
+                "further target execution."
+            )
+        else:
+            campaign["outcome"] = "pending"
+            campaign["next_action"] = (
+                f"Resume {stage} once from the current checkpoint after infrastructure recovery."
+            )
+    elif len(completed) == len(stages):
+        campaign["outcome"] = "pass"
+        campaign["current_stage"] = None
+        campaign["next_action"] = (
+            "Diagnostic boundary reached; use the result only for the named decision."
+            if campaign["mode"] == "diagnostic"
+            else "Proceed to the one existing independent QA gate."
+        )
+    else:
+        campaign["outcome"] = "pending"
+        campaign["current_stage"] = next(stage for stage in stages if stage not in completed)
+        campaign["next_action"] = f"Run only the current {campaign['current_stage']} stage."
+    campaign["receipt_ledger_identity"] = _verification_receipt_ledger_identity(receipts)
+
+
+def _coordination_verification_gate_issues(
+    root: Path, target_id: str, *, new_status: str
+) -> list[str]:
+    try:
+        path = _coordination_state_path(root, target_id)
+    except ValueError:
+        return []
+    if not path.is_file():
+        return []
+    try:
+        state = _coordination_load_state(root, target_id)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        return [f"verification campaign state is invalid: {exc}"]
+    campaign = state.get("verification_campaign")
+    requirement = state.get("verification_requirement")
+    if campaign is None and requirement is None:
+        return []
+    try:
+        projection = _verification_campaign_projection(root, target_id, state)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        return [f"verification campaign state is invalid: {exc}"]
+    operational_state = projection["operational_state"]
+    if new_status == "Review" and operational_state not in {"qa-required", "delivery-ready"}:
+        return [
+            f"material verification is {operational_state}; complete the current campaign before QA"
+        ]
+    if new_status == "Complete" and operational_state != "delivery-ready":
+        return [f"delivery is not ready because material verification is {operational_state}"]
+    return []
+
+
 def _coordination_transition_boundary(current_status: str, new_status: str) -> str | None:
     if current_status == new_status:
         return None
@@ -13620,7 +14289,9 @@ def _coordination_csv(value: str | None, field_name: str) -> list[str]:
     return list(dict.fromkeys(values))
 
 
-def _coordination_repository_sources(values: list[str] | None, source_revision: str) -> dict[str, object]:
+def _coordination_repository_sources(
+    values: list[str] | None, source_revision: str
+) -> dict[str, object]:
     if not values:
         return {".": {"source_revision": source_revision}}
     result: dict[str, object] = {}
@@ -13645,6 +14316,43 @@ def cmd_coordinate_init(args: argparse.Namespace) -> None:
             raise ValueError(
                 "Material user-facing coordination requires --checkpoint-unit for the earliest proof."
             )
+        material_verification = args.material_verification == "yes"
+        if material_verification:
+            verification_claims = _coordination_csv(args.verification_claims, "verification_claims")
+            verification_stages = _coordination_csv(args.verification_stages, "verification_stages")
+            unknown_stages = [
+                stage for stage in verification_stages if stage not in VERIFICATION_CAMPAIGN_STAGES
+            ]
+            if unknown_stages:
+                raise ValueError("Unknown verification stages: " + ", ".join(unknown_stages))
+            indexes = [VERIFICATION_CAMPAIGN_STAGES.index(stage) for stage in verification_stages]
+            if indexes != sorted(indexes):
+                raise ValueError("Verification requirement stages must use canonical stage order.")
+            verification_scope = _coordination_csv(args.verification_scope, "verification_scope")
+            verification_contract = _verification_identity(
+                {
+                    "claims": verification_claims,
+                    "stages": verification_stages,
+                    "affected_scope": verification_scope,
+                }
+            )
+        else:
+            if any(
+                value is not None
+                for value in (
+                    args.verification_claims,
+                    args.verification_stages,
+                    args.verification_scope,
+                )
+            ):
+                raise ValueError(
+                    "Verification claims, stages, and scope are valid only when "
+                    "--material-verification yes."
+                )
+            verification_claims = []
+            verification_stages = []
+            verification_scope = []
+            verification_contract = None
         path = _coordination_state_path(root, args.id)
         if path.exists() and not args.force:
             raise ValueError(
@@ -13672,8 +14380,7 @@ def cmd_coordinate_init(args: argparse.Namespace) -> None:
             "boundary_decisions": [],
             "last_boundary": None,
             "outcome_checkpoint": {
-                "required": args.material_user_facing == "yes"
-                and args.claim_class != "mechanical",
+                "required": args.material_user_facing == "yes" and args.claim_class != "mechanical",
                 "claim_class": args.claim_class,
                 "checkpoint_unit": args.checkpoint_unit,
                 "status": (
@@ -13683,6 +14390,14 @@ def cmd_coordinate_init(args: argparse.Namespace) -> None:
                 ),
                 "record": None,
             },
+            "verification_requirement": {
+                "required": material_verification,
+                "claims": verification_claims,
+                "stages": verification_stages,
+                "affected_scope": verification_scope,
+                "proof_contract_identity": verification_contract,
+            },
+            "verification_campaign": None,
             "next_action": args.next_action,
             "host_facts": {
                 "context_contract": "declared",
@@ -13767,14 +14482,19 @@ def cmd_coordinate_boundary(args: argparse.Namespace) -> None:
         if args.classification != "approved-change" and args.amendment_identity:
             raise ValueError("--amendment-identity is valid only for approved-change.")
         affected = (
-            [] if not args.affected_units or args.affected_units.strip().lower() in {"none", "n/a"}
+            []
+            if not args.affected_units or args.affected_units.strip().lower() in {"none", "n/a"}
             else _coordination_csv(args.affected_units, "affected_units")
         )
-        if args.boundary in {
-            "before-unit-start",
-            "unit-return-or-dependency-join",
-            "before-review-or-complete",
-        } and not affected:
+        if (
+            args.boundary
+            in {
+                "before-unit-start",
+                "unit-return-or-dependency-join",
+                "before-review-or-complete",
+            }
+            and not affected
+        ):
             raise ValueError(f"{args.boundary} requires --affected-units for gate ownership.")
         current_intent_identity = _coordination_artifact_identity(root, args.id)
         decision = {
@@ -13866,7 +14586,8 @@ def cmd_coordinate_checkpoint(args: argparse.Namespace) -> None:
         if args.verdict == "fail":
             affected = (
                 set(_coordination_csv(args.affected_units, "affected_units"))
-                if args.affected_units and args.affected_units.strip().lower() not in {"none", "n/a"}
+                if args.affected_units
+                and args.affected_units.strip().lower() not in {"none", "n/a"}
                 else {str(checkpoint.get("checkpoint_unit"))}
             )
             state["next_action"] = (
@@ -13883,12 +14604,634 @@ def cmd_coordinate_checkpoint(args: argparse.Namespace) -> None:
     print(f"Recorded early outcome checkpoint {args.verdict}: {path}")
 
 
+def cmd_coordinate_verification_capabilities(args: argparse.Namespace) -> None:
+    payload = {
+        "schema_version": VERIFICATION_CAMPAIGN_SCHEMA_VERSION,
+        "contract": "project-workflow-verifier-adapter",
+        "runtime_dependency_required": False,
+        "capabilities": list(VERIFICATION_ADAPTER_CAPABILITIES),
+        "invocation": {
+            "input": {
+                "request_identity": "sha256",
+                "candidate_identity": "string",
+                "source_identity": "sha256",
+                "proof_contract_identity": "sha256",
+                "mode": list(VERIFICATION_CAMPAIGN_MODES),
+                "stage": list(VERIFICATION_CAMPAIGN_STAGES),
+                "selected_scope": "string-list",
+                "limits": "nullable-positive-integers",
+                "checkpoint_identity": "optional-string",
+            },
+            "output": {
+                "request_identity": "same-as-input",
+                "candidate_identity": "same-as-input",
+                "source_identity": "same-as-input",
+                "proof_contract_identity": "same-as-input",
+                "stage": "same-as-input",
+                "outcome": list(VERIFICATION_RECEIPT_OUTCOMES),
+                "target_calls": "non-negative-integer",
+                "elapsed_seconds": "non-negative-integer",
+                "target_identity": "string",
+                "evaluator_identity": "string",
+                "artifact": "reference",
+            },
+        },
+    }
+    if args.format == "json":
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print("Generic optional verifier adapter contract")
+        print("Runtime dependency required: no")
+        print("Capabilities: " + ", ".join(payload["capabilities"]))
+
+
+def cmd_coordinate_verification_init(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        state = _coordination_load_state(root, args.id)
+        if state.get("verification_campaign") is not None and not args.force:
+            raise ValueError(
+                "A verification campaign already exists; inspect it or use --force for a "
+                "new candidate/decision."
+            )
+        claims = _coordination_csv(args.claims, "claims")
+        stages = _coordination_csv(args.stages, "stages")
+        unknown_stages = [stage for stage in stages if stage not in VERIFICATION_CAMPAIGN_STAGES]
+        if unknown_stages:
+            raise ValueError("Unknown verification stages: " + ", ".join(unknown_stages))
+        stage_indexes = [VERIFICATION_CAMPAIGN_STAGES.index(stage) for stage in stages]
+        if stage_indexes != sorted(stage_indexes):
+            raise ValueError("Verification stages must use canonical stage order.")
+        if args.mode == "certification" and "full" not in stages:
+            raise ValueError("A certification campaign must include the full stage.")
+        affected_scope = _coordination_csv(args.affected_scope, "affected_scope")
+        limits = {
+            "max_failures": args.max_failures,
+            "max_target_calls": args.max_target_calls,
+            "max_elapsed_seconds": args.max_elapsed_seconds,
+        }
+        for key, value in limits.items():
+            _verification_optional_limit(value, f"limits.{key}")
+        if not any(value is not None for value in limits.values()):
+            raise ValueError("A material verification campaign requires at least one finite limit.")
+        if args.mode == "diagnostic":
+            _coordination_required_text(args.diagnostic_decision, "diagnostic_decision")
+        elif args.diagnostic_decision:
+            raise ValueError("--diagnostic-decision is valid only in diagnostic mode.")
+        if args.impact == "unknown" and "full" not in stages:
+            raise ValueError("Unknown material impact requires the full proof stage.")
+        capabilities = list(dict.fromkeys(args.adapter_capability or []))
+        if args.adapter_kind == "command":
+            if not args.adapter_command_json:
+                raise ValueError("Command adapter requires --adapter-command-json.")
+            try:
+                adapter_command = json.loads(args.adapter_command_json)
+            except json.JSONDecodeError as exc:
+                raise ValueError("--adapter-command-json must be valid JSON.") from exc
+            if (
+                not isinstance(adapter_command, list)
+                or not adapter_command
+                or any(not isinstance(part, str) or not part.strip() for part in adapter_command)
+            ):
+                raise ValueError("--adapter-command-json must be a non-empty JSON string list.")
+            if args.manual_command:
+                raise ValueError("--manual-command is valid only for manual adapters.")
+            if limits["max_elapsed_seconds"] is None:
+                raise ValueError(
+                    "Command adapter campaigns require --max-elapsed-seconds so the host "
+                    "invocation cannot hang indefinitely."
+                )
+            required = _verification_adapter_required_capabilities(
+                mode=args.mode,
+                stages=stages,
+                limits=limits,
+            )
+            missing = sorted(required - set(capabilities))
+            if missing:
+                raise ValueError(
+                    "Command adapter does not declare required controls: " + ", ".join(missing)
+                )
+            manual_command = None
+        else:
+            adapter_command = None
+            manual_command = _coordination_required_text(args.manual_command, "manual_command")
+            if args.adapter_command_json:
+                raise ValueError("--adapter-command-json is valid only for command adapters.")
+        proof_contract_identity = _verification_identity(
+            {
+                "claims": claims,
+                "stages": stages,
+                "affected_scope": affected_scope,
+            }
+        )
+        requirement = state.get("verification_requirement")
+        if isinstance(requirement, dict):
+            if requirement.get("required") is not True:
+                raise ValueError(
+                    "Material verification was durably classified as not required for this work item."
+                )
+            for actual, expected, label in (
+                (claims, requirement.get("claims"), "claims"),
+                (stages, requirement.get("stages"), "stages"),
+                (affected_scope, requirement.get("affected_scope"), "affected scope"),
+                (
+                    proof_contract_identity,
+                    requirement.get("proof_contract_identity"),
+                    "proof contract",
+                ),
+            ):
+                if actual != expected:
+                    raise ValueError(
+                        f"Campaign {label} does not match the durable verification requirement."
+                    )
+        campaign: dict[str, object] = {
+            "schema_version": VERIFICATION_CAMPAIGN_SCHEMA_VERSION,
+            "candidate_identity": args.candidate_identity,
+            "intent_identity": _coordination_artifact_identity(root, args.id),
+            "source_identity": _coordination_source_identity(state),
+            "proof_contract_identity": proof_contract_identity,
+            "mode": args.mode,
+            "claims": claims,
+            "stages": stages,
+            "affected_scope": affected_scope,
+            "impact": args.impact,
+            "limits": limits,
+            "diagnostic_decision": args.diagnostic_decision,
+            "adapter": {
+                "kind": args.adapter_kind,
+                "capabilities": capabilities,
+                "command": adapter_command,
+                "manual_command": manual_command,
+            },
+            "receipts": [],
+            "receipt_ledger_identity": _verification_receipt_ledger_identity([]),
+            "current_stage": stages[0],
+            "outcome": "pending",
+            "next_action": (
+                "Complete implementation before invoking the verifier."
+                if _verification_campaign_projection(
+                    root,
+                    args.id,
+                    {**state, "verification_campaign": None},
+                    material_verification=True,
+                )["operational_state"]
+                == "implementation-required"
+                else f"Run only the current {stages[0]} stage."
+            ),
+        }
+        _verification_validate_campaign(campaign)
+        state["verification_campaign"] = campaign
+        state["next_action"] = str(campaign["next_action"])
+        path = _coordination_write_state(root, args.id, state)
+        projection = _verification_campaign_projection(root, args.id, state)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_VERIFICATION_CAMPAIGN_INVALID: {exc}") from exc
+    payload = {
+        "target_id": args.id,
+        "source": _delegation_relative_path(root, path),
+        "campaign": campaign,
+        "projection": projection,
+    }
+    if args.format == "json":
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(f"Initialized verification campaign: {path}")
+        print(f"Operational state: {projection['operational_state']}")
+        print(f"Next action: {projection['next_action']}")
+
+
+def cmd_coordinate_verification_record(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        state = _coordination_load_state(root, args.id)
+        campaign = state.get("verification_campaign")
+        if not isinstance(campaign, dict):
+            raise ValueError("No verification campaign exists; initialize one first.")
+        current, reasons = _verification_campaign_currentness(root, args.id, state, campaign)
+        if not current:
+            raise ValueError("Campaign is stale: " + "; ".join(reasons))
+        if args.stage not in campaign["stages"]:
+            raise ValueError(f"Stage {args.stage} is outside the current campaign.")
+        completed = _verification_completed_stages(campaign)
+        stages = [str(stage) for stage in campaign["stages"]]
+        next_stage = next((stage for stage in stages if stage not in completed), None)
+        is_regrade = bool(args.regrade)
+        if is_regrade:
+            if args.target_calls != 0:
+                raise ValueError("Evaluator-only regrade requires --target-calls 0.")
+            receipts = campaign["receipts"]
+            assert isinstance(receipts, list)
+            retained = [
+                receipt
+                for receipt in receipts
+                if isinstance(receipt, dict)
+                and receipt.get("stage") == args.stage
+                and receipt.get("target_identity") == args.target_identity
+                and int(receipt.get("target_calls", 0)) > 0
+            ]
+            if not retained:
+                raise ValueError(
+                    "Evaluator-only regrade requires a retained current target identity."
+                )
+            if any(
+                receipt.get("evaluator_identity") == args.evaluator_identity for receipt in retained
+            ):
+                raise ValueError("Evaluator-only regrade requires a changed evaluator identity.")
+        else:
+            if campaign.get("outcome") in {"blocked", "limit-reached", "pass"}:
+                raise ValueError(
+                    f"Campaign outcome is {campaign.get('outcome')}; further target work is blocked."
+                )
+            if args.stage != next_stage:
+                raise ValueError(
+                    f"Later-stage execution is blocked; current stage is {next_stage or 'none'}."
+                )
+            if args.outcome == "product-failure" and args.target_calls == 0:
+                raise ValueError(
+                    "A product/assertion failure must record at least one target call."
+                )
+        receipt_base: dict[str, object] = {
+            "candidate_identity": campaign["candidate_identity"],
+            "intent_identity": campaign["intent_identity"],
+            "source_identity": campaign["source_identity"],
+            "proof_contract_identity": campaign["proof_contract_identity"],
+            "stage": args.stage,
+            "scope": _coordination_csv(args.scope, "scope"),
+            "runtime_identity": args.runtime_identity,
+            "target_identity": args.target_identity,
+            "evaluator_identity": args.evaluator_identity,
+            "artifact": args.artifact,
+            "outcome": args.outcome,
+            "target_calls": args.target_calls,
+            "elapsed_seconds": args.elapsed_seconds,
+            "stage_complete": args.stage_complete == "yes",
+            "regrade": is_regrade,
+            "recorded_at": date.today().isoformat(),
+        }
+        request_identity = getattr(args, "request_identity", None)
+        if request_identity is not None:
+            receipt_base["request_identity"] = request_identity
+        receipt = {
+            **receipt_base,
+            "receipt_identity": _verification_identity(receipt_base),
+        }
+        receipts = campaign["receipts"]
+        assert isinstance(receipts, list)
+        if any(
+            isinstance(existing, dict)
+            and existing.get("receipt_identity") == receipt["receipt_identity"]
+            for existing in receipts
+        ):
+            raise ValueError("This exact verification receipt is already recorded.")
+        receipts.append(receipt)
+        _verification_recompute_campaign(campaign)
+        state["next_action"] = str(campaign["next_action"])
+        path = _coordination_write_state(root, args.id, state)
+        projection = _verification_campaign_projection(root, args.id, state)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_VERIFICATION_RECEIPT_INVALID: {exc}") from exc
+    payload = {
+        "target_id": args.id,
+        "source": _delegation_relative_path(root, path),
+        "receipt": receipt,
+        "projection": projection,
+    }
+    if args.format == "json":
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(f"Recorded {args.outcome} for {args.stage}: {path}")
+        print(f"Operational state: {projection['operational_state']}")
+        print(f"Next action: {projection['next_action']}")
+
+
+def _verification_adapter_output_scope(
+    adapter_output: Mapping[str, object],
+    *,
+    request: Mapping[str, object],
+    request_binding: Mapping[str, object],
+    campaign: Mapping[str, object],
+) -> list[str]:
+    scope = adapter_output.get(
+        "scope", adapter_output.get("selected_scope", campaign["affected_scope"])
+    )
+    if (
+        not isinstance(scope, list)
+        or not scope
+        or any(not isinstance(value, str) or not value.strip() for value in scope)
+    ):
+        raise ValueError("Adapter output scope must be a non-empty string list.")
+    for field_name in (
+        "request_identity",
+        "candidate_identity",
+        "source_identity",
+        "proof_contract_identity",
+        "stage",
+        "outcome",
+        "runtime_identity",
+        "target_identity",
+        "evaluator_identity",
+        "artifact",
+        "target_calls",
+        "elapsed_seconds",
+        "stage_complete",
+    ):
+        if field_name not in adapter_output:
+            raise ValueError(f"Adapter output is missing {field_name}.")
+    for field_name in request_binding:
+        if adapter_output[field_name] != request[field_name]:
+            raise ValueError(
+                f"Adapter output {field_name} does not match the exact invocation request."
+            )
+    if adapter_output["outcome"] not in VERIFICATION_RECEIPT_OUTCOMES:
+        raise ValueError("Adapter output outcome is invalid.")
+    for field_name in (
+        "runtime_identity",
+        "target_identity",
+        "evaluator_identity",
+        "artifact",
+    ):
+        _coordination_required_text(adapter_output[field_name], f"adapter_output.{field_name}")
+    for field_name in ("target_calls", "elapsed_seconds"):
+        value = adapter_output[field_name]
+        if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+            raise ValueError(f"Adapter output {field_name} must be a non-negative integer.")
+    if not isinstance(adapter_output["stage_complete"], bool):
+        raise ValueError("Adapter output stage_complete must be boolean.")
+    return [str(value) for value in scope]
+
+
+def cmd_coordinate_verification_run(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        state = _coordination_load_state(root, args.id)
+        campaign = state.get("verification_campaign")
+        if not isinstance(campaign, dict):
+            raise ValueError("No verification campaign exists; initialize one first.")
+        adapter = campaign.get("adapter")
+        if not isinstance(adapter, dict) or adapter.get("kind") != "command":
+            raise ValueError(
+                "The current campaign uses a declared manual command; run it explicitly and "
+                "record its receipt with verification-record."
+            )
+        capabilities = set(adapter.get("capabilities", []))
+        command = adapter.get("command")
+        assert isinstance(command, list)
+        current, reasons = _verification_campaign_currentness(root, args.id, state, campaign)
+        if not current:
+            raise ValueError("Campaign is stale: " + "; ".join(reasons))
+        projection = _verification_campaign_projection(root, args.id, state)
+        if args.regrade:
+            if "transcript-regrade" not in capabilities:
+                raise ValueError("Command adapter does not support transcript-regrade.")
+            if not args.stage or not args.target_identity:
+                raise ValueError("--regrade requires --stage and --target-identity.")
+            stage = args.stage
+            action = "regrade"
+        else:
+            if projection["operational_state"] != "verification-required":
+                raise ValueError(
+                    "Verifier invocation is not authorized while operational state is "
+                    f"{projection['operational_state']}."
+                )
+            stage = str(campaign["current_stage"])
+            action = "verify"
+        limits = campaign["limits"]
+        assert isinstance(limits, dict)
+        maximum_elapsed = limits.get("max_elapsed_seconds")
+        assert isinstance(maximum_elapsed, int)
+        elapsed_so_far = int(projection["elapsed_seconds"])
+        timeout_seconds = maximum_elapsed - elapsed_so_far
+        if timeout_seconds <= 0:
+            raise ValueError("The elapsed campaign limit is exhausted; no invocation is allowed.")
+        receipts = campaign["receipts"]
+        assert isinstance(receipts, list)
+        request = {
+            "schema_version": VERIFICATION_CAMPAIGN_SCHEMA_VERSION,
+            "action": action,
+            "candidate_identity": campaign["candidate_identity"],
+            "source_identity": campaign["source_identity"],
+            "proof_contract_identity": campaign["proof_contract_identity"],
+            "mode": campaign["mode"],
+            "stage": stage,
+            "selected_scope": campaign["affected_scope"],
+            "limits": limits,
+            "prior_receipt_identities": [
+                receipt["receipt_identity"] for receipt in receipts if isinstance(receipt, dict)
+            ],
+            "retained_target_identity": args.target_identity if args.regrade else None,
+        }
+        request["request_identity"] = _verification_identity(request)
+        request_binding = {
+            field_name: request[field_name]
+            for field_name in (
+                "request_identity",
+                "candidate_identity",
+                "source_identity",
+                "proof_contract_identity",
+                "stage",
+            )
+        }
+        try:
+            completed = subprocess.run(
+                command,
+                cwd=root,
+                input=json.dumps(request, sort_keys=True) + "\n",
+                capture_output=True,
+                text=True,
+                check=False,
+                timeout=timeout_seconds,
+            )
+        except subprocess.TimeoutExpired:
+            adapter_output: dict[str, object] = {
+                **request_binding,
+                "outcome": "harness-failure",
+                "scope": campaign["affected_scope"],
+                "runtime_identity": args.runtime_identity,
+                "target_identity": args.target_identity or "no-target-output",
+                "evaluator_identity": "not-run",
+                "artifact": f"adapter-timeout:{timeout_seconds}",
+                "target_calls": 0,
+                "elapsed_seconds": timeout_seconds,
+                "stage_complete": False,
+            }
+        except OSError as exc:
+            adapter_output = {
+                **request_binding,
+                "outcome": "harness-failure",
+                "scope": campaign["affected_scope"],
+                "runtime_identity": args.runtime_identity,
+                "target_identity": args.target_identity or "no-target-output",
+                "evaluator_identity": "not-run",
+                "artifact": f"adapter-launch-error:{type(exc).__name__}",
+                "target_calls": 0,
+                "elapsed_seconds": 0,
+                "stage_complete": False,
+            }
+        else:
+            if completed.returncode != 0:
+                adapter_output = {
+                    **request_binding,
+                    "outcome": "harness-failure",
+                    "scope": campaign["affected_scope"],
+                    "runtime_identity": args.runtime_identity,
+                    "target_identity": args.target_identity or "no-target-output",
+                    "evaluator_identity": "not-run",
+                    "artifact": f"adapter-exit:{completed.returncode}",
+                    "target_calls": 0,
+                    "elapsed_seconds": 0,
+                    "stage_complete": False,
+                }
+            else:
+                try:
+                    parsed_output = json.loads(completed.stdout)
+                except json.JSONDecodeError:
+                    parsed_output = None
+                if not isinstance(parsed_output, dict):
+                    adapter_output = {
+                        **request_binding,
+                        "outcome": "harness-failure",
+                        "scope": campaign["affected_scope"],
+                        "runtime_identity": args.runtime_identity,
+                        "target_identity": args.target_identity or "no-target-output",
+                        "evaluator_identity": "not-run",
+                        "artifact": "adapter-invalid-json",
+                        "target_calls": 0,
+                        "elapsed_seconds": 0,
+                        "stage_complete": False,
+                    }
+                else:
+                    adapter_output = parsed_output
+        try:
+            scope = _verification_adapter_output_scope(
+                adapter_output,
+                request=request,
+                request_binding=request_binding,
+                campaign=campaign,
+            )
+        except ValueError as exc:
+            # The adapter process was invoked, so a malformed or mismatched response must be
+            # retained as an infrastructure attempt. Otherwise the same expensive invocation can
+            # repeat forever outside the one-retry accounting.
+            adapter_output = {
+                **request_binding,
+                "outcome": "harness-failure",
+                "scope": campaign["affected_scope"],
+                "runtime_identity": args.runtime_identity,
+                "target_identity": args.target_identity or "untrusted-adapter-output",
+                "evaluator_identity": "not-trusted",
+                "artifact": "adapter-invalid-output:" + str(exc),
+                "target_calls": 0,
+                "elapsed_seconds": 0,
+                "stage_complete": False,
+            }
+            scope = [str(value) for value in campaign["affected_scope"]]
+        record_args = argparse.Namespace(
+            id=args.id,
+            stage=stage,
+            outcome=adapter_output["outcome"],
+            scope=",".join(scope),
+            runtime_identity=adapter_output["runtime_identity"],
+            target_identity=adapter_output["target_identity"],
+            evaluator_identity=adapter_output["evaluator_identity"],
+            artifact=adapter_output["artifact"],
+            target_calls=adapter_output["target_calls"],
+            elapsed_seconds=adapter_output["elapsed_seconds"],
+            stage_complete="yes" if adapter_output["stage_complete"] is True else "no",
+            regrade=args.regrade,
+            request_identity=request["request_identity"],
+            format=args.format,
+        )
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_VERIFICATION_ADAPTER_INVALID: {exc}") from exc
+    cmd_coordinate_verification_record(record_args)
+
+
+def cmd_coordinate_verification_preflight(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        state = _coordination_load_state(root, args.id)
+        requirement = state.get("verification_requirement")
+        if isinstance(requirement, dict):
+            if args.material_verification is not None and (
+                (args.material_verification == "yes") != (requirement.get("required") is True)
+            ):
+                raise ValueError(
+                    "Preflight materiality does not match the durable verification requirement."
+                )
+            for argument, field_name, label in (
+                (args.claim, "claims", "claims"),
+                (args.stage, "stages", "stages"),
+                (args.scope, "affected_scope", "scope"),
+            ):
+                if argument is not None and _coordination_csv(argument, label) != requirement.get(
+                    field_name
+                ):
+                    raise ValueError(
+                        f"Preflight {label} does not match the durable verification requirement."
+                    )
+            material_override = None
+        else:
+            material_override = args.material_verification == "yes"
+        projection = _verification_campaign_projection(
+            root,
+            args.id,
+            state,
+            material_verification=material_override,
+        )
+        campaign = state.get("verification_campaign")
+        if isinstance(campaign, dict):
+            required_campaign = {
+                "claims": campaign["claims"],
+                "stages": campaign["stages"],
+                "affected_scope": campaign["affected_scope"],
+                "limits": campaign["limits"],
+            }
+        elif isinstance(requirement, dict):
+            required_campaign = {
+                "claims": requirement["claims"],
+                "stages": requirement["stages"],
+                "affected_scope": requirement["affected_scope"],
+                "limits": None,
+                "proof_contract_identity": requirement["proof_contract_identity"],
+            }
+        else:
+            required_campaign = {
+                "claims": _coordination_csv(args.claim, "claim") if args.claim else [],
+                "stages": (_coordination_csv(args.stage, "stage") if args.stage else []),
+                "affected_scope": (_coordination_csv(args.scope, "scope") if args.scope else []),
+                "limits": None,
+            }
+        payload = {
+            "schema_version": VERIFICATION_CAMPAIGN_SCHEMA_VERSION,
+            "target_id": args.id,
+            "projection": projection,
+            "required_campaign": required_campaign,
+            "verifier_invocations": 0,
+            "mutated": False,
+        }
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_VERIFICATION_PREFLIGHT_INVALID: {exc}") from exc
+    if args.format == "json":
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(f"Verification preflight: {args.id}")
+        print(f"Operational state: {projection['operational_state']}")
+        print("Verifier invocations: 0")
+        print(f"Next action: {projection['next_action']}")
+
+
 def _coordination_status_payload(root: Path, target_id: str) -> dict[str, object]:
     state = _coordination_load_state(root, target_id)
     preflight = _coordination_preflight_payload(root, target_id, state)
     next_action = str(state["next_action"])
     if preflight["contract_state"] not in {"current", "compatible"}:
         next_action = "Explicitly load and declare the applicable context contract."
+    campaign = state.get("verification_campaign")
+    verification = (
+        _verification_campaign_projection(root, target_id, state)
+        if campaign is not None or state.get("verification_requirement") is not None
+        else None
+    )
     return {
         "schema_version": COORDINATION_SCHEMA_VERSION,
         "target_id": target_id,
@@ -13901,6 +15244,7 @@ def _coordination_status_payload(root: Path, target_id: str) -> dict[str, object
         "boundary_decisions": state["boundary_decisions"],
         "host_facts": state["host_facts"],
         "outcome_checkpoint": state["outcome_checkpoint"],
+        "verification": verification,
         "next_action": next_action,
         "source": _delegation_relative_path(root, _coordination_state_path(root, target_id)),
     }
@@ -13918,6 +15262,8 @@ def cmd_coordinate_status(args: argparse.Namespace) -> None:
         print(f"Coordination status: {args.id}")
         print(f"Contract: {payload['contract_state']}")
         print(f"Phase: {payload['phase']}")
+        if isinstance(payload.get("verification"), dict):
+            print(f"Verification: {payload['verification']['operational_state']}")
         print(
             "Last boundary: "
             + (
@@ -13952,9 +15298,7 @@ def cmd_delegate_status(args: argparse.Namespace) -> None:
         EpicOrchestrationError,
         json.JSONDecodeError,
     ) as error:
-        if isinstance(
-            error, (DelegationPlanError, TaskOrchestrationError, EpicOrchestrationError)
-        ):
+        if isinstance(error, (DelegationPlanError, TaskOrchestrationError, EpicOrchestrationError)):
             message = f"{error.code}: {error.message}"
         else:
             message = f"PW_DELEGATION_RUNTIME_INVALID: {error}"
@@ -13984,9 +15328,7 @@ def cmd_delegate_state_init(args: argparse.Namespace) -> None:
         json.JSONDecodeError,
         OSError,
     ) as error:
-        if isinstance(
-            error, (DelegationPlanError, TaskOrchestrationError, EpicOrchestrationError)
-        ):
+        if isinstance(error, (DelegationPlanError, TaskOrchestrationError, EpicOrchestrationError)):
             message = f"{error.code}: {error.message}"
         else:
             message = f"PW_DELEGATION_RUNTIME_INVALID: {error}"
@@ -14021,9 +15363,7 @@ def cmd_delegate_state_reconcile(args: argparse.Namespace) -> None:
         json.JSONDecodeError,
         OSError,
     ) as error:
-        if isinstance(
-            error, (DelegationPlanError, TaskOrchestrationError, EpicOrchestrationError)
-        ):
+        if isinstance(error, (DelegationPlanError, TaskOrchestrationError, EpicOrchestrationError)):
             message = f"{error.code}: {error.message}"
         else:
             message = f"PW_DELEGATION_RUNTIME_INVALID: {error}"
@@ -14070,8 +15410,7 @@ def _backlog_rows_for_update(backlog_path: Path) -> tuple[list[str], int, list[d
     if header_idx is None:
         expected = " | ".join(BACKLOG_COLUMNS)
         raise SystemExit(
-            "Backlog schema mismatch. Expected header: "
-            f"'| {expected} |' in {backlog_path}."
+            "Backlog schema mismatch. Expected header: " f"'| {expected} |' in {backlog_path}."
         )
 
     rows: list[dict[str, str]] = []
@@ -14237,7 +15576,9 @@ def _backlog_validation_issues(
 
         promoted_to = row.get("Promoted To", "").strip()
         if status == "Promoted" and not promoted_to:
-            _add_issue(issues, "error", backlog_path, f"{row_label} is Promoted but lacks Promoted To.")
+            _add_issue(
+                issues, "error", backlog_path, f"{row_label} is Promoted but lacks Promoted To."
+            )
         if promoted_to:
             if not _valid_workflow_ref_id(promoted_to, config=config):
                 _add_issue(
@@ -14337,27 +15678,27 @@ def _approved_deferral(row: dict[str, str] | None) -> bool:
 def _qa_passed(docs_text: str) -> bool:
     values = _parse_key_value_section(_markdown_section(docs_text, "QA & Code Review"))
     verdict = _qa_verdict_key(values.get("verdict", ""))
-    return verdict in {"pass", "changes-requested"} and not _intent_qa_review_issues(
-        docs_text
-    )
+    return verdict in {"pass", "changes-requested"} and not _intent_qa_review_issues(docs_text)
 
 
 def _qa_verdict_key(value: str) -> str:
     return re.sub(r"[\s_]+", "-", value.strip().lower())
 
 
-def _resolved_changes_requested_issues(
-    docs_text: str, values: Mapping[str, str]
-) -> list[str]:
+def _resolved_changes_requested_issues(docs_text: str, values: Mapping[str, str]) -> list[str]:
     issues: list[str] = []
     if values.get("findings disposition", "").strip().lower() != "resolved":
         issues.append("record `Findings disposition: Resolved`")
     if values.get("affected validation verdict", "").strip().lower() != "pass":
         issues.append("record `Affected validation verdict: Pass`")
-    after_undone = values.get(
-        "could every ac pass after affected validation while the approved user job remains undone",
-        "",
-    ).strip().lower()
+    after_undone = (
+        values.get(
+            "could every ac pass after affected validation while the approved user job remains undone",
+            "",
+        )
+        .strip()
+        .lower()
+    )
     if after_undone != "no":
         issues.append(
             "record `Could every AC pass after affected validation while the approved user job "
@@ -14403,10 +15744,14 @@ def _intent_qa_review_issues(docs_text: str) -> list[str]:
                 "preserve the original failed `Intent adversarial verdict` for Changes Requested"
             )
     elif intent_verdict != "pass":
-        issues.append("record `Intent adversarial verdict: Pass` only when the user job is fulfilled")
-    undone = values.get(
-        "could every ac pass while the approved user job remains undone", ""
-    ).strip().lower()
+        issues.append(
+            "record `Intent adversarial verdict: Pass` only when the user job is fulfilled"
+        )
+    undone = (
+        values.get("could every ac pass while the approved user job remains undone", "")
+        .strip()
+        .lower()
+    )
     if resolved_changes:
         if undone not in {"yes", "no", "unknown"}:
             issues.append(
@@ -14427,7 +15772,9 @@ def _intent_qa_review_issues(docs_text: str) -> list[str]:
             issues.append(f"record substantive `{field}`")
     independence = values.get("reviewer independence", "").lower()
     if any(phrase in independence for phrase in ("same implementation agent", "self review")):
-        issues.append("reviewer independence cannot be satisfied by implementation self-certification")
+        issues.append(
+            "reviewer independence cannot be satisfied by implementation self-certification"
+        )
     return issues
 
 
@@ -14480,14 +15827,9 @@ def _triggered_proof_recipes(*texts: str) -> set[str]:
         "Parent AC Evidence",
     )
     user_outcome_authority = "\n".join(
-        _markdown_section(text, heading)
-        for text in texts
-        for heading in user_outcome_sections
+        _markdown_section(text, heading) for text in texts for heading in user_outcome_sections
     ).lower()
-    if (
-        "user-outcome-journey" in triggered
-        and "user-outcome-journey" not in user_outcome_authority
-    ):
+    if "user-outcome-journey" in triggered and "user-outcome-journey" not in user_outcome_authority:
         triggered.remove("user-outcome-journey")
     return triggered
 
@@ -14613,8 +15955,10 @@ def _user_outcome_journey_record_issues(
     issues: list[str] = []
     for field in ("material_operations", "outcome_observations"):
         value = record.get(field)
-        if not isinstance(value, list) or not value or any(
-            _evidence_value_missing(item) for item in value
+        if (
+            not isinstance(value, list)
+            or not value
+            or any(_evidence_value_missing(item) for item in value)
         ):
             issues.append(
                 f"structured evidence: {label} `{field}` must be a non-empty list of "
@@ -14636,12 +15980,12 @@ def _user_outcome_journey_record_issues(
     claim_scope = str(record.get("claim_scope", "")).strip()
     journey_scope = str(record.get("journey_scope", "")).strip()
     if claim_scope != journey_scope:
-        issues.append(
-            f"structured evidence: {label} journey_scope must exactly match claim_scope."
-        )
+        issues.append(f"structured evidence: {label} journey_scope must exactly match claim_scope.")
     source_value = record.get("source_artifact")
-    if isinstance(source_value, str) and source_value.strip() and not re.match(
-        r"^[a-z][a-z0-9+.-]*://", source_value.strip(), flags=re.IGNORECASE
+    if (
+        isinstance(source_value, str)
+        and source_value.strip()
+        and not re.match(r"^[a-z][a-z0-9+.-]*://", source_value.strip(), flags=re.IGNORECASE)
     ):
         source_path = Path(source_value.strip())
         candidates = [evidence_dir / source_path]
@@ -14664,8 +16008,7 @@ def _user_outcome_journey_record_issues(
                 try:
                     with zipfile.ZipFile(resolved_source) as archive:
                         evidence_source_hash = (
-                            "sha256:"
-                            + hashlib.sha256(archive.read(source_member)).hexdigest()
+                            "sha256:" + hashlib.sha256(archive.read(source_member)).hexdigest()
                         )
                 except (KeyError, zipfile.BadZipFile):
                     issues.append(
@@ -14673,8 +16016,10 @@ def _user_outcome_journey_record_issues(
                         f"in a readable ZIP artifact: {source_member}."
                     )
             recorded_commit = str(record.get("commit", "")).strip()
-            if not source_member and repository_root is not None and re.fullmatch(
-                r"[a-fA-F0-9]{7,40}", recorded_commit
+            if (
+                not source_member
+                and repository_root is not None
+                and re.fullmatch(r"[a-fA-F0-9]{7,40}", recorded_commit)
             ):
                 try:
                     current_commit = _run_git(["rev-parse", "HEAD"], cwd=repository_root)
@@ -14715,10 +16060,7 @@ def _user_outcome_journey_record_issues(
                 except (subprocess.CalledProcessError, ValueError):
                     pass
             source_revision = _normalized_evidence_hash(record.get("source_revision"))
-            if (
-                source_revision.startswith("sha256:")
-                and source_revision != evidence_source_hash
-            ):
+            if source_revision.startswith("sha256:") and source_revision != evidence_source_hash:
                 issues.append(
                     f"structured evidence: {label} source_revision is stale "
                     f"(expected {evidence_source_hash})."
@@ -14738,9 +16080,7 @@ def _user_outcome_journey_record_issues(
     acceptance_required = record.get("owner_acceptance_required")
     acceptance_status = str(record.get("owner_acceptance_status", "")).strip().lower()
     if not isinstance(acceptance_required, bool):
-        issues.append(
-            f"structured evidence: {label} owner_acceptance_required must be boolean."
-        )
+        issues.append(f"structured evidence: {label} owner_acceptance_required must be boolean.")
     elif acceptance_required and acceptance_status not in {"pending", "accepted"}:
         issues.append(
             f"structured evidence: {label} owner_acceptance_status must be pending or accepted "
@@ -14762,9 +16102,10 @@ def _owner_acceptance_completion_issues(evidence_path: Path) -> list[str]:
     for record in records:
         if record.get("recipe") != "user-outcome-journey":
             continue
-        if record.get("owner_acceptance_required") is True and str(
-            record.get("owner_acceptance_status", "")
-        ).strip().lower() != "accepted":
+        if (
+            record.get("owner_acceptance_required") is True
+            and str(record.get("owner_acceptance_status", "")).strip().lower() != "accepted"
+        ):
             label = str(record.get("id", "")).strip() or "user-outcome claim"
             issues.append(
                 f"structured evidence: {label} is outcome-proven and ready for owner acceptance, "
@@ -14920,9 +16261,7 @@ def _epic_audit_rows(root: Path, epic_id: str) -> tuple[Path, list[dict[str, str
     proof_owner_map: dict[str, set[str]] = {}
     contract_path = _epic_contract_path(epic_dir)
     if contract_path.exists() and not _epic_contract_issues(epic_dir, requirements_text):
-        proof_owner_map = _epic_contract_proof_owner_map(
-            contract_path.read_text(encoding="utf-8")
-        )
+        proof_owner_map = _epic_contract_proof_owner_map(contract_path.read_text(encoding="utf-8"))
     audit_rows: list[dict[str, str]] = []
     gaps: list[str] = []
 
@@ -15346,9 +16685,7 @@ def _approval_artifact_identity(requirements_text: str) -> str:
     comparable_text = _remove_markdown_section(requirements_text, OWNER_APPROVAL_HEADING)
     comparable_text = _remove_markdown_section(comparable_text, LEGACY_ADOPTION_HEADING)
     comparable_text = re.sub(r"\n{3,}", "\n\n", comparable_text).strip() + "\n"
-    return APPROVAL_IDENTITY_PREFIX + hashlib.sha256(
-        comparable_text.encode("utf-8")
-    ).hexdigest()
+    return APPROVAL_IDENTITY_PREFIX + hashlib.sha256(comparable_text.encode("utf-8")).hexdigest()
 
 
 def _approval_value_is_yes(value: str) -> bool:
@@ -15381,9 +16718,7 @@ def _approval_envelope_issues(
 ) -> list[str]:
     section = _markdown_section(requirements_text, OWNER_APPROVAL_HEADING)
     if not section:
-        return [
-            "owner input required: add `## Owner Approval` with an approved scope envelope."
-        ]
+        return ["owner input required: add `## Owner Approval` with an approved scope envelope."]
 
     values = _parse_key_value_section(section)
     issues: list[str] = []
@@ -15412,7 +16747,9 @@ def _approval_envelope_issues(
     if require_decomposition and not (approved_for_decomposition or approved_for_envelope):
         issues.append("owner input required: decomposition is outside the approved scope envelope.")
     if require_implementation and not (approved_for_implementation or approved_for_envelope):
-        issues.append("owner input required: implementation is outside the approved scope envelope.")
+        issues.append(
+            "owner input required: implementation is outside the approved scope envelope."
+        )
     if (
         not require_decomposition
         and not require_implementation
@@ -15662,11 +16999,15 @@ def _epic_closeout_summary(
         f"- Epic retro: {_format_list_or_none(retro_gaps)}",
     ]
     if gaps:
-        lines.append("- Next action: resolve the listed gaps or record approved deferrals with follow-up work.")
+        lines.append(
+            "- Next action: resolve the listed gaps or record approved deferrals with follow-up work."
+        )
     elif complete_requested:
         lines.append("- Next action: global epic row can be marked Complete.")
     else:
-        lines.append("- Next action: rerun closeout with --complete to mark the global epic row Complete.")
+        lines.append(
+            "- Next action: rerun closeout with --complete to mark the global epic row Complete."
+        )
     return "\n".join(lines)
 
 
@@ -15738,13 +17079,16 @@ def _epic_child_implementation_template(
 
 
 def _structured_evidence_template(task_id: str, parent_ac_coverage: str) -> str:
-    return json.dumps(
-        {
-            "task_id": task_id,
-            "claims": [],
-        },
-        indent=2,
-    ) + "\n"
+    return (
+        json.dumps(
+            {
+                "task_id": task_id,
+                "claims": [],
+            },
+            indent=2,
+        )
+        + "\n"
+    )
 
 
 def _epic_child_requirements_template(
@@ -15856,9 +17200,7 @@ def _implementation_task_table_rows(
             else "legacy"
         )
         row["_execution_needs_metadata"] = (
-            "present"
-            if table_columns == DELEGATION_EXECUTION_NEEDS_TASK_COLUMNS
-            else "legacy"
+            "present" if table_columns == DELEGATION_EXECUTION_NEEDS_TASK_COLUMNS else "legacy"
         )
         row["_line_idx"] = str(row_idx + 1)
         rows.append(row)
@@ -15870,9 +17212,7 @@ def _implementation_task_table_rows(
 def _task_testing_integrity_issues(docs_text: str) -> tuple[str, ...]:
     """Return integrity issues that ordinary force is never allowed to bypass."""
     lines = docs_text.splitlines()
-    task_list_headings = [
-        idx for idx, line in enumerate(lines) if line.strip() == "## Task List"
-    ]
+    task_list_headings = [idx for idx, line in enumerate(lines) if line.strip() == "## Task List"]
     if len(task_list_headings) != 1:
         return ("Task IMPLEMENTATION.md must contain exactly one canonical ## Task List section.",)
 
@@ -16338,26 +17678,18 @@ def _intent_contract_issues(requirements_text: str) -> list[str]:
     spine_values = _intent_spine_values(requirements_text)
     spine_ids = [record[0] for record in _intent_spine_records(requirements_text)]
     duplicate_ids = sorted(
-        commitment_id
-        for commitment_id in set(spine_ids)
-        if spine_ids.count(commitment_id) > 1
+        commitment_id for commitment_id in set(spine_ids) if spine_ids.count(commitment_id) > 1
     )
     if duplicate_ids:
-        issues.append(
-            "remove duplicate Intent Spine commitment IDs: " + ", ".join(duplicate_ids)
-        )
+        issues.append("remove duplicate Intent Spine commitment IDs: " + ", ".join(duplicate_ids))
     for commitment_id, expected_label in INTENT_SPINE_FIELDS.items():
         parsed = spine_values.get(commitment_id)
         if parsed is None:
-            issues.append(
-                f"add `{commitment_id} — {expected_label.title()}` to `## Intent Spine`"
-            )
+            issues.append(f"add `{commitment_id} — {expected_label.title()}` to `## Intent Spine`")
             continue
         label, value = parsed
         if _normalized_intent_text(label) != _normalized_intent_text(expected_label):
-            issues.append(
-                f"label {commitment_id} as `{expected_label}` in `## Intent Spine`"
-            )
+            issues.append(f"label {commitment_id} as `{expected_label}` in `## Intent Spine`")
         if not value or _section_has_placeholder(value):
             issues.append(f"replace placeholder content for {commitment_id} in `## Intent Spine`")
     return issues
@@ -16509,9 +17841,7 @@ def _intent_audit_location_issues(
         if location_path.is_absolute() or ".." in location_path.parts:
             issues.append(f"{commitment_id} `{field}` must use repository-relative locations")
         elif not (epic_dir / location_path).exists():
-            issues.append(
-                f"{commitment_id} `{field}` location does not exist: {location}"
-            )
+            issues.append(f"{commitment_id} `{field}` location does not exist: {location}")
     return issues
 
 
@@ -16526,8 +17856,7 @@ def _intent_audit_amendment_issues(
         )
         return [
             f"{commitment_id} material drift requires an owner-approved amendment identifying "
-            "the lost or added capability"
-            + capability_detail
+            "the lost or added capability" + capability_detail
         ]
     issues: list[str] = []
     required = ("approved_by", "decision_date", "source", "capability_change")
@@ -16562,26 +17891,26 @@ def _intent_audit_evaluation(epic_dir: Path) -> dict[str, object]:
 
     issues: list[str] = []
     if payload.get("schema_version") != INTENT_AUDIT_SCHEMA_VERSION:
-        issues.append(
-            f"schema_version must be {INTENT_AUDIT_SCHEMA_VERSION}"
-        )
+        issues.append(f"schema_version must be {INTENT_AUDIT_SCHEMA_VERSION}")
     audit_identity = payload.get("artifact_identity")
-    if not isinstance(audit_identity, str) or not audit_identity.startswith(APPROVAL_IDENTITY_PREFIX):
+    if not isinstance(audit_identity, str) or not audit_identity.startswith(
+        APPROVAL_IDENTITY_PREFIX
+    ):
         issues.append("artifact_identity must be a sha256 identity")
     for field in ("reviewed_by", "reviewed_at", "review_source"):
         value = payload.get(field)
         if not isinstance(value, str) or _approval_source_invalid(value):
             issues.append(f"record substantive `{field}`")
     reviewed_at = payload.get("reviewed_at")
-    if isinstance(reviewed_at, str) and reviewed_at and not re.fullmatch(
-        r"\d{4}-\d{2}-\d{2}", reviewed_at
+    if (
+        isinstance(reviewed_at, str)
+        and reviewed_at
+        and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", reviewed_at)
     ):
         issues.append("reviewed_at must use YYYY-MM-DD")
     verdict = payload.get("verdict")
     if verdict not in INTENT_AUDIT_VERDICTS:
-        issues.append(
-            "verdict must be pass, changes-requested, or review-required"
-        )
+        issues.append("verdict must be pass, changes-requested, or review-required")
 
     requirements_text = (epic_dir / "REQUIREMENTS.md").read_text(encoding="utf-8")
     expected_ids = set(_intent_spine_values(requirements_text))
@@ -16626,9 +17955,7 @@ def _intent_audit_evaluation(epic_dir: Path) -> dict[str, object]:
                 str(ac_id) for ac_id in parent_acs if str(ac_id) not in parent_ac_ids
             )
             if invalid_acs:
-                issues.append(
-                    f"{commitment_id} maps unknown parent ACs: {', '.join(invalid_acs)}"
-                )
+                issues.append(f"{commitment_id} maps unknown parent ACs: {', '.join(invalid_acs)}")
         child_owners = record.get("child_owners")
         if not isinstance(child_owners, list) or not child_owners:
             issues.append(f"{commitment_id or 'commitment'} must map one or more child owners")
@@ -16646,9 +17973,7 @@ def _intent_audit_evaluation(epic_dir: Path) -> dict[str, object]:
                     for child_id in child_owners
                     if str(child_id) in child_rows
                     and not (
-                        _extract_ac_ids(
-                            _extract_parent_ac_coverage(child_rows[str(child_id)])
-                        )
+                        _extract_ac_ids(_extract_parent_ac_coverage(child_rows[str(child_id)]))
                         & {str(ac_id) for ac_id in parent_acs}
                     )
                 )
@@ -16834,15 +18159,12 @@ def _open_questions_resolved(section: str) -> bool:
 
 def _requirements_readiness_issues(requirements_text: str) -> list[str]:
     issues = [
-        f"owner input required: {issue}."
-        for issue in _intent_contract_issues(requirements_text)
+        f"owner input required: {issue}." for issue in _intent_contract_issues(requirements_text)
     ]
     for heading in READINESS_REQUIRED_SECTIONS:
         section = _markdown_section(requirements_text, heading)
         if not section:
-            issues.append(
-                f"owner input required: add `## {heading}` to REQUIREMENTS.md."
-            )
+            issues.append(f"owner input required: add `## {heading}` to REQUIREMENTS.md.")
             continue
         if heading == "Open Questions (Answer Needed)":
             if not _open_questions_resolved(section):
@@ -16856,7 +18178,9 @@ def _requirements_readiness_issues(requirements_text: str) -> list[str]:
                 f"owner input required: replace placeholder content under `## {heading}`."
             )
 
-    if not _extract_ac_ids(_markdown_section(requirements_text, "Acceptance Criteria (Verifiable)")):
+    if not _extract_ac_ids(
+        _markdown_section(requirements_text, "Acceptance Criteria (Verifiable)")
+    ):
         issues.append(
             "owner input required: add stable acceptance criteria IDs under "
             "`## Acceptance Criteria (Verifiable)`."
@@ -16957,9 +18281,7 @@ def _epic_requirements_readiness_issues(requirements_text: str) -> list[str]:
     issues = _requirements_readiness_issues(requirements_text)
     parent_ac_ids = _extract_parent_ac_ids_from_requirements(requirements_text)
     if len(parent_ac_ids) < 1:
-        issues.append(
-            "owner input required: add stable parent AC IDs before epic decomposition."
-        )
+        issues.append("owner input required: add stable parent AC IDs before epic decomposition.")
     return issues
 
 
@@ -17033,11 +18355,7 @@ def _task_ready_issues_for_paths(
         parent_ac_ids=parent_ac_ids,
     )
     root = next(
-        (
-            parent
-            for parent in requirements_path.parents
-            if (parent / ".project-workflow").is_dir()
-        ),
+        (parent for parent in requirements_path.parents if (parent / ".project-workflow").is_dir()),
         None,
     )
     if root is not None:
@@ -17067,9 +18385,7 @@ def _repository_scope_values(requirements_text: str) -> tuple[str | None, tuple[
     primary = primary_match.group(1).strip().strip("`") if primary_match else None
     touched = (
         tuple(
-            value.strip().strip("`")
-            for value in touched_match.group(1).split(",")
-            if value.strip()
+            value.strip().strip("`") for value in touched_match.group(1).split(",") if value.strip()
         )
         if touched_match
         else ()
@@ -17080,9 +18396,7 @@ def _repository_scope_values(requirements_text: str) -> tuple[str | None, tuple[
         fix_touched = fix_plan.get("repos touched", "")
         primary = fix_primary.strip().strip("`") if fix_primary else None
         touched = tuple(
-            value.strip().strip("`")
-            for value in _split_fix_repos(fix_touched)
-            if value.strip()
+            value.strip().strip("`") for value in _split_fix_repos(fix_touched) if value.strip()
         )
     return primary, touched
 
@@ -17091,9 +18405,7 @@ def _repository_scope_issues(root: Path, requirements_text: str) -> list[str]:
     config = _load_workflow_config(root)
     if config.workspace is None:
         return []
-    registered = {
-        repository.repository_id for repository in config.workspace.repositories
-    }
+    registered = {repository.repository_id for repository in config.workspace.repositories}
     primary, touched = _repository_scope_values(requirements_text)
     issues: list[str] = []
     if primary is None or primary in {"____", "not recorded"}:
@@ -17110,9 +18422,7 @@ def _repository_scope_issues(root: Path, requirements_text: str) -> list[str]:
             "agent action required: record `Repositories touched` in the Repository Scope section."
         )
     else:
-        duplicates = sorted(
-            value for value in set(touched) if touched.count(value) > 1
-        )
+        duplicates = sorted(value for value in set(touched) if touched.count(value) > 1)
         if duplicates:
             issues.append(
                 "agent action required: remove duplicate repository scope entries: "
@@ -17187,9 +18497,7 @@ def _repository_evidence_issues(
             + ", ".join(duplicates)
             + "."
         )
-    registered = {
-        repository.repository_id for repository in config.workspace.repositories
-    }
+    registered = {repository.repository_id for repository in config.workspace.repositories}
     unknown = sorted(set(rows) - registered)
     if unknown:
         issues.append(
@@ -17201,16 +18509,12 @@ def _repository_evidence_issues(
     if out_of_scope:
         issues.append(
             "agent action required: Repository Evidence contains repositories outside the "
-            "recorded scope: "
-            + ", ".join(out_of_scope)
-            + "."
+            "recorded scope: " + ", ".join(out_of_scope) + "."
         )
     missing = sorted(set(touched) - set(rows))
     if missing:
         issues.append(
-            "agent action required: add Repository Evidence rows for: "
-            + ", ".join(missing)
-            + "."
+            "agent action required: add Repository Evidence rows for: " + ", ".join(missing) + "."
         )
     universal_placeholders = {"", "____"}
     proof_placeholders = {*universal_placeholders, "not recorded"}
@@ -17234,9 +18538,7 @@ def _repository_evidence_issues(
     return issues
 
 
-def _resolve_fix_doc(
-    *, root: Path, tracker_path: Path, fix_id: str
-) -> tuple[Path, dict[str, str]]:
+def _resolve_fix_doc(*, root: Path, tracker_path: Path, fix_id: str) -> tuple[Path, dict[str, str]]:
     normalized_fix_id = _normalize_fix_id(fix_id, root=root)
     _lines, _header_idx, rows = _global_tracker_rows(tracker_path)
     for row in rows:
@@ -17408,10 +18710,9 @@ def _fix_closeout_issues(root: Path, fix_text: str) -> list[str]:
     if _fix_value_missing(original_result):
         issues.append("complete `original acceptance criteria result` under `## Verification`")
     originating_work = _fix_values(fix_text, "Related Work").get("originating work", "")
-    if (
-        _extract_workflow_ref_ids(originating_work, config=_load_workflow_config(root))
-        and original_result.strip().lower() in {"not applicable", "n/a", "none"}
-    ):
+    if _extract_workflow_ref_ids(
+        originating_work, config=_load_workflow_config(root)
+    ) and original_result.strip().lower() in {"not applicable", "n/a", "none"}:
         issues.append(
             "record linked original acceptance-criteria results or an explicit reason "
             "they do not apply"
@@ -17433,9 +18734,7 @@ def _fix_non_delivery_closeout_issues(fix_text: str) -> list[str]:
     for field in ("decision", "closed by", "closed date"):
         if _fix_value_missing(outcome.get(field)):
             issues.append(f"complete `{field}` under `## Outcome`")
-    if outcome.get("disposition") == "Promoted" and _fix_value_missing(
-        outcome.get("promoted to")
-    ):
+    if outcome.get("disposition") == "Promoted" and _fix_value_missing(outcome.get("promoted to")):
         issues.append("complete `promoted to` under `## Outcome`")
     return issues
 
@@ -17634,6 +18933,12 @@ def _update_global_tracker_row_status(
                 )
             if coordination_issues:
                 raise SystemExit(_format_readiness_block(row_id, coordination_issues))
+        if new_status in {"Review", "Complete"} and not force:
+            verification_issues = _coordination_verification_gate_issues(
+                root, normalized_row_id, new_status=new_status
+            )
+            if verification_issues:
+                raise SystemExit(_format_readiness_block(row_id, verification_issues))
 
         if current_status == new_status:
             return current_status, new_status
@@ -17707,9 +19012,7 @@ def _epic_tracker_rows(epic_tracker_path: Path) -> tuple[list[str], int, list[di
 def _format_epic_tracker_row(row: dict[str, str]) -> str:
     format_columns_value = row.get(EPIC_TRACKER_FORMAT_KEY)
     columns = (
-        tuple(format_columns_value.split("\x1f"))
-        if format_columns_value
-        else EPIC_TRACKER_COLUMNS
+        tuple(format_columns_value.split("\x1f")) if format_columns_value else EPIC_TRACKER_COLUMNS
     )
     return "| " + " | ".join(row.get(col, "") for col in columns) + " |\n"
 
@@ -17789,9 +19092,7 @@ def _update_epic_child_status(
             docs_path = root / ".project-workflow" / docs_rel
             if not docs_path.exists():
                 raise SystemExit(f"{row_id} docs path does not exist: {docs_path}")
-            testing_issues = _task_testing_integrity_issues(
-                docs_path.read_text(encoding="utf-8")
-            )
+            testing_issues = _task_testing_integrity_issues(docs_path.read_text(encoding="utf-8"))
             if testing_issues:
                 raise SystemExit(_format_readiness_block(row_id, list(testing_issues)))
         if not force and not _epic_status_transition_allowed(current_status, new_status):
@@ -17836,9 +19137,7 @@ def _update_epic_child_status(
             if owner_acceptance_issues:
                 raise SystemExit(_format_readiness_block(row_id, owner_acceptance_issues))
             requirements_text = (
-                requirements_path.read_text(encoding="utf-8")
-                if requirements_path.exists()
-                else ""
+                requirements_path.read_text(encoding="utf-8") if requirements_path.exists() else ""
             )
             repository_issues = _repository_evidence_issues(
                 root,
@@ -17923,6 +19222,12 @@ def _update_epic_child_status(
                 )
             if coordination_issues:
                 raise SystemExit(_format_readiness_block(row_id, coordination_issues))
+        if new_status in {"Review", "Complete"} and not force:
+            verification_issues = _coordination_verification_gate_issues(
+                root, row_id, new_status=new_status
+            )
+            if verification_issues:
+                raise SystemExit(_format_readiness_block(row_id, verification_issues))
         row["Status"] = new_status
         lines[int(row["_line_idx"])] = _format_epic_tracker_row(row)
         epic_tracker_path.write_text("".join(lines), encoding="utf-8")
@@ -18153,9 +19458,7 @@ def _normalize_agent(value: str) -> str:
     }
     if normalized not in aliases:
         allowed = ", ".join(sorted(AGENT_CHOICES))
-        raise argparse.ArgumentTypeError(
-            f"Unsupported agent '{value}'. Choose one of: {allowed}."
-        )
+        raise argparse.ArgumentTypeError(f"Unsupported agent '{value}'. Choose one of: {allowed}.")
     return aliases[normalized]
 
 
@@ -18201,8 +19504,7 @@ def _host_native_prompt_body(body: str, *, host: str) -> str:
     return (
         f"Invocation contract ({host}): supply values such as `<taskId>` or `<scope>` "
         "in the user request or current conversation. Treat angle-bracket values as required "
-        "request fields, not literal text.\n\n"
-        + rendered.lstrip()
+        "request fields, not literal text.\n\n" + rendered.lstrip()
     )
 
 
@@ -18210,11 +19512,11 @@ def _to_claude_agent_markdown(prompt_content: str, agent_name: str) -> str:
     """Convert packaged prompt markdown into Claude subagent markdown format."""
     frontmatter, body = _split_frontmatter(prompt_content)
     description = _extract_frontmatter_value(frontmatter, "description") or agent_name
-    escaped_description = description.replace('"', r'\"')
+    escaped_description = description.replace('"', r"\"")
     return (
         "---\n"
         f"name: {agent_name}\n"
-        f"description: \"{escaped_description}\"\n"
+        f'description: "{escaped_description}"\n'
         "---\n\n"
         f"{_host_native_prompt_body(body, host='Claude Code')}"
     )
@@ -18224,11 +19526,11 @@ def _to_cursor_agent_markdown(prompt_content: str, agent_name: str) -> str:
     """Convert packaged prompt markdown into Cursor subagent markdown format."""
     frontmatter, body = _split_frontmatter(prompt_content)
     description = _extract_frontmatter_value(frontmatter, "description") or agent_name
-    escaped_description = description.replace('"', r'\"')
+    escaped_description = description.replace('"', r"\"")
     return (
         "---\n"
         f"name: {agent_name}\n"
-        f"description: \"{escaped_description}\"\n"
+        f'description: "{escaped_description}"\n'
         "---\n\n"
         f"{_host_native_prompt_body(body, host='Cursor')}"
     )
@@ -18306,9 +19608,7 @@ def _next_workflow_id(
 
 def _resolve_epic_id(root: Path, tasks_dir: Path, tracker_path: Path, *, title: str) -> str:
     suffix = slug_titlecase_dashes(title)
-    match_re = re.compile(
-        rf"^{re.escape(EPIC_ID_PREFIX)}-([A-Za-z0-9]+)-{re.escape(suffix)}$"
-    )
+    match_re = re.compile(rf"^{re.escape(EPIC_ID_PREFIX)}-([A-Za-z0-9]+)-{re.escape(suffix)}$")
 
     matches: list[str] = []
     for path in tasks_dir.iterdir():
@@ -18433,9 +19733,9 @@ def _doctor_check_delegate_semantics(root: Path, issues: list[DoctorIssue]) -> N
             continue
         text = path.read_text(encoding="utf-8")
         relative = path.relative_to(root).as_posix()
-        if relative.startswith((".agents/skills/", ".github/prompts/")) and not _is_generated_content(
-            text
-        ):
+        if relative.startswith(
+            (".agents/skills/", ".github/prompts/")
+        ) and not _is_generated_content(text):
             # A user-owned active collision is reported by the pending-update check.
             continue
         lowered = text.lower()
@@ -18471,9 +19771,7 @@ def _doctor_check_delegate_semantics(root: Path, issues: list[DoctorIssue]) -> N
             )
 
 
-def _doctor_check_coordinator_clarify_semantics(
-    root: Path, issues: list[DoctorIssue]
-) -> None:
+def _doctor_check_coordinator_clarify_semantics(root: Path, issues: list[DoctorIssue]) -> None:
     contracts = (
         (
             "Coordinator",
@@ -18524,9 +19822,9 @@ def _doctor_check_coordinator_clarify_semantics(
                 continue
             text = path.read_text(encoding="utf-8")
             relative = path.relative_to(root).as_posix()
-            if relative.startswith((".agents/skills/", ".github/prompts/")) and not _is_generated_content(
-                text
-            ):
+            if relative.startswith(
+                (".agents/skills/", ".github/prompts/")
+            ) and not _is_generated_content(text):
                 continue
             lowered = " ".join(text.lower().split())
             missing = [term for term in required if term not in lowered]
@@ -18586,9 +19884,7 @@ def _doctor_check_coordination_state(root: Path, issues: list[DoctorIssue]) -> N
                 classification = decision.get("classification")
                 if classification not in COORDINATION_DRIFT_CLASSIFICATIONS:
                     raise ValueError("boundary_decisions contains an unknown classification.")
-                if classification == "approved-change" and not decision.get(
-                    "amendment_identity"
-                ):
+                if classification == "approved-change" and not decision.get("amendment_identity"):
                     raise ValueError("approved-change decision is missing amendment_identity.")
                 _coordination_required_text(
                     decision.get("intent_identity"), "boundary_decisions.intent_identity"
@@ -18615,6 +19911,35 @@ def _doctor_check_coordination_state(root: Path, issues: list[DoctorIssue]) -> N
                     remediation_owner="agent",
                     mechanically_upgradeable=False,
                 )
+            campaign = payload.get("verification_campaign")
+            if isinstance(campaign, dict) or payload.get("verification_requirement") is not None:
+                projection = _verification_campaign_projection(root, actual_id, payload)
+                if projection["campaign_current"] is False:
+                    _add_issue(
+                        issues,
+                        "error",
+                        path,
+                        "Verification campaign is stale: "
+                        + "; ".join(str(reason) for reason in projection["reasons"])
+                        + ".",
+                        code="PW_WORKFLOW_INVALID",
+                        remediation_owner="agent",
+                        mechanically_upgradeable=False,
+                    )
+                elif projection["operational_state"] in {
+                    "verification-required",
+                    "blocked",
+                }:
+                    _add_issue(
+                        issues,
+                        "warning",
+                        path,
+                        "Material verification is "
+                        f"{projection['operational_state']}: {projection['next_action']}",
+                        code="PW_WORKFLOW_INVALID",
+                        remediation_owner="agent",
+                        mechanically_upgradeable=False,
+                    )
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             _add_issue(
                 issues,
@@ -18824,9 +20149,14 @@ def _doctor_check_task_doc(
                 requirements_path,
                 f"{row_id} adopted legacy evidence is untrusted until refreshed.",
             )
-    if requirements_path.exists() and docs_path.name == "IMPLEMENTATION.md" and status in (
-        "Review",
-        "Complete",
+    if (
+        requirements_path.exists()
+        and docs_path.name == "IMPLEMENTATION.md"
+        and status
+        in (
+            "Review",
+            "Complete",
+        )
     ):
         parent_ac_ids: set[str] | None = None
         if parent_requirements_path is not None:
@@ -19116,6 +20446,7 @@ def _doctor_check_global_tracker(
                 issues=issues,
             )
 
+
 def _doctor_check_backlog(
     root: Path, issues: list[DoctorIssue], *, config: WorkflowConfig | None
 ) -> None:
@@ -19153,9 +20484,12 @@ def _doctor_check_epic_trackers(
                 _epic_contract_path(epic_tracker_path.parent),
                 f"{epic_tracker_path.parent.name} epic contract: {contract_issue}",
             )
-        active_audit_statuses = {
-            row.get("Status", "") for row in rows
-        } & {"In Progress", "Testing", "Review", "Complete"}
+        active_audit_statuses = {row.get("Status", "") for row in rows} & {
+            "In Progress",
+            "Testing",
+            "Review",
+            "Complete",
+        }
         parent_requirements_text = (
             parent_requirements_path.read_text(encoding="utf-8")
             if parent_requirements_path.exists()
@@ -19164,11 +20498,7 @@ def _doctor_check_epic_trackers(
         if active_audit_statuses and _intent_contract_mode(parent_requirements_text) == "full":
             audit_evaluation = _intent_audit_evaluation(epic_tracker_path.parent)
             if audit_evaluation["state"] != "current":
-                severity = (
-                    "error"
-                    if active_audit_statuses & {"Review", "Complete"}
-                    else "warning"
-                )
+                severity = "error" if active_audit_statuses & {"Review", "Complete"} else "warning"
                 _add_issue(
                     issues,
                     severity,
@@ -19261,13 +20591,13 @@ def _doctor_check_repository_compatibility(root: Path, issues: list[DoctorIssue]
             issues,
             "warning",
             manifest_path,
-            "Repository schema is behind; run `project upgrade` to plan the migration."
-            if schema_behind
-            else "Generated assets are behind; run canonical `project init` to refresh them.",
-            code=(
-                "PW_REPOSITORY_SCHEMA_BEHIND"
+            (
+                "Repository schema is behind; run `project upgrade` to plan the migration."
                 if schema_behind
-                else "PW_REPOSITORY_ASSETS_BEHIND"
+                else "Generated assets are behind; run canonical `project init` to refresh them."
+            ),
+            code=(
+                "PW_REPOSITORY_SCHEMA_BEHIND" if schema_behind else "PW_REPOSITORY_ASSETS_BEHIND"
             ),
             remediation_owner="project-workflow",
             mechanically_upgradeable=True,
@@ -19552,14 +20882,11 @@ def cmd_doctor(args: argparse.Namespace) -> None:
             raise SystemExit(1)
         return
 
-    if not evaluation.visible_issues and not (
-        args.show_accepted and evaluation.accepted_issues
-    ):
+    if not evaluation.visible_issues and not (args.show_accepted and evaluation.accepted_issues):
         print(f"project doctor: no issues found in {root}")
         if evaluation.accepted_issues:
             print(
-                f"project doctor: {len(evaluation.accepted_issues)} "
-                "accepted warning(s) hidden."
+                f"project doctor: {len(evaluation.accepted_issues)} " "accepted warning(s) hidden."
             )
         return
 
@@ -19589,10 +20916,7 @@ def cmd_doctor(args: argparse.Namespace) -> None:
         )
     if evaluation.accepted_issues:
         if args.show_accepted:
-            print(
-                f"project doctor: {len(evaluation.accepted_issues)} "
-                "accepted warning(s):"
-            )
+            print(f"project doctor: {len(evaluation.accepted_issues)} " "accepted warning(s):")
             for issue in evaluation.accepted_issues:
                 print(
                     _format_doctor_issue(
@@ -19605,14 +20929,12 @@ def cmd_doctor(args: argparse.Namespace) -> None:
                 )
         else:
             print(
-                f"project doctor: {len(evaluation.accepted_issues)} "
-                "accepted warning(s) hidden."
+                f"project doctor: {len(evaluation.accepted_issues)} " "accepted warning(s) hidden."
             )
 
     if evaluation.blocking_issues:
         print(
-            f"project doctor: failed with {len(evaluation.blocking_issues)} "
-            "blocking issue(s)."
+            f"project doctor: failed with {len(evaluation.blocking_issues)} " "blocking issue(s)."
         )
         raise SystemExit(1)
 
@@ -19813,8 +21135,12 @@ def cmd_backlog_promote(args: argparse.Namespace) -> None:
         )
         _write_file(epic_dir / "TRACKER.md", _epic_tracker_template(), overwrite=True)
         _write_file(epic_dir / "DEFERRALS.md", _epic_deferrals_template(), overwrite=True)
-        _write_file(epic_dir / EPIC_AMENDMENTS_FILENAME, _epic_amendments_template(), overwrite=True)
-        _write_file(epic_dir / "RETRO.md", _epic_retro_template(spec.task_id, spec.title), overwrite=True)
+        _write_file(
+            epic_dir / EPIC_AMENDMENTS_FILENAME, _epic_amendments_template(), overwrite=True
+        )
+        _write_file(
+            epic_dir / "RETRO.md", _epic_retro_template(spec.task_id, spec.title), overwrite=True
+        )
         _write_file(
             _intent_audit_path(epic_dir),
             _intent_audit_template(epic_dir),
@@ -20026,9 +21352,7 @@ def cmd_fix_init(args: argparse.Namespace) -> None:
     fix_dir.mkdir(parents=True, exist_ok=False)
     fix_text = _fix_template(fix_id, args.title, root=root)
     if args.classification:
-        fix_text = _replace_fix_field(
-            fix_text, "Classification", "Type", args.classification
-        )
+        fix_text = _replace_fix_field(fix_text, "Classification", "Type", args.classification)
     if args.mode:
         fix_text = _replace_fix_field(fix_text, "Classification", "Mode", args.mode)
     fix_path = fix_dir / "FIX.md"
@@ -20141,17 +21465,13 @@ def cmd_fix_promote(args: argparse.Namespace) -> None:
     tasks_dir = workflow_dir / "tasks"
     tracker_path = workflow_dir / "TRACKER.md"
     fix_id = _normalize_fix_id(args.id, root=root)
-    fix_path, source_row = _resolve_fix_doc(
-        root=root, tracker_path=tracker_path, fix_id=fix_id
-    )
+    fix_path, source_row = _resolve_fix_doc(root=root, tracker_path=tracker_path, fix_id=fix_id)
     if source_row["Status"] in {"Complete", "N/A"}:
         raise SystemExit(f"{fix_id} is already terminal and cannot be promoted.")
     title = args.title or source_row["Title"]
     if args.to == "task":
         prefix = _resolve_task_id_prefix(root, None)
-        promoted_id = _next_workflow_id(
-            root, tasks_dir, tracker_path, prefix=prefix, kind="tasks"
-        )
+        promoted_id = _next_workflow_id(root, tasks_dir, tracker_path, prefix=prefix, kind="tasks")
         spec = TaskSpec(promoted_id, title, slug_titlecase_dashes(title))
         promoted_dir = tasks_dir / spec.task_folder_name
         promoted_dir.mkdir(parents=True, exist_ok=False)
@@ -20984,10 +22304,7 @@ def cmd_epic_decompose(args: argparse.Namespace) -> None:
     mapped_ac_ids = _extract_parent_ac_ids_from_epic_rows([*epic_rows, *rows_to_add])
     unmapped_ac_ids = sorted(parent_ac_ids - mapped_ac_ids)
     if unmapped_ac_ids:
-        print(
-            "WARNING: Unmapped parent ACs after decomposition: "
-            + ", ".join(unmapped_ac_ids)
-        )
+        print("WARNING: Unmapped parent ACs after decomposition: " + ", ".join(unmapped_ac_ids))
     elif parent_ac_ids:
         print("Parent AC coverage mapped: " + ", ".join(sorted(parent_ac_ids)))
 
@@ -21038,7 +22355,9 @@ def cmd_epic_scaffold_child(args: argparse.Namespace) -> None:
     if args.create_branch:
         _ensure_clean_git(cwd)
         epic_branch = args.epic_branch
-        branch_name = f"{args.branch_prefix}{child_spec.task_id}-{slug_kebab_lower(child_spec.title)}"
+        branch_name = (
+            f"{args.branch_prefix}{child_spec.task_id}-{slug_kebab_lower(child_spec.title)}"
+        )
 
         if not _branch_exists(cwd, epic_branch):
             raise SystemExit(
@@ -21330,9 +22649,7 @@ def build_parser() -> argparse.ArgumentParser:
         "validation",
         help="Record whether a later change invalidates prior proof",
     )
-    validation_sub = validation_parser.add_subparsers(
-        dest="validation_command", required=True
-    )
+    validation_sub = validation_parser.add_subparsers(dest="validation_command", required=True)
     validation_impact_parser = validation_sub.add_parser(
         "impact",
         help="Classify later change impact and record the smallest sufficient proof scope",
@@ -21380,11 +22697,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     coordinate_parser = subparsers.add_parser(
         "coordinate",
-        help="Maintain durable logical handoff, drift, and outcome-checkpoint state",
+        help=(
+            "Maintain durable logical handoff, drift, outcome-checkpoint, and optional "
+            "material-verification state"
+        ),
     )
-    coordinate_sub = coordinate_parser.add_subparsers(
-        dest="coordinate_command", required=True
-    )
+    coordinate_sub = coordinate_parser.add_subparsers(dest="coordinate_command", required=True)
     coordinate_init_parser = coordinate_sub.add_parser(
         "init", help="Initialize one durable coordination state"
     )
@@ -21407,6 +22725,12 @@ def build_parser() -> argparse.ArgumentParser:
         "--material-user-facing", choices=("yes", "no"), default="no"
     )
     coordinate_init_parser.add_argument("--checkpoint-unit")
+    coordinate_init_parser.add_argument(
+        "--material-verification", choices=("yes", "no"), required=True
+    )
+    coordinate_init_parser.add_argument("--verification-claims")
+    coordinate_init_parser.add_argument("--verification-stages")
+    coordinate_init_parser.add_argument("--verification-scope")
     coordinate_init_parser.add_argument("--force", action="store_true")
     coordinate_init_parser.set_defaults(func=cmd_coordinate_init)
 
@@ -21437,17 +22761,13 @@ def build_parser() -> argparse.ArgumentParser:
         "preflight", help="Read loaded contract and Intent freshness without mutation"
     )
     coordinate_preflight_parser.add_argument("--id", required=True)
-    coordinate_preflight_parser.add_argument(
-        "--format", choices=("human", "json"), default="human"
-    )
+    coordinate_preflight_parser.add_argument("--format", choices=("human", "json"), default="human")
     coordinate_preflight_parser.set_defaults(func=cmd_coordinate_preflight)
 
     coordinate_boundary_parser = coordinate_sub.add_parser(
         "boundary", help="Record one of the five Coordinator-owned drift decisions"
     )
-    coordinate_boundary_parser.add_argument(
-        "--id", required=True
-    )
+    coordinate_boundary_parser.add_argument("--id", required=True)
     coordinate_boundary_parser.add_argument(
         "--boundary", required=True, choices=COORDINATION_BOUNDARIES
     )
@@ -21489,13 +22809,122 @@ def build_parser() -> argparse.ArgumentParser:
     coordinate_checkpoint_parser.add_argument("--recorded-by", required=True)
     coordinate_checkpoint_parser.set_defaults(func=cmd_coordinate_checkpoint)
 
+    coordinate_verification_capabilities_parser = coordinate_sub.add_parser(
+        "verification-capabilities",
+        help="Describe the framework-neutral optional verifier command/JSON contract",
+    )
+    coordinate_verification_capabilities_parser.add_argument(
+        "--format", choices=("human", "json"), default="human"
+    )
+    coordinate_verification_capabilities_parser.set_defaults(
+        func=cmd_coordinate_verification_capabilities
+    )
+
+    coordinate_verification_init_parser = coordinate_sub.add_parser(
+        "verification-init",
+        help="Initialize one current, finite material-verification campaign",
+    )
+    coordinate_verification_init_parser.add_argument("--id", required=True)
+    coordinate_verification_init_parser.add_argument("--candidate-identity", required=True)
+    coordinate_verification_init_parser.add_argument(
+        "--mode", choices=VERIFICATION_CAMPAIGN_MODES, required=True
+    )
+    coordinate_verification_init_parser.add_argument("--claims", required=True)
+    coordinate_verification_init_parser.add_argument("--stages", required=True)
+    coordinate_verification_init_parser.add_argument("--affected-scope", required=True)
+    coordinate_verification_init_parser.add_argument(
+        "--impact", choices=("known", "unknown"), default="known"
+    )
+    coordinate_verification_init_parser.add_argument("--max-failures", type=int)
+    coordinate_verification_init_parser.add_argument("--max-target-calls", type=int)
+    coordinate_verification_init_parser.add_argument("--max-elapsed-seconds", type=int)
+    coordinate_verification_init_parser.add_argument("--diagnostic-decision")
+    coordinate_verification_init_parser.add_argument(
+        "--adapter-kind", choices=("manual", "command"), default="manual"
+    )
+    coordinate_verification_init_parser.add_argument(
+        "--adapter-capability",
+        action="append",
+        choices=VERIFICATION_ADAPTER_CAPABILITIES,
+    )
+    coordinate_verification_init_parser.add_argument(
+        "--adapter-command-json",
+        help="Command adapter argv as a JSON string list; requests are passed on stdin",
+    )
+    coordinate_verification_init_parser.add_argument(
+        "--manual-command",
+        help="Declared operator-run command for a manual/no-adapter campaign",
+    )
+    coordinate_verification_init_parser.add_argument("--force", action="store_true")
+    coordinate_verification_init_parser.add_argument(
+        "--format", choices=("human", "json"), default="human"
+    )
+    coordinate_verification_init_parser.set_defaults(func=cmd_coordinate_verification_init)
+
+    coordinate_verification_record_parser = coordinate_sub.add_parser(
+        "verification-record",
+        help="Record one input-bound stage receipt without executing the verifier",
+    )
+    coordinate_verification_record_parser.add_argument("--id", required=True)
+    coordinate_verification_record_parser.add_argument(
+        "--stage", choices=VERIFICATION_CAMPAIGN_STAGES, required=True
+    )
+    coordinate_verification_record_parser.add_argument(
+        "--outcome", choices=VERIFICATION_RECEIPT_OUTCOMES, required=True
+    )
+    coordinate_verification_record_parser.add_argument("--scope", required=True)
+    coordinate_verification_record_parser.add_argument("--runtime-identity", required=True)
+    coordinate_verification_record_parser.add_argument("--target-identity", required=True)
+    coordinate_verification_record_parser.add_argument("--evaluator-identity", required=True)
+    coordinate_verification_record_parser.add_argument("--artifact", required=True)
+    coordinate_verification_record_parser.add_argument("--target-calls", type=int, required=True)
+    coordinate_verification_record_parser.add_argument("--elapsed-seconds", type=int, required=True)
+    coordinate_verification_record_parser.add_argument(
+        "--stage-complete", choices=("yes", "no"), default="yes"
+    )
+    coordinate_verification_record_parser.add_argument("--regrade", action="store_true")
+    coordinate_verification_record_parser.add_argument(
+        "--format", choices=("human", "json"), default="human"
+    )
+    coordinate_verification_record_parser.set_defaults(func=cmd_coordinate_verification_record)
+
+    coordinate_verification_run_parser = coordinate_sub.add_parser(
+        "verification-run",
+        help="Invoke one current command adapter stage through the generic JSON contract",
+    )
+    coordinate_verification_run_parser.add_argument("--id", required=True)
+    coordinate_verification_run_parser.add_argument("--runtime-identity", required=True)
+    coordinate_verification_run_parser.add_argument("--regrade", action="store_true")
+    coordinate_verification_run_parser.add_argument("--stage", choices=VERIFICATION_CAMPAIGN_STAGES)
+    coordinate_verification_run_parser.add_argument("--target-identity")
+    coordinate_verification_run_parser.add_argument(
+        "--format", choices=("human", "json"), default="human"
+    )
+    coordinate_verification_run_parser.set_defaults(func=cmd_coordinate_verification_run)
+
+    coordinate_verification_preflight_parser = coordinate_sub.add_parser(
+        "verification-preflight",
+        help="Project the release/QA state without mutation or verifier invocation",
+    )
+    coordinate_verification_preflight_parser.add_argument("--id", required=True)
+    coordinate_verification_preflight_parser.add_argument(
+        "--material-verification", choices=("yes", "no")
+    )
+    coordinate_verification_preflight_parser.add_argument("--claim")
+    coordinate_verification_preflight_parser.add_argument("--stage")
+    coordinate_verification_preflight_parser.add_argument("--scope")
+    coordinate_verification_preflight_parser.add_argument(
+        "--format", choices=("human", "json"), default="human"
+    )
+    coordinate_verification_preflight_parser.set_defaults(
+        func=cmd_coordinate_verification_preflight
+    )
+
     coordinate_status_parser = coordinate_sub.add_parser(
         "status", help="Report sourced durable coordination state and one next action"
     )
     coordinate_status_parser.add_argument("--id", required=True)
-    coordinate_status_parser.add_argument(
-        "--format", choices=("human", "json"), default="human"
-    )
+    coordinate_status_parser.add_argument("--format", choices=("human", "json"), default="human")
     coordinate_status_parser.set_defaults(func=cmd_coordinate_status)
 
     delegate_parser = subparsers.add_parser(
@@ -21769,9 +23198,7 @@ def build_parser() -> argparse.ArgumentParser:
     fix_triage_parser.add_argument("--id", required=True, help="Fix ID (e.g. FIX-001)")
     fix_triage_parser.set_defaults(func=cmd_fix_triage)
 
-    fix_status_parser = fix_sub.add_parser(
-        "status", help="Safely update a Fix lifecycle status"
-    )
+    fix_status_parser = fix_sub.add_parser("status", help="Safely update a Fix lifecycle status")
     fix_status_parser.add_argument("--id", required=True, help="Fix ID (e.g. FIX-001)")
     fix_status_parser.add_argument(
         "--to",
@@ -21793,9 +23220,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     fix_close_parser.add_argument("--decision", required=True, help="Closeout decision summary")
     fix_close_parser.add_argument("--closed-by", required=True, help="Closer identity")
-    fix_close_parser.add_argument(
-        "--closed-date", help="ISO close date (default: today)"
-    )
+    fix_close_parser.add_argument("--closed-date", help="ISO close date (default: today)")
     fix_close_parser.set_defaults(func=cmd_fix_close)
 
     fix_promote_parser = fix_sub.add_parser(
@@ -21819,7 +23244,9 @@ def build_parser() -> argparse.ArgumentParser:
     task_sub = task_parser.add_subparsers(dest="task_command", required=True)
 
     task_init_parser = task_sub.add_parser("init", help="Scaffold a new task folder + docs")
-    task_init_parser.add_argument("--title", required=True, help="Human title (e.g. Super Admin Access)")
+    task_init_parser.add_argument(
+        "--title", required=True, help="Human title (e.g. Super Admin Access)"
+    )
     task_init_parser.add_argument(
         "--prefix",
         help=(
@@ -21896,9 +23323,7 @@ def build_parser() -> argparse.ArgumentParser:
         "approval-summary",
         help="Render the plain-language Intent synopsis for owner confirmation",
     )
-    task_approval_summary_parser.add_argument(
-        "--id", required=True, help="Task ID (e.g. TASK-001)"
-    )
+    task_approval_summary_parser.add_argument("--id", required=True, help="Task ID (e.g. TASK-001)")
     task_approval_summary_parser.set_defaults(func=cmd_task_approval_summary)
 
     task_approve_requirements_parser = task_sub.add_parser(
@@ -22080,9 +23505,7 @@ def build_parser() -> argparse.ArgumentParser:
         "ready-child",
         help="Validate one epic child task readiness before implementation/testing",
     )
-    epic_ready_child_parser.add_argument(
-        "--epic-id", required=True, help="Epic ID (e.g. EPIC-001)"
-    )
+    epic_ready_child_parser.add_argument("--epic-id", required=True, help="Epic ID (e.g. EPIC-001)")
     epic_ready_child_parser.add_argument("--id", required=True, help="Row ID in epic TRACKER.md")
     epic_ready_child_parser.set_defaults(func=cmd_epic_ready_child)
 
@@ -22113,9 +23536,7 @@ def build_parser() -> argparse.ArgumentParser:
         "lifecycle",
         help="Safely update the global tracker lifecycle status for one epic",
     )
-    epic_lifecycle_parser.add_argument(
-        "--epic-id", required=True, help="Epic ID (e.g. EPIC-001)"
-    )
+    epic_lifecycle_parser.add_argument("--epic-id", required=True, help="Epic ID (e.g. EPIC-001)")
     epic_lifecycle_parser.add_argument(
         "--to",
         required=True,
@@ -22128,9 +23549,7 @@ def build_parser() -> argparse.ArgumentParser:
         "decompose",
         help="Generate Proposed child rows and DECOMPOSITION.md (no child scaffolding)",
     )
-    epic_decompose_parser.add_argument(
-        "--epic-id", required=True, help="Epic ID (e.g. EPIC-001)"
-    )
+    epic_decompose_parser.add_argument("--epic-id", required=True, help="Epic ID (e.g. EPIC-001)")
     epic_decompose_parser.add_argument(
         "--limit",
         type=int,

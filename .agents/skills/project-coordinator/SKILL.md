@@ -85,6 +85,29 @@ to manage.
   record the earliest sufficient normal-user journey with `coordinate checkpoint`; existing
   lifecycle gates prevent dependent fan-out until it passes. Mechanical work is exempt. Do not
   repeat an unchanged passing checkpoint or self-pass owner-only judgment.
+- At `coordinate init`, durably classify material verification as required or not required and,
+  when required, bind its exact claims, stages, and scope. Before materially expensive
+  verification, run `coordinate verification-preflight`. An incomplete
+  candidate remains `implementation-required` with zero verifier invocations. Cheap bounded work
+  explicitly classified as not requiring material verification keeps the ordinary lifecycle and
+  does not acquire a campaign. Missing required campaign state blocks Review and Complete.
+- For required material proof, initialize one optional campaign on the existing coordination state.
+  Bind it to the exact candidate, claims, canonical cheap-to-expensive stages, affected scope,
+  finite limits, and either a declared manual command or a generic command/JSON adapter. Never add
+  a verifier-specific runtime branch or require an adapter.
+- Use `certification` for release proof and stop on the first product/assertion failure. Use
+  `diagnostic` only for a named decision, selected scope, and finite boundary; diagnostic results do
+  not certify delivery. A reached limit blocks or pauses missing proof and never converts it to a
+  pass.
+- Record input-bound typed receipts. A command adapter must echo the exact invocation,
+  candidate, source, proof-contract, and stage identity; reject a mismatch before retaining its
+  receipt. Source/candidate change requires a fresh campaign;
+  evaluator-only change regrades retained target output with zero target calls; provider or harness
+  interruption gets one bounded resume/retry. Unknown material impact requires full proof.
+- Treat the derived state as a projection, not another lifecycle: `implementation-required`,
+  `verification-required`, `qa-required`, `delivery-ready`, or `blocked`. A current green campaign
+  proceeds to the one existing independent QA gate; unchanged passing verification and QA are
+  reused for delivery rather than recommissioned.
 
 ## Compatibility
 

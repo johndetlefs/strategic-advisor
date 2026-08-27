@@ -13,6 +13,9 @@ Run the post-implementation quality gate for a project-workflow task.
 - Use this skill whenever the user asks for QA, review, code review, verification, release readiness, or completion approval for a project-workflow task.
 - Read `AGENTS.md` and `.project-workflow/guidance.md` if present, then follow the project-workflow managed block and CLI requirements.
 - If implementation has not reached `Testing`, use `project-implement` first.
+- If a material verification campaign exists, its derived state must be `qa-required` (or already
+  `delivery-ready`) before Review. A `verification-required` or `blocked` state returns to the
+  Coordinator; QA must not start, broaden, or restart that campaign.
 - QA/code review is a document and validation workflow unless the CLI adds an explicit review command.
 
 ## Required Files
@@ -75,6 +78,10 @@ Run the post-implementation quality gate for a project-workflow task.
   Findings may trigger affected validation, but never a fresh open-ended review. Another reviewer
   invocation requires a new material change, an explicit high-consequence requirement, or direct
   owner authorization.
+- QA may run a planned narrow check needed for its verdict, but it cannot schedule materially
+  expensive verification. Missing campaign proof returns as `verification-required`; corrections
+  close through one affected validation disposition, while the original independent verdict is
+  retained and no second QA is commissioned.
 - Completion accepts either the original independent `Pass` or a preserved `Changes Requested`
   verdict whose named findings have the exact passing affected-validation disposition above.
   Missing, pending, self-contradictory, or unevidenced resolution remains blocked.
