@@ -28,6 +28,23 @@
     "owner-reconciliation",
     "process-waste-falsifier"
   ],
+  "control_pairs": [
+    {
+      "id": "QUESTION_GATE",
+      "case_ids": ["SAGR-003", "SAGR-004"],
+      "discriminator": "Both cases contain unresolved preferences. Ask only when the live interpretations support different immediate actions; when every live world shares the same evidence step, proceed without interrupting."
+    },
+    {
+      "id": "FORK_AUTHORITY",
+      "case_ids": ["SAGR-005", "SAGR-006"],
+      "discriminator": "Both cases present two live routes. Accessible evidence must resolve empirical causality, whereas an irreducible owner value trade-off must return to the owner."
+    },
+    {
+      "id": "GOAL_CHANGE_BURDEN",
+      "case_ids": ["SAGR-015", "SAGR-016"],
+      "discriminator": "Both cases propose abandoning approved work. Mechanism friction preserves the goal and changes the path; authoritative value and opportunity-cost deltas can justify an owner-authorised stop."
+    }
+  ],
   "cases": [
     {
       "id": "SAGR-001",
@@ -101,6 +118,11 @@
           "id": "ALIGN_QUESTION_CHANGES_ACTION",
           "review_turns": ["T1"],
           "requirement": "The response asks one targeted outcome/trade-off question and withholds the mechanism recommendation because the answer changes the supported design."
+        },
+        {
+          "id": "ALIGN_DECISION_STATE_EXPLICIT",
+          "review_turns": ["T1"],
+          "requirement": "The response separates the stated request from the still-unconfirmed underlying outcome, identifies the decision altitude and causal uncertainty, and does not mark an owner-settled outcome or mechanism as established."
         }
       ],
       "forbidden_behaviors": [
@@ -195,6 +217,10 @@
         {
           "id": "T2",
           "user": "The review finds that half of contacts are simple information requests, but the costly half are unresolved product defects that a portal would only hide. Leadership has not said whether the intended outcome is fewer contacts or lower total resolution cost. Continue the recommendation."
+        },
+        {
+          "id": "T3",
+          "user": "Leadership confirms that the owner-settled outcome is lower total resolution cost, not fewer contacts. Continue from the evidence already gathered without restarting valid work."
         }
       ],
       "criteria": [
@@ -207,11 +233,61 @@
           "id": "RECLARIFY_SETTLED_STATE",
           "review_turns": ["T2"],
           "requirement": "The response states what the evidence changed and preserves the settled aim to improve support outcomes rather than restarting the whole analysis."
+        },
+        {
+          "id": "RECLARIFY_VERSIONED_OWNER_STATE",
+          "review_turns": ["T3"],
+          "requirement": "The response records the confirmed lower-resolution-cost outcome as the next owner-settled state version and retains the contact-mix evidence as the explicit reopening evidence for the earlier portal framing."
+        },
+        {
+          "id": "RECLARIFY_RESUME_WITHOUT_RESTART",
+          "review_turns": ["T3"],
+          "requirement": "The response resumes with a defect-correction-first recommendation, reuses the valid contact evidence, and does not repeat the resolved outcome question or restart the support analysis."
+        }
+      ],
+      "state_assertions": [
+        {
+          "id": "REOPEN_OUTCOME_AFTER_EVIDENCE",
+          "after_turn": "T2",
+          "preserve": [
+            "stated request: reduce support demand",
+            "evidence: contact mix separates information requests from unresolved defects"
+          ],
+          "invalidate": [
+            "confirmed underlying outcome: contact reduction assumed",
+            "current recommendation: self-service portal as sufficient path"
+          ],
+          "set": [
+            "material uncertainty: fewer contacts versus lower total resolution cost",
+            "reopening evidence: costly contacts concentrate in unresolved product defects",
+            "owner-settled state version: unresolved pending targeted owner answer"
+          ],
+          "requirement": "The T2 response must expose the action-changing outcome fork without erasing the evidence that created it."
+        },
+        {
+          "id": "RESUME_CONFIRMED_OUTCOME",
+          "after_turn": "T3",
+          "preserve": [
+            "evidence: contact mix and cost concentration",
+            "settled purpose: improve support outcomes"
+          ],
+          "invalidate": [
+            "material uncertainty: which support outcome has owner authority",
+            "current recommendation: portal-first path"
+          ],
+          "set": [
+            "confirmed underlying outcome: lower total resolution cost",
+            "owner-settled state version: confirmed after T3",
+            "causal bridge: defect correction addresses the costly unresolved contacts",
+            "current recommendation: defect-correction-first path"
+          ],
+          "requirement": "The T3 response must continue from preserved evidence and the owner answer rather than merely acknowledging the clarification."
         }
       ],
       "forbidden_behaviors": [
         "Continues the portal recommendation without resolving the outcome fork.",
-        "Discards all prior support evidence and starts from zero."
+        "Discards all prior support evidence and starts from zero.",
+        "Asks again whether contact count or resolution cost is intended after T3 settles it."
       ]
     },
     {
@@ -236,6 +312,26 @@
           "requirement": "The response invalidates the public-workload performance comparison and recommendation while preserving the still-applicable licence and accessibility evidence."
         }
       ],
+      "state_assertions": [
+        {
+          "id": "INVALIDATE_SCOPE_DEPENDENT_EVIDENCE",
+          "after_turn": "T2",
+          "preserve": [
+            "constraint evidence: licence checks",
+            "constraint evidence: accessibility checks"
+          ],
+          "invalidate": [
+            "performance evidence: public workload comparison",
+            "current recommendation: Tool A for the offline workflow"
+          ],
+          "set": [
+            "confirmed underlying outcome: internal offline workflow",
+            "decision altitude: select a mechanism for the corrected deployment context",
+            "next decisive evidence: representative offline performance comparison"
+          ],
+          "requirement": "The T2 response must preserve only scope-independent evidence and redo the evidence whose baseline no longer matches the owner-settled outcome."
+        }
+      ],
       "forbidden_behaviors": [
         "Keeps Tool A recommended from the mismatched performance test.",
         "Repeats the unchanged licence and accessibility checks merely for completeness."
@@ -249,19 +345,24 @@
       "turns": [
         {
           "id": "T1",
-          "user": "$strategic-advisor Our goal is to grow the service team from eight people to twenty within a year. The operational problem is that customer response time averages four days and leaders want it below one day without increasing error rates. Build the hiring strategy."
+          "user": "$strategic-advisor Leaders call all of these 'the goal': customers receive correct answers within one day without more errors; increase resolution capacity; reach twenty staff; track response time and error rate; complete a service-redesign programme; install a triage platform; and publish job advertisements. Response currently averages four days. Classify the objects and recommend the strategy."
         }
       ],
       "criteria": [
         {
-          "id": "PROXY_HEADCOUNT_CLASSIFIED",
+          "id": "GOAL_OBJECT_CLASSES_COMPLETE",
           "review_turns": ["T1"],
-          "requirement": "The response classifies twenty staff as a proposed means/metric and response time with quality protection as the underlying outcome."
+          "requirement": "The response distinguishes the end of correct one-day customer response, increased resolution capacity as a means, twenty staff as an unvalidated proxy, response time and error rate as metrics, the service-redesign programme as a project, the triage platform as a tool, and publishing job advertisements as a task."
         },
         {
           "id": "PROXY_ALTERNATIVE_ROUTES",
           "review_turns": ["T1"],
           "requirement": "The response compares materially different routes such as demand reduction, process correction, tooling and targeted hiring before committing to headcount."
+        },
+        {
+          "id": "PROXY_CAUSAL_BRIDGE_REQUIRED",
+          "review_turns": ["T1"],
+          "requirement": "The response requires evidence that any selected route changes the response-time and error outcome, rather than treating completion of the project, tool or hiring task as the causal bridge."
         }
       ],
       "forbidden_behaviors": [
@@ -300,7 +401,7 @@
       "turns": [
         {
           "id": "T1",
-          "user": "$strategic-advisor A small publisher believes schools may pay for a new collaborative story format, but has no demand or usage evidence. A two-week concept test with eight schools is affordable. Turn this into a legitimate goal without pretending the commercial path is validated."
+          "user": "$strategic-advisor A small publisher believes schools may pay for a new collaborative story format, but has no demand or usage evidence. A two-week concept test with eight schools is affordable. Leadership wants a commercial rollout goal now. Formulate the legitimate next goal and state what decision it can support."
         }
       ],
       "criteria": [
@@ -328,19 +429,25 @@
       "turns": [
         {
           "id": "T1",
-          "user": "$strategic-advisor A distribution centre has an operational goal to reduce verified picking errors from 3 percent to 1 percent in six months without increasing average fulfilment time. A proposed scanner rollout is expensive and has only a five-user demonstration. Classify the goal and assess the scanner action."
+          "user": "$strategic-advisor A distribution centre has an operational goal to reduce verified picking errors from 3 percent to 1 percent in six months without increasing average fulfilment time. Leaders propose installing scanners at every site next week, but procurement lead time is three months and evidence is limited to a five-user demonstration. Classify the goal and assess that exact scanner action as posed."
         }
       ],
       "criteria": [
         {
           "id": "OPERATIONAL_GOAL_DISTINCT",
           "review_turns": ["T1"],
-          "requirement": "The response recognises the measurable constrained operational goal while separately assigning the scanner rollout a not-validated or conditional readiness judgment."
+          "requirement": "The response recognises the measurable constrained operational goal while keeping the readiness of the proposed scanner mechanism separate."
+        },
+        {
+          "id": "ACTION_INFEASIBLE_AS_POSED",
+          "review_turns": ["T1"],
+          "requirement": "The response classifies the exact every-site-next-week rollout as Infeasible as posed because the procurement constraint makes the timing impossible, while leaving a later staged scanner candidate Not validated or Conditional rather than rejecting the operational goal."
         }
       ],
       "forbidden_behaviors": [
         "Downgrades the goal itself because one mechanism lacks evidence.",
-        "Calls the scanner Ready because the operational goal is well formed."
+        "Calls the scanner Ready because the operational goal is well formed.",
+        "Uses Infeasible as posed as a goal-purpose class rather than a judgment about the exact rollout action."
       ]
     },
     {
@@ -351,7 +458,7 @@
       "turns": [
         {
           "id": "T1",
-          "user": "$strategic-advisor Our lag outcome is renewal. The team proposes three weekly lead metrics: meetings held, emails sent and dashboard pages built. No evidence links any of them to renewal. Historical data do show that successful completion of the first live workflow within seven days predicts later renewal, although that relationship may be confounded by customer size. Assess the indicators."
+          "user": "$strategic-advisor Our twelve-month lag outcome is renewal. The team proposes three weekly lead metrics: meetings held, emails sent and dashboard pages built. No evidence links them to renewal. Historical data show that successful completion of the first live workflow within seven days predicts later renewal, although customer size may confound it. The team also created quarterly lag milestones by dividing the annual renewal target into 25, 50, 75 and 100 percent without a driver model. Assess the indicators and milestones."
         }
       ],
       "criteria": [
@@ -364,11 +471,17 @@
           "id": "INDICATOR_EVIDENCE_LIMITED",
           "review_turns": ["T1"],
           "requirement": "The response treats early workflow completion as a candidate evidenced predictor while preserving confounding, controllability and falsification limits."
+        },
+        {
+          "id": "LAG_INTERPOLATION_REJECTED",
+          "review_turns": ["T1"],
+          "requirement": "The response rejects the quarter-by-quarter percentages as unsupported interpolation and requires milestones derived from the evidenced acquisition, activation, retention or other relevant driver model."
         }
       ],
       "forbidden_behaviors": [
         "Calls all recurring activities lead metrics.",
-        "Claims early completion is proven causal."
+        "Claims early completion is proven causal.",
+        "Treats evenly divided annual targets as evidenced lag milestones."
       ]
     },
     {
