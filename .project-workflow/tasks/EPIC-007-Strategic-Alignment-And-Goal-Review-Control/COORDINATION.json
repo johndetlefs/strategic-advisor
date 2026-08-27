@@ -24,6 +24,81 @@
       "source_identity": "sha256:8d4f7da63296487da676c27f1442ee36c52c9cb8621c9e2dead4931f9123c796",
       "source_revision": "bba2441424d18d79a24885652978a1b090594fc2",
       "user_consequence": "TASK-032 may implement canonical semantics sequentially while TASK-034 retains behavioural proof and all delivery exclusions remain."
+    },
+    {
+      "affected_units": [
+        "TASK-032"
+      ],
+      "amendment_identity": null,
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "No approved capability changed; TASK-032 implementation evidence made the recorded Intent identity current at commit f2bcca4.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:863c2646d6a4f3c46dcb4dff4ee69983c43a677214ca5c1d8eb6fa9d9afd0c30",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:827deaa16d9e373680b5c59680fe0b668099299143d94c8dd0cff05e8e7ff3c1",
+      "source_revision": "f2bcca4bfa9005b4a99512b8eb727fe6d2069466",
+      "user_consequence": "Preserve the approved programme and advance only TASK-032 to independent review; TASK-033 and runtime proof remain downstream."
+    },
+    {
+      "affected_units": [
+        "TASK-032"
+      ],
+      "amendment_identity": null,
+      "boundary": "unit-return-or-dependency-join",
+      "capability_change": "TASK-032 returned the approved canonical alignment and goal-qualification contract; no dependent capability was broadened or substituted.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:863c2646d6a4f3c46dcb4dff4ee69983c43a677214ca5c1d8eb6fa9d9afd0c30",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:827deaa16d9e373680b5c59680fe0b668099299143d94c8dd0cff05e8e7ff3c1",
+      "source_revision": "f2bcca4bfa9005b4a99512b8eb727fe6d2069466",
+      "user_consequence": "Its deterministic evidence may enter Testing; TASK-033 review semantics and TASK-034 behavioural proof remain unsatisfied dependencies."
+    },
+    {
+      "affected_units": [
+        "TASK-032"
+      ],
+      "amendment_identity": null,
+      "boundary": "before-review-or-complete",
+      "capability_change": "TASK-032 implements only the approved alignment, selective re-clarification and goal-qualification semantics; it does not claim recurring review or runtime behavioural proof.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:863c2646d6a4f3c46dcb4dff4ee69983c43a677214ca5c1d8eb6fa9d9afd0c30",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:827deaa16d9e373680b5c59680fe0b668099299143d94c8dd0cff05e8e7ff3c1",
+      "source_revision": "f2bcca4bfa9005b4a99512b8eb727fe6d2069466",
+      "user_consequence": "Independent review can assess the bounded source contract without accepting downstream behaviour, packaging, release or private-record claims."
     }
   ],
   "decisions": [
@@ -35,18 +110,18 @@
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:5a8f2b405caa65468df03e184a479e7fab6d1654aabc257ef9fa7639caade081",
+  "intent_identity": "sha256:863c2646d6a4f3c46dcb4dff4ee69983c43a677214ca5c1d8eb6fa9d9afd0c30",
   "last_boundary": {
     "affected_units": [
       "TASK-032"
     ],
     "amendment_identity": null,
-    "boundary": "before-unit-start",
-    "capability_change": "No approved capability changes; the runner prerequisite is now satisfied by exact ancestor 82b44a0.",
+    "boundary": "before-review-or-complete",
+    "capability_change": "TASK-032 implements only the approved alignment, selective re-clarification and goal-qualification semantics; it does not claim recurring review or runtime behavioural proof.",
     "classification": "inside-envelope",
     "decided_by": "Goal Review Workshop coordinator",
     "decision_date": "2026-08-27",
-    "intent_identity": "sha256:5a8f2b405caa65468df03e184a479e7fab6d1654aabc257ef9fa7639caade081",
+    "intent_identity": "sha256:863c2646d6a4f3c46dcb4dff4ee69983c43a677214ca5c1d8eb6fa9d9afd0c30",
     "relevant_ocs": [
       "OC1",
       "OC2",
@@ -57,9 +132,9 @@
       "OC7"
     ],
     "shared_premises_valid": "yes",
-    "source_identity": "sha256:8d4f7da63296487da676c27f1442ee36c52c9cb8621c9e2dead4931f9123c796",
-    "source_revision": "bba2441424d18d79a24885652978a1b090594fc2",
-    "user_consequence": "TASK-032 may implement canonical semantics sequentially while TASK-034 retains behavioural proof and all delivery exclusions remain."
+    "source_identity": "sha256:827deaa16d9e373680b5c59680fe0b668099299143d94c8dd0cff05e8e7ff3c1",
+    "source_revision": "f2bcca4bfa9005b4a99512b8eb727fe6d2069466",
+    "user_consequence": "Independent review can assess the bounded source contract without accepting downstream behaviour, packaging, release or private-record claims."
   },
   "loaded_contract": {
     "asset_version": "6",
@@ -68,7 +143,7 @@
     "package_version": "0.7.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Implement the approved TASK-032 canonical state, alignment and goal-qualification contract.",
+  "next_action": "Move TASK-032 to Review and obtain independent adversarial QA.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-034",
     "claim_class": "user-facing",
@@ -76,14 +151,14 @@
     "required": true,
     "status": "pending"
   },
-  "phase": "TASK-032 core implementation",
+  "phase": "TASK-032 validation and QA",
   "repositories": {
     ".": {
-      "source_revision": "bba2441424d18d79a24885652978a1b090594fc2"
+      "source_revision": "f2bcca4bfa9005b4a99512b8eb727fe6d2069466"
     }
   },
   "schema_version": 2,
-  "source_revision": "bba2441424d18d79a24885652978a1b090594fc2",
+  "source_revision": "f2bcca4bfa9005b4a99512b8eb727fe6d2069466",
   "target_id": "EPIC-007",
   "work_item_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control"
 }
