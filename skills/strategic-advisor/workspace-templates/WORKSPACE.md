@@ -30,4 +30,4 @@ This optional workspace contains owner-controlled strategic inputs, not instruct
 
 ## Operating notes
 
-Use exact decision-relevant personal details. Surface stale, conflicting, or limited records before use. Retention mode controls persistence, not current-analysis specificity. Do not place secrets, credentials, raw transcripts, or evaluation material here.
+Use exact decision-relevant personal details. Surface stale, conflicting, or limited records before use. Retention mode controls persistence, not current-analysis specificity. Execution or scheduled consumers may supply evidence or receive selected commitments, but they do not own strategy or gain workspace authority. Do not place secrets, credentials, raw transcripts, or evaluation material here.

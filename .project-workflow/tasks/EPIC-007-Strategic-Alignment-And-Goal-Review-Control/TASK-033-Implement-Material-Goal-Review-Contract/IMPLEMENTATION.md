@@ -54,7 +54,10 @@ not silently dictate strategy.
 - Evaluation authority: `evals/core_cases.json`, `eval_queries.json`, `recommendation_gate_cases.json`, `drift_smoke_cases.json`, generated `evals.json`, the smallest necessary case/assertion/runner changes and exact raw result artifacts kept outside the model-visible runtime.
 - Public contract: `PRODUCT-CONTRACT.md`, `ARCHITECTURE.md`, `README.md`, `INSTALL.md`, onboarding/agent metadata and only directly affected contributor/security documentation.
 - Runtime/package declarations: `runtime-manifest.json`, `distribution.json`, generated install-artifact provenance, exact inventories and deterministic package comparison.
-- Retained proof: child `EVIDENCE.json`, deterministic validation output, exact-runtime target/source/activation evidence, sanitised raw case outputs, case-level verdicts, independent QA, parent audit and explicit blockers.
+- Retained proof for this source-only child: deterministic contract, schema,
+  privacy, manifest and frozen-authority checks plus one affected-only
+  independent QA verdict. TASK-034 remains the separately authorised owner of
+  exact-runtime behavioural evidence and is held by the owner checkpoint.
 - Downstream handoff: a public-contract-derived Strategy Workspace v1 brief identifying private record, dogfood, Sunday and Daily Checklist boundaries without mutating that repository or copying its facts.
 - Workflow: EPIC-007 requirements, contract, decomposition, child artifacts, tracker, intent audit, acceptance map/audit, deferrals/amendments if required and retro.
 
@@ -69,13 +72,13 @@ not silently dictate strategy.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Event, weekly and monthly review purposes are distinct and configurable.
-- [ ] AC2: Material-progress and enabler-credit rules reject activity substitution.
-- [ ] AC3: Drift and goal-amendment controls challenge changes but permit justified revision.
-- [ ] AC4: Goal/path decisions retain complete evidence, authority and closeout fields.
-- [ ] AC5: Offline owner evidence is reconciled with provenance and freshness.
-- [ ] AC6: Process-waste falsifiers cause proportionate correction or stopping.
-- [ ] AC7: Generic runtime/templates stay private-data-free and consumer-independent.
+- [x] AC1: Event, weekly and monthly review purposes are distinct and configurable.
+- [x] AC2: Material-progress and enabler-credit rules reject activity substitution.
+- [x] AC3: Drift and goal-amendment controls challenge changes but permit justified revision.
+- [x] AC4: Goal/path decisions retain complete evidence, authority and closeout fields.
+- [x] AC5: Offline owner evidence is reconciled with provenance and freshness.
+- [x] AC6: Process-waste falsifiers cause proportionate correction or stopping.
+- [x] AC7: Generic runtime/templates stay private-data-free and consumer-independent.
 
 ## Validation
 
@@ -86,21 +89,24 @@ not silently dictate strategy.
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | not recorded | not recorded | not recorded | not recorded |
+| . | `codex/strategic-alignment-goal-review-pw08` from `41a383b` | 26 focused tests plus skill, privacy, links and frozen-build checks pass | Local source only; no push, package, release, activation or private mutation | `VALIDATION.md`; independent QA pending |
 
 ## Task List
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status | Dependencies | Write Scope | Parallel Safe | Execution Needs |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ | ------------ | ----------- | ------------- | --------------- |
-| 1 | Define review control | Add event, weekly and monthly purposes and route qualified decision state into the appropriate review. | AC1 | Inspect the contract and run event-versus-cadence cases. | To Do | TASK-032 | Canonical review reference and directly affected core routing | No | bounded-return |
-| 2 | Implement progress and drift tests | Add material-progress, enabler-credit, drift and amendment burden rules. | AC2, AC3 | Run activity/progress and justified/unjustified amendment cases. | To Do | 1 | Same review reference and directly affected tests | No | bounded-return |
-| 3 | Add generic records and reconciliation | Update portable templates/semantics for two-axis decisions, evidence, owner reports, reversal and closeout. | AC4, AC5, AC7 | Build generic fixtures and inspect for private facts or consumer coupling. | To Do | 2 | Generic workspace templates, validator and focused tests | No | bounded-return |
-| 4 | Add process falsifiers | Define waste signals and proportionate reduce/combine/correct/stop response. | AC6 | Run useful-review and wasteful-review matched cases. | To Do | 3 | Review reference, generic records and tests | No | bounded-return |
-| 5 | Validate and hand off review | Run focused/full deterministic validation, privacy/diff checks and independent QA before exact-runtime work. | AC1, AC2, AC3, AC4, AC5, AC6, AC7 | Inspect validation and QA evidence against the parent AC map. | To Do | 4 | Validation artifacts and child workflow evidence | No | bounded-return |
+| 1 | Define review control | Add event, weekly and monthly purposes and route qualified decision state into the appropriate review. | AC1 | Inspect the contract and run event-versus-cadence cases. | Done | TASK-032 | Canonical review reference and directly affected core routing | No | bounded-return |
+| 2 | Implement progress and drift tests | Add material-progress, enabler-credit, drift and amendment burden rules. | AC2, AC3 | Run activity/progress and justified/unjustified amendment cases. | Done | 1 | Same review reference and directly affected tests | No | bounded-return |
+| 3 | Add generic records and reconciliation | Update portable templates/semantics for two-axis decisions, evidence, owner reports, reversal and closeout. | AC4, AC5, AC7 | Build generic fixtures and inspect for private facts or consumer coupling. | Done | 2 | Generic workspace templates, validator and focused tests | No | bounded-return |
+| 4 | Add process falsifiers | Define waste signals and proportionate reduce/combine/correct/stop response. | AC6 | Run useful-review and wasteful-review matched cases. | Done | 3 | Review reference, generic records and tests | No | bounded-return |
+| 5 | Validate review contract | Run focused deterministic validation and privacy/diff checks before the separate affected-only QA gate. | AC1, AC2, AC3, AC4, AC5, AC6, AC7 | Inspect validation evidence against the parent AC map. | Done | 4 | Validation artifacts and child workflow evidence | No | bounded-return |
 
 ## Parent AC Evidence
 
-- AC7, AC8, AC9, AC10, AC11, AC12: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.
+- AC7-AC12: `goal-review.md`, `strategy-workspace.md`, generic template notes,
+  runtime manifest, `CASE-COVERAGE.md`, focused tests and `VALIDATION.md` provide
+  deterministic source evidence. Exact-runtime and delivery proof remain held
+  in TASK-034/TASK-035.
 
 ## QA & Code Review
 
@@ -125,3 +131,6 @@ not silently dictate strategy.
 - Task: TASK-033
 - Title: Implement Material Goal Review Contract
 - Created: 2026-08-27
+- Owner checkpoint: finish the smallest usable TASK-033 and one affected-only
+  QA verdict, then stop for a read-only owner-visible dogfood. TASK-034 and
+  TASK-035 require new explicit owner authority.

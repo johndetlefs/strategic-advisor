@@ -8,3 +8,5 @@ Record only changes the owner explicitly approved. A conversational proposal or 
 
 | Change ID | Target record | Change summary | Status | Proposed on | Approved on | Owner approval | Applied by |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+
+Record an approved goal amendment, replacement, stop, closeout, or correction only after its exact target and owner authority are settled. A path failure alone does not authorise changing the goal.

@@ -206,6 +206,158 @@
       "source_identity": "sha256:a477bcbfd60ef0dabdfd63278ae423bb465a2c6209d5d74eaef4980df798670f",
       "source_revision": "3261df2387e91f9058dd119e82dd090ee6678821",
       "user_consequence": "Complete TASK-032 without upgrading the claim to live behaviour, distribution readiness or owner outcome; begin TASK-033 next."
+    },
+    {
+      "affected_units": [
+        "TASK-033"
+      ],
+      "amendment_identity": null,
+      "boundary": "before-unit-start",
+      "capability_change": "TASK-033 implements the approved generic review semantics only; it does not mutate private Strategy Workspace records or certify live behaviour.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:6f7a7d832e8e1fb89fe20320843bba5c70effb180dd73231288bce1f9ca2ec91",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "Add event, weekly, monthly, progress, drift, reconciliation, disposition and process-waste contracts as generic public semantics; retain TASK-034/TASK-035 proof and delivery boundaries."
+    },
+    {
+      "affected_units": [
+        "TASK-033",
+        "TASK-034",
+        "TASK-035"
+      ],
+      "amendment_identity": "owner-checkpoint-01a04143-2026-08-27",
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "Delivery sequence is now capped at the smallest usable TASK-033 contract plus one owner-visible read-only Strategy Workspace dogfood; TASK-034 and TASK-035 require new explicit owner authority.",
+      "classification": "approved-change",
+      "decided_by": "John (owner)",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:6f7a7d832e8e1fb89fe20320843bba5c70effb180dd73231288bce1f9ca2ec91",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "Finish only AC7-AC12 source semantics, bounded deterministic validation, one affected-only QA and one real-context read-only review; do not run live campaigns, package, publish, activate or mutate the private workspace."
+    },
+    {
+      "affected_units": [
+        "TASK-033"
+      ],
+      "amendment_identity": null,
+      "boundary": "unit-return-or-dependency-join",
+      "capability_change": "TASK-033 returned only the owner-capped generic event, cadence, progress, drift, reconciliation, disposition and process-waste source semantics; no runtime evaluation, package or private mutation was added.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:c60ff90514aa4d4ab13c36ce3621a49e6af81f7da0ab5ba1dbb06fc55bc7588e",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "The smallest usable public review contract may enter bounded Testing and one affected-only independent QA; TASK-034/TASK-035 remain held and owner-visible dogfood remains the next value gate."
+    },
+    {
+      "affected_units": [
+        "TASK-033",
+        "TASK-034",
+        "TASK-035"
+      ],
+      "amendment_identity": "owner-checkpoint-01a04143-2026-08-27",
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "The current TASK-033 plan and validation record now encode the owner-capped sequence: source contract, one affected-only QA, then read-only real-context dogfood; TASK-034/TASK-035 remain held.",
+      "classification": "approved-change",
+      "decided_by": "John (owner)",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:c60ff90514aa4d4ab13c36ce3621a49e6af81f7da0ab5ba1dbb06fc55bc7588e",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "Refresh the loaded PW 0.8 coordination contract against this exact current authority, enter TASK-033 Testing, and perform no live evaluation or delivery work."
+    },
+    {
+      "affected_units": [
+        "TASK-033",
+        "TASK-034",
+        "TASK-035"
+      ],
+      "amendment_identity": "owner-checkpoint-01a04143-2026-08-27",
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "TASK-033 implementation rows now reflect the bounded source validation as complete; this is a workflow-state clarification inside the owner-capped sequence, not a capability or proof expansion.",
+      "classification": "approved-change",
+      "decided_by": "John (owner) and Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:36fef3a62de4568ec071fc1fbdb42864bf90f5678175885dddb2a6f36fc3ed8a",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "Refresh coordination authority and enter the one affected-only QA gate; TASK-034/TASK-035 remain held."
+    },
+    {
+      "affected_units": [
+        "TASK-033"
+      ],
+      "amendment_identity": null,
+      "boundary": "unit-return-or-dependency-join",
+      "capability_change": "The smallest TASK-033 source contract and its bounded deterministic checks are complete without adding evaluation machinery or changing the frozen authority.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:36fef3a62de4568ec071fc1fbdb42864bf90f5678175885dddb2a6f36fc3ed8a",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "TASK-033 may enter Testing for exactly one affected-only independent QA verdict before owner-visible read-only dogfood."
     }
   ],
   "decisions": [
@@ -218,31 +370,29 @@
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:6f7a7d832e8e1fb89fe20320843bba5c70effb180dd73231288bce1f9ca2ec91",
+  "intent_identity": "sha256:36fef3a62de4568ec071fc1fbdb42864bf90f5678175885dddb2a6f36fc3ed8a",
   "last_boundary": {
     "affected_units": [
-      "TASK-032"
+      "TASK-033"
     ],
     "amendment_identity": null,
-    "boundary": "before-review-or-complete",
-    "capability_change": "TASK-032 final disposition closes only deterministic alignment and goal-qualification semantics after the preserved Changes Requested verdict and passing affected validation.",
+    "boundary": "unit-return-or-dependency-join",
+    "capability_change": "The smallest TASK-033 source contract and its bounded deterministic checks are complete without adding evaluation machinery or changing the frozen authority.",
     "classification": "inside-envelope",
     "decided_by": "Goal Review Workshop coordinator",
     "decision_date": "2026-08-27",
-    "intent_identity": "sha256:6f7a7d832e8e1fb89fe20320843bba5c70effb180dd73231288bce1f9ca2ec91",
+    "intent_identity": "sha256:36fef3a62de4568ec071fc1fbdb42864bf90f5678175885dddb2a6f36fc3ed8a",
     "relevant_ocs": [
       "OC1",
       "OC2",
       "OC3",
       "OC4",
-      "OC5",
-      "OC6",
-      "OC7"
+      "OC5"
     ],
     "shared_premises_valid": "yes",
-    "source_identity": "sha256:a477bcbfd60ef0dabdfd63278ae423bb465a2c6209d5d74eaef4980df798670f",
-    "source_revision": "3261df2387e91f9058dd119e82dd090ee6678821",
-    "user_consequence": "Complete TASK-032 without upgrading the claim to live behaviour, distribution readiness or owner outcome; begin TASK-033 next."
+    "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+    "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+    "user_consequence": "TASK-033 may enter Testing for exactly one affected-only independent QA verdict before owner-visible read-only dogfood."
   },
   "loaded_contract": {
     "asset_version": "7",
@@ -251,7 +401,7 @@
     "package_version": "0.8.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Complete TASK-032 and start TASK-033 from the accepted dependency.",
+  "next_action": "Enter TASK-033 Testing and freeze a clean source checkpoint for one affected-only independent QA verdict.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-034",
     "claim_class": "user-facing",
@@ -259,14 +409,14 @@
     "required": true,
     "status": "pending"
   },
-  "phase": "TASK-032 independent QA resolved on PW 0.8",
+  "phase": "TASK-033 bounded deterministic validation and affected-only QA",
   "repositories": {
     ".": {
-      "source_revision": "3261df2387e91f9058dd119e82dd090ee6678821"
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c"
     }
   },
   "schema_version": 2,
-  "source_revision": "3261df2387e91f9058dd119e82dd090ee6678821",
+  "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
   "target_id": "EPIC-007",
   "work_item_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control"
 }

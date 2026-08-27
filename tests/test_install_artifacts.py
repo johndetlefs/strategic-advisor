@@ -609,7 +609,7 @@ class InstallArtifactTests(unittest.TestCase):
         records = builder._chatgpt_knowledge_records(
             runtime_files, runtime_by_path
         )
-        self.assertEqual(len(records), 19)
+        self.assertEqual(len(records), 20)
         self.assertLessEqual(len(records), builder.CHATGPT_KNOWLEDGE_LIMIT)
         self.assertEqual(
             len({record["upload_name"] for record in records}), len(records)
