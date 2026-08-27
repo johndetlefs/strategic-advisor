@@ -13,7 +13,7 @@ run the unchanged case authority against the exact treatment runtime.
 | SAGR-005 evidence-resolvable fork | `conversational-strategy.md` empirical-fork routing | Accessible discriminating evidence is researched first |
 | SAGR-006 owner-value fork | `conversational-strategy.md` owner-only fork routing | Owner retains values, constraints, authority and irreducible trade-offs |
 | SAGR-007 evidence-triggered re-clarification | `recommendation-delta.md` version/reopening state and `conversational-strategy.md` two-condition gate | Reopened and resumed states validate without restarting |
-| SAGR-008 selective invalidation | `recommendation-delta.md` validity split and `conversational-strategy.md` resume rule | Only scope/baseline/meaning-dependent evidence is invalidated |
+| SAGR-008 selective invalidation | `recommendation-delta.md` validity split and `conversational-strategy.md` resume rule | Only scope/baseline/meaning-dependent evidence is invalidated; unaffected recommendation/rival dependencies cannot disappear or also be falsified |
 | SAGR-009 goal/proxy ladder | `goal-qualification.md` ladder and seven object classes | All object classes validate independently of readiness |
 | SAGR-010 aspiration handling | `goal-qualification.md` purpose classes | Aspiration remains visible outside execution |
 | SAGR-011 discovery goal | `goal-qualification.md` discovery admission contract | Missing learning outcome, horizon, falsifier or unlocked decision fails closed |

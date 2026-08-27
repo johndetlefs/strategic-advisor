@@ -63,7 +63,10 @@ Before changing the recommendation, name:
 Also separate state by validity: preserve claims and evidence whose scope,
 baseline, and meaning remain applicable; invalidate only the material that
 depended on the changed answer. Reusing mismatched research is not continuity,
-and repeating unaffected research is not rigour.
+and repeating unaffected research is not rigour. Every unaffected claim on
+which the current recommendation or strongest rival depends must be named as
+surviving. A falsified claim must be named as affected and cannot also be
+recorded as surviving.
 
 A failed bridge retracts only its dependants. It never proves the converse or supplies support to a replacement. A candidate specification may add an option or reduce exposure; by itself it cannot establish comparative superiority, outcome readiness, or upgrade a validation candidate into a recommended commitment.
 

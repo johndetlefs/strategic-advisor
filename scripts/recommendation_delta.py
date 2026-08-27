@@ -318,8 +318,26 @@ def evaluate(state_value: object, delta_value: object | None = None) -> Evaluati
         raise ContractError("delta references an unknown claim")
     if set(values["retracted_claim_ids"]) & set(values["surviving_claim_ids"]):
         raise ContractError("a claim cannot both survive and be retracted")
-    if not set(values["retracted_claim_ids"]).issubset(set(values["affected_claim_ids"])):
+    affected_claim_ids = set(values["affected_claim_ids"])
+    falsified_claim_ids = set(values["falsified_claim_ids"])
+    surviving_claim_ids = set(values["surviving_claim_ids"])
+    if not set(values["retracted_claim_ids"]).issubset(affected_claim_ids):
         raise ContractError("retracted claims must be affected")
+    if not falsified_claim_ids.issubset(affected_claim_ids):
+        raise ContractError("falsified claims must be affected")
+    if falsified_claim_ids & surviving_claim_ids:
+        raise ContractError("a claim cannot both survive and be falsified")
+
+    current = state["recommendation"]
+    rival = state["strongest_rival"]
+    current_dependency_ids = set(current["dependent_claim_ids"]) | set(
+        rival["dependent_claim_ids"]
+    )
+    missing_survivors = (current_dependency_ids - affected_claim_ids) - surviving_claim_ids
+    if missing_survivors:
+        raise ContractError(
+            "unaffected recommendation and rival dependencies must be recorded as surviving"
+        )
 
     changed_inputs = delta["changed_inputs"]
     if not isinstance(changed_inputs, list):
@@ -344,7 +362,6 @@ def evaluate(state_value: object, delta_value: object | None = None) -> Evaluati
     if replacement_id is not None and replacement_id not in candidate_ids:
         raise ContractError("replacement candidate is unknown")
 
-    current = state["recommendation"]
     recommendation_changed = any(
         proposed[field] != current[field]
         for field in ("candidate_id", "qualification", "readiness")
