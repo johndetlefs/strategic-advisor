@@ -1,0 +1,45 @@
+{
+  "artifact": "evidence/evaluations/goal-review/run-002-repair-canary/result.json",
+  "candidate_identity": "sha256:3a3513b1b195868780f49fbc025d6eaaee7222bd969a132c1a629fa24bb4a974",
+  "capabilities": [
+    "request-binding",
+    "selection",
+    "fail-fast",
+    "limits",
+    "typed-outcomes",
+    "checkpoint-resume",
+    "input-bound-receipts",
+    "transcript-regrade"
+  ],
+  "checkpoint_identity": "sha256:d3385e22dfebd8c757a6f09be9fba30cb75a5a65947df244ebc90918f755155a",
+  "contract": "generic-verifier-receipt",
+  "diagnostic_decision": "Failed-case canary for the bounded causal-boundary repair",
+  "elapsed_seconds": 35,
+  "evaluator_calls": 1,
+  "evaluator_identity": "sha256:0cc2b8712161bacd325721e3abf954e8e32c3182ca0ff8eb53e247e172b626b1",
+  "limits": {
+    "max_elapsed_seconds": 900,
+    "max_failures": 1,
+    "max_target_calls": 1
+  },
+  "mode": "diagnostic",
+  "outcome": "product-failure",
+  "proof_contract_identity": "sha256:cd48cd7a71af3bb592b89da945d4901e87e82091b54ed9a34429596c2182c35e",
+  "receipt_identity": "sha256:aba96b7b79a255ad59a9f1c886b791093d71eb1a3dd46a6ede254a1f724ebf55",
+  "regrade": false,
+  "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+  "schema_version": 1,
+  "selected_scope": [
+    "SAGR-014"
+  ],
+  "source_identity": "sha256:d3530f843cc8ab2c43d5f7f8c620720b52fb5c16880b950a73464abfd8539c39",
+  "stage_complete": true,
+  "target_calls": 1,
+  "target_identity": "sha256:3c11ad6c7c6f3b7536967138c0cadf31cbfd39856e4d0536fb61eb0796b1f6a4",
+  "telemetry_totals": {
+    "elapsed_seconds": 35,
+    "evaluator_calls": 1,
+    "failures": 1,
+    "target_calls": 1
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "stage": "deterministic",
+  "outcome": "pass",
+  "runtime_package_identity_sha256": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6",
+  "target_identity": "Codex/gpt-5.6-sol (not invoked)",
+  "evaluator_identity": "Strategic Advisor deterministic checks at d6756f92fde3cf9e9dd2538f2c7e165e2ed5f6f7",
+  "target_calls": 0,
+  "elapsed_seconds": 2,
+  "checks": [
+    {
+      "command": "python3 scripts/build_goal_review_freeze.py --check",
+      "result": "PASS: 20 cases, 37 criteria"
+    },
+    {
+      "command": "python3 -m unittest -v tests.test_alignment_goal_contract tests.test_goal_review_contract tests.test_goal_review_freeze tests.test_drift_smoke tests.test_runtime_package",
+      "result": "PASS: 54 tests"
+    },
+    {
+      "command": "selected generic runner control tests from tests.test_run_drift_smoke_live",
+      "result": "PASS: 9 tests covering request binding, selection, fail-fast, limits, typed outcomes, retry telemetry and tamper rejection"
+    },
+    {
+      "command": "python3 scripts/validate.py --scope skill; --scope privacy; --scope links",
+      "result": "PASS: all three scopes"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "boundary": "Release-state, public-claims and retained-current-result checks remain TASK-035 gates because distribution.json still truthfully names alpha.6 before alpha.7 preparation. They are not substituted for or counted as behavioural proof."
+}

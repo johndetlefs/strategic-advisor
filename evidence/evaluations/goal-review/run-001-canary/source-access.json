@@ -1,0 +1,5 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [],
+  "schema_version": 1
+}

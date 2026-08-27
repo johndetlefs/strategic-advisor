@@ -1,5 +1,5 @@
 {
-  "artifact_identity": "sha256:9be036c067fc962f1e573b657c627a1c1e8c1d8f7fad2c25c4707df672010259",
+  "artifact_identity": "sha256:21142c15e24560f9c2faa5956cf56cd74f274defd16c628eb1bfdee49c24af31",
   "commitments": [
     {
       "amendment": null,
@@ -68,7 +68,7 @@
         "AC16",
         "AC17"
       ],
-      "required_outcome_proof": "Every material capability must map to canonical artifacts, frozen sanitised cases, exact-runtime evidence where claimed, privacy and package boundaries, QA and downstream handoff proof.",
+      "required_outcome_proof": "Every material capability must map to canonical artifacts, frozen sanitised cases, exact-runtime evidence where claimed, privacy and package boundaries, QA, public release proof and the owner-approved AC17 deferral.",
       "source_locations": [
         "REQUIREMENTS.md#intent-spine"
       ],
@@ -106,7 +106,7 @@
         "AC14",
         "AC17"
       ],
-      "required_outcome_proof": "Sequenced cases and the downstream brief must preserve the full reconnaissance, alignment, causal qualification, execution admission, evidence reconciliation and exception-aware review journey.",
+      "required_outcome_proof": "Selected sequenced affected cases plus the completed source contract must preserve the reconnaissance, alignment, causal qualification, execution admission, evidence reconciliation and exception-aware review journey; the separate private handoff is covered by the owner-approved AC17 deferral.",
       "source_locations": [
         "REQUIREMENTS.md#intent-spine"
       ],
@@ -174,7 +174,7 @@
         "AC16",
         "AC17"
       ],
-      "required_outcome_proof": "Dependency, privacy, claim and package audits plus negative controls and the downstream handoff must prove that excluded state systems, accountability devices, universal cadence, coupling and unauthorised delivery are absent.",
+      "required_outcome_proof": "Dependency, privacy, claim and package audits plus selected negative controls and the AC17 deferral must prove that excluded state systems, accountability devices, universal cadence, coupling and unauthorised delivery are absent.",
       "source_locations": [
         "REQUIREMENTS.md#intent-spine"
       ],
@@ -205,7 +205,7 @@
         "AC16",
         "AC17"
       ],
-      "required_outcome_proof": "The frozen baseline, runner-base reconciliation, exact-runtime result boundary and separate downstream handoff must keep every material assumption explicit and current.",
+      "required_outcome_proof": "The frozen baseline, runner-base reconciliation, capped exact-runtime result boundary, public artifact verification and recorded private-handoff deferral must keep every material assumption explicit and current.",
       "source_locations": [
         "REQUIREMENTS.md#intent-spine"
       ],
@@ -230,7 +230,7 @@
         "AC16",
         "AC17"
       ],
-      "required_outcome_proof": "The approved artifact identity, current intent audit, parent acceptance audit and downstream authority boundary must trace delivery back to John's 2026-08-27 approval.",
+      "required_outcome_proof": "The approved artifact identity, current intent audit, parent acceptance audit, public release evidence and owner-release-scope amendment must trace delivery back to John's 2026-08-27 approval.",
       "source_locations": [
         "REQUIREMENTS.md#owner-approval"
       ],
@@ -241,7 +241,7 @@
       "user_visible_consequence": "The implemented and downstream work remains traceable to the meaning John approved rather than to agent-inferred scope or workflow identifiers."
     }
   ],
-  "review_source": "Owner-approved EPIC-007 requirements, Epic contract and decomposition reviewed in SA: Goal Review Workshop on 2026-08-27.",
+  "review_source": "Owner-approved EPIC-007 meaning plus current Codex task amendment owner-release-scope-2026-08-27 authorising capped exact-runtime proof, public release and local activation while deferring AC17.",
   "reviewed_at": "2026-08-27",
   "reviewed_by": "Goal Review Workshop coordinator",
   "schema_version": 1,

@@ -10,21 +10,24 @@
 
 ## Intent
 
-Determine whether the exact implemented Strategic Advisor runtime actually
-performs the frozen alignment, goal-qualification and review behaviours while
-remaining silent for strong negative controls and honest about every failure.
+Determine whether the exact implemented Strategic Advisor runtime performs the
+owner-approved changed alignment, goal-qualification and review behaviours on
+one reference Codex model while remaining proportionate for a strong negative
+control and honest about every failure. This is an affected alpha-release smoke,
+not comprehensive model, host or behavioural certification.
 
 ## Intent Spine
 
 - OC1 — Completion capability: A reviewer can reproduce case-level verdicts
   against the exact source/package/model/host and know whether each claimed
   behaviour passed, failed or remained untested.
-- OC2 — Material capabilities: Frozen deterministic checks, bounded canary and
-  affected exact-runtime execution, stateful sessions, raw outputs, target-use
-  proof, case assertions, telemetry, privacy review and independent QA.
-- OC3 — Success journey: Certify the reconciled runner, run cheap checks and
-  canaries first, stop/replan on blocking failure, execute only required
-  affected/full evidence, retain exact receipts and adjudicate every case.
+- OC2 — Material capabilities: Frozen deterministic checks, one capped canary
+  and affected exact-runtime selection, raw outputs, target-use proof, case
+  assertions, telemetry, privacy review and one independent release QA.
+- OC3 — Success journey: Certify the reconciled runner, run cheap checks and a
+  negative canary first, stop on blocking failure, execute only the ten
+  owner-approved affected cases within a 20-target-call cap, retain exact
+  receipts and adjudicate those cases once.
 - OC4 — Successful-but-wrong result: Plausible prose, aggregate green despite a
   hard-gate failure, source-tree self-report, stale receipt, treatment-informed
   assertion, later recovery erasing an earlier failure, or private case leakage
@@ -38,16 +41,16 @@ remaining silent for strong negative controls and honest about every failure.
 
 ## Owner Approval
 
-- Intent reviewed and accurately reflected: Inherited from parent epic envelope when unchanged
-- Requirements reviewed by owner: No
-- Acceptance criteria reviewed by owner: No
-- Approved for decomposition: No
-- Approved for implementation: No
-- Approved scope envelope: No
-- Approved by: Inherited from parent epic envelope when unchanged
-- Approval date: Inherited from parent epic envelope when unchanged
-- Approval note / source: Inherited from parent epic envelope when unchanged
-- Approved artifact identity: Inherited from parent epic envelope when unchanged
+- Intent reviewed and accurately reflected: Yes
+- Requirements reviewed by owner: Yes
+- Acceptance criteria reviewed by owner: Yes
+- Approved for decomposition: Inherited from approved parent decomposition
+- Approved for implementation: Yes
+- Approved scope envelope: One reference Codex model/host; ten selected cases; at most 20 target calls; fail-fast; one infrastructure retry; no comprehensive or cross-model certification
+- Approved by: John (owner)
+- Approval date: 2026-08-27
+- Approval note / source: Current Codex task directive to finish the public release and local installation without further approval prompts; coordination amendment `owner-release-scope-2026-08-27`
+- Approved artifact identity: Current requirements after this recorded amendment
 
 ## Child Charter
 
@@ -118,15 +121,19 @@ remaining silent for strong negative controls and honest about every failure.
 
 ## Goal
 
-Produce bounded, reproducible and claim-matched behavioural evidence for the
-combined public Strategic Advisor contract.
+Produce bounded, reproducible and claim-matched affected-smoke evidence for the
+next experimental public Strategic Advisor prerelease.
 
 ## Non-Goals
 
 - Using the full suite as defect discovery before cheap/canary proof.
+- Running the complete 20-case goal-review matrix or complete 16-case retained
+  drift suite as an alpha-release prerequisite.
+- Testing models or hosts that this release does not claim to support.
 - Changing frozen cases, rubrics or hard gates after viewing treatment results.
 - Treating private dogfood or owner satisfaction as public behavioural proof.
-- Publishing or promoting the capability from a bounded smoke.
+- Promoting the bounded result to general support, parity, comparative
+  effectiveness, adoption or strategic effectiveness.
 
 ## Users & Context
 
@@ -147,8 +154,10 @@ reimplementing it.
 - R2. Use the reconciled runner's bounded controls: deterministic checks,
   canaries, affected selection, fail-fast, call/time limits, receipts,
   infrastructure retry and evaluator-only regrade where applicable.
-- R3. Execute every required positive, negative and sequenced category in the
-  frozen matrix, including early-turn alignment and later state preservation.
+- R3. Execute only the approved affected selection: `SAGR-001`, `SAGR-009`,
+  `SAGR-014`, `SAGR-015`, `SAGR-016`, `SAGR-018`, `SAGR-020`, `DRIFT-004`,
+  `DRIFT-014` and `DRIFT-016`. The selection contains 19 planned target turns;
+  the campaign must cap target calls at 20 and must not expand after green.
 - R4. Retain raw prompts/turns/outputs, case assertions, forbidden behaviours,
   target-use proof, timing/call telemetry and case-level verdicts outside the
   model-visible runtime.
@@ -167,10 +176,11 @@ reimplementing it.
 
 - AC1: Preflight proves exact authority/source/package/model/host/activation and
   runner identity before calls, and stale or mismatched receipts are rejected.
-- AC2: Cheap checks and canaries gate affected/full work; a canary failure
-  causes zero unplanned full-suite target calls.
-- AC3: Every frozen alignment, goal and review category has a case-level
-  pass/fail verdict with raw stateful outputs and forbidden-behaviour review.
+- AC2: Cheap checks and the routine-direct canary gate the selected affected
+  work; a canary failure causes zero affected or full-suite target calls.
+- AC3: Every owner-approved affected case has a case-level pass/fail verdict
+  with raw stateful outputs and forbidden-behaviour review; unselected cases
+  remain explicitly untested on this runtime.
 - AC4: Strong direct-assistance, same-robust-move, empirical-fork and routine
   controls remain non-triggering or proportionate as specified.
 - AC5: Product, evaluator, provider and harness failures remain distinct;
@@ -192,14 +202,18 @@ reimplementing it.
 - D2. Freeze before treatment and stage proof from cheap to expensive.
 - D3. Fail closed without erasing history or weakening claims.
 - D4. Keep exact-runtime synthetic proof separate from private dogfood.
+- D5. One exact Codex/gpt-5.6-sol affected smoke is the release gate; model and
+  host variability is a documented limitation, not an invitation to a matrix.
+- D6. A green selected smoke ends behavioural testing for this release. Expand
+  only when a material failure demonstrates broader affected scope.
 
 ## Validation Plan
 
 - AC1-AC6 use the runtime-target/source proof recipe. `EVIDENCE.json` will
   retain execution target, source artifact, observation method, positive target
   use proof and hashed raw result artifacts for the exact claims.
-- AC2: Runner telemetry must show call selection, canary/full boundaries and
-  zero prohibited calls after a blocking failure.
+- AC2: Runner telemetry must show exact selected scope, the 20-call cap,
+  canary/affected boundaries and zero prohibited calls after a blocking failure.
 - AC3-AC5: Case-by-case adjudication against frozen assertions and raw stateful
   transcripts; aggregate green cannot waive a hard gate.
 - AC6-AC7: Deterministic/privacy/isolation checks and independent QA review of

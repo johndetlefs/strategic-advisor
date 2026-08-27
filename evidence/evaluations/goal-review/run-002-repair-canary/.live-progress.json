@@ -1,0 +1,102 @@
+{
+  "adapter_contract_identity": null,
+  "adjudications": {
+    "SAGR-014": [
+      {
+        "id": "PROGRESS_OUTPUT_NOT_OUTCOME",
+        "observation": "The response explicitly classifies 300 hours as “Effort, not progress” and the 60-page portal as “Output, not progress,” then states that no material progress toward reducing time-to-independent-work is evidenced.",
+        "status": "pass",
+        "turn_reviews": [
+          {
+            "observation": "T1 records the substantial effort and shipped output while refusing to infer goal progress from portal completion; it notes no starter usage, no remeasurement, and an unchanged approval bottleneck.",
+            "status": "pass",
+            "turn_id": "T1"
+          }
+        ]
+      },
+      {
+        "id": "PROGRESS_ENABLER_BOUNDED",
+        "observation": "The response keeps the approval bottleneck visible and makes future portal value conditional on testing and outcome evidence, but it says only that the portal “may eventually help” without limiting possible causal credit specifically to the named training-information constraint.",
+        "status": "fail",
+        "turn_reviews": [
+          {
+            "observation": "T1 appropriately requires actual starter use and measured time-to-independence and identifies the unchanged approval bottleneck, but it does not explicitly bound any potential portal-enabler credit to resolving a training-information constraint.",
+            "status": "fail",
+            "turn_id": "T1"
+          }
+        ]
+      }
+    ]
+  },
+  "checkpoint_identity": "sha256:d3385e22dfebd8c757a6f09be9fba30cb75a5a65947df244ebc90918f755155a",
+  "diagnostic_decision": "Failed-case canary for the bounded causal-boundary repair",
+  "evaluator_identity": "sha256:0cc2b8712161bacd325721e3abf954e8e32c3182ca0ff8eb53e247e172b626b1",
+  "failure_detail": "",
+  "limits": {
+    "max_elapsed_seconds": 900,
+    "max_failures": 1,
+    "max_target_calls": 1
+  },
+  "mode": "diagnostic",
+  "outcome": "product-failure",
+  "proof_contract_identity": "sha256:cd48cd7a71af3bb592b89da945d4901e87e82091b54ed9a34429596c2182c35e",
+  "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+  "schema_version": 2,
+  "selected_case_ids": [
+    "SAGR-014"
+  ],
+  "sessions": {
+    "SAGR-014::default": {
+      "case_id": "SAGR-014",
+      "session_id": "01a041a3-1a5b-7202-913b-0a40e71a5e82",
+      "session_identity": "sha256:7911fbc3dc319a0ba29816a133e0175305fbf3c03e7a7e6ea8de094050386082",
+      "successful_runtime_reads": [],
+      "turns": [
+        {
+          "assistant": "## Material progress report\n\n**Bottom line: No material progress is evidenced toward reducing time-to-independent-work from 20 days to 12.**\n\n**Readiness — Not validated.** The training portal has not been tested as a causal route to the goal.\n\n| Evidence | Classification |\n|---|---|\n| 300 hours spent | Effort, not progress |\n| 60-page portal shipped | Output, not progress |\n| No starter has used it | No driver evidence |\n| Approval bottleneck remains | Binding constraint unchanged |\n| Time-to-independence not remeasured | Outcome movement unknown |\n\nThe portal may eventually help, but the available evidence does not support claiming that it has enabled or advanced the goal. Reporting its page count as progress would be goal drift from workforce independence to content production.\n\n**Goal disposition: Continue** the 12-day outcome, pending evidence that it remains operationally valuable.\n\n**Path disposition: Correct** the current approach:\n\n1. Stop expanding the portal until it has been tested with an actual starter.\n2. Instrument the next starter’s journey from commencement to independently approved work.\n3. Measure time spent waiting for approvals and directly test a change to that bottleneck.\n\nThe next review should report starter usage, approval-delay data, and measured time-to-independence—not additional hours or pages shipped.",
+          "id": "T1",
+          "receipt_identity": "sha256:303c48c057f88c9c4dfae1e67f6cdca7aed93d1ab0197c0f1381a6628abceddd",
+          "user": "$strategic-advisor The goal is to reduce new-starter time to independent work from twenty days to twelve. This month the team spent 300 hours and shipped a training portal with 60 pages. No new starter has used it, the approval bottleneck remains, and time-to-independence has not been measured again. Report material progress."
+        }
+      ],
+      "variant_id": "default"
+    }
+  },
+  "source_identity": "sha256:d3530f843cc8ab2c43d5f7f8c620720b52fb5c16880b950a73464abfd8539c39",
+  "spec_sha256": "d94ab8fad7dab599ab045068152d7f67c48f569902d49f986bc4a6c673cb2274",
+  "started_at": "2026-08-27T05:13:23Z",
+  "target_contract_identity": "sha256:3a3513b1b195868780f49fbc025d6eaaee7222bd969a132c1a629fa24bb4a974",
+  "target_root": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-1za3k83b",
+  "telemetry": {
+    "elapsed_seconds": 35,
+    "evaluator_calls": 1,
+    "events": [
+      {
+        "attempt": 1,
+        "case_id": "SAGR-014",
+        "elapsed_seconds": 23,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "SAGR-014",
+        "elapsed_seconds": 12,
+        "kind": "evaluator",
+        "outcome": "product-failure",
+        "unit_id": "adjudication"
+      }
+    ],
+    "failures": 1,
+    "outcome_counts": {
+      "evaluator-failure": 0,
+      "harness-failure": 0,
+      "limit-reached": 0,
+      "pass": 1,
+      "product-failure": 1,
+      "provider-failure": 0
+    },
+    "target_calls": 1
+  }
+}

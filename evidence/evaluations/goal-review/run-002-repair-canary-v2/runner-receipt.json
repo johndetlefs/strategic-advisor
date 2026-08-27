@@ -1,0 +1,45 @@
+{
+  "artifact": "evidence/evaluations/goal-review/run-002-repair-canary-v2/result.json",
+  "candidate_identity": "sha256:12945a68399af0f606ed5f0ac1c65f060dad7d6414a594c3a6122ee01ca15898",
+  "capabilities": [
+    "request-binding",
+    "selection",
+    "fail-fast",
+    "limits",
+    "typed-outcomes",
+    "checkpoint-resume",
+    "input-bound-receipts",
+    "transcript-regrade"
+  ],
+  "checkpoint_identity": "sha256:cbcc268c6a691db6e112bda5889da662f8ce9aafb7835cfdd8cb819516f3bfb5",
+  "contract": "generic-verifier-receipt",
+  "diagnostic_decision": "Fresh failed-case canary under the corrected conditional-criterion evaluator",
+  "elapsed_seconds": 46,
+  "evaluator_calls": 1,
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "limits": {
+    "max_elapsed_seconds": 900,
+    "max_failures": 1,
+    "max_target_calls": 1
+  },
+  "mode": "diagnostic",
+  "outcome": "pass",
+  "proof_contract_identity": "sha256:cd48cd7a71af3bb592b89da945d4901e87e82091b54ed9a34429596c2182c35e",
+  "receipt_identity": "sha256:0469380fa00157f2bca61e838ba64c5b0873b5ed5d91abae61787ec8b5209c5c",
+  "regrade": false,
+  "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+  "schema_version": 1,
+  "selected_scope": [
+    "SAGR-014"
+  ],
+  "source_identity": "sha256:9d758e1bf56c088650dcf2aa69ad5ba3c7d3c320ce4fdfae2c0712f27829fe41",
+  "stage_complete": true,
+  "target_calls": 1,
+  "target_identity": "sha256:545cecd4b26f94ce55677759e6249872101c64a053a353e758f4d451c35b9f8c",
+  "telemetry_totals": {
+    "elapsed_seconds": 46,
+    "evaluator_calls": 1,
+    "failures": 0,
+    "target_calls": 1
+  }
+}

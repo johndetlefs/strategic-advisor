@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "decision": "bounded-repair",
+  "prior_runtime_identity_sha256": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6",
+  "repair_runtime_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+  "trigger": {
+    "case_id": "SAGR-014",
+    "criterion_id": "PROGRESS_ENABLER_BOUNDED",
+    "artifact": "evidence/evaluations/goal-review/run-001-affected/result.json",
+    "finding": "The answer rejected material goal progress but used broad enabler credit without naming the training-information constraint as its causal limit."
+  },
+  "correction": [
+    "skills/strategic-advisor/SKILL.md now makes the named causal boundary part of the always-loaded review route.",
+    "skills/strategic-advisor/references/goal-review.md now withholds enabled credit unless the bounded contribution is supported."
+  ],
+  "repair_scope": {
+    "canary": ["SAGR-014"],
+    "affected": ["SAGR-013"],
+    "reason": "Rerun the failed material-progress case and one direct activity-as-indicator neighbour only. Untouched cases remain explicitly untested on the repair runtime."
+  },
+  "overall_call_boundary": "The original campaign stopped after four recorded target attempts, one of which never reached the model. The repair campaign permits two further target calls and no infrastructure retry."
+}

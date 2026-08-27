@@ -48,6 +48,8 @@ class GoalReviewContractTests(unittest.TestCase):
             "**Decision movement**",
             "non-advancing effort/output",
             "enabled but not yet advanced",
+            "exact causal boundary",
+            "If even that bounded contribution is unsupported",
             "Completion of the enabler never proves",
         ):
             self.assertIn(marker, contract)

@@ -522,6 +522,81 @@
       "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
       "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
       "user_consequence": "Move TASK-034 to canonical Blocked state. It may resume only after all three owner-held release conditions in its existing implementation authority are satisfied; TASK-035 remains blocked behind it."
+    },
+    {
+      "affected_units": [
+        "TASK-034",
+        "TASK-035"
+      ],
+      "amendment_identity": "owner-release-scope-2026-08-27",
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "Owner authorises public alpha release and local Codex activation, narrows TASK-034 to one capped reference-model affected smoke, and narrows TASK-035 to release/package/public-download/local-activation closeout; broader certification, unsupported model or host testing, and the separate Strategy Workspace handoff are not current release gates.",
+      "classification": "approved-change",
+      "decided_by": "John (owner), current Codex task",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:c1a89c514aad5ef6b62b7b65a418baf76f5d68433ce7adf766b8ee101cdd50a4",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:2751b9b3684e15d66842ad32b002707090465e97cdc7d4d9ee1f3cd7b98aefdf",
+      "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50",
+      "user_consequence": "Prepare and publish the next experimental prerelease with honest exact-model claims, verify its public artifacts, install the public standalone Skill locally, confirm fresh Codex loading, then stop so the August retro can continue."
+    },
+    {
+      "affected_units": [
+        "TASK-034"
+      ],
+      "amendment_identity": null,
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "TASK-034 task rows now distinguish verification configuration from the Testing-stage model calls; the approved case selection, 20-call cap, product scope and release claim are unchanged.",
+      "classification": "inside-envelope",
+      "decided_by": "EPIC-007 coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:b2cde61c1894e8d4e97499c13b778ea0f52e1cb61896874c70b3b33daf1ed9f6",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:2751b9b3684e15d66842ad32b002707090465e97cdc7d4d9ee1f3cd7b98aefdf",
+      "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50",
+      "user_consequence": "Refresh the loaded PW 0.8 contract, move TASK-034 to Testing, and execute only the approved deterministic, canary and affected diagnostic stages."
+    },
+    {
+      "affected_units": [
+        "TASK-034"
+      ],
+      "amendment_identity": null,
+      "boundary": "unit-return-or-dependency-join",
+      "capability_change": "TASK-034 verification configuration is complete: the frozen authorities, exact runtime identity, canary, affected selection, typed outcomes and finite limits are bound without any model call or broader claim.",
+      "classification": "inside-envelope",
+      "decided_by": "EPIC-007 coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:b2cde61c1894e8d4e97499c13b778ea0f52e1cb61896874c70b3b33daf1ed9f6",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:2751b9b3684e15d66842ad32b002707090465e97cdc7d4d9ee1f3cd7b98aefdf",
+      "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50",
+      "user_consequence": "TASK-034 may enter Testing for the bounded diagnostic campaign; failure stops later stages and green results do not become certification."
     }
   ],
   "decisions": [
@@ -534,47 +609,59 @@
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:c1a89c514aad5ef6b62b7b65a418baf76f5d68433ce7adf766b8ee101cdd50a4",
+  "intent_identity": "sha256:b2cde61c1894e8d4e97499c13b778ea0f52e1cb61896874c70b3b33daf1ed9f6",
   "last_boundary": {
     "affected_units": [
-      "TASK-034",
-      "TASK-035"
+      "TASK-034"
     ],
-    "amendment_identity": "owner-hold-01a04143-2026-08-27-task034",
-    "boundary": "new-evidence-or-owner-reframe",
-    "capability_change": "The owner-visible read-only dogfood has been presented, but its three private reconciliation questions, value assessment, and explicit authorization of the remaining exact-runtime proof/release cost are unresolved; TASK-034 must fail closed rather than remain launch-eligible.",
-    "classification": "approved-change",
-    "decided_by": "John (owner)",
+    "amendment_identity": null,
+    "boundary": "unit-return-or-dependency-join",
+    "capability_change": "TASK-034 verification configuration is complete: the frozen authorities, exact runtime identity, canary, affected selection, typed outcomes and finite limits are bound without any model call or broader claim.",
+    "classification": "inside-envelope",
+    "decided_by": "EPIC-007 coordinator",
     "decision_date": "2026-08-27",
-    "intent_identity": "sha256:c1a89c514aad5ef6b62b7b65a418baf76f5d68433ce7adf766b8ee101cdd50a4",
+    "intent_identity": "sha256:b2cde61c1894e8d4e97499c13b778ea0f52e1cb61896874c70b3b33daf1ed9f6",
     "relevant_ocs": [
       "OC1",
       "OC2",
       "OC3",
       "OC4",
       "OC5",
-      "OC6",
-      "OC7"
+      "OC6"
     ],
     "shared_premises_valid": "yes",
-    "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
-    "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
-    "user_consequence": "Move TASK-034 to canonical Blocked state. It may resume only after all three owner-held release conditions in its existing implementation authority are satisfied; TASK-035 remains blocked behind it."
+    "source_identity": "sha256:2751b9b3684e15d66842ad32b002707090465e97cdc7d4d9ee1f3cd7b98aefdf",
+    "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50",
+    "user_consequence": "TASK-034 may enter Testing for the bounded diagnostic campaign; failure stops later stages and green results do not become certification."
   },
   "loaded_contract": {
     "asset_version": "7",
-    "context_id": "01a04077-5cfa-7b93-bdcf-bf8a6dda8caf",
+    "context_id": "codex-current-task-2026-08-27",
     "contract_version": "2",
     "package_version": "0.8.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Await John's three private reconciliation answers, assess whether dogfood value justifies further cost, and obtain explicit authorization before unblocking TASK-034; TASK-035 remains blocked.",
+  "next_action": "Enter TASK-034 Testing and run deterministic checks first.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-034",
     "claim_class": "user-facing",
-    "record": null,
+    "record": {
+      "actor": "John (owner)",
+      "claim_class": "user-facing",
+      "material_operations": "Conducted one bounded read-only review against authorised real Strategy Workspace context and reconciled owner-only outcome evidence without repository mutation",
+      "normal_entry_point": "SA Goal Review Workshop using the completed TASK-033 source contract",
+      "observations": "The dogfood changed the progress and allocation decision enough to justify a bounded release check; no private answers or Strategy Workspace facts are retained here",
+      "owner_judgment": "provided",
+      "recorded_at": "2026-08-27",
+      "recorded_by": "EPIC-007 coordinator",
+      "resulting_state_or_artifact": "Review identified no goal drift, identified path and allocation drift, removed automatic progress credit from enabling-project completion, and produced a bounded next discovery test",
+      "source_environment": "Codex task 01a04143-8e71-7dd3-9340-d83b002ebe76; source d6756f92fde3cf9e9dd2538f2c7e165e2ed5f6f7",
+      "starting_state": "Canonical goal-review semantics complete; public release and exact-runtime work held pending owner value assessment",
+      "unit_id": "TASK-034",
+      "verdict": "pass"
+    },
     "required": true,
-    "status": "pending"
+    "status": "pass"
   },
   "phase": "Owner-held dogfood reconciliation before TASK-034",
   "repositories": {
@@ -585,5 +672,51 @@
   "schema_version": 2,
   "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50",
   "target_id": "EPIC-007",
+  "verification_campaign": {
+    "adapter": {
+      "capabilities": [],
+      "command": null,
+      "kind": "manual",
+      "manual_command": "python3 scripts/run_drift_smoke_live.py with the owner-approved selected cases, fail-fast and per-stage limits"
+    },
+    "affected_scope": [
+      "SAGR-001",
+      "SAGR-009",
+      "SAGR-014",
+      "SAGR-015",
+      "SAGR-016",
+      "SAGR-018",
+      "SAGR-020",
+      "DRIFT-004",
+      "DRIFT-014",
+      "DRIFT-016"
+    ],
+    "candidate_identity": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6",
+    "claims": [
+      "bounded exact-runtime affected alpha smoke on Codex gpt-5.6-sol only; not certification"
+    ],
+    "current_stage": "deterministic",
+    "diagnostic_decision": "If all selected cases pass, allow experimental alpha release with affected-smoke wording only; do not claim full current-runtime or cross-model certification.",
+    "impact": "known",
+    "intent_identity": "sha256:b2cde61c1894e8d4e97499c13b778ea0f52e1cb61896874c70b3b33daf1ed9f6",
+    "limits": {
+      "max_elapsed_seconds": 3600,
+      "max_failures": 1,
+      "max_target_calls": 20
+    },
+    "mode": "diagnostic",
+    "next_action": "Complete implementation before invoking the verifier.",
+    "outcome": "pending",
+    "proof_contract_identity": "sha256:9d01e275f193ca437272ed40bca0fba2cadef8a343fa7fc163118e0ba30e4b4e",
+    "receipt_ledger_identity": "sha256:af9b52ec31a3133fbedfdb1ef44c045a5e9445c9d0688c47b5c0211dd0ffccef",
+    "receipts": [],
+    "schema_version": 1,
+    "source_identity": "sha256:2751b9b3684e15d66842ad32b002707090465e97cdc7d4d9ee1f3cd7b98aefdf",
+    "stages": [
+      "deterministic",
+      "canary",
+      "affected"
+    ]
+  },
   "work_item_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control"
 }
