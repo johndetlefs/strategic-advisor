@@ -127,6 +127,34 @@
       "source_identity": "sha256:461dda9805c9fd130a840407802c0f3f649ea7f531d4680e8e37f363b984ee30",
       "source_revision": "905c1ebc",
       "user_consequence": "Preserve TASK-032 remediation at 905c1eb, do not start TASK-033 or behavioural evaluation, and resume only from the explicitly reconciled runner/base."
+    },
+    {
+      "affected_units": [
+        "TASK-032",
+        "TASK-033",
+        "TASK-034",
+        "TASK-035"
+      ],
+      "amendment_identity": null,
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "The public PW 0.8 release and clean runner replay changed integration provenance, not the approved Strategic Advisor capability; TASK-032 selective-invalidation semantics are unchanged after replay.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:20d893798fdaa00bb57ffdc2921f6840886a650c86fc2f223b17251ec8e3fba3",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:977c0a71c177799045673023d2debd6c8fcb7d84d8af70d72b00204e2e210786",
+      "source_revision": "5de26fe37606eff0622929b326ea4b42cc43e4ac",
+      "user_consequence": "Use exact reconciliation commit 5de26fe for affected-only QA; preserve TASK-034 as the owner of exact-runtime behavioural certification."
     }
   ],
   "decisions": [
@@ -139,7 +167,7 @@
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:2fe57ba4905f956449adcb62664995b22310dd23bdca9108cbec8444f034fd17",
+  "intent_identity": "sha256:20d893798fdaa00bb57ffdc2921f6840886a650c86fc2f223b17251ec8e3fba3",
   "last_boundary": {
     "affected_units": [
       "TASK-032",
@@ -149,11 +177,11 @@
     ],
     "amendment_identity": null,
     "boundary": "new-evidence-or-owner-reframe",
-    "capability_change": "Independent QA required selective-invalidation corrections; release coordination subsequently introduced a PW 0.8 runner-reconciliation prerequisite. Neither changes the approved capability.",
+    "capability_change": "The public PW 0.8 release and clean runner replay changed integration provenance, not the approved Strategic Advisor capability; TASK-032 selective-invalidation semantics are unchanged after replay.",
     "classification": "inside-envelope",
     "decided_by": "Goal Review Workshop coordinator",
     "decision_date": "2026-08-27",
-    "intent_identity": "sha256:2fe57ba4905f956449adcb62664995b22310dd23bdca9108cbec8444f034fd17",
+    "intent_identity": "sha256:20d893798fdaa00bb57ffdc2921f6840886a650c86fc2f223b17251ec8e3fba3",
     "relevant_ocs": [
       "OC1",
       "OC2",
@@ -164,9 +192,9 @@
       "OC7"
     ],
     "shared_premises_valid": "yes",
-    "source_identity": "sha256:461dda9805c9fd130a840407802c0f3f649ea7f531d4680e8e37f363b984ee30",
-    "source_revision": "905c1ebc",
-    "user_consequence": "Preserve TASK-032 remediation at 905c1eb, do not start TASK-033 or behavioural evaluation, and resume only from the explicitly reconciled runner/base."
+    "source_identity": "sha256:977c0a71c177799045673023d2debd6c8fcb7d84d8af70d72b00204e2e210786",
+    "source_revision": "5de26fe37606eff0622929b326ea4b42cc43e4ac",
+    "user_consequence": "Use exact reconciliation commit 5de26fe for affected-only QA; preserve TASK-034 as the owner of exact-runtime behavioural certification."
   },
   "loaded_contract": {
     "asset_version": "7",
@@ -175,7 +203,7 @@
     "package_version": "0.8.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Revalidate TASK-032 remediation and obtain affected-only independent QA before TASK-033.",
+  "next_action": "Obtain TASK-032 affected-only independent QA re-review at reconciliation commit 5de26fe.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-034",
     "claim_class": "user-facing",
@@ -186,11 +214,11 @@
   "phase": "TASK-032 affected-only QA re-review on PW 0.8 reconciliation",
   "repositories": {
     ".": {
-      "source_revision": "b8c40301611be9b17f52fe9f822f5adfdf4a8d1a"
+      "source_revision": "5de26fe37606eff0622929b326ea4b42cc43e4ac"
     }
   },
   "schema_version": 2,
-  "source_revision": "b8c40301611be9b17f52fe9f822f5adfdf4a8d1a",
+  "source_revision": "5de26fe37606eff0622929b326ea4b42cc43e4ac",
   "target_id": "EPIC-007",
   "work_item_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control"
 }
