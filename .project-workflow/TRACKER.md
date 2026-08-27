@@ -14,3 +14,4 @@
 | FIX-003 | Align Public Architecture And Drift Claims | Complete | `tasks/FIX-003-Align-Public-Architecture-And-Drift-Claims/FIX.md` |
 | FIX-004 | Prevent Owner-Led Recommendation Drift | Complete | `tasks/FIX-004-Prevent-Owner-Led-Recommendation-Drift/FIX.md` |
 | FIX-005 | Supersede Unpublished Prepared Release | Complete | `tasks/FIX-005-Supersede-Unpublished-Prepared-Release/FIX.md` |
+| EPIC-007 | Strategic Alignment And Goal Review Control | In Progress | `tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control/REQUIREMENTS.md` |

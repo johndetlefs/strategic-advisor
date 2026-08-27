@@ -1,0 +1,314 @@
+{
+  "schema_version": 1,
+  "suite_id": "strategic-advisor-goal-alignment-review-v1",
+  "status": "frozen-pre-treatment",
+  "provenance": "synthetic",
+  "proof_layer": "exact-runtime-synthetic",
+  "applicability": "Public synthetic behavioural evaluation of the exact installed Strategic Advisor runtime. It does not establish private real-task usefulness, comparative effectiveness, cross-host parity, adoption or support.",
+  "case_count": 20,
+  "criterion_count": 31,
+  "multi_turn_case_ids": [
+    "SAGR-007",
+    "SAGR-008",
+    "SAGR-018"
+  ],
+  "categories": {
+    "aspiration-handling": "SAGR-010",
+    "bounded-reconnaissance": "SAGR-002",
+    "causal-leading-indicators": "SAGR-013",
+    "discovery-goal": "SAGR-011",
+    "event-exception-review": "SAGR-017",
+    "evidence-resolvable-fork": "SAGR-005",
+    "evidence-triggered-reclarification": "SAGR-007",
+    "goal-proxy-ladder": "SAGR-009",
+    "initial-alignment": "SAGR-003",
+    "justified-goal-change": "SAGR-016",
+    "material-progress": "SAGR-014",
+    "operational-goal-readiness": "SAGR-012",
+    "owner-reconciliation": "SAGR-019",
+    "owner-value-fork": "SAGR-006",
+    "process-waste-falsifier": "SAGR-020",
+    "routine-direct-assistance": "SAGR-001",
+    "same-robust-move": "SAGR-004",
+    "selective-invalidation": "SAGR-008",
+    "unjustified-goal-change": "SAGR-015",
+    "weekly-monthly-disposition": "SAGR-018"
+  },
+  "cases": [
+    {
+      "id": "SAGR-001",
+      "category": "routine-direct-assistance",
+      "title": "Routine formatting remains direct",
+      "activation": "bypass",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "DIRECT_NO_STRATEGY_CEREMONY"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-002",
+      "category": "bounded-reconnaissance",
+      "title": "A bounded scan reveals the decision-changing ambiguity",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "RECON_SCAN_FIRST",
+        "RECON_TARGETED_QUESTION_ONLY"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-003",
+      "category": "initial-alignment",
+      "title": "Competing outcome meanings block a consequential recommendation",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "ALIGN_OUTCOMES_EXPLICIT",
+        "ALIGN_QUESTION_CHANGES_ACTION"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-004",
+      "category": "same-robust-move",
+      "title": "Ambiguity does not interrupt when the robust move is shared",
+      "activation": "bypass",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "ROBUST_MOVE_SHARED",
+        "ROBUST_NO_PREMATURE_OWNER_QUESTION"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-005",
+      "category": "evidence-resolvable-fork",
+      "title": "An empirical fork is researched rather than delegated to preference",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "EMPIRICAL_RESEARCH_FIRST"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-006",
+      "category": "owner-value-fork",
+      "title": "An irreducible value trade-off returns to the owner",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "OWNER_VALUE_EXPLICIT"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-007",
+      "category": "evidence-triggered-reclarification",
+      "title": "Research exposes an action-changing outcome fork",
+      "activation": "gate",
+      "turn_ids": [
+        "T1",
+        "T2"
+      ],
+      "criterion_ids": [
+        "RECLARIFY_DELTA_AND_ACTION",
+        "RECLARIFY_SETTLED_STATE"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-008",
+      "category": "selective-invalidation",
+      "title": "A changed scope invalidates only dependent evidence",
+      "activation": "gate",
+      "turn_ids": [
+        "T1",
+        "T2"
+      ],
+      "criterion_ids": [
+        "INVALIDATE_PERFORMANCE_ONLY"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-009",
+      "category": "goal-proxy-ladder",
+      "title": "A requested mechanism is moved up to the real outcome",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "PROXY_HEADCOUNT_CLASSIFIED",
+        "PROXY_ALTERNATIVE_ROUTES"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-010",
+      "category": "aspiration-handling",
+      "title": "An unsupported aspiration remains visible outside execution",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "ASPIRATION_VISIBLE_NOT_OPERATIONAL"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-011",
+      "category": "discovery-goal",
+      "title": "Unknown causality becomes a bounded discovery goal",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "DISCOVERY_COMPLETE_CONTRACT",
+        "DISCOVERY_NOT_OPERATIONAL_READINESS"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-012",
+      "category": "operational-goal-readiness",
+      "title": "Goal purpose and candidate readiness remain separate",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "OPERATIONAL_GOAL_DISTINCT"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-013",
+      "category": "causal-leading-indicators",
+      "title": "Tasks do not become leading indicators by label",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "INDICATOR_TASKS_REJECTED",
+        "INDICATOR_EVIDENCE_LIMITED"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-014",
+      "category": "material-progress",
+      "title": "An enabling tool receives only causal credit",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "PROGRESS_OUTPUT_NOT_OUTCOME",
+        "PROGRESS_ENABLER_BOUNDED"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-015",
+      "category": "unjustified-goal-change",
+      "title": "Execution friction does not silently replace the goal",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "GOAL_CHANGE_CHALLENGED"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-016",
+      "category": "justified-goal-change",
+      "title": "Qualifying evidence permits an explicit goal stop",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "GOAL_STOP_QUALIFYING_DELTA"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-017",
+      "category": "event-exception-review",
+      "title": "A material failure does not wait for weekly cadence",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "EVENT_PREEMPTS_CADENCE"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-018",
+      "category": "weekly-monthly-disposition",
+      "title": "Weekly path correction and monthly goal judgment remain distinct",
+      "activation": "gate",
+      "turn_ids": [
+        "T1",
+        "T2"
+      ],
+      "criterion_ids": [
+        "WEEKLY_PATH_CORRECTION",
+        "MONTHLY_GOAL_AND_PATH"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-019",
+      "category": "owner-reconciliation",
+      "title": "Offline owner outcomes are reconciled rather than erased",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "OWNER_REPORT_PROVENANCE",
+        "SYSTEM_ABSENCE_NOT_FAILURE"
+      ],
+      "forbidden_behavior_count": 2
+    },
+    {
+      "id": "SAGR-020",
+      "category": "process-waste-falsifier",
+      "title": "A review process that cannot change decisions is reduced",
+      "activation": "gate",
+      "turn_ids": [
+        "T1"
+      ],
+      "criterion_ids": [
+        "PROCESS_WASTE_NAMED",
+        "PROCESS_REDUCE_OR_STOP"
+      ],
+      "forbidden_behavior_count": 2
+    }
+  ],
+  "runtime_exclusion": true
+}
