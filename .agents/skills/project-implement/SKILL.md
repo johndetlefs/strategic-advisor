@@ -71,6 +71,11 @@ Implement one scoped work item from a project-workflow task and move it to testi
 - A passed affected validation ends continuation work for that change identity. The impact
   decision never creates, broadens, or reopens independent QA; QA remains a separate gate only
   when the approved work item already requires it.
+- When the Coordinator declares materially expensive verification, complete implementation before
+  any verifier invocation, then execute only the campaign's current stage from cheapest to most
+  expensive. A blocking certification failure returns to implementation and forbids later stages;
+  extended investigation requires a separate bounded diagnostic campaign. Limits never waive
+  missing proof, and unchanged current receipts must be reused.
 
 If requirements conflict with repo constraints or validation is not testable, stop and use `project-clarify`.
 
