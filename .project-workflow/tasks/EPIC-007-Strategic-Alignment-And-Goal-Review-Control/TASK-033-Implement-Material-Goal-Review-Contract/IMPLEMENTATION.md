@@ -89,7 +89,7 @@ not silently dictate strategy.
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | `codex/strategic-alignment-goal-review-pw08` from `41a383b` | 26 focused tests plus skill, privacy, links and frozen-build checks pass | Local source only; no push, package, release, activation or private mutation | `VALIDATION.md`; independent QA pending |
+| . | `codex/strategic-alignment-goal-review-pw08` from `41a383b`; QA source `4fe1537` | 26 focused tests plus skill, privacy, links and frozen-build checks pass; one affected-only independent QA Pass | Local source only; no push, package, release, activation or private mutation | `VALIDATION.md`; Clarification Alignment affected-only review |
 
 ## Task List
 
@@ -103,22 +103,33 @@ not silently dictate strategy.
 
 ## Parent AC Evidence
 
-- AC7-AC12: `goal-review.md`, `strategy-workspace.md`, generic template notes,
-  runtime manifest, `CASE-COVERAGE.md`, focused tests and `VALIDATION.md` provide
-  deterministic source evidence. Exact-runtime and delivery proof remain held
-  in TASK-034/TASK-035.
+- AC7: `goal-review.md` event/weekly/monthly rules and cadence checks.
+- AC8: `goal-review.md` material-progress/enabler test and focused checks.
+- AC9: `goal-review.md` drift/amendment burden and focused checks.
+- AC10: `goal-review.md`, `strategy-workspace.md` and generic template record
+  and owner-reconciliation checks.
+- AC11: `goal-review.md` process-waste falsifiers and SAGR-020 mapping.
+- AC12: Runtime manifest, privacy checks and consumer-independent generic
+  templates. Exact-runtime and delivery proof remain held in TASK-034/TASK-035.
 
 ## QA & Code Review
 
 - Intent QA contract: adversarial
-- Verdict: ____
-- Intent adversarial verdict: ____
-- Could every AC pass while the approved user job remains undone: ____
-- Intent audit state: ____
-- Outcome journey evidence: ____
-- Reviewer independence: ____
-- Evidence: ____
-- Findings: ____
+- Verdict: Pass
+- Intent adversarial verdict: Pass
+- Could every AC pass while the approved user job remains undone: No
+- Intent audit state: current
+- Intent scope note: The verdict covers the bounded deterministic
+  source-semantics job. Runtime behaviour and real-task value remain explicitly
+  unproved; QA inspected source `4fe1537`.
+- Outcome journey evidence: Not claimed by TASK-033. The next authorised gate
+  is one owner-visible read-only dogfood before any TASK-034/TASK-035 work.
+- Reviewer independence: Existing Clarification Alignment Audit task; read-only
+  affected scope, no implementation edits.
+- Evidence: Reviewer inspected `41a383b..4fe1537`, reproduced 26 focused tests,
+  skill/privacy/link validation, the unchanged 56-case eval inventory and the
+  unchanged 20-case/37-criterion freeze.
+- Findings: None. No correction pass was required.
 
 ## Retro
 

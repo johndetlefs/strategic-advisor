@@ -358,6 +358,144 @@
       "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
       "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
       "user_consequence": "TASK-033 may enter Testing for exactly one affected-only independent QA verdict before owner-visible read-only dogfood."
+    },
+    {
+      "affected_units": [
+        "TASK-033"
+      ],
+      "amendment_identity": null,
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "The single affected-only independent QA returned Pass with no findings and no correction pass; it changes proof state only, not TASK-033 capability or scope.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:d79fecaa8c880f74f3aee8593c51b4e035f14f2bd6b4c9cdc6da3c11b08fc5f5",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "Refresh coordination against the retained QA record, move TASK-033 through Review and Complete as deterministic source semantics only, then stop for owner-visible read-only dogfood."
+    },
+    {
+      "affected_units": [
+        "TASK-033"
+      ],
+      "amendment_identity": null,
+      "boundary": "before-review-or-complete",
+      "capability_change": "TASK-033 closes only the bounded generic review contract after one affected-only Pass; no runtime behaviour, package, release or private-workspace claim is added.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:d79fecaa8c880f74f3aee8593c51b4e035f14f2bd6b4c9cdc6da3c11b08fc5f5",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "TASK-033 may enter Review and Complete; the Epic remains In Progress and TASK-034/TASK-035 remain held pending owner-visible dogfood and new explicit authority."
+    },
+    {
+      "affected_units": [
+        "TASK-033"
+      ],
+      "amendment_identity": null,
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "The QA record was normalized to the PW 0.8 exact field contract; verdict and proof scope are unchanged.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:cb0d32f8a4c9d3554b3905cfbd3db91a91bb5f7e26a4ce8e0553a10101c49c3c",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "Refresh coordination and complete TASK-033 without changing product semantics or reopening QA."
+    },
+    {
+      "affected_units": [
+        "TASK-033"
+      ],
+      "amendment_identity": null,
+      "boundary": "before-review-or-complete",
+      "capability_change": "TASK-033 retains the single Pass and exact deterministic source-only proof boundary after QA-field normalization.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:cb0d32f8a4c9d3554b3905cfbd3db91a91bb5f7e26a4ce8e0553a10101c49c3c",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "Complete TASK-033 only; keep EPIC-007 open and TASK-034/TASK-035 held pending dogfood and owner authority."
+    },
+    {
+      "affected_units": [
+        "TASK-033"
+      ],
+      "amendment_identity": null,
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "TASK-033 parent AC evidence was normalized from one combined row into the six exact AC records required by PW 0.8; proof content and product scope are unchanged.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:fd860af546dc9e6cc5f9e15807d5435a620020d28da13ca4e60ffb0a69dcfe30",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "Refresh coordination and retry the source-only completion gate without reopening implementation or QA."
+    },
+    {
+      "affected_units": [
+        "TASK-033"
+      ],
+      "amendment_identity": null,
+      "boundary": "before-review-or-complete",
+      "capability_change": "The exact AC7-AC12 evidence rows now point to the already-reviewed bounded source artifacts; no capability or proof claim changed.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:fd860af546dc9e6cc5f9e15807d5435a620020d28da13ca4e60ffb0a69dcfe30",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "Complete TASK-033 only; TASK-034/TASK-035 stay held."
     }
   ],
   "decisions": [
@@ -370,18 +508,18 @@
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:36fef3a62de4568ec071fc1fbdb42864bf90f5678175885dddb2a6f36fc3ed8a",
+  "intent_identity": "sha256:fd860af546dc9e6cc5f9e15807d5435a620020d28da13ca4e60ffb0a69dcfe30",
   "last_boundary": {
     "affected_units": [
       "TASK-033"
     ],
     "amendment_identity": null,
-    "boundary": "unit-return-or-dependency-join",
-    "capability_change": "The smallest TASK-033 source contract and its bounded deterministic checks are complete without adding evaluation machinery or changing the frozen authority.",
+    "boundary": "before-review-or-complete",
+    "capability_change": "The exact AC7-AC12 evidence rows now point to the already-reviewed bounded source artifacts; no capability or proof claim changed.",
     "classification": "inside-envelope",
     "decided_by": "Goal Review Workshop coordinator",
     "decision_date": "2026-08-27",
-    "intent_identity": "sha256:36fef3a62de4568ec071fc1fbdb42864bf90f5678175885dddb2a6f36fc3ed8a",
+    "intent_identity": "sha256:fd860af546dc9e6cc5f9e15807d5435a620020d28da13ca4e60ffb0a69dcfe30",
     "relevant_ocs": [
       "OC1",
       "OC2",
@@ -392,7 +530,7 @@
     "shared_premises_valid": "yes",
     "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
     "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
-    "user_consequence": "TASK-033 may enter Testing for exactly one affected-only independent QA verdict before owner-visible read-only dogfood."
+    "user_consequence": "Complete TASK-033 only; TASK-034/TASK-035 stay held."
   },
   "loaded_contract": {
     "asset_version": "7",
@@ -401,7 +539,7 @@
     "package_version": "0.8.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Enter TASK-033 Testing and freeze a clean source checkpoint for one affected-only independent QA verdict.",
+  "next_action": "Complete TASK-033 and commit the retained QA record before read-only owner dogfood.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-034",
     "claim_class": "user-facing",
