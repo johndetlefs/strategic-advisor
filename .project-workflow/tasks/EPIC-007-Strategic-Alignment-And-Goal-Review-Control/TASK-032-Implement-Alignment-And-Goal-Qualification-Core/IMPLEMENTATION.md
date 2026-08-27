@@ -129,17 +129,50 @@ TASK-034 still owns exact-runtime case verdicts. No separate structured proof
 recipe applies to this source-only child, so `EVIDENCE.json` remains empty by
 design.
 
+## Validation Impact
+
+- Baseline proof: baf3092adf2d65d65be5d9fdf8c3d4838f248fb3
+- Change summary: Selective-invalidation set invariants and regressions added; unsupported structured proof claims removed; exact TASK-032 source replayed on the PW 0.8 runner reconciliation without further product-byte drift.
+- Impact: affected
+- Invalidated proof layers: qa-review
+- Required validation: affected-proof-layer
+- Validation verdict: pass
+- Decided by: Independent Clarification Alignment reviewer, affected-only disposition 2026-08-27
+- Change identity: sha256:bda0f6c73a9999c95ec08828daf5a1ca77573c9244b9bf87907497d17da2b7fd
+
 ## QA & Code Review
 
 - Intent QA contract: adversarial
-- Verdict: ____
-- Intent adversarial verdict: ____
-- Could every AC pass while the approved user job remains undone: ____
-- Intent audit state: ____
-- Outcome journey evidence: ____
-- Reviewer independence: ____
-- Evidence: ____
-- Findings: ____
+- Verdict: Changes Requested
+- Intent adversarial verdict: Fail
+- Could every AC pass while the approved user job remains undone: Yes
+- Intent audit state: current
+- Outcome journey evidence: The independent reviewer inspected the complete
+  TASK-032 source journey from frozen state authority through typed delta
+  evaluation and goal qualification. The affected validation proved that an
+  unaffected recommendation or rival dependency cannot disappear, a claim
+  cannot be both falsified and surviving, and falsification requires affected
+  scope; it also confirmed that this child makes no exact-runtime verdict.
+- Reviewer independence: The Clarification Alignment Audit task performed a
+  read-only review in a separate Codex task, reproduced the adversarial states
+  and runner boundary independently, and made no repository edits.
+- Evidence: Original review at `baf3092` reproduced two blocking failures.
+  Affected-only disposition at reconciliation commit `3261df2387e91f9058dd119e82dd090ee6678821`
+  passed the 29 focused tests, verified 16 runner controls plus the one expected
+  retained-runtime identity blocker, confirmed TASK-032 source replay identity,
+  and confirmed the 20-case/37-criterion freeze remained current.
+- Findings: Original P1 findings were selective-invalidation contradictions and
+  passing structured proof claims without the required live observation.
+- Findings disposition: Resolved
+- Affected validation verdict: Pass
+- Could every AC pass after affected validation while the approved user job remains undone: No
+- Affected validation evidence: `recommendation_delta.py` now enforces
+  falsified-subset-of-affected, falsified/surviving disjointness and explicit
+  survival of every unaffected recommendation/rival dependency, with three
+  regressions. `EVIDENCE.json` is empty and the child requirements assign live
+  behavioural proof to TASK-034. The independent affected-only re-review found
+  no remaining TASK-032 blocker and no replay-induced product-source drift.
+- Second QA commissioned: No
 
 ## Retro
 
