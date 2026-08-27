@@ -30,7 +30,7 @@ The retained `run-006-baseline` probe binds the previous exact runtime identity 
 
 ## Current causal-bridge and host investigation
 
-The frozen authority now also contains DRIFT-016. The retained `run-007-baseline` and `run-007-prompt-attempts` observations show that the exact installed alpha.5 runtime and four progressively narrower prompt-only corrections failed its turn-local causal-dependency retraction criterion. Current-source `run-009` supersedes that stale passing authority and passes the complete 16-case suite; no later good turn was used to conceal an earlier failure.
+The frozen authority now also contains DRIFT-016. The retained `run-007-baseline` and `run-007-prompt-attempts` observations show that the exact installed alpha.5 runtime and four progressively narrower prompt-only corrections failed its turn-local causal-dependency retraction criterion. The alpha.6 `run-009` supersedes that stale passing authority and passes the complete 16-case suite on its retained runtime; no later good turn was used to conceal an earlier failure.
 
 TASK-031 host-feasibility evidence shows that current Stop-hook paths emit before review or fail open. TASK-036 separately retains a public-synthetic custom app-server client prototype journey that buffers an original marker, invokes a fixture reviewer, permits one re-reviewed revision, and emits only the revised marker. That evidence proves custom-client transport mechanics only. It does not establish recommendation correctness, native desktop protection, installation, adoption, cross-host support, or release readiness.
 
