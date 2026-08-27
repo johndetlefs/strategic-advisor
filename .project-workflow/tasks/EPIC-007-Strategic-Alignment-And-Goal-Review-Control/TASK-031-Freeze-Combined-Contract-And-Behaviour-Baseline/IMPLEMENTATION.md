@@ -121,33 +121,55 @@ success after observing its own behaviour.
 
 ## Parent AC Evidence
 
-- AC2-AC6, AC11 and AC13: TASK-031 now owns a frozen, privacy-reviewed case
-  authority and proof boundary. This establishes only pre-treatment authority
-  and deterministic structure; TASK-032, TASK-033 and TASK-034 still own the
-  documented runtime semantics and exact-runtime behavioural results required
-  for parent acceptance. No structured proof recipe applies to this
-  baseline-only child, so `EVIDENCE.json` remains empty by design.
+- AC2: Frozen direct-assistance, reconnaissance, question-gate and alignment
+  cases define the pre-treatment authority for outcome confirmation.
+- AC3: Frozen resumption, reopening and selective-invalidation cases include
+  ordered turns and executable state-transition assertions.
+- AC4: Goal/proxy laddering freezes all seven object classes and the required
+  causal bridge without accepting a project, tool or metric as the end goal.
+- AC5: Aspiration, discovery, operational-purpose and exact-action readiness
+  cases keep object purpose separate from candidate-action readiness.
+- AC6: Indicator and milestone cases reject task labels and arbitrary
+  interpolation without an evidenced causal or driver model.
+- AC11: The process-waste case freezes the falsifier that recurring review must
+  change decisions or commitments rather than become a reporting ritual.
+- AC13: Exact inventory, privacy review, support hashes and treatment-path
+  exclusion preserve the sanitised pre-treatment authority and proof boundary.
+
+These records establish only pre-treatment authority and deterministic
+structure. TASK-032, TASK-033 and TASK-034 still own documented runtime
+semantics and exact-runtime behavioural results required for parent acceptance.
+No structured proof recipe applies to this baseline-only child, so
+`EVIDENCE.json` remains empty by design.
 
 ## QA & Code Review
 
 - Intent QA contract: adversarial
-- Verdict: Changes Requested on commit `03dc06c`; remediation validated and
-  affected-only peer re-review pending.
-- Intent adversarial verdict: Fail. The structural checks could pass while
-  approved state-resumption, classification and milestone behaviours remained
-  absent.
-- Could every AC pass while the approved user job remains undone: Yes, before
-  remediation.
-- Intent audit state: Current at review time.
-- Outcome journey evidence: Review found no owner-answer/resumed-recommendation
-  turn after re-clarification and no executable state-transition assertions.
+- Verdict: Pass
+- Review basis: affected-only read-only re-review of clean commit
+  `cc893b7d2943029e531bfe1ad96ff9e726a73746`.
+- Intent adversarial verdict: Pass
+- Could every AC pass while the approved user job remains undone: No
+- Intent audit state: current
+- Adversarial rationale: The accepted remediation prevents all TASK-031 ACs
+  from passing while the approved freeze job remains materially undone. This
+  does not claim runtime behaviour, which belongs to TASK-034. Before
+  remediation, the same question correctly returned Yes.
+- Outcome journey evidence: The reviewer confirmed the T3 owner-answer and
+  resumed-recommendation turn, all seven object classes, exact-action
+  `Infeasible as posed`, arbitrary-interpolation rejection, declared control
+  pairs, structured state transitions, identity binding, treatment isolation
+  and corrected downstream lifecycle states.
 - Reviewer independence: Adversarial peer reviewer supplied some audit
   requirements but did not implement this branch; not fully implementation-blind.
-- Evidence: Clarification Alignment Audit task, read-only QA of commit `03dc06c`,
-  2026-08-27.
-- Findings: P1 incomplete approved behaviours; P1 wording/restatement controls;
-  P1 overclaimed identity binding; P2 weak runtime-isolation guard; P2
-  downstream tasks incorrectly marked In Progress. All are accepted.
+- Evidence: Clarification Alignment Audit task; initial read-only QA of commit
+  `03dc06c` and affected-only read-only re-review of commit `cc893b7d`,
+  2026-08-27. The retained 179-test result was not rerun by the reviewer.
+- Findings: All five accepted findings are resolved. The unresolved external
+  runner integration and treatment runtime identity are intentional
+  fail-closed prerequisites for later children, not blockers to TASK-031
+  acceptance. The runner is now durably committed at `82b44a0` on its separate
+  clean branch, but is not on this branch or `main`.
 
 ## Retro
 

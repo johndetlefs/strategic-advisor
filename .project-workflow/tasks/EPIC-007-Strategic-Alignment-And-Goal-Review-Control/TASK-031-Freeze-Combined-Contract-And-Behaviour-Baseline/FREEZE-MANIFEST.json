@@ -6,7 +6,7 @@
     "epic": "EPIC-007",
     "task": "TASK-031",
     "requirements_identity": "sha256:cdbd03660ff1ac27a395209ca8cf128a3894a8a581edcf7717974cdc8358235c",
-    "intent_audit_identity": "sha256:6b48621541ef9046f189de65c8aaa73f7a5e5038479886546e44cec1c6a851cb",
+    "intent_audit_identity": "sha256:d57e0e39b32a5a9c62ad82705e8aeadbe5a73b8cb7bf7259b99ad2387351e404",
     "owner_approval": "John Detlefs, SA: Goal Review Workshop, 2026-08-27"
   },
   "untreated_repository_baseline": {
@@ -151,6 +151,10 @@
     "worktree": "/private/tmp/sa-verification-runner",
     "branch": "codex/proportionate-verification-runner",
     "state_at_freeze": "active-under-separate-proportionate-verification-programme; durable Strategic Advisor runner commit and integration base not yet reported",
-    "rule": "Do not begin runtime or evaluation implementation until the owning task reports a durable commit/merge disposition and correct base. Do not copy or absorb the dirty worktree."
+    "durable_commit": "82b44a0aabe81662917c44b8e99d3a2a6fd021c4",
+    "base_commit": "6d65830fa6d6fcc919957594c9ff1f2d763aab96",
+    "disposition_recorded_at_closeout": "clean local branch; not pushed, merged, released or installed; 17 focused runner tests, 188 full tests and seven validation scopes reported passing after one bounded QA-remediation cycle",
+    "current_integration_state": "not present on this branch or origin/main",
+    "rule": "Do not begin runtime or evaluation implementation until the runner commit is integrated with explicit authority or treatment deliberately uses a branch based on that exact commit. Do not assume main contains it."
   }
 }
