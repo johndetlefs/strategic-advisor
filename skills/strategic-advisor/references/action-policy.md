@@ -25,7 +25,12 @@ Always define controls:
 
 - **Falsifiers**: observations that would materially break the causal thesis.
 - **Stop conditions**: events or thresholds that require pausing, exiting, or escalating.
-- **Leading indicators**: early signals tied to the proposed mechanism, not vanity activity.
+- **Leading indicators**: evidenced predictors or controllable drivers tied to
+  the proposed causal mechanism, not initiatives, tasks, recurring activity,
+  or vanity output relabelled as evidence. Record the evidence, causal or
+  predictive role, controllability limit, lag, and falsifier.
 - **Review horizon**: the event or time at which evidence and readiness will be reassessed.
 
 Use numerical thresholds only when grounded in supplied data, an explicit policy, or a defensible method. Otherwise use observable qualitative conditions and say what would support precision.
+Derive lag milestones from the driver model and available evidence. Dividing a
+final target evenly across time does not create an evidenced milestone.

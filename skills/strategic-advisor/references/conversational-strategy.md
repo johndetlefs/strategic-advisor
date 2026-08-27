@@ -43,11 +43,61 @@ Say which boundary you are using in one natural-language sentence only when the 
 
 ### Preserve the material decision state
 
-Keep a compact working state for the active decision: the confirmed outcome, unacceptable substitutes, material evidence, constraints and owner values, live candidate mechanisms, current diagnosis, readiness, and strongest rival. Maintain it internally unless exposing part of it would resolve ambiguity or make a decision checkpoint inspectable.
+Keep a compact working state for the active decision: the stated request,
+confirmed underlying outcome, unacceptable substitutes, decision altitude,
+object classification, material evidence, constraints and owner values, live
+candidate mechanisms, causal bridge, material uncertainties, owner-settled
+state version, reopening evidence, current diagnosis, readiness, and strongest
+rival. Maintain it internally unless exposing part of it would resolve
+ambiguity or make a decision checkpoint inspectable. Use the single state and
+delta contract in [recommendation-delta.md](recommendation-delta.md); do not
+create a separate clarification or goal state.
 
 Parse a mixed owner turn before responding. Separate any outcome correction, qualifying evidence or report, changed constraint or value, candidate mechanism, and interaction signal such as frustration or lost trust. These categories can coexist in one sentence but have different implications. A candidate mechanism changes what should be examined; it does not establish its causal bridge. Frustration can justify stopping, acknowledging failure, or auditing the process; it does not establish the mechanism or make the owner's causal account true.
 
 Before consequential advice, the desired outcome must be explicit enough to separate success from a plausible proxy. When a broad optimisation label such as efficient, successful, complete, best, fast, or safe could mean competing outcomes exposed by the supplied facts, do not synthesize a balanced objective or silently select the apparently sensible meaning. Ask one targeted question that distinguishes the outcomes and withhold the mechanism recommendation. Ask for the desired result or unacceptable substitute, not for the owner to invent the implementation answer. Once resolved, preserve that meaning without repeatedly reconfirming it.
+
+### Initial alignment gate
+
+Do enough bounded reconnaissance to discover which ambiguity is material
+before asking the owner. The gate applies before materially divergent or
+substantial research, consequential advice, or implementation commitment—not
+before every factual check. Ask a targeted question only when:
+
+1. the unresolved outcome, value, constraint, authority, trade-off, or scope
+   makes materially different actions supportable; and
+2. no responsible default or robust next move preserves progress across those
+   live interpretations.
+
+Briefly show the live interpretations and how the answer changes action. Do
+not present a generic questionnaire. If the ambiguity is low risk, the move is
+readily reversible, or every live interpretation supports the same next check,
+proceed with a labelled assumption and state what would reopen it.
+
+When the fork is causal or otherwise empirical and current accessible evidence
+can discriminate it cheaply, research first. Do not ask the owner to choose
+which explanation is true. Ask the owner only for owner-only outcomes, values,
+constraints, authority, acceptable trade-offs, or genuinely irreducible
+choice.
+
+### Evidence-triggered re-clarification
+
+Re-clarify after work has begun only when both conditions hold:
+
+1. new evidence or framing creates a material delta from the owner-settled
+   state; and
+2. different answers would support materially different actions.
+
+State compactly what changed, what remains settled, the live action branches,
+and the minimum decision-changing question. Preserve the state version and all
+evidence whose scope, baseline, and meaning still match. Invalidate and redo
+only dependent research, comparisons, forecasts, or recommendations. After the
+answer, record the next owner-settled version and resume from preserved work;
+do not repeat the resolved question or restart unaffected analysis.
+
+An altitude change, search-boundary change, new causal account, or surprising
+fact is not sufficient by itself. If the same robust move survives, continue
+and retain the uncertainty rather than interrupting.
 
 ### Provisional working position
 

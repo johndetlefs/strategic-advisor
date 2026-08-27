@@ -1,0 +1,89 @@
+{
+  "boundary_decisions": [
+    {
+      "affected_units": [
+        "TASK-032"
+      ],
+      "amendment_identity": null,
+      "boundary": "before-unit-start",
+      "capability_change": "No approved capability changes; the runner prerequisite is now satisfied by exact ancestor 82b44a0.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:5a8f2b405caa65468df03e184a479e7fab6d1654aabc257ef9fa7639caade081",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:8d4f7da63296487da676c27f1442ee36c52c9cb8621c9e2dead4931f9123c796",
+      "source_revision": "bba2441424d18d79a24885652978a1b090594fc2",
+      "user_consequence": "TASK-032 may implement canonical semantics sequentially while TASK-034 retains behavioural proof and all delivery exclusions remain."
+    }
+  ],
+  "decisions": [
+    "Owner approved the combined EPIC-007 meaning and implementation envelope on 2026-08-27.",
+    "Runner commit 82b44a0 is an explicit ancestor of this local branch; it is not on origin/main and no push, publication or activation is authorised.",
+    "TASK-034 owns exact-runtime behavioural proof; TASK-032 owns canonical semantics and deterministic validation only."
+  ],
+  "host_facts": {
+    "context_contract": "declared",
+    "telemetry": "unknown"
+  },
+  "intent_identity": "sha256:5a8f2b405caa65468df03e184a479e7fab6d1654aabc257ef9fa7639caade081",
+  "last_boundary": {
+    "affected_units": [
+      "TASK-032"
+    ],
+    "amendment_identity": null,
+    "boundary": "before-unit-start",
+    "capability_change": "No approved capability changes; the runner prerequisite is now satisfied by exact ancestor 82b44a0.",
+    "classification": "inside-envelope",
+    "decided_by": "Goal Review Workshop coordinator",
+    "decision_date": "2026-08-27",
+    "intent_identity": "sha256:5a8f2b405caa65468df03e184a479e7fab6d1654aabc257ef9fa7639caade081",
+    "relevant_ocs": [
+      "OC1",
+      "OC2",
+      "OC3",
+      "OC4",
+      "OC5",
+      "OC6",
+      "OC7"
+    ],
+    "shared_premises_valid": "yes",
+    "source_identity": "sha256:8d4f7da63296487da676c27f1442ee36c52c9cb8621c9e2dead4931f9123c796",
+    "source_revision": "bba2441424d18d79a24885652978a1b090594fc2",
+    "user_consequence": "TASK-032 may implement canonical semantics sequentially while TASK-034 retains behavioural proof and all delivery exclusions remain."
+  },
+  "loaded_contract": {
+    "asset_version": "6",
+    "context_id": "01a04077-5cfa-7b93-bdcf-bf8a6dda8caf",
+    "contract_version": "2",
+    "package_version": "0.7.0",
+    "recorded_at": "2026-08-27"
+  },
+  "next_action": "Implement the approved TASK-032 canonical state, alignment and goal-qualification contract.",
+  "outcome_checkpoint": {
+    "checkpoint_unit": "TASK-034",
+    "claim_class": "user-facing",
+    "record": null,
+    "required": true,
+    "status": "pending"
+  },
+  "phase": "TASK-032 core implementation",
+  "repositories": {
+    ".": {
+      "source_revision": "bba2441424d18d79a24885652978a1b090594fc2"
+    }
+  },
+  "schema_version": 2,
+  "source_revision": "bba2441424d18d79a24885652978a1b090594fc2",
+  "target_id": "EPIC-007",
+  "work_item_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control"
+}

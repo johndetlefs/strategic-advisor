@@ -23,10 +23,12 @@ def provenance(status: str = "reported") -> dict[str, str]:
 
 def base_state(turn_kind: str = "material-recommendation") -> dict:
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "turn_kind": turn_kind,
+        "stated_request": {"claim": "Adopt shared ownership", "provenance": provenance("reported")},
         "confirmed_outcome": {"claim": "Improve completed handoffs", "provenance": provenance("confirmed")},
         "unacceptable_substitutes": ["More architectural structure without outcome proof"],
+        "decision_altitude": "project-outcome",
         "claims": [
             {"id": "bridge", "statement": "Shared ownership causes the handoff failures", "status": "assumption", "provenance": provenance()},
             {"id": "small-rival", "statement": "A smaller explicit handoff contract could resolve the observed gap", "status": "evidence", "provenance": provenance("observed")},
@@ -38,20 +40,44 @@ def base_state(turn_kind: str = "material-recommendation") -> dict:
             {"id": "contract", "specification": "Explicit handoff contract", "support_claim_ids": ["small-rival"]},
             {"id": "orchestrator", "specification": "Single orchestrator", "support_claim_ids": []},
         ],
+        "objects": [
+            {"id": "handoff-outcome", "statement": "Improve completed handoffs", "class": "end", "provenance": provenance("confirmed")},
+            {"id": "shared-ownership", "statement": "Adopt shared ownership", "class": "means", "provenance": provenance("proposed")},
+        ],
+        "goal_purpose": {
+            "class": "operational",
+            "statement": "Improve completed handoffs this quarter",
+            "horizon": "this quarter",
+            "learning_outcome": None,
+            "falsifier": "Handoff completion does not improve under the tested contract",
+            "unlocked_decision": None,
+            "provenance": provenance("confirmed"),
+        },
+        "causal_bridge": {
+            "candidate_id": "contract",
+            "statement": "An explicit handoff contract reduces ownership ambiguity",
+            "status": "conditional",
+            "evidence_claim_ids": ["small-rival"],
+            "falsifier": "The observed handoff gap persists under the explicit contract",
+            "provenance": provenance("inferred"),
+        },
+        "material_uncertainties": [],
+        "owner_settled_state": {"version": 1, "status": "confirmed", "provenance": provenance("owner-confirmed")},
+        "reopening_evidence_claim_ids": [],
         "recommendation": {
             "candidate_id": "contract",
             "dependent_claim_ids": ["bridge", "small-rival"],
             "next_move": "Test the handoff contract",
             "qualification": "Test the smaller rival before architecture change",
-            "readiness": "conditional",
+            "readiness": "Conditional",
         },
         "strongest_rival": {"candidate_id": "contract", "dependent_claim_ids": ["small-rival"], "reason": "It directly targets the observed gap with less exposure"},
     }
 
 
-def delta(*, kinds: list[str], support: list[str] | None = None, readiness: str = "ready") -> dict:
+def delta(*, kinds: list[str], support: list[str] | None = None, readiness: str = "Ready") -> dict:
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "changed_inputs": [{"id": f"change-{index}", "kind": kind, "provenance": provenance()} for index, kind in enumerate(kinds)],
         "falsified_claim_ids": ["bridge"],
         "affected_claim_ids": ["bridge"],
@@ -72,7 +98,7 @@ class RecommendationDeltaTests(unittest.TestCase):
                 MODULE.validate_state(value)
 
     def test_proposal_and_failed_bridge_do_not_support_replacement(self) -> None:
-        result = MODULE.evaluate(base_state(), delta(kinds=["candidate-specification"], readiness="ready"))
+        result = MODULE.evaluate(base_state(), delta(kinds=["candidate-specification"], readiness="Ready"))
         self.assertEqual(result.decision, "revise")
         self.assertIn(result.reason_codes[0], {"no_qualifying_delta", "specification_not_outcome_evidence", "replacement_support_missing"})
 
@@ -110,6 +136,94 @@ class RecommendationDeltaTests(unittest.TestCase):
         value = delta(kinds=["evidence"], support=["missing"])
         with self.assertRaises(MODULE.ContractError):
             MODULE.evaluate(base_state(), value)
+
+    def test_unconfirmed_and_reopened_outcome_is_representable(self) -> None:
+        value = base_state()
+        value["confirmed_outcome"] = None
+        value["recommendation"]["readiness"] = "Not validated"
+        value["owner_settled_state"] = {
+            "version": 2,
+            "status": "reopened",
+            "provenance": provenance("evidence-triggered"),
+        }
+        value["reopening_evidence_claim_ids"] = ["small-rival"]
+        value["material_uncertainties"] = [
+            {
+                "id": "outcome-fork",
+                "question": "Is the intended result fewer handoffs or more completed handoffs?",
+                "action_candidate_ids": ["contract", "orchestrator"],
+                "provenance": provenance("inferred"),
+            }
+        ]
+        self.assertEqual(MODULE.validate_state(value), value)
+
+    def test_confirmed_owner_state_requires_confirmed_outcome(self) -> None:
+        value = base_state()
+        value["confirmed_outcome"] = None
+        with self.assertRaisesRegex(MODULE.ContractError, "requires a confirmed outcome"):
+            MODULE.validate_state(value)
+
+    def test_unconfirmed_outcome_cannot_launder_execution_readiness(self) -> None:
+        value = base_state()
+        value["confirmed_outcome"] = None
+        value["owner_settled_state"] = {
+            "version": 1,
+            "status": "unresolved",
+            "provenance": provenance("pending-owner-answer"),
+        }
+        with self.assertRaisesRegex(MODULE.ContractError, "cannot support execution readiness"):
+            MODULE.validate_state(value)
+
+    def test_reopened_state_requires_named_reopening_evidence(self) -> None:
+        value = base_state()
+        value["owner_settled_state"] = {
+            "version": 2,
+            "status": "reopened",
+            "provenance": provenance("evidence-triggered"),
+        }
+        with self.assertRaisesRegex(MODULE.ContractError, "requires reopening evidence"):
+            MODULE.validate_state(value)
+
+    def test_all_object_classes_are_distinct_from_readiness(self) -> None:
+        value = base_state()
+        value["objects"] = [
+            {
+                "id": object_class,
+                "statement": f"Synthetic {object_class}",
+                "class": object_class,
+                "provenance": provenance(),
+            }
+            for object_class in sorted(MODULE.OBJECT_CLASSES)
+        ]
+        value["recommendation"]["readiness"] = "Infeasible as posed"
+        self.assertEqual(MODULE.validate_state(value), value)
+
+    def test_discovery_goal_requires_complete_learning_contract(self) -> None:
+        value = base_state()
+        value["goal_purpose"] = {
+            "class": "discovery",
+            "statement": "Learn whether the route changes the outcome",
+            "horizon": "two weeks",
+            "learning_outcome": "Observe whether the route changes completed handoffs",
+            "falsifier": "No relevant change under the bounded test",
+            "unlocked_decision": "Whether to stage the route",
+            "provenance": provenance("approved"),
+        }
+        MODULE.validate_state(value)
+        value["goal_purpose"]["unlocked_decision"] = None
+        with self.assertRaisesRegex(MODULE.ContractError, "discovery goal requires"):
+            MODULE.validate_state(value)
+
+    def test_bridge_and_reopening_references_fail_closed(self) -> None:
+        for field in ("causal_bridge", "reopening"):
+            with self.subTest(field=field):
+                value = base_state()
+                if field == "causal_bridge":
+                    value["causal_bridge"]["evidence_claim_ids"] = ["missing"]
+                else:
+                    value["reopening_evidence_claim_ids"] = ["missing"]
+                with self.assertRaises(MODULE.ContractError):
+                    MODULE.validate_state(value)
 
 
 if __name__ == "__main__":

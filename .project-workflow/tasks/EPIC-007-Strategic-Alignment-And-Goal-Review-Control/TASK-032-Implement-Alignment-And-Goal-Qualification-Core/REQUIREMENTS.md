@@ -177,8 +177,9 @@ pieces but lacks the complete selective ladder and re-clarification contract.
 
 ## Open Questions (Answer Needed)
 
-- None. Implementation is operationally blocked until the runner stream reports
-  its durable base; that is a known dependency, not an owner decision.
+- None. The runner stream is durably committed at `82b44a0aabe81662917c44b8e99d3a2a6fd021c4`
+  from base `6d65830fa6d6fcc919957594c9ff1f2d763aab96`, and that exact commit is now an
+  ancestor of this local feature branch. It remains absent from `origin/main`.
 
 ## Decisions (Resolved)
 
@@ -186,6 +187,8 @@ pieces but lacks the complete selective ladder and re-clarification contract.
 - D2. Extend recommendation delta rather than add a goal subsystem.
 - D3. Research empirical forks and ask only owner-only choices.
 - D4. Preserve unaffected work and invalidate mismatched evidence.
+- D5. Deliberately base this local implementation on runner commit `82b44a0`;
+  do not imply that it is merged to `main`, published, released or installed.
 
 ## Validation Plan
 

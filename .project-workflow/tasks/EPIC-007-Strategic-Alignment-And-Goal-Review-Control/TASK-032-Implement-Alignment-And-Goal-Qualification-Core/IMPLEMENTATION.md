@@ -69,12 +69,12 @@ execute a proxy or lose settled intent when evidence changes the frame.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Existing material-decision state is extended once without semantic regression.
-- [ ] AC2: Initial alignment is selective and permits bounded reconnaissance.
-- [ ] AC3: Re-clarification, fork routing and selective invalidation match the frozen contract.
-- [ ] AC4: Move-up/alternative/move-down goal qualification exposes proxies.
-- [ ] AC5: Goal-purpose classes and readiness remain distinct.
-- [ ] AC6: Leading and lag indicators require causal evidence rather than task labels.
+- [x] AC1: Existing material-decision state is extended once without semantic regression.
+- [x] AC2: Initial alignment is selective and permits bounded reconnaissance.
+- [x] AC3: Re-clarification, fork routing and selective invalidation match the frozen contract.
+- [x] AC4: Move-up/alternative/move-down goal qualification exposes proxies.
+- [x] AC5: Goal-purpose classes and readiness remain distinct.
+- [x] AC6: Leading and lag indicators require causal evidence rather than task labels.
 
 ## Validation
 
@@ -86,21 +86,44 @@ execute a proxy or lose settled intent when evidence changes the frame.
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | not recorded | not recorded | not recorded | not recorded |
+| . | `codex/strategic-alignment-goal-review`; runner `82b44a0` is an ancestor | Focused state/alignment/goal tests pass; full integration validation retains the exact unprepared-distribution blockers in `VALIDATION.md` | Local implementation only; no push, PR, main merge, package preparation, publication, activation or private-workspace mutation | Canonical diff, `VALIDATION.md`, TASK-031 freeze and coordination record |
 
 ## Task List
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status | Dependencies | Write Scope | Parallel Safe | Execution Needs |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ | ------------ | ----------- | ------------- | --------------- |
-| 1 | Reconcile implementation base | Confirm TASK-031 freeze identity and the verification-runner durable branch/commit/merge disposition; align this branch without overwriting unique work. | AC1, AC2, AC3, AC4, AC5, AC6 | Compare exact source and dependency identities before editing runtime bytes. | To Do | TASK-031 and external runner disposition | Git and workflow reconciliation only | No | bounded-return |
-| 2 | Extend canonical decision state | Add only the missing state relations to the existing recommendation-delta and material-decision contract. | AC1 | Inspect the canonical diff and duplicate-state scan. | To Do | 1 | SKILL.md and directly affected allowlisted core references | No | bounded-return |
-| 3 | Implement selective alignment | Add bounded reconnaissance, initial alignment, two-condition re-clarification, empirical/owner fork routing and selective invalidation. | AC2, AC3 | Run matched and sequenced frozen alignment cases. | To Do | 2 | Same canonical core files; no parallel writer | No | bounded-return |
-| 4 | Implement goal qualification | Add the goal ladder, object/purpose/readiness distinctions and causal indicator contract. | AC4, AC5, AC6 | Run goal/proxy, discovery and indicator cases. | To Do | 3 | Same canonical core plus directly affected reference | No | bounded-return |
-| 5 | Validate and hand off core | Run focused/full deterministic validation, rebuild evaluations, inspect privacy/diff and obtain independent QA before TASK-033. | AC1, AC2, AC3, AC4, AC5, AC6 | Re-run declared validation and inspect child QA verdict. | To Do | 4 | Tests, validation artifacts and child workflow evidence | No | bounded-return |
+| 1 | Reconcile implementation base | Confirm TASK-031 freeze identity and the verification-runner durable branch/commit/merge disposition; align this branch without overwriting unique work. | AC1, AC2, AC3, AC4, AC5, AC6 | Compare exact source and dependency identities before editing runtime bytes. | Done | TASK-031 and external runner disposition | Git and workflow reconciliation only | No | bounded-return |
+| 2 | Extend canonical decision state | Add only the missing state relations to the existing recommendation-delta and material-decision contract. | AC1 | Inspect the canonical diff and duplicate-state scan. | Done | 1 | SKILL.md and directly affected allowlisted core references | No | bounded-return |
+| 3 | Implement selective alignment | Add bounded reconnaissance, initial alignment, two-condition re-clarification, empirical/owner fork routing and selective invalidation. | AC2, AC3 | Run matched and sequenced frozen alignment cases. | Done | 2 | Same canonical core files; no parallel writer | No | bounded-return |
+| 4 | Implement goal qualification | Add the goal ladder, object/purpose/readiness distinctions and causal indicator contract. | AC4, AC5, AC6 | Run goal/proxy, discovery and indicator cases. | Done | 3 | Same canonical core plus directly affected reference | No | bounded-return |
+| 5 | Validate and hand off core | Run focused/full deterministic validation, rebuild evaluations, inspect privacy/diff and obtain independent QA before TASK-033. | AC1, AC2, AC3, AC4, AC5, AC6 | Re-run declared validation and inspect child QA verdict. | Done | 4 | Tests, validation artifacts and child workflow evidence | No | bounded-return |
 
 ## Parent AC Evidence
 
-- AC1, AC2, AC3, AC4, AC5, AC6: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.
+- AC1: `recommendation-delta.md` and typed schema v2 extend the existing state
+  once while preserving provenance, current recommendation, strongest rival,
+  exact readiness and qualifying-delta semantics.
+- AC2: The initial-alignment gate permits bounded reconnaissance, requires
+  action-changing ambiguity before a question and preserves routine/direct and
+  same-robust-move controls.
+- AC3: The two-condition re-clarification gate, owner/empirical fork routing,
+  owner-settled versions and selective validity rules are represented in the
+  canonical source and focused state tests.
+- AC4: `goal-qualification.md` implements move-up, alternative-route and
+  move-down analysis plus all seven object classes without treating a proxy,
+  project, tool or task as the end.
+- AC5: Aspiration, discovery and operational purposes remain separate from
+  exact-action readiness; incomplete discovery contracts fail closed and an
+  operational goal can coexist with `Infeasible as posed` action readiness.
+- AC6: Goal and action contracts reject task-labelled indicators and arbitrary
+  lag interpolation while requiring evidence, role, controllability, lag and
+  falsifier.
+
+`CASE-COVERAGE.md` maps SAGR-001 through SAGR-013 without changing the frozen
+authority. These are documented and deterministic source claims only;
+TASK-034 still owns exact-runtime case verdicts. No separate structured proof
+recipe applies to this source-only child, so `EVIDENCE.json` remains empty by
+design.
 
 ## QA & Code Review
 
