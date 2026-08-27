@@ -1,0 +1,249 @@
+{
+  "artifact_identity": "sha256:7a2ab5ec2aec23703cc68396a67f31735e7fd939b2f5569d25023584b4888208",
+  "commitments": [
+    {
+      "amendment": null,
+      "child_owners": [
+        "TASK-032",
+        "TASK-033",
+        "TASK-034"
+      ],
+      "classification": "preserved",
+      "disposition": "active",
+      "id": "OC1",
+      "lost_capability": "",
+      "material": true,
+      "parent_acs": [
+        "AC1",
+        "AC2",
+        "AC3",
+        "AC4",
+        "AC5",
+        "AC6",
+        "AC7",
+        "AC8",
+        "AC9",
+        "AC10"
+      ],
+      "required_outcome_proof": "Canonical and exact-runtime evidence must show the complete stated-goal through review journey while rejecting proxy, activity and tool-completion substitutes.",
+      "source_locations": [
+        "REQUIREMENTS.md#intent-spine"
+      ],
+      "target_locations": [
+        "EPIC-CONTRACT.md#artifact-targets",
+        "DECOMPOSITION.md#authorized-child-rows"
+      ],
+      "user_visible_consequence": "A user can qualify the real goal and receive separate evidence-based decisions about the goal and the path without a proxy or output silently replacing the intended outcome."
+    },
+    {
+      "amendment": null,
+      "child_owners": [
+        "TASK-031",
+        "TASK-032",
+        "TASK-033",
+        "TASK-034",
+        "TASK-035"
+      ],
+      "classification": "preserved",
+      "disposition": "active",
+      "id": "OC2",
+      "lost_capability": "",
+      "material": true,
+      "parent_acs": [
+        "AC1",
+        "AC2",
+        "AC3",
+        "AC4",
+        "AC5",
+        "AC6",
+        "AC7",
+        "AC8",
+        "AC9",
+        "AC10",
+        "AC11",
+        "AC12",
+        "AC13",
+        "AC14",
+        "AC15",
+        "AC16",
+        "AC17"
+      ],
+      "required_outcome_proof": "Every material capability must map to canonical artifacts, frozen sanitised cases, exact-runtime evidence where claimed, privacy and package boundaries, QA and downstream handoff proof.",
+      "source_locations": [
+        "REQUIREMENTS.md#intent-spine"
+      ],
+      "target_locations": [
+        "EPIC-CONTRACT.md#parent-ac-proof-ownership",
+        "DECOMPOSITION.md#authorized-child-rows"
+      ],
+      "user_visible_consequence": "The product gains aligned decision state, selective clarification, goal qualification, event and scheduled review, material-progress and drift tests, and explicit dispositions as one coherent capability."
+    },
+    {
+      "amendment": null,
+      "child_owners": [
+        "TASK-031",
+        "TASK-032",
+        "TASK-033",
+        "TASK-034",
+        "TASK-035"
+      ],
+      "classification": "preserved",
+      "disposition": "active",
+      "id": "OC3",
+      "lost_capability": "",
+      "material": true,
+      "parent_acs": [
+        "AC2",
+        "AC3",
+        "AC4",
+        "AC5",
+        "AC6",
+        "AC7",
+        "AC8",
+        "AC9",
+        "AC10",
+        "AC13",
+        "AC14",
+        "AC17"
+      ],
+      "required_outcome_proof": "Sequenced cases and the downstream brief must preserve the full reconnaissance, alignment, causal qualification, execution admission, evidence reconciliation and exception-aware review journey.",
+      "source_locations": [
+        "REQUIREMENTS.md#intent-spine"
+      ],
+      "target_locations": [
+        "EPIC-CONTRACT.md#artifact-targets",
+        "DECOMPOSITION.md#authorized-child-rows"
+      ],
+      "user_visible_consequence": "The advisor can move through the complete decision journey without premature commitment, repetitive restart or waiting for a scheduled review after a material event."
+    },
+    {
+      "amendment": null,
+      "child_owners": [
+        "TASK-031",
+        "TASK-032",
+        "TASK-033",
+        "TASK-034"
+      ],
+      "classification": "preserved",
+      "disposition": "active",
+      "id": "OC4",
+      "lost_capability": "",
+      "material": true,
+      "parent_acs": [
+        "AC1",
+        "AC2",
+        "AC3",
+        "AC4",
+        "AC5",
+        "AC6",
+        "AC8",
+        "AC9",
+        "AC11",
+        "AC12",
+        "AC13",
+        "AC14"
+      ],
+      "required_outcome_proof": "Negative controls must fail proxy acceptance, premature questioning, activity substitution, mismatched-evidence retention, unjustified goal rigidity and private-data leakage.",
+      "source_locations": [
+        "REQUIREMENTS.md#intent-spine"
+      ],
+      "target_locations": [
+        "EPIC-CONTRACT.md#invalid-substitutes",
+        "DECOMPOSITION.md#authorized-child-rows"
+      ],
+      "user_visible_consequence": "A superficially polished but strategically wrong workflow cannot pass merely because it produces a goal statement, review report or completed tool."
+    },
+    {
+      "amendment": null,
+      "child_owners": [
+        "TASK-033",
+        "TASK-034",
+        "TASK-035"
+      ],
+      "classification": "preserved",
+      "disposition": "active",
+      "id": "OC5",
+      "lost_capability": "",
+      "material": false,
+      "parent_acs": [
+        "AC7",
+        "AC11",
+        "AC12",
+        "AC13",
+        "AC15",
+        "AC16",
+        "AC17"
+      ],
+      "required_outcome_proof": "Dependency, privacy, claim and package audits plus negative controls and the downstream handoff must prove that excluded state systems, accountability devices, universal cadence, coupling and unauthorised delivery are absent.",
+      "source_locations": [
+        "REQUIREMENTS.md#intent-spine"
+      ],
+      "target_locations": [
+        "EPIC-CONTRACT.md#invariants",
+        "DECOMPOSITION.md#authorized-child-rows"
+      ],
+      "user_visible_consequence": "The change remains proportionate, private and portable instead of becoming a compulsory accountability system or tightly coupled personal workflow."
+    },
+    {
+      "amendment": null,
+      "child_owners": [
+        "TASK-031",
+        "TASK-034",
+        "TASK-035"
+      ],
+      "classification": "preserved",
+      "disposition": "active",
+      "id": "OC6",
+      "lost_capability": "",
+      "material": false,
+      "parent_acs": [
+        "AC11",
+        "AC12",
+        "AC13",
+        "AC14",
+        "AC15",
+        "AC16",
+        "AC17"
+      ],
+      "required_outcome_proof": "The frozen baseline, runner-base reconciliation, exact-runtime result boundary and separate downstream handoff must keep every material assumption explicit and current.",
+      "source_locations": [
+        "REQUIREMENTS.md#intent-spine"
+      ],
+      "target_locations": [
+        "EPIC-CONTRACT.md#sources-of-truth",
+        "DECOMPOSITION.md#authorized-child-rows"
+      ],
+      "user_visible_consequence": "Implementation proceeds from the released contracts and correct runner base, while private dogfood remains an honest later proof layer rather than an implied public-product result."
+    },
+    {
+      "amendment": null,
+      "child_owners": [
+        "TASK-035"
+      ],
+      "classification": "preserved",
+      "disposition": "active",
+      "id": "OC7",
+      "lost_capability": "",
+      "material": false,
+      "parent_acs": [
+        "AC15",
+        "AC16",
+        "AC17"
+      ],
+      "required_outcome_proof": "The approved artifact identity, current intent audit, parent acceptance audit and downstream authority boundary must trace delivery back to John's 2026-08-27 approval.",
+      "source_locations": [
+        "REQUIREMENTS.md#owner-approval"
+      ],
+      "target_locations": [
+        "EPIC-CONTRACT.md#sources-of-truth",
+        "DECOMPOSITION.md#summary"
+      ],
+      "user_visible_consequence": "The implemented and downstream work remains traceable to the meaning John approved rather than to agent-inferred scope or workflow identifiers."
+    }
+  ],
+  "review_source": "Owner-approved EPIC-007 requirements, Epic contract and decomposition reviewed in SA: Goal Review Workshop on 2026-08-27.",
+  "reviewed_at": "2026-08-27",
+  "reviewed_by": "Goal Review Workshop coordinator",
+  "schema_version": 1,
+  "verdict": "pass"
+}
