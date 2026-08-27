@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "release": {
+    "version": "0.2.0-alpha.7",
+    "tag": "v0.2.0-alpha.7",
+    "status": "prerelease",
+    "url": "https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.7",
+    "published_at": "2026-08-27T05:57:41Z",
+    "source_revision": "0be59190b6e048e31ce990024841c2a0d42a282a",
+    "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3"
+  },
+  "public_assets": {
+    "fresh_download_verification": "pass",
+    "install_artifacts_sha256": "97e7ad97986dddce98ac335641c4cad2fcdb096769850f2baf935198209c0d73",
+    "standalone_skill_sha256": "6f91127249e6c63dfb83846a7cf566cffd6bac61761dfa0dad081a42a70edf80",
+    "openai_local_marketplace_sha256": "2f3142ff515cfb7622a47f14dc189455131e9f4f838e685f18d3aeb54d7c662f",
+    "chatgpt_custom_gpt_sha256": "0208e72a9d320331f8c8bd13cb3dacb8cb04508c0e92947b07e535aa3ab5b4e9",
+    "clean_local_reproduction_matched": true
+  },
+  "continuous_integration": {
+    "release_run": {
+      "id": 33044133493,
+      "url": "https://github.com/johndetlefs/strategic-advisor/actions/runs/33044133493",
+      "head_sha": "0be59190b6e048e31ce990024841c2a0d42a282a",
+      "conclusion": "success",
+      "scope": "Exact-source validation, two independent builds, publication, fresh public download and verification"
+    },
+    "validation_run": {
+      "id": 33044133507,
+      "url": "https://github.com/johndetlefs/strategic-advisor/actions/runs/33044133507",
+      "head_sha": "0be59190b6e048e31ce990024841c2a0d42a282a",
+      "conclusion": "success",
+      "scope": "Repository validation, evaluation inventory, negative fixtures and artifact reproduction"
+    }
+  },
+  "independent_qa": {
+    "verdict": "pass after one wording correction",
+    "reviewed_boundary": "Experimental alpha with a two-case current-runtime repair diagnostic; no support, parity, adoption or effectiveness claim",
+    "additional_model_campaign_required": false
+  },
+  "owner_codex_installation": {
+    "installation_source": "Freshly downloaded public standalone ZIP",
+    "installation_target": "$HOME/.agents/skills/strategic-advisor",
+    "installed_tree_matches_public_zip": true,
+    "previous_installation_backup_retained": true,
+    "installed_skill_md_sha256": "0235505eadffe16315a1f69770a4f53b4973eb85020b29c95e76be8d3331ff26",
+    "installed_goal_review_sha256": "32a918d52e5069806fdc060230c186e18d7455bb49d46fe4bde3dde3bfe97ed9"
+  },
+  "fresh_codex_activation": {
+    "observed_at": "2026-08-27T06:01:37Z",
+    "host": "Codex CLI 0.145.0-alpha.30",
+    "model": "gpt-5.6-sol",
+    "mode": "ephemeral read-only activation check",
+    "skill_loaded": true,
+    "skill_path": "$HOME/.agents/skills/strategic-advisor/SKILL.md",
+    "goal_review_reference_loaded": true,
+    "goal_review_path": "$HOME/.agents/skills/strategic-advisor/references/goal-review.md",
+    "observed_boundary": "An enabler is credited only for evidenced movement of a named outcome, driver, constraint or decision; completion alone is not goal progress.",
+    "model_calls": 1
+  },
+  "proof_boundary": {
+    "public_package_and_release_alignment": true,
+    "owner_codex_activation": true,
+    "strategy_workspace_handoff": "owner-deferred",
+    "private_workspace_mutation": false,
+    "cross_host_parity": false,
+    "support": false,
+    "adoption": false,
+    "strategic_effectiveness": false
+  }
+}
