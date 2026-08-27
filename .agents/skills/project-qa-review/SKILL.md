@@ -47,6 +47,12 @@ Run the post-implementation quality gate for a project-workflow task.
     the only honest verdict is `Changes requested`.
 11. Run `./.project-workflow/cli/workflow doctor` and include any workflow-state warnings or errors in the review output.
 12. If findings exist, report them first with severity and file references. Keep status as `Review` or set `Blocked` for release-blocking issues.
+    Preserve the independent `Changes Requested` and adversarial answers as issued. After the named
+    fixes, record one `workflow validation impact` decision as `affected`, include `qa-review`, and
+    set its validation verdict from the affected evidence. A passing final disposition also records
+    `Findings disposition: Resolved`, `Affected validation verdict: Pass`, whether the user job can
+    still remain undone (`No`), substantive affected-validation evidence, and
+    `Second QA commissioned: No`. This closes the original gate; it is not a new QA verdict.
 13. If review passes, say so. Run `./.project-workflow/cli/workflow task status --id <TASK-ID> --to Complete` only when the user explicitly asks to complete the task after review.
 14. After completion, route to `project-retro`.
 
@@ -69,12 +75,16 @@ Run the post-implementation quality gate for a project-workflow task.
   Findings may trigger affected validation, but never a fresh open-ended review. Another reviewer
   invocation requires a new material change, an explicit high-consequence requirement, or direct
   owner authorization.
+- Completion accepts either the original independent `Pass` or a preserved `Changes Requested`
+  verdict whose named findings have the exact passing affected-validation disposition above.
+  Missing, pending, self-contradictory, or unevidenced resolution remains blocked.
 
 ## Verdicts
 
 - `Pass`: no blocking findings and validation evidence covers the acceptance criteria by AC ID.
 - `Pass with follow-ups`: safe to complete, but separate follow-up work is recommended.
-- `Changes requested`: completion is blocked until findings are addressed.
+- `Changes requested`: completion is blocked until findings are addressed and the one affected-
+  validation disposition passes; do not overwrite it with a fictional independent `Pass`.
 
 For delegated work, independently inspect coordinator-verified worker identity, exact source/worktree,
 allowed diff, validations, evidence, capability/capacity provenance, descendant blocking, runtime

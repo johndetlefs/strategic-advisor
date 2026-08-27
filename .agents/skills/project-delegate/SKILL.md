@@ -6,6 +6,11 @@ description: Use when coordinating approved Task implementation rows or Epic chi
 
 # Project Delegate
 
+Compatibility entry: `project-coordinator` is the owner-facing role. Invoking Delegate enters that
+same Coordinator contract for an already-approved execution graph; it does not create a second role
+or shared-state writer. This entry is retained for the first Coordinator release and becomes
+removal-eligible only after one full minor release and observed migration evidence.
+
 Coordinate existing execution units for exactly one approved Task or Epic. Delegate executes authority already recorded in requirements and the canonical plan; it never creates scope, approves requirements, invents rows/children, or batches unrelated standalone Tasks.
 
 ## Invocation Rules
@@ -35,6 +40,11 @@ Choose the lightest sufficient surface:
 - `peer-team` only for an explicit `peer:<group-id>` need and verified peer-team plus peer-messaging support.
 
 Ordinary dependency graphs stay coordinator-mediated. Do not select a team merely because several units can run in parallel.
+
+For current-contract plans, verified capacity never earns a non-Coordinator surface by itself.
+Every such unit must declare `benefit:<slug>`, `overhead:<slug>`, and `tradeoff:<slug>` in Execution
+Needs. Missing basis defaults non-binding work to Coordinator/sequential and blocks a binding
+surface need. The benefit cannot override dependency, scope, authority, or capability failure.
 
 ## Capability And Authority Gate
 
