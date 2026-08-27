@@ -31,7 +31,7 @@ not weakened or relabelled as product failures.
 
 | Check | Result |
 | --- | --- |
-| `python3 -m unittest tests.test_recommendation_delta tests.test_alignment_goal_contract tests.test_model_delta_reviewer` | Pass: 26 tests. |
+| `python3 -m unittest tests.test_recommendation_delta tests.test_alignment_goal_contract tests.test_model_delta_reviewer` | Pass: 29 tests after adversarial selective-invalidation remediation. |
 | `python3 -m unittest tests.test_install_artifacts.InstallArtifactTests.test_current_runtime_fits_chatgpt_knowledge_inventory` | Pass: 19 Knowledge records, within the 20-file cap. |
 | `python3 -m py_compile scripts/recommendation_delta.py scripts/model_delta_reviewer.py` | Pass. |
 | `python3 scripts/build_evals.py --check` | Pass: existing 56-case generated inventory is unchanged. |
@@ -45,12 +45,12 @@ not weakened or relabelled as product failures.
 
 ## Full-Suite Boundary
 
-The final pre-review composed full-suite run executed 210 tests in 103.765
-seconds and reported seven failures. All seven expose the same intended
+The post-QA-remediation composed full-suite run executed 213 tests in 97.798
+seconds and reported the same seven failures. All seven expose the same intended
 integration boundary:
 
 - canonical runtime identity is now
-  `sha256:8ccfd1e829a6a1bf1d8910f0f8d834fce0106a30deb056c10f9d22fe48763cc6`,
+  `sha256:e524111359b8bd3902f1f0f086f047ab0131c10908806bc4a3d53d9a6befd60d`,
   not the retained alpha.6 identity
   `sha256:8944982b82ca7807f33258dcdb3907b36aa1cc2dff9ee21d54492a68bcc9ecbb`;
 - publication fixtures correctly reject an unprepared distribution;

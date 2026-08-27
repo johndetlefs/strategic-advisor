@@ -111,6 +111,28 @@ class RecommendationDeltaTests(unittest.TestCase):
         self.assertEqual(result.decision, "revise")
         self.assertEqual(result.reason_codes, ("false_converse_or_over_retraction",))
 
+    def test_unaffected_recommendation_or_rival_dependency_cannot_disappear(self) -> None:
+        value = delta(kinds=["evidence"], support=["replacement-outcome"])
+        value["surviving_claim_ids"].remove("small-rival")
+        with self.assertRaisesRegex(
+            MODULE.ContractError,
+            "unaffected recommendation and rival dependencies must be recorded as surviving",
+        ):
+            MODULE.evaluate(base_state(), value)
+
+    def test_claim_cannot_be_both_falsified_and_surviving(self) -> None:
+        value = delta(kinds=["evidence"], support=["replacement-outcome"])
+        value["affected_claim_ids"].append("small-rival")
+        value["falsified_claim_ids"].append("small-rival")
+        with self.assertRaisesRegex(MODULE.ContractError, "both survive and be falsified"):
+            MODULE.evaluate(base_state(), value)
+
+    def test_falsified_claim_must_be_affected(self) -> None:
+        value = delta(kinds=["evidence"], support=["replacement-outcome"])
+        value["falsified_claim_ids"].append("small-rival")
+        with self.assertRaisesRegex(MODULE.ContractError, "falsified claims must be affected"):
+            MODULE.evaluate(base_state(), value)
+
     def test_preference_and_repetition_do_not_change_recommendation(self) -> None:
         result = MODULE.evaluate(base_state(), delta(kinds=["preference", "repetition"]))
         self.assertEqual(result.decision, "revise")
