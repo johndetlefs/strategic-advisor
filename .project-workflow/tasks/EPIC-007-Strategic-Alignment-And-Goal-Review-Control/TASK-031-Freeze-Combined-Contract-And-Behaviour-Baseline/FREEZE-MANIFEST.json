@@ -130,15 +130,15 @@
     "rule": "TASK-034 may use this frozen model and host only after it records the exact reconciled runner commit, treatment source revision, installed runtime-package identity and activation trace. Viewing a target output before those identities are sealed invalidates the run."
   },
   "freeze_scope": {
-    "authority_commit": "PENDING_CORRECTION_COMMIT",
+    "authority_commit": "acd01e4c82380e22c66662f3a7a34964f24abf53",
     "allowed_prefixes": [
       ".project-workflow/TRACKER.md",
       ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control",
       "scripts/build_goal_review_freeze.py",
       "tests/test_goal_review_freeze.py"
     ],
-    "changed_path_count": 0,
-    "changed_paths_sha256": "PENDING_CORRECTION_COMMIT"
+    "changed_path_count": 34,
+    "changed_paths_sha256": "fc50df5348f17c7f8a5e531a7997227f0a6026d7f6fb0eeaf7e1155e79f9403a"
   },
   "proof_layers": {
     "documented_semantics": "Canonical source review after implementation; not behavioural proof.",

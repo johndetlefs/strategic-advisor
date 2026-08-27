@@ -29,7 +29,7 @@ class GoalReviewFreezeTests(unittest.TestCase):
         self.assertEqual(set(document["categories"]), freeze.EXPECTED_CATEGORIES)
         self.assertEqual(document["stateful_case_ids"], ["SAGR-007", "SAGR-008"])
         self.assertEqual(document["state_assertion_count"], 3)
-        self.assertEqual(set(document["control_pairs"]), freeze.EXPECTED_CONTROL_PAIRS)
+        self.assertEqual(set(document["control_pairs"]), set(freeze.EXPECTED_CONTROL_PAIRS))
 
     def test_duplicate_case_id_fails(self) -> None:
         authority = copy.deepcopy(self.authority)
