@@ -117,8 +117,8 @@ class ValidatorFixtureTests(unittest.TestCase):
         path = self.fixture_root / "README.md"
         path.write_text(
             path.read_text(encoding="utf-8").replace(
-                "Bounded 16-scenario-group Codex drift smoke (run-009) passed",
-                "Bounded 7-scenario-group Codex drift smoke (run-004) passed",
+                "Historical bounded 16-scenario-group Codex drift smoke (run-009) passed",
+                "Historical bounded 7-scenario-group Codex drift smoke (run-004) passed",
                 1,
             ),
             encoding="utf-8",
@@ -622,6 +622,32 @@ class ValidatorFixtureTests(unittest.TestCase):
         path.write_text(json.dumps(status, indent=2) + "\n", encoding="utf-8")
         result = self.run_validator("evals")
         self.assert_named_failure(result, "EVALS_STATUS_DRIFT")
+
+    def test_goal_review_release_evidence_cannot_claim_certification(self) -> None:
+        path = (
+            self.fixture_root
+            / "evidence/evaluations/goal-review/release-evidence.json"
+        )
+        evidence = json.loads(path.read_text(encoding="utf-8"))
+        evidence["claim_boundary"] = "Two-case product certification."
+        path.write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
+        result = self.run_validator("evals")
+        self.assert_named_failure(result, "GOAL_REVIEW_EVIDENCE_INVALID")
+
+    def test_goal_review_retained_artifact_tamper_fails_inventory(self) -> None:
+        path = (
+            self.fixture_root
+            / "evidence/evaluations/goal-review/run-002-repair-affected/result.json"
+        )
+        result_record = json.loads(path.read_text(encoding="utf-8"))
+        result_record["scenarios"][0]["sessions"][0]["turns"][0]["assistant"] += (
+            "\nTampered."
+        )
+        path.write_text(
+            json.dumps(result_record, indent=2) + "\n", encoding="utf-8"
+        )
+        result = self.run_validator("evals")
+        self.assert_named_failure(result, "GOAL_REVIEW_EVIDENCE_INVALID")
 
     def test_private_context_field_fails_pilot_registry_scope(self) -> None:
         path = self.fixture_root / "pilots" / "registry.json"

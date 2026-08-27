@@ -726,18 +726,16 @@ class LiveDriftSmokeControlTests(unittest.TestCase):
             for path in (REPOSITORY_ROOT / "evidence" / "evaluations").rglob("*")
         }
         current = RUNNER.current_runtime_manifest(REPOSITORY_ROOT)
-        retained = json.loads(
-            (
-                REPOSITORY_ROOT
-                / "evidence/evaluations/drift-smoke/run-009/runtime-package-manifest.json"
-            ).read_text(encoding="utf-8")
+        distribution = json.loads(
+            (REPOSITORY_ROOT / "distribution.json").read_text(encoding="utf-8")
         )
         after = {
             path.relative_to(REPOSITORY_ROOT).as_posix()
             for path in (REPOSITORY_ROOT / "evidence" / "evaluations").rglob("*")
         }
         self.assertEqual(
-            current["package_identity_sha256"], retained["package_identity_sha256"]
+            current["package_identity_sha256"],
+            distribution["distribution"]["runtime_package_identity_sha256"],
         )
         self.assertEqual(before, after)
 

@@ -21,11 +21,18 @@ from build_evals import EvalBuildError, serialized_document
 from drift_smoke import SmokeError as DriftSmokeError
 from drift_smoke import validate_result as validate_drift_smoke_result
 from drift_smoke import validate_spec as validate_drift_smoke_spec
-from release_state import ReleaseStateError, validate as validate_release_state
+from release_state import (
+    ReleaseStateError,
+    runtime_identity as canonical_runtime_identity,
+    validate as validate_release_state,
+)
 
 
 SCOPES = ("skill", "lenses", "evals", "pilots", "privacy", "claims", "links")
 CURRENT_DRIFT_RUN = "run-009"
+CURRENT_GOAL_REVIEW_EVIDENCE = PurePosixPath(
+    "evidence/evaluations/goal-review/release-evidence.json"
+)
 PUBLIC_ARTIFACTS = (
     "README.md",
     "INSTALL.md",
@@ -464,7 +471,7 @@ def authoritative_lens_names(root: Path, contract: dict) -> list[str]:
 
 
 def authoritative_drift_status(root: Path) -> tuple[int, str]:
-    """Return public smoke status from the validated frozen spec and current result."""
+    """Return historical alpha.6 smoke status from its exact retained runtime."""
     drift_spec, drift_spec_sha256 = validate_drift_smoke_spec(
         root, root / SKILL_ROOT / "evals" / "drift_smoke_cases.json"
     )
@@ -476,11 +483,171 @@ def authoritative_drift_status(root: Path) -> tuple[int, str]:
         / CURRENT_DRIFT_RUN
         / "result.json"
     )
+    runtime_manifest_path = result_path.parent / "runtime-package-manifest.json"
+    runtime_manifest = json.loads(runtime_manifest_path.read_text(encoding="utf-8"))
+    retained_runtime_identity = str(
+        runtime_manifest.get("package_identity_sha256", "")
+    )
+    if not re.fullmatch(r"[0-9a-f]{64}", retained_runtime_identity):
+        raise ValueError("the historical bounded drift smoke runtime is invalid")
     if not validate_drift_smoke_result(
-        root, drift_spec, drift_spec_sha256, result_path
+        root,
+        drift_spec,
+        drift_spec_sha256,
+        result_path,
+        expected_runtime_identity=retained_runtime_identity,
     ):
-        raise ValueError("the current bounded drift smoke did not pass")
+        raise ValueError("the historical bounded drift smoke did not pass")
     return len(drift_spec["cases"]), CURRENT_DRIFT_RUN
+
+
+def goal_review_evidence_inventory(root: Path) -> tuple[list[dict[str, str]], str]:
+    """Bind every retained goal-review artifact except the binding manifest itself."""
+    evidence_root = root / "evidence" / "evaluations" / "goal-review"
+    records: list[dict[str, str]] = []
+    for path in sorted(evidence_root.rglob("*")):
+        if not path.is_file() or path.name == CURRENT_GOAL_REVIEW_EVIDENCE.name:
+            continue
+        if path.is_symlink():
+            raise ValueError("goal-review evidence must not contain symlinks")
+        records.append(
+            {
+                "path": path.relative_to(evidence_root).as_posix(),
+                "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            }
+        )
+    payload = (
+        json.dumps(records, sort_keys=True, separators=(",", ":")) + "\n"
+    ).encode("utf-8")
+    return records, hashlib.sha256(payload).hexdigest()
+
+
+def validate_current_goal_review_diagnostic(root: Path) -> dict:
+    """Validate the exact bounded repaired-runtime evidence and its claim boundary."""
+    evidence_path = root / Path(*CURRENT_GOAL_REVIEW_EVIDENCE.parts)
+    try:
+        evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise ValueError("current goal-review release evidence is unreadable") from error
+    required_keys = {
+        "schema_version",
+        "mode",
+        "verdict",
+        "claim_boundary",
+        "runtime_package_identity_sha256",
+        "target",
+        "current_cases",
+        "historical_failure",
+        "untested_on_current_runtime",
+        "evidence_inventory",
+    }
+    if not isinstance(evidence, dict) or set(evidence) != required_keys:
+        raise ValueError("current goal-review release evidence has invalid fields")
+    runtime_identity = canonical_runtime_identity(root)
+    if (
+        evidence.get("schema_version") != 1
+        or evidence.get("mode") != "diagnostic"
+        or evidence.get("verdict") != "pass"
+        or evidence.get("runtime_package_identity_sha256") != runtime_identity
+        or "not certification" not in str(evidence.get("claim_boundary", ""))
+    ):
+        raise ValueError("current goal-review release evidence overstates or mismatches proof")
+    target = evidence.get("target")
+    if target != {
+        "cli_version": "codex-cli 0.148.0-alpha.9",
+        "host": "codex-cli",
+        "model": "gpt-5.6-sol",
+    }:
+        raise ValueError("current goal-review release target is invalid")
+    expected_cases = [
+        {
+            "id": "SAGR-014",
+            "receipt": "run-002-repair-canary-v2/runner-receipt.json",
+            "result": "run-002-repair-canary-v2/result.json",
+        },
+        {
+            "id": "SAGR-013",
+            "receipt": "run-002-repair-affected/runner-receipt.json",
+            "result": "run-002-repair-affected/result.json",
+        },
+    ]
+    if evidence.get("current_cases") != expected_cases:
+        raise ValueError("current goal-review release cases must be exactly SAGR-014/SAGR-013")
+    evidence_root = evidence_path.parent
+    for case in expected_cases:
+        result = json.loads((evidence_root / case["result"]).read_text(encoding="utf-8"))
+        receipt = json.loads((evidence_root / case["receipt"]).read_text(encoding="utf-8"))
+        scenarios = result.get("scenarios", []) if isinstance(result, dict) else []
+        if (
+            result.get("status") != "pass"
+            or result.get("selection", {}).get("selected_case_ids") != [case["id"]]
+            or result.get("target", {}).get("runtime_package_identity_sha256")
+            != runtime_identity
+            or result.get("target", {}).get("model") != "gpt-5.6-sol"
+            or result.get("target", {}).get("host") != "codex-cli"
+            or len(scenarios) != 1
+            or scenarios[0].get("case_id") != case["id"]
+            or scenarios[0].get("status") != "pass"
+            or receipt.get("outcome") != "pass"
+            or receipt.get("runtime_identity") != runtime_identity
+            or receipt.get("selected_scope") != [case["id"]]
+            or receipt.get("target_calls") != 1
+            or receipt.get("stage_complete") is not True
+            or receipt.get("regrade") is not False
+        ):
+            raise ValueError(f"current goal-review artifact is invalid for {case['id']}")
+    historical = evidence.get("historical_failure")
+    expected_historical = {
+        "case": "SAGR-014",
+        "receipt": "run-001-affected/runner-receipt.json",
+        "result": "run-001-affected/result.json",
+        "runtime_package_identity_sha256": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6",
+    }
+    if historical != expected_historical:
+        raise ValueError("historical goal-review failure binding is invalid")
+    historical_result = json.loads(
+        (evidence_root / expected_historical["result"]).read_text(encoding="utf-8")
+    )
+    historical_receipt = json.loads(
+        (evidence_root / expected_historical["receipt"]).read_text(encoding="utf-8")
+    )
+    historical_sagr014 = next(
+        (
+            scenario
+            for scenario in historical_result.get("scenarios", [])
+            if scenario.get("case_id") == "SAGR-014"
+        ),
+        None,
+    )
+    if (
+        historical_result.get("status") != "fail"
+        or not isinstance(historical_sagr014, dict)
+        or historical_sagr014.get("status") != "fail"
+        or historical_receipt.get("outcome") != "limit-reached"
+        or historical_receipt.get("runtime_identity")
+        != expected_historical["runtime_package_identity_sha256"]
+    ):
+        raise ValueError("historical goal-review failure was erased or altered")
+    expected_untested = [
+        "SAGR-001",
+        "SAGR-009",
+        "SAGR-015",
+        "SAGR-016",
+        "SAGR-018",
+        "SAGR-020",
+        "DRIFT-004",
+        "DRIFT-014",
+        "DRIFT-016",
+    ]
+    if evidence.get("untested_on_current_runtime") != expected_untested:
+        raise ValueError("untested repaired-runtime cases are not declared exactly")
+    inventory, inventory_identity = goal_review_evidence_inventory(root)
+    if evidence.get("evidence_inventory") != {
+        "file_count": len(inventory),
+        "sha256": inventory_identity,
+    }:
+        raise ValueError("goal-review evidence inventory is stale")
+    return evidence
 
 
 def readme_table_value(readme: str, field: str) -> str | None:
@@ -895,21 +1062,19 @@ def check_claims(root: Path) -> list[Diagnostic]:
             )
         else:
             evaluation = readme_table_value(readme, "Evaluation") or ""
-            evaluation_match = re.match(
-                r"^Bounded (?P<count>\d+)-scenario-group Codex drift smoke "
-                r"\((?P<run>run-\d+)\) passed;",
-                evaluation,
+            expected_prefix = (
+                f"Historical bounded {scenario_group_count}-scenario-group Codex drift smoke "
+                f"({current_drift_run}) passed on the alpha.6 runtime; current two-case "
+                "goal-review repair diagnostic (SAGR-014, SAGR-013) passed on "
+                "Codex CLI / gpt-5.6-sol;"
             )
-            if not evaluation_match or (
-                int(evaluation_match.group("count")) != scenario_group_count
-                or evaluation_match.group("run") != current_drift_run
-            ):
+            if not evaluation.startswith(expected_prefix):
                 failures.append(
                     diagnostic(
                         "CLAIMS_PUBLIC_STATUS_DRIFT",
-                        "README evaluation summary must match the validated current "
-                        f"drift-smoke authority: {scenario_group_count} scenario groups "
-                        f"in {current_drift_run}.",
+                        "README evaluation summary must distinguish the validated historical "
+                        f"drift-smoke authority ({scenario_group_count} scenario groups in "
+                        f"{current_drift_run}) from the current two-case repair diagnostic.",
                         "README.md",
                     )
                 )
@@ -2181,11 +2346,22 @@ def check_evals(root: Path) -> list[Diagnostic]:
                 drift_spec, drift_spec_sha256 = validate_drift_smoke_spec(
                     root, eval_root / "drift_smoke_cases.json"
                 )
+                retained_runtime_manifest = json.loads(
+                    (drift_result_path.parent / "runtime-package-manifest.json").read_text(
+                        encoding="utf-8"
+                    )
+                )
+                retained_runtime_identity = str(
+                    retained_runtime_manifest.get("package_identity_sha256", "")
+                )
+                if not re.fullmatch(r"[0-9a-f]{64}", retained_runtime_identity):
+                    raise DriftSmokeError("retained runtime identity is invalid")
                 drift_result_valid = validate_drift_smoke_result(
                     root,
                     drift_spec,
                     drift_spec_sha256,
                     drift_result_path,
+                    expected_runtime_identity=retained_runtime_identity,
                 )
             except (OSError, DriftSmokeError) as error:
                 failures.append(
@@ -2206,6 +2382,22 @@ def check_evals(root: Path) -> list[Diagnostic]:
         drift_target = (
             drift_result.get("target", {}) if isinstance(drift_result, dict) else {}
         )
+        try:
+            current_goal_review = validate_current_goal_review_diagnostic(root)
+            goal_review_inventory, goal_review_inventory_identity = (
+                goal_review_evidence_inventory(root)
+            )
+        except (OSError, ValueError, json.JSONDecodeError) as error:
+            current_goal_review = None
+            goal_review_inventory = []
+            goal_review_inventory_identity = ""
+            failures.append(
+                diagnostic(
+                    "GOAL_REVIEW_EVIDENCE_INVALID",
+                    str(error),
+                    CURRENT_GOAL_REVIEW_EVIDENCE,
+                )
+            )
         expected_status = {
             "schema_version": 1,
             "behavioral_comparison": "not-run",
@@ -2225,6 +2417,18 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "bounded_drift_smoke_model": drift_target.get("model", ""),
             "bounded_drift_smoke_runtime_package_identity_sha256": drift_target.get(
                 "runtime_package_identity_sha256", ""
+            ),
+            "bounded_drift_smoke_scope": "historical-alpha.6-runtime",
+            "current_goal_review_repair_diagnostic": "pass",
+            "current_goal_review_repair_cases": ["SAGR-014", "SAGR-013"],
+            "current_goal_review_repair_model": "gpt-5.6-sol",
+            "current_goal_review_repair_runtime_package_identity_sha256": (
+                current_goal_review.get("runtime_package_identity_sha256", "")
+                if isinstance(current_goal_review, dict)
+                else ""
+            ),
+            "current_goal_review_evidence_inventory_sha256": (
+                goal_review_inventory_identity
             ),
         }
         status_path = root / "evidence/evaluations/status.json"
@@ -2247,8 +2451,10 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "Real-pilot evidence: **None enrolled**",
             f"Executable synthetic inventory: **{combined_case_count} cases**",
             f"Trigger inventory: **{trigger_query_count} queries**",
-            "Bounded current-source drift smoke: **Pass**",
-            f"Drift-smoke execution: **Codex CLI / gpt-5.6-sol / {current_drift_run}**",
+            "Historical alpha.6 drift smoke: **Pass**",
+            f"Historical drift-smoke execution: **Codex CLI / gpt-5.6-sol / {current_drift_run}**",
+            "Exact current-runtime goal-review repair diagnostic: **Pass (SAGR-014, SAGR-013)**",
+            "Current repair target: **Codex CLI / gpt-5.6-sol**",
         )
         if not status_markdown.is_file() or any(
             line not in read_text(status_markdown) for line in required_status_lines
@@ -2307,7 +2513,13 @@ def check_evals(root: Path) -> list[Diagnostic]:
             "recommendation-delta/task-033/exact-runtime.jsonl",
             "recommendation-delta/task-033/material-state.json",
             "recommendation-delta/task-033/prompt.txt",
+            CURRENT_GOAL_REVIEW_EVIDENCE.relative_to(
+                PurePosixPath("evidence/evaluations")
+            ).as_posix(),
         }
+        allowed_evidence.update(
+            f"goal-review/{record['path']}" for record in goal_review_inventory
+        )
         actual_evidence = {
             path.relative_to(evaluation_evidence_root).as_posix()
             for path in sorted(evaluation_evidence_root.rglob("*"))

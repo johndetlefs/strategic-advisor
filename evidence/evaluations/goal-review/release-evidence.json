@@ -1,0 +1,45 @@
+{
+  "claim_boundary": "Two-case exact-runtime repair diagnostic on one Codex CLI model only; not certification, support, parity, adoption, private dogfood, or effectiveness evidence.",
+  "current_cases": [
+    {
+      "id": "SAGR-014",
+      "receipt": "run-002-repair-canary-v2/runner-receipt.json",
+      "result": "run-002-repair-canary-v2/result.json"
+    },
+    {
+      "id": "SAGR-013",
+      "receipt": "run-002-repair-affected/runner-receipt.json",
+      "result": "run-002-repair-affected/result.json"
+    }
+  ],
+  "evidence_inventory": {
+    "file_count": 59,
+    "sha256": "721016916e42a74d729179c64312d211b7c3da2f6f3807e7d7e647991fef1eef"
+  },
+  "historical_failure": {
+    "case": "SAGR-014",
+    "receipt": "run-001-affected/runner-receipt.json",
+    "result": "run-001-affected/result.json",
+    "runtime_package_identity_sha256": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6"
+  },
+  "mode": "diagnostic",
+  "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+  "schema_version": 1,
+  "target": {
+    "cli_version": "codex-cli 0.148.0-alpha.9",
+    "host": "codex-cli",
+    "model": "gpt-5.6-sol"
+  },
+  "untested_on_current_runtime": [
+    "SAGR-001",
+    "SAGR-009",
+    "SAGR-015",
+    "SAGR-016",
+    "SAGR-018",
+    "SAGR-020",
+    "DRIFT-004",
+    "DRIFT-014",
+    "DRIFT-016"
+  ],
+  "verdict": "pass"
+}

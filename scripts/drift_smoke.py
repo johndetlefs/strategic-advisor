@@ -339,7 +339,14 @@ def expected_sessions(case: dict) -> dict[str, list[dict]]:
     return {"default": case["turns"]}
 
 
-def validate_result(root: Path, spec: dict, spec_sha256: str, result_path: Path) -> bool:
+def validate_result(
+    root: Path,
+    spec: dict,
+    spec_sha256: str,
+    result_path: Path,
+    *,
+    expected_runtime_identity: str | None = None,
+) -> bool:
     result, _ = load_json(result_path, "drift-smoke result")
     if result.get("schema_version") != 1 or result.get("suite_id") != spec["suite_id"]:
         raise SmokeError("result schema or suite identity is invalid")
@@ -360,7 +367,7 @@ def validate_result(root: Path, spec: dict, spec_sha256: str, result_path: Path)
     nonempty(target.get("cli_version"), "target.cli_version")
     if target.get("evaluation_material_visible") is not False:
         raise SmokeError("result must confirm evaluation material was not model-visible")
-    runtime_identity = current_runtime_identity(root)
+    runtime_identity = expected_runtime_identity or current_runtime_identity(root)
     if target.get("runtime_package_identity_sha256") != runtime_identity:
         raise SmokeError("result runtime package identity is stale or mismatched")
     source_access = target.get("source_access")
