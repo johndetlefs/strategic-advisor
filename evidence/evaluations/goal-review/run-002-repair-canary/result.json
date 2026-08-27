@@ -1,0 +1,114 @@
+{
+  "authority_commit": "d6756f92fde3cf9e9dd2538f2c7e165e2ed5f6f7",
+  "authority_commit_scope": "Base lineage only because the current correction remains uncommitted; exact spec and model-visible runtime are independently bound by spec_sha256 and runtime_package_identity_sha256.",
+  "completed_at": "2026-08-27T05:13:57Z",
+  "runner": {
+    "checkpoint_identity": "sha256:d3385e22dfebd8c757a6f09be9fba30cb75a5a65947df244ebc90918f755155a",
+    "limits": {
+      "max_elapsed_seconds": 900,
+      "max_failures": 1,
+      "max_target_calls": 1
+    },
+    "outcome": "product-failure",
+    "telemetry": {
+      "elapsed_seconds": 35,
+      "evaluator_calls": 1,
+      "events": [
+        {
+          "attempt": 1,
+          "case_id": "SAGR-014",
+          "elapsed_seconds": 23,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "SAGR-014",
+          "elapsed_seconds": 12,
+          "kind": "evaluator",
+          "outcome": "product-failure",
+          "unit_id": "adjudication"
+        }
+      ],
+      "failures": 1,
+      "outcome_counts": {
+        "evaluator-failure": 0,
+        "harness-failure": 0,
+        "limit-reached": 0,
+        "pass": 1,
+        "product-failure": 1,
+        "provider-failure": 0
+      },
+      "target_calls": 1
+    }
+  },
+  "scenarios": [
+    {
+      "case_id": "SAGR-014",
+      "criteria": [
+        {
+          "id": "PROGRESS_OUTPUT_NOT_OUTCOME",
+          "observation": "The response explicitly classifies 300 hours as “Effort, not progress” and the 60-page portal as “Output, not progress,” then states that no material progress toward reducing time-to-independent-work is evidenced.",
+          "status": "pass",
+          "turn_reviews": [
+            {
+              "observation": "T1 records the substantial effort and shipped output while refusing to infer goal progress from portal completion; it notes no starter usage, no remeasurement, and an unchanged approval bottleneck.",
+              "status": "pass",
+              "turn_id": "T1"
+            }
+          ]
+        },
+        {
+          "id": "PROGRESS_ENABLER_BOUNDED",
+          "observation": "The response keeps the approval bottleneck visible and makes future portal value conditional on testing and outcome evidence, but it says only that the portal “may eventually help” without limiting possible causal credit specifically to the named training-information constraint.",
+          "status": "fail",
+          "turn_reviews": [
+            {
+              "observation": "T1 appropriately requires actual starter use and measured time-to-independence and identifies the unchanged approval bottleneck, but it does not explicitly bound any potential portal-enabler credit to resolving a training-information constraint.",
+              "status": "fail",
+              "turn_id": "T1"
+            }
+          ]
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a041a3-1a5b-7202-913b-0a40e71a5e82",
+          "turns": [
+            {
+              "assistant": "## Material progress report\n\n**Bottom line: No material progress is evidenced toward reducing time-to-independent-work from 20 days to 12.**\n\n**Readiness — Not validated.** The training portal has not been tested as a causal route to the goal.\n\n| Evidence | Classification |\n|---|---|\n| 300 hours spent | Effort, not progress |\n| 60-page portal shipped | Output, not progress |\n| No starter has used it | No driver evidence |\n| Approval bottleneck remains | Binding constraint unchanged |\n| Time-to-independence not remeasured | Outcome movement unknown |\n\nThe portal may eventually help, but the available evidence does not support claiming that it has enabled or advanced the goal. Reporting its page count as progress would be goal drift from workforce independence to content production.\n\n**Goal disposition: Continue** the 12-day outcome, pending evidence that it remains operationally valuable.\n\n**Path disposition: Correct** the current approach:\n\n1. Stop expanding the portal until it has been tested with an actual starter.\n2. Instrument the next starter’s journey from commencement to independently approved work.\n3. Measure time spent waiting for approvals and directly test a change to that bottleneck.\n\nThe next review should report starter usage, approval-delay data, and measured time-to-independence—not additional hours or pages shipped.",
+              "id": "T1",
+              "user": "$strategic-advisor The goal is to reduce new-starter time to independent work from twenty days to twelve. This month the team spent 300 hours and shipped a training portal with 60 pages. No new starter has used it, the approval bottleneck remains, and time-to-independence has not been measured again. Report material progress."
+            }
+          ]
+        }
+      ],
+      "status": "fail"
+    }
+  ],
+  "schema_version": 1,
+  "selection": {
+    "diagnostic_decision": "Failed-case canary for the bounded causal-boundary repair",
+    "full_suite": false,
+    "mode": "diagnostic",
+    "selected_case_ids": [
+      "SAGR-014"
+    ]
+  },
+  "spec_sha256": "d94ab8fad7dab599ab045068152d7f67c48f569902d49f986bc4a6c673cb2274",
+  "started_at": "2026-08-27T05:13:23Z",
+  "status": "fail",
+  "suite_id": "strategic-advisor-goal-alignment-review-v1",
+  "target": {
+    "cli_version": "codex-cli 0.148.0-alpha.9",
+    "evaluation_material_visible": false,
+    "host": "codex-cli",
+    "model": "gpt-5.6-sol",
+    "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+    "source_access": [],
+    "source_access_artifact": "source-access.json",
+    "source_access_artifact_sha256": "b6426b55923a3346a1d0f8138a0b9dff717dff62f4b0bb86644e40fe12714e98",
+    "visibility_control": "Target sessions received only the isolated allowlisted runtime package and frozen user turns; criteria were disclosed later to separate ephemeral adjudicator sessions."
+  }
+}

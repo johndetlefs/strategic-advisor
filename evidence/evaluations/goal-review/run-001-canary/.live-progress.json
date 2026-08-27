@@ -1,0 +1,60 @@
+{
+  "adapter_contract_identity": null,
+  "adjudications": {},
+  "checkpoint_identity": "sha256:19d3123afe85c5be0d8cf8f2fb4e5430a0f8cb73810b804cf99b8efd63cad7b9",
+  "diagnostic_decision": "One-turn canary for the bounded experimental-alpha affected smoke",
+  "evaluator_identity": "sha256:0cc2b8712161bacd325721e3abf954e8e32c3182ca0ff8eb53e247e172b626b1",
+  "failure_detail": "Codex exited 1 for sagr-001-default-t1.jsonl: WARNING: proceeding, even though we could not create PATH aliases: Operation not permitted (os error 1)\n2026-08-27T05:06:16.593891Z  WARN codex_state::runtime: failed to open state db at /Users/johndetlefs/.codex/state_5.sqlite: failed to open state DB at /Users/johndetlefs/.codex/state_5.sqlite: error returned from database: (code: 8) attempt to write a readonly database\n2026-08-27T05:06:16.593932Z  WARN codex_rollout::state_db: failed to initialize state runtime: failed to initialize state runtime at /Users/johndetlefs/.codex: failed to open state DB at /Users/johndetlefs/.codex/state_5.sqlite: error returned from database: (code: 8) attempt to write a readonly database: error returned from database: (code: 8) attempt to write a readonly database: (code: 8) attempt to write a readonly database\nError: failed to initialize in-process app-server client: Operation not permitted (os error 1)",
+  "limits": {
+    "max_elapsed_seconds": 900,
+    "max_failures": 1,
+    "max_target_calls": 1
+  },
+  "mode": "diagnostic",
+  "outcome": "provider-failure",
+  "proof_contract_identity": "sha256:2942b4a2bd197d1585ab1ae945b446d8b497feaf3f86258b70c765645d1e9fa8",
+  "runtime_identity": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6",
+  "schema_version": 2,
+  "selected_case_ids": [
+    "SAGR-001"
+  ],
+  "sessions": {
+    "SAGR-001::default": {
+      "case_id": "SAGR-001",
+      "session_id": null,
+      "session_identity": "sha256:962a168820eda89e8e9a3341d3a20e875b12d15357841513beb3e254d9c0a262",
+      "successful_runtime_reads": [],
+      "turns": [],
+      "variant_id": "default"
+    }
+  },
+  "source_identity": "sha256:d2c8db2cb2de143c3bd7cafec6b35b18c169b4ad8c1b326c1518998a3553973f",
+  "spec_sha256": "d94ab8fad7dab599ab045068152d7f67c48f569902d49f986bc4a6c673cb2274",
+  "started_at": "2026-08-27T05:06:16Z",
+  "target_contract_identity": "sha256:7e35e95d2d410dcc447460b973cc6756efe0475ddba9a1148eb8cc19417fa980",
+  "target_root": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-b1x2yug1",
+  "telemetry": {
+    "elapsed_seconds": 1,
+    "evaluator_calls": 0,
+    "events": [
+      {
+        "attempt": 1,
+        "case_id": "SAGR-001",
+        "elapsed_seconds": 1,
+        "kind": "target",
+        "outcome": "provider-failure",
+        "unit_id": "default:T1"
+      }
+    ],
+    "failures": 0,
+    "outcome_counts": {
+      "evaluator-failure": 0,
+      "harness-failure": 0,
+      "limit-reached": 0,
+      "pass": 0,
+      "product-failure": 0,
+      "provider-failure": 1
+    },
+    "target_calls": 1
+  }
+}

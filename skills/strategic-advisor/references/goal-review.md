@@ -76,9 +76,12 @@ Keep an enabler separate from the goal it serves. Record:
 - the contribution limit and lag; and
 - the falsifier or expiry condition.
 
-Use **enabled but not yet advanced** when the tool or project created capacity
-but no material outcome, driver, constraint, or decision movement is observed.
-Completion of the enabler never proves completion or progress of the goal.
+Use **enabled but not yet advanced** only when the tool or project created
+capacity against a named outcome, driver, constraint, or decision. State that
+exact causal boundary; broad `enabled` wording must not imply progress beyond
+it. If even that bounded contribution is unsupported, record only the shipped
+output and the unknown contribution. Completion of the enabler never proves
+completion or progress of the goal.
 
 ## Test drift before accepting change
 

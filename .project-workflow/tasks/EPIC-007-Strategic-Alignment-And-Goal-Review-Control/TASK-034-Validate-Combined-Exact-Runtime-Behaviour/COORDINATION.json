@@ -1,0 +1,156 @@
+{
+  "boundary_decisions": [],
+  "decisions": [
+    "The original d51d7bf campaign stopped after SAGR-014 failed PROGRESS_ENABLER_BOUNDED; raw receipts remain under run-001.",
+    "The proportional repair changes only the enabler causal-boundary rule and reruns the failed case plus one direct neighbour."
+  ],
+  "host_facts": {
+    "context_contract": "declared",
+    "telemetry": "unknown"
+  },
+  "intent_identity": "sha256:19b62a99ea18c203f13408925a4c24709903f57dd7368576ecb0e57745086a4d",
+  "last_boundary": null,
+  "loaded_contract": {
+    "asset_version": "7",
+    "context_id": "codex-current-task-2026-08-27",
+    "contract_version": "2",
+    "package_version": "0.8.0",
+    "recorded_at": "2026-08-27"
+  },
+  "next_action": "Diagnostic boundary reached; use the result only for the named decision.",
+  "outcome_checkpoint": {
+    "checkpoint_unit": null,
+    "claim_class": "mechanical",
+    "record": null,
+    "required": false,
+    "status": "not-required"
+  },
+  "phase": "Bounded exact-runtime repair Testing",
+  "repositories": {
+    ".": {
+      "source_revision": "d6756f92fde3cf9e9dd2538f2c7e165e2ed5f6f7"
+    }
+  },
+  "schema_version": 2,
+  "source_revision": "d6756f92fde3cf9e9dd2538f2c7e165e2ed5f6f7",
+  "target_id": "TASK-034",
+  "verification_campaign": {
+    "adapter": {
+      "capabilities": [],
+      "command": null,
+      "kind": "manual",
+      "manual_command": "python3 scripts/run_drift_smoke_live.py for SAGR-014 then SAGR-013, fail-fast, no retry"
+    },
+    "affected_scope": [
+      "SAGR-014",
+      "SAGR-013"
+    ],
+    "candidate_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+    "claims": [
+      "bounded exact-runtime repair smoke on Codex gpt-5.6-sol only; not certification"
+    ],
+    "current_stage": null,
+    "diagnostic_decision": "If the failed case and its direct neighbour pass, allow experimental alpha release with repair-smoke wording only.",
+    "impact": "known",
+    "intent_identity": "sha256:19b62a99ea18c203f13408925a4c24709903f57dd7368576ecb0e57745086a4d",
+    "limits": {
+      "max_elapsed_seconds": 1200,
+      "max_failures": 1,
+      "max_target_calls": 2
+    },
+    "mode": "diagnostic",
+    "next_action": "Diagnostic boundary reached; use the result only for the named decision.",
+    "outcome": "pass",
+    "proof_contract_identity": "sha256:1aac46a09b3ef57555e2004dee8254b99d32388c4057d082e718951d48786a79",
+    "receipt_ledger_identity": "sha256:edffed7997facf983cdd71fe64b13ddcb7fe6eac12be76586f710856ed5e72a4",
+    "receipts": [
+      {
+        "artifact": "evidence/evaluations/goal-review/run-002-repair/deterministic.json",
+        "candidate_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+        "elapsed_seconds": 4,
+        "evaluator_identity": "sa-repair-deterministic:d6756f92fde3cf9e9dd2538f2c7e165e2ed5f6f7",
+        "intent_identity": "sha256:19b62a99ea18c203f13408925a4c24709903f57dd7368576ecb0e57745086a4d",
+        "outcome": "pass",
+        "proof_contract_identity": "sha256:1aac46a09b3ef57555e2004dee8254b99d32388c4057d082e718951d48786a79",
+        "receipt_identity": "sha256:b151a44fa5b57c074eda2a0defde5167f714d0d012d353307d5f66873b22706e",
+        "recorded_at": "2026-08-27",
+        "regrade": false,
+        "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+        "scope": [
+          "17 contract tests; skill and privacy validators; current freeze; diff check"
+        ],
+        "source_identity": "sha256:926ca9fe1cda728989cca6be7fe4ce84e81e9e8fa6318800fc3fc9e721f78a43",
+        "stage": "deterministic",
+        "stage_complete": true,
+        "target_calls": 0,
+        "target_identity": "codex:gpt-5.6-sol"
+      },
+      {
+        "artifact": "evidence/evaluations/goal-review/run-002-repair-canary-v2/runner-receipt.json",
+        "candidate_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+        "elapsed_seconds": 46,
+        "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+        "intent_identity": "sha256:19b62a99ea18c203f13408925a4c24709903f57dd7368576ecb0e57745086a4d",
+        "outcome": "pass",
+        "proof_contract_identity": "sha256:1aac46a09b3ef57555e2004dee8254b99d32388c4057d082e718951d48786a79",
+        "receipt_identity": "sha256:f484d2e2b627ad27e29d2d46399403343f23c33c4ede54a08a73133d477ffbde",
+        "recorded_at": "2026-08-27",
+        "regrade": false,
+        "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+        "scope": [
+          "SAGR-014 failed-case canary under corrected conditional-criterion evaluator"
+        ],
+        "source_identity": "sha256:926ca9fe1cda728989cca6be7fe4ce84e81e9e8fa6318800fc3fc9e721f78a43",
+        "stage": "canary",
+        "stage_complete": true,
+        "target_calls": 1,
+        "target_identity": "sha256:545cecd4b26f94ce55677759e6249872101c64a053a353e758f4d451c35b9f8c"
+      },
+      {
+        "artifact": "evidence/evaluations/goal-review/run-002-repair-affected/runner-receipt.json",
+        "candidate_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+        "elapsed_seconds": 54,
+        "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+        "intent_identity": "sha256:19b62a99ea18c203f13408925a4c24709903f57dd7368576ecb0e57745086a4d",
+        "outcome": "pass",
+        "proof_contract_identity": "sha256:1aac46a09b3ef57555e2004dee8254b99d32388c4057d082e718951d48786a79",
+        "receipt_identity": "sha256:ea23b0c37578c4a3fdbd90a03b8e7ab66e54dac33511c6dce1a30f63c14a0e69",
+        "recorded_at": "2026-08-27",
+        "regrade": false,
+        "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+        "scope": [
+          "SAGR-013 direct-neighbour activity-as-indicator case"
+        ],
+        "source_identity": "sha256:926ca9fe1cda728989cca6be7fe4ce84e81e9e8fa6318800fc3fc9e721f78a43",
+        "stage": "affected",
+        "stage_complete": true,
+        "target_calls": 1,
+        "target_identity": "sha256:b3e0485a84de1e332cb1f00d67479bd720d9d9e960aa6b84cd2f8b23f392b1af"
+      }
+    ],
+    "schema_version": 1,
+    "source_identity": "sha256:926ca9fe1cda728989cca6be7fe4ce84e81e9e8fa6318800fc3fc9e721f78a43",
+    "stages": [
+      "deterministic",
+      "canary",
+      "affected"
+    ]
+  },
+  "verification_requirement": {
+    "affected_scope": [
+      "SAGR-014",
+      "SAGR-013"
+    ],
+    "claims": [
+      "bounded exact-runtime repair smoke on Codex gpt-5.6-sol only; not certification"
+    ],
+    "proof_contract_identity": "sha256:1aac46a09b3ef57555e2004dee8254b99d32388c4057d082e718951d48786a79",
+    "required": true,
+    "stages": [
+      "deterministic",
+      "canary",
+      "affected"
+    ]
+  },
+  "work_item_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control/TASK-034-Validate-Combined-Exact-Runtime-Behaviour"
+}

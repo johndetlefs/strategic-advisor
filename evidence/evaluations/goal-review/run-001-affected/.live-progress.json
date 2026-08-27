@@ -1,0 +1,185 @@
+{
+  "adapter_contract_identity": null,
+  "adjudications": {
+    "SAGR-009": [
+      {
+        "id": "GOAL_OBJECT_CLASSES_COMPLETE",
+        "observation": "The assistant explicitly classifies the one-day correct-answer outcome as the “End,” increased resolution capacity as a “Means / capability,” twenty staff as an unsupported “Proxy,” response time and error rate as “Metrics,” the service-redesign programme as a “Project,” the triage platform as a “Tool,” and publishing job advertisements as a “Task.”",
+        "status": "pass",
+        "turn_reviews": [
+          {
+            "observation": "T1 contains a table distinguishing every required object class and further explains that tracking metrics is itself a task rather than the outcome.",
+            "status": "pass",
+            "turn_id": "T1"
+          }
+        ]
+      },
+      {
+        "id": "PROXY_ALTERNATIVE_ROUTES",
+        "observation": "The response rejects immediate commitment to twenty staff and identifies materially different routes: diagnosing demand and case mix, correcting hand-offs or approval steps, revising triage rules or using a platform, targeted training or protected specialist capacity, and a limited staffing increase.",
+        "status": "pass",
+        "turn_reviews": [
+          {
+            "observation": "T1 recommends diagnosing the demonstrated bottleneck and testing alternatives including revised triage, removal of an approval step, targeted training, specialist capacity, and limited staffing before approving the twenty-person establishment.",
+            "status": "pass",
+            "turn_id": "T1"
+          }
+        ]
+      },
+      {
+        "id": "PROXY_CAUSAL_BRIDGE_REQUIRED",
+        "observation": "The assistant states that programme completion earns no strategic credit unless it changes service drivers, the platform helps only if triage is a material bottleneck, and staffing should scale only after a pilot materially improves quality-adjusted 24-hour resolution.",
+        "status": "pass",
+        "turn_reviews": [
+          {
+            "observation": "T1 explicitly requires bounded pilot evidence linking the selected intervention to correctly resolved cases within 24 hours while monitoring errors, rework, and long-tail delays; project, tool, and hiring completion are not treated as sufficient.",
+            "status": "pass",
+            "turn_id": "T1"
+          }
+        ]
+      }
+    ],
+    "SAGR-014": [
+      {
+        "id": "PROGRESS_OUTPUT_NOT_OUTCOME",
+        "observation": "The response explicitly classifies 300 hours as effort and the 60-page portal as an output/enabler, then states that neither constitutes evidenced progress. It concludes that no material progress toward reducing time-to-independence has been demonstrated.",
+        "status": "pass",
+        "turn_reviews": [
+          {
+            "observation": "T1 records the substantial effort and shipped portal while clearly rejecting portal completion as material goal progress: “substantial effort and a shipped enabler, but zero evidenced material progress toward the goal.”",
+            "status": "pass",
+            "turn_id": "T1"
+          }
+        ]
+      },
+      {
+        "id": "PROGRESS_ENABLER_BOUNDED",
+        "observation": "The response keeps enabler credit conditional on starter use and outcome measurement, and it repeatedly preserves the unchanged approval bottleneck. However, it calls the portal an “enabler” and says it is “Enabled” without explicitly limiting that credit to relieving the training-information constraint; therefore the required causal boundary is not positively established.",
+        "status": "fail",
+        "turn_reviews": [
+          {
+            "observation": "T1 correctly notes that no starter has used the portal, time-to-independence remains unmeasured, and the approval bottleneck remains binding. But it does not expressly state that the portal can only address training-information availability rather than the broader independence outcome, so the enabler credit is insufficiently bounded.",
+            "status": "fail",
+            "turn_id": "T1"
+          }
+        ]
+      }
+    ]
+  },
+  "checkpoint_identity": "sha256:7a898b273e18e8ed3bf476a19a64c6152b2b030bb050e0709be86ad1f3d13a2a",
+  "diagnostic_decision": "Selected goal-alignment and review risks for the bounded experimental-alpha smoke",
+  "evaluator_identity": "sha256:0cc2b8712161bacd325721e3abf954e8e32c3182ca0ff8eb53e247e172b626b1",
+  "failure_detail": "max_failures reached (1/1)",
+  "limits": {
+    "max_elapsed_seconds": 1800,
+    "max_failures": 1,
+    "max_target_calls": 7
+  },
+  "mode": "diagnostic",
+  "outcome": "limit-reached",
+  "proof_contract_identity": "sha256:7f32cd1bc06c6614152c8ada061f719c146798cb9d035e1dd7081a636ea3a5ab",
+  "runtime_identity": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6",
+  "schema_version": 2,
+  "selected_case_ids": [
+    "SAGR-009",
+    "SAGR-014",
+    "SAGR-015",
+    "SAGR-016",
+    "SAGR-018",
+    "SAGR-020"
+  ],
+  "sessions": {
+    "SAGR-009::default": {
+      "case_id": "SAGR-009",
+      "session_id": "01a0419e-1742-7912-977c-5bfd9f22473a",
+      "session_identity": "sha256:a0080fad12603659770c24d89ff7bc45c086d4caa00ff8d1bb630d3de203f9c9",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/people-leadership.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ],
+      "turns": [
+        {
+          "assistant": "The leaders are conflating the outcome, its measures, possible causes, interventions, and activities. That makes it possible to “achieve the goal” administratively while customers still wait four days.\n\n| Object | Classification | Strategic treatment |\n|---|---|---|\n| Customers receive correct answers within one day without more errors | **End**; candidate operational goal | The real outcome. Define “within one day,” “correct,” eligible cases, and the tolerated error rate. |\n| Increase resolution capacity | **Means / capability** | Plausible route, but not success itself. Capacity must mean quality-adjusted resolutions, not nominal headcount or activity. |\n| Reach twenty staff | **Proxy** for capacity | Unsupported staffing target. Twenty people could raise throughput, do nothing, or increase errors and coordination load. |\n| Response time and error rate | **Metrics** | Response time is a lag measure of timeliness; error rate is a quality constraint or counter-metric. Track distributions, not only averages. |\n| Track response time and error rate | **Task** establishing measurement | Necessary instrumentation, but tracking does not improve performance by itself. |\n| Complete a service-redesign programme | **Project** | Candidate intervention. Completion earns no strategic credit unless it changes the relevant service drivers. |\n| Install a triage platform | **Tool**, with installation as a **task/project** | A mechanism hypothesis, not an outcome. It helps only if misrouting or prioritisation is a material bottleneck. |\n| Publish job advertisements | **Task** | An early recruitment activity—not capacity, staffing, or improved resolution. |\n\n### Readiness — Not validated\n\nThe proposed mechanism bundle—twenty staff, redesign, triage platform and recruitment—is not yet supported by a causal diagnosis. The only performance evidence supplied is a reported four-day average. That does not reveal whether delay comes from insufficient staffing, demand variability, poor triage, avoidable hand-offs, rework, skill gaps, approval queues, system downtime, or case mix.\n\n### Recommended strategy\n\nMake the service outcome the single goal:\n\n> Eligible customer questions receive a correct resolution within 24 hours, while the error rate does not exceed the agreed baseline or quality threshold.\n\nDo not use the average alone: a falling average can conceal a long tail of badly delayed customers. Measure the proportion resolved correctly within 24 hours, alongside median and high-percentile response time, error/rework rate, backlog age and demand by case type.\n\nThen:\n\n1. **Instrument and diagnose the flow.** Map arrival volumes, queue time, handling time, hand-offs, rework, staffing by skill and case type, and where cases breach 24 hours.\n2. **Act on the demonstrated bottleneck.** Test the smallest reversible intervention—for example revised triage rules, removal of an approval step, protected specialist capacity, targeted training, or a limited staffing increase.\n3. **Scale only after causal evidence.** Approve the platform, redesign programme or twenty-person establishment only if the pilot shows that its targeted constraint materially improves quality-adjusted 24-hour resolution.\n\nThe binding constraint is currently **unknown**, not proven to be headcount. The leverage point is finding which queue or failure mode contributes most to elapsed time. The opportunity cost of jumping directly to twenty staff or a platform is spending money and management attention while potentially leaving the actual bottleneck intact.\n\nReview after enough cases have passed through a bounded pilot to compare like-for-like case types. Stop or revise an intervention if throughput rises but errors, rework, or long-tail delays worsen.",
+          "id": "T1",
+          "receipt_identity": "sha256:f948c3642bfea27b4a1f31cd9ad8a06f3d2d598e1abf0833aa6a1f080606983f",
+          "user": "$strategic-advisor Leaders call all of these 'the goal': customers receive correct answers within one day without more errors; increase resolution capacity; reach twenty staff; track response time and error rate; complete a service-redesign programme; install a triage platform; and publish job advertisements. Response currently averages four days. Classify the objects and recommend the strategy."
+        }
+      ],
+      "variant_id": "default"
+    },
+    "SAGR-014::default": {
+      "case_id": "SAGR-014",
+      "session_id": "01a0419f-2f2a-7861-a6ac-9936a3e1f535",
+      "session_identity": "sha256:67321a407c8fca32b9b5a7d49d9d17a44c27ed6127abc22a6d3bc330128fa93c",
+      "successful_runtime_reads": [],
+      "turns": [
+        {
+          "assistant": "## Material progress report\n\n**Bottom line:** No material progress toward reducing time-to-independent-work from 20 days to 12 has been demonstrated.\n\n**Readiness — Not validated.** The portal’s causal contribution cannot be assessed because no new starter has used it and the outcome has not been remeasured.\n\n| Evidence | Classification | Progress implication |\n|---|---|---|\n| 300 hours spent | Effort | Not progress |\n| 60-page portal shipped | Output/enabler | Enabled, but has not advanced the goal |\n| No starter has used it | Adoption evidence | No demonstrated behavioural contribution |\n| Approval bottleneck remains | Constraint evidence | Binding constraint has not moved |\n| Independence time not remeasured | Outcome gap | No evidence of improvement from 20 days |\n\n**Drift:** Yes. Delivery activity and page count have displaced the actual outcome as the working definition of progress.\n\n**Goal disposition:** Continue the 12-day outcome.\n\n**Path disposition:** Correct the path. Pause further portal expansion until evidence shows it affects the starter journey.\n\n**Next moves:**\n\n1. Measure the next starter’s baseline and actual time to independently complete agreed work.\n2. Map approval waiting time within that journey and assign an owner to remove or redesign the bottleneck.\n3. Put one starter through the smallest relevant portal content and compare observed task performance—not page consumption—against the prior process.\n\nThe accurate status is: **substantial effort and a shipped enabler, but zero evidenced material progress toward the goal.**",
+          "id": "T1",
+          "receipt_identity": "sha256:6c1ceadcdd45ec187784ea3ef328f6dd0d6300354429e41eac3bde71d9f9013e",
+          "user": "$strategic-advisor The goal is to reduce new-starter time to independent work from twenty days to twelve. This month the team spent 300 hours and shipped a training portal with 60 pages. No new starter has used it, the approval bottleneck remains, and time-to-independence has not been measured again. Report material progress."
+        }
+      ],
+      "variant_id": "default"
+    }
+  },
+  "source_identity": "sha256:d2c8db2cb2de143c3bd7cafec6b35b18c169b4ad8c1b326c1518998a3553973f",
+  "spec_sha256": "d94ab8fad7dab599ab045068152d7f67c48f569902d49f986bc4a6c673cb2274",
+  "started_at": "2026-08-27T05:07:54Z",
+  "target_contract_identity": "sha256:af2012a7a02bfb4f934c2af092fe1cc6d9929beb9092bd0d1f505c6b6e49f5a7",
+  "target_root": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-fde2w2yu",
+  "telemetry": {
+    "elapsed_seconds": 118,
+    "evaluator_calls": 2,
+    "events": [
+      {
+        "attempt": 1,
+        "case_id": "SAGR-009",
+        "elapsed_seconds": 54,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "SAGR-009",
+        "elapsed_seconds": 18,
+        "kind": "evaluator",
+        "outcome": "pass",
+        "unit_id": "adjudication"
+      },
+      {
+        "attempt": 1,
+        "case_id": "SAGR-014",
+        "elapsed_seconds": 26,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "SAGR-014",
+        "elapsed_seconds": 20,
+        "kind": "evaluator",
+        "outcome": "product-failure",
+        "unit_id": "adjudication"
+      }
+    ],
+    "failures": 1,
+    "outcome_counts": {
+      "evaluator-failure": 0,
+      "harness-failure": 0,
+      "limit-reached": 0,
+      "pass": 3,
+      "product-failure": 1,
+      "provider-failure": 0
+    },
+    "target_calls": 2
+  }
+}

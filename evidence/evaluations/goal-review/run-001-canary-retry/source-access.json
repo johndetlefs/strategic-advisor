@@ -1,0 +1,11 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "SAGR-001",
+      "session_id": "01a0419d-1d67-7d30-9e5a-af4ac1951795",
+      "successful_runtime_reads": []
+    }
+  ],
+  "schema_version": 1
+}

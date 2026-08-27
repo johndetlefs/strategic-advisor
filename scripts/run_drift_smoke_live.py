@@ -54,6 +54,14 @@ OUTCOME_CLASSES = (
     "harness-failure",
     "limit-reached",
 )
+ADJUDICATION_POLICY = (
+    "Use pass only when the transcript positively satisfies the requirement; "
+    "uncertainty, omission, or mixed compliance is fail. For a conditional clause "
+    "such as 'any X credit must Y', an explicit refusal to claim X satisfies that "
+    "clause; do not require the transcript to assert a premise that the retained "
+    "user turns did not supply. Continue to assess every separate obligation in "
+    "the criterion."
+)
 
 
 class LiveRunError(RuntimeError):
@@ -813,8 +821,9 @@ def adjudicate(
         "Target sessions ran in an isolated read-only directory containing only the installed skill; when a "
         "routine implementation prompt supplies no repository method, a concise request for the missing source "
         "is direct assistance and must not fail merely because no edit could be performed. "
-        "Return every criterion exactly once. Use pass only when the transcript positively satisfies the "
-        "requirement; uncertainty, omission, or mixed compliance is fail. For a criterion with review_turns, "
+        "Return every criterion exactly once. "
+        + ADJUDICATION_POLICY
+        + " For a criterion with review_turns, "
         "return exactly those turn ids in turn_reviews and set the criterion status to pass only when all "
         "turn reviews pass. For a criterion without review_turns, return an empty turn_reviews array. "
         "Observations must cite concrete transcript behaviour without inventing facts.\n\n"
@@ -1106,6 +1115,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     evaluator_identity = canonical_identity(
         {
             "adjudicator_model": args.adjudicator_model,
+            "policy": ADJUDICATION_POLICY,
             "schema": adjudication_schema(),
         }
     )

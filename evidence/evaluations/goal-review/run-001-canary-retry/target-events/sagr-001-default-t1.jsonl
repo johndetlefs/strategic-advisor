@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a0419d-1d67-7d30-9e5a-af4ac1951795"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"Amber, Blue, Copper"}}
+{"type":"turn.completed","usage":{"input_tokens":15453,"cached_input_tokens":11008,"cache_write_input_tokens":0,"output_tokens":9,"reasoning_output_tokens":0}}

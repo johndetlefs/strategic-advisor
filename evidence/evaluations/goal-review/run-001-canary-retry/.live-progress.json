@@ -1,0 +1,90 @@
+{
+  "adapter_contract_identity": null,
+  "adjudications": {
+    "SAGR-001": [
+      {
+        "id": "DIRECT_NO_STRATEGY_CEREMONY",
+        "observation": "The assistant returned exactly the three labels in alphabetical order—“Amber, Blue, Copper”—with no qualification, cadence, or clarification question.",
+        "status": "pass",
+        "turn_reviews": [
+          {
+            "observation": "T1 directly performs the bounded formatting task and contains nothing beyond the correctly alphabetized labels.",
+            "status": "pass",
+            "turn_id": "T1"
+          }
+        ]
+      }
+    ]
+  },
+  "checkpoint_identity": "sha256:19d3123afe85c5be0d8cf8f2fb4e5430a0f8cb73810b804cf99b8efd63cad7b9",
+  "diagnostic_decision": "One authorised infrastructure retry for the bounded experimental-alpha canary",
+  "evaluator_identity": "sha256:0cc2b8712161bacd325721e3abf954e8e32c3182ca0ff8eb53e247e172b626b1",
+  "failure_detail": "",
+  "limits": {
+    "max_elapsed_seconds": 900,
+    "max_failures": 1,
+    "max_target_calls": 1
+  },
+  "mode": "diagnostic",
+  "outcome": "pass",
+  "proof_contract_identity": "sha256:2942b4a2bd197d1585ab1ae945b446d8b497feaf3f86258b70c765645d1e9fa8",
+  "runtime_identity": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6",
+  "schema_version": 2,
+  "selected_case_ids": [
+    "SAGR-001"
+  ],
+  "sessions": {
+    "SAGR-001::default": {
+      "case_id": "SAGR-001",
+      "session_id": "01a0419d-1d67-7d30-9e5a-af4ac1951795",
+      "session_identity": "sha256:193aec57656d2e7e44082916765eb0e11a0dc0acdcdd243d86bd6762f749d8b5",
+      "successful_runtime_reads": [],
+      "turns": [
+        {
+          "assistant": "Amber, Blue, Copper",
+          "id": "T1",
+          "receipt_identity": "sha256:78fe0afc39ead3712c49bda4d3101d5f374924c41ea4f851b0363f4cf28d742a",
+          "user": "Return these three labels in alphabetical order and nothing else: Copper, Amber, Blue."
+        }
+      ],
+      "variant_id": "default"
+    }
+  },
+  "source_identity": "sha256:d2c8db2cb2de143c3bd7cafec6b35b18c169b4ad8c1b326c1518998a3553973f",
+  "spec_sha256": "d94ab8fad7dab599ab045068152d7f67c48f569902d49f986bc4a6c673cb2274",
+  "started_at": "2026-08-27T05:06:50Z",
+  "target_contract_identity": "sha256:7e35e95d2d410dcc447460b973cc6756efe0475ddba9a1148eb8cc19417fa980",
+  "target_root": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-h8062fg0",
+  "telemetry": {
+    "elapsed_seconds": 14,
+    "evaluator_calls": 1,
+    "events": [
+      {
+        "attempt": 1,
+        "case_id": "SAGR-001",
+        "elapsed_seconds": 7,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "SAGR-001",
+        "elapsed_seconds": 7,
+        "kind": "evaluator",
+        "outcome": "pass",
+        "unit_id": "adjudication"
+      }
+    ],
+    "failures": 0,
+    "outcome_counts": {
+      "evaluator-failure": 0,
+      "harness-failure": 0,
+      "limit-reached": 0,
+      "pass": 2,
+      "product-failure": 0,
+      "provider-failure": 0
+    },
+    "target_calls": 1
+  }
+}

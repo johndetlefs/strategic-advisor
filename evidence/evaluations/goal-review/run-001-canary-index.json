@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "stage": "canary",
+  "outcome": "pass",
+  "runtime_package_identity_sha256": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6",
+  "selected_case_ids": ["SAGR-001"],
+  "target_calls_recorded": 2,
+  "model_target_calls_reached": 1,
+  "elapsed_seconds": 15,
+  "attempts": [
+    {
+      "artifact": "evidence/evaluations/goal-review/run-001-canary/runner-receipt.json",
+      "receipt_identity": "sha256:f8800f90915cbc3eae7bf85e4cee66d205bc5ceea19b634ab1e78eae43b126d5",
+      "outcome": "provider-failure",
+      "detail": "Sandbox denied Codex access to its local state database; the model was not reached."
+    },
+    {
+      "artifact": "evidence/evaluations/goal-review/run-001-canary-retry/runner-receipt.json",
+      "receipt_identity": "sha256:970e924fa1de3e4793277089b78e31bab1631b12c078965eebb1228bedb8767f",
+      "outcome": "pass",
+      "detail": "The one authorised infrastructure retry reached Codex/gpt-5.6-sol and passed the frozen SAGR-001 criterion."
+    }
+  ],
+  "boundary": "This clears only the canary gate for the selected affected diagnostic campaign."
+}

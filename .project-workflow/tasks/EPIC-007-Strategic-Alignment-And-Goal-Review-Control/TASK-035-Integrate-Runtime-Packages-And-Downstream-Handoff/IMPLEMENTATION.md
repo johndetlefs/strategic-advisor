@@ -1,8 +1,9 @@
 ## User Story
 
-As the product owner, I want one coherent prepared Strategic Advisor change and
-an exact private-workspace handoff, so that public implementation, package
-proof and real dogfood are neither conflated nor tightly coupled.
+As the product owner, I want one coherent public Strategic Advisor prerelease
+whose exact downloaded artifact is installed and observed in my Codex, so that
+I can continue the August retrospective without conflating alpha evidence with
+support or cross-model claims.
 
 ## Parent AC Coverage
 
@@ -73,8 +74,8 @@ proof and real dogfood are neither conflated nor tightly coupled.
 - [ ] AC2: Generic records remain private-data-free and consumer-independent.
 - [ ] AC3: Changed runtime packages are prepared, deterministic and independently verified.
 - [ ] AC4: Full validation, QA and parent audits pass or retain explicit blockers.
-- [ ] AC5: Downstream Strategy Workspace v1 brief is complete and non-mutating.
-- [ ] AC6: Preparation is not misreported as publication, activation or support.
+- [ ] AC5: Public artifacts are fresh-verified, installed locally and observed loading the new runtime; the private handoff deferral is recorded.
+- [ ] AC6: Publication and activation are not misreported as support, parity, adoption or effectiveness.
 
 ## Validation
 
@@ -94,9 +95,19 @@ proof and real dogfood are neither conflated nor tightly coupled.
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ | ------------ | ----------- | ------------- | --------------- |
 | 1 | Align public contract | Update affected product, architecture, onboarding, host, runtime and generic-template declarations to the proven behaviour and claim boundary. | AC1, AC2, AC6 | Inspect cross-artifact matrix and dependency/private-data scans. | To Do | TASK-034 | Public contract, generic templates, runtime declarations and focused tests | No | bounded-return |
 | 2 | Prepare deterministic packages | If allowlisted bytes changed, run canonical release preparation, build twice and independently verify exact identities and evaluation exclusion. | AC3, AC6 | Compare package bytes, provenance, manifest and verifier output. | To Do | 1 | Release state, generated packages/provenance and validation artifacts | No | bounded-return |
-| 3 | Run integrated validation | Execute focused/full tests, validators, deterministic evaluations, affected smoke, privacy/diff/package checks and workflow audits. | AC4 | Re-run declared gates and inspect every explicit blocker. | To Do | 2 | Validation and workflow evidence only | No | bounded-return |
+| 3 | Run integrated validation | Execute focused/full deterministic tests, validators, retained bounded affected smoke, privacy/diff/package checks and workflow audits. | AC4 | Re-run declared gates and inspect every explicit blocker without another behavioural campaign. | To Do | 2 | Validation and workflow evidence only | No | bounded-return |
 | 4 | Complete independent QA and parent audit | Review implementation, exact-runtime/package proof, intent preservation and invalid substitutes; generate parent acceptance evidence. | AC4, AC6 | Inspect QA independence, current intent audit and parent audit verdicts. | To Do | 3 | QA and parent workflow artifacts only | No | bounded-return |
-| 5 | Produce private v1 handoff | Write the separate Strategy Workspace task brief with records, cadence, dogfood, falsifiers and consumer/authority boundaries. | AC5, AC6 | Confirm the brief is complete and no Strategy Workspace mutation occurred. | To Do | 4 | Handoff artifact only | No | bounded-return |
+| 5 | Publish, verify and activate | Publish the immutable prerelease, fresh-download and verify every public artifact, install the standalone ZIP locally, confirm fresh Codex runtime loading, and retain the owner-approved private-handoff deferral. | AC5, AC6 | Inspect public release metadata, downloaded hashes, installed files and fresh host source access. | To Do | 4 | Release evidence, local installation and deferral record only | No | bounded-return |
+
+## Owner Release Authority
+
+- On 2026-08-27 John explicitly authorised push, PR, merge, public prerelease,
+  fresh public verification, release finalisation, local Codex installation and
+  activation for this exact amended scope, without another approval prompt.
+- The same directive defers the separate Strategy Workspace v1 handoff and all
+  broader model/host certification from this release.
+- Stop after the verified public artifact loads locally. Do not create adjacent
+  work or strengthen support, parity, adoption or effectiveness claims.
 
 ## Parent AC Evidence
 

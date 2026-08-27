@@ -1,0 +1,128 @@
+{
+  "authority_commit": "d6756f92fde3cf9e9dd2538f2c7e165e2ed5f6f7",
+  "authority_commit_scope": "Base lineage only because the current correction remains uncommitted; exact spec and model-visible runtime are independently bound by spec_sha256 and runtime_package_identity_sha256.",
+  "completed_at": "2026-08-27T05:18:04Z",
+  "runner": {
+    "checkpoint_identity": "sha256:97e320e3c4cf30b18d1abb83ad2cb0da17ac65a33053074da9c621e84deb43c3",
+    "limits": {
+      "max_elapsed_seconds": 900,
+      "max_failures": 1,
+      "max_target_calls": 1
+    },
+    "outcome": "pass",
+    "telemetry": {
+      "elapsed_seconds": 54,
+      "evaluator_calls": 1,
+      "events": [
+        {
+          "attempt": 1,
+          "case_id": "SAGR-013",
+          "elapsed_seconds": 40,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "SAGR-013",
+          "elapsed_seconds": 14,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        }
+      ],
+      "failures": 0,
+      "outcome_counts": {
+        "evaluator-failure": 0,
+        "harness-failure": 0,
+        "limit-reached": 0,
+        "pass": 2,
+        "product-failure": 0,
+        "provider-failure": 0
+      },
+      "target_calls": 1
+    }
+  },
+  "scenarios": [
+    {
+      "case_id": "SAGR-013",
+      "criteria": [
+        {
+          "id": "INDICATOR_TASKS_REJECTED",
+          "observation": "The response explicitly classifies meetings and emails as activity metrics and dashboard pages as an output metric, rejects all three as lead or success metrics without evidenced renewal links, and limits them to diagnostic, capacity, or delivery-tracking uses.",
+          "status": "pass",
+          "turn_reviews": [
+            {
+              "observation": "T1 rejects meetings, emails, and dashboard pages as automatic leading indicators and treats them as activities, interventions, inputs, or outputs rather than evidence of customer progress or renewal.",
+              "status": "pass",
+              "turn_id": "T1"
+            }
+          ]
+        },
+        {
+          "id": "INDICATOR_EVIDENCE_LIMITED",
+          "observation": "The response identifies first-live-workflow completion within seven days as the only credible candidate based on reported predictive history, while explicitly withholding causality because customer size and other selection effects may confound the relationship. It proposes segmented reanalysis, a bounded intervention, downstream sustained-use testing, and clear conditions that would falsify the thesis.",
+          "status": "pass",
+          "turn_reviews": [
+            {
+              "observation": "T1 preserves the distinction between a promising predictive signal and a proven controllable renewal lever, names customer-size confounding, and specifies intervention-based and cohort-adjusted falsification tests.",
+              "status": "pass",
+              "turn_id": "T1"
+            }
+          ]
+        },
+        {
+          "id": "LAG_INTERPOLATION_REJECTED",
+          "observation": "The response calls the 25/50/75/100% quarterly milestones arithmetic rather than strategy, rejects their unsupported linearity and false precision, and replaces them with milestones derived from a driver chain spanning eligibility, activation through an early live workflow, sustained use, realised value, and renewal.",
+          "status": "pass",
+          "turn_reviews": [
+            {
+              "observation": "T1 rejects linear interpolation of the annual renewal target and requires cohort- and evidence-based milestones tied to the relevant activation, adoption, value, and retention driver model, with numeric targets deferred until baselines and effect sizes exist.",
+              "status": "pass",
+              "turn_id": "T1"
+            }
+          ]
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a041a6-9664-7311-ba69-d3008cbbd4c3",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nThe proposed scorecard is **not validated**. It mistakes activity and output for causal evidence, while the quarterly milestones create false precision by spreading an annual lag target evenly across time without showing how renewal is produced.\n\nThe only credible lead-indicator candidate is **completion of the first live workflow within seven days**. It is predictive in the historical data, but not yet demonstrably causal because customer size may explain both faster completion and higher renewal.\n\n## Indicator assessment\n\n| Proposed measure | Assessment | Appropriate use |\n|---|---|---|\n| Meetings held | Activity metric; no evidenced renewal link and vulnerable to gaming | Capacity or diagnostic measure only |\n| Emails sent | Activity metric; volume could rise while customer progress worsens | Operational diagnostic, not a success metric |\n| Dashboard pages built | Output metric; measures production, not customer value or adoption | Delivery tracking only |\n| First live workflow within seven days | Plausible leading indicator with reported predictive evidence | Primary validation candidate, segmented by customer size |\n\nMeetings and emails may be interventions that help customers reach first value, but counting them does not establish that. Dashboard pages might enable a workflow, yet pages built can equally represent unused inventory. Promoting any of these to lead metrics would invite proxy capture: the team can hit all three while renewal remains unchanged.\n\n## Competing explanations\n\nTwo worlds remain plausible:\n\n1. **Early workflow completion contributes to renewal.** Customers experience value quickly, increasing adoption and later retention.\n2. **Customer size drives both measures.** Larger or better-resourced customers complete workflows faster and renew more often; accelerating smaller customers may not reproduce the observed renewal advantage.\n\nThe second world prevents a causal claim, but both worlds support the same immediate move: focus measurement on time-to-first-live-workflow while testing whether the relationship survives adjustment for customer size and other plausible differences.\n\n## Milestone assessment\n\nThe 25/50/75/100% quarterly milestones are arithmetic, not strategy. They assume renewal progress accumulates linearly and that quarterly fractions are meaningful despite renewal being a delayed, often contract-timed event. Without a cohort model, renewal calendar, starting denominator, churn timing, and causal drivers, those percentages cannot diagnose whether the plan is working.\n\nReplace them with milestones that represent validated links in a driver model:\n\n`eligible customers → first live workflow ≤7 days → sustained workflow use → realised value → renewal`\n\nQuarterly milestones should then describe evidence or cohort states—for example, validating the early-completion relationship within comparable size segments, improving that rate through a controlled intervention, and confirming that improvement persists into sustained use. Numeric targets should come only after baselines and effect sizes are established.\n\n## Next moves\n\n1. Reanalyse historical cohorts, comparing renewal among early and late completers within customer-size bands; also inspect onboarding route, use case, tenure, and selection effects where available.\n2. Run a bounded intervention that changes time-to-first-live-workflow, then test whether downstream sustained use improves. Merely observing another correlation is insufficient.\n3. Retain meetings, emails, and pages as diagnostic inputs. Promote one only if changing it reliably changes the next link in the causal chain.\n\nThe thesis should be rejected or revised if the early-completion relationship disappears within comparable cohorts, or if an intervention improves seven-day completion without improving sustained use or later renewal. Until then, “first live workflow within seven days” is a promising predictive signal—not a proven renewal lever.",
+              "id": "T1",
+              "user": "$strategic-advisor Our twelve-month lag outcome is renewal. The team proposes three weekly lead metrics: meetings held, emails sent and dashboard pages built. No evidence links them to renewal. Historical data show that successful completion of the first live workflow within seven days predicts later renewal, although customer size may confound it. The team also created quarterly lag milestones by dividing the annual renewal target into 25, 50, 75 and 100 percent without a driver model. Assess the indicators and milestones."
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    }
+  ],
+  "schema_version": 1,
+  "selection": {
+    "diagnostic_decision": "Direct-neighbour check for the bounded causal-boundary repair",
+    "full_suite": false,
+    "mode": "diagnostic",
+    "selected_case_ids": [
+      "SAGR-013"
+    ]
+  },
+  "spec_sha256": "d94ab8fad7dab599ab045068152d7f67c48f569902d49f986bc4a6c673cb2274",
+  "started_at": "2026-08-27T05:17:11Z",
+  "status": "pass",
+  "suite_id": "strategic-advisor-goal-alignment-review-v1",
+  "target": {
+    "cli_version": "codex-cli 0.148.0-alpha.9",
+    "evaluation_material_visible": false,
+    "host": "codex-cli",
+    "model": "gpt-5.6-sol",
+    "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+    "source_access": [
+      "SKILL.md"
+    ],
+    "source_access_artifact": "source-access.json",
+    "source_access_artifact_sha256": "15887a114fc7e4d7b0fe1fb02d3234d295c20efc9a8685ba5dc1b705012f6a80",
+    "visibility_control": "Target sessions received only the isolated allowlisted runtime package and frozen user turns; criteria were disclosed later to separate ephemeral adjudicator sessions."
+  }
+}

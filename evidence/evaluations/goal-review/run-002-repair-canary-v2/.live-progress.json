@@ -1,0 +1,104 @@
+{
+  "adapter_contract_identity": null,
+  "adjudications": {
+    "SAGR-014": [
+      {
+        "id": "PROGRESS_OUTPUT_NOT_OUTCOME",
+        "observation": "The response explicitly records “300 hours” and a “60-page portal” as substantial completed delivery output, while stating that no material progress toward the 12-day outcome has been demonstrated and classifying the portal as “non-advancing output” rather than evidenced goal progress.",
+        "status": "pass",
+        "turn_reviews": [
+          {
+            "observation": "T1 distinguishes completed output from outcome progress, citing no starter usage, no remeasurement, and the unchanged bottleneck as reasons portal completion alone cannot establish progress.",
+            "status": "pass",
+            "turn_id": "T1"
+          }
+        ]
+      },
+      {
+        "id": "PROGRESS_ENABLER_BOUNDED",
+        "observation": "The response does not award the portal enabler credit; it makes any future credit conditional on starters using it and evidence that usage reduces a material delay. It repeatedly keeps the unchanged approval bottleneck visible and recommends redirecting effort to approval if the portal does not affect that constraint.",
+        "status": "pass",
+        "turn_reviews": [
+          {
+            "observation": "T1 explicitly says “No starter has used it,” “The approval bottleneck remains unchanged,” and permits resumed investment only if usage causally reduces a material delay. Thus it refuses unsupported enabler credit and preserves the approval constraint.",
+            "status": "pass",
+            "turn_id": "T1"
+          }
+        ]
+      }
+    ]
+  },
+  "checkpoint_identity": "sha256:cbcc268c6a691db6e112bda5889da662f8ce9aafb7835cfdd8cb819516f3bfb5",
+  "diagnostic_decision": "Fresh failed-case canary under the corrected conditional-criterion evaluator",
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "failure_detail": "",
+  "limits": {
+    "max_elapsed_seconds": 900,
+    "max_failures": 1,
+    "max_target_calls": 1
+  },
+  "mode": "diagnostic",
+  "outcome": "pass",
+  "proof_contract_identity": "sha256:cd48cd7a71af3bb592b89da945d4901e87e82091b54ed9a34429596c2182c35e",
+  "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+  "schema_version": 2,
+  "selected_case_ids": [
+    "SAGR-014"
+  ],
+  "sessions": {
+    "SAGR-014::default": {
+      "case_id": "SAGR-014",
+      "session_id": "01a041a5-8198-7852-be51-8e960eecfad5",
+      "session_identity": "sha256:476b831416057670ebbcb132ed6d0ab9e22219b3ba44e214f6cb7fd4c58d6be5",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ],
+      "turns": [
+        {
+          "assistant": "## Bottom line\n\nNo material progress toward reducing time-to-independence from 20 days to 12 has been demonstrated.\n\nThe team delivered substantial output—300 hours and a 60-page portal—but:\n\n- No new starter has used it.\n- The approval bottleneck remains unchanged.\n- Time-to-independence has not been remeasured.\n\nTherefore, the portal is **non-advancing output**, not evidenced goal progress. This does not prove that actual progress is zero; it means progress is unknown and currently unsupported.\n\n**Readiness — Not validated:** further portal investment is not justified until its causal contribution is tested.\n\n## Progress assessment\n\n| Test | Evidence | Verdict |\n|---|---|---|\n| Outcome movement | No new measurement | Not demonstrated |\n| Driver movement | No starter usage | Not demonstrated |\n| Constraint movement | Approval bottleneck remains | No movement |\n| Decision movement | Portal shipped, but its effect is untested | Not demonstrated |\n| Delivery output | 60 pages produced in 300 hours | Completed, but not material progress |\n\n## Strategic diagnosis\n\nThe work drifted from the outcome—independent work within 12 days—to a proxy: producing training content.\n\nThe available evidence does not support the assumed bridge:\n\n`more training pages → faster approval → earlier independent work`\n\nThe approval bottleneck is presently the strongest supported constraint. Unless the portal changes that constraint or another demonstrated driver, expanding it is unlikely to move the goal.\n\n## Disposition\n\n- **Goal: Continue** — retain the 12-day target pending measurement.\n- **Current portal path: Pause and correct** — stop adding pages until usage and causal impact are tested.\n\n## Next moves\n\n1. Measure the next starter’s actual time-to-independence using the original 20-day definition and comparable start/end points.\n2. Map every approval delay during that journey: approver, waiting time, reason, and whether portal content could have prevented it.\n3. Run one bounded test with the existing portal—no new pages—and compare usage, approval delays, and independence time.\n\nResume portal investment only if starters use it and the evidence shows that usage reduces a material delay. Otherwise, redirect effort to the approval process.",
+          "id": "T1",
+          "receipt_identity": "sha256:600e32b53fea96da5719b143f791f8a96f6c5ad23b24be07242e182dcc1a7878",
+          "user": "$strategic-advisor The goal is to reduce new-starter time to independent work from twenty days to twelve. This month the team spent 300 hours and shipped a training portal with 60 pages. No new starter has used it, the approval bottleneck remains, and time-to-independence has not been measured again. Report material progress."
+        }
+      ],
+      "variant_id": "default"
+    }
+  },
+  "source_identity": "sha256:9d758e1bf56c088650dcf2aa69ad5ba3c7d3c320ce4fdfae2c0712f27829fe41",
+  "spec_sha256": "d94ab8fad7dab599ab045068152d7f67c48f569902d49f986bc4a6c673cb2274",
+  "started_at": "2026-08-27T05:16:00Z",
+  "target_contract_identity": "sha256:12945a68399af0f606ed5f0ac1c65f060dad7d6414a594c3a6122ee01ca15898",
+  "target_root": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-fyippa08",
+  "telemetry": {
+    "elapsed_seconds": 46,
+    "evaluator_calls": 1,
+    "events": [
+      {
+        "attempt": 1,
+        "case_id": "SAGR-014",
+        "elapsed_seconds": 30,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "SAGR-014",
+        "elapsed_seconds": 16,
+        "kind": "evaluator",
+        "outcome": "pass",
+        "unit_id": "adjudication"
+      }
+    ],
+    "failures": 0,
+    "outcome_counts": {
+      "evaluator-failure": 0,
+      "harness-failure": 0,
+      "limit-reached": 0,
+      "pass": 2,
+      "product-failure": 0,
+      "provider-failure": 0
+    },
+    "target_calls": 1
+  }
+}

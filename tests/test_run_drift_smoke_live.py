@@ -30,6 +30,11 @@ RUNNER = load_runner()
 
 
 class LiveDriftSmokeControlTests(unittest.TestCase):
+    def test_adjudication_policy_handles_conditionals_without_hidden_premises(self) -> None:
+        self.assertIn("an explicit refusal to claim X satisfies", RUNNER.ADJUDICATION_POLICY)
+        self.assertIn("did not supply", RUNNER.ADJUDICATION_POLICY)
+        self.assertIn("every separate obligation", RUNNER.ADJUDICATION_POLICY)
+
     def setUp(self) -> None:
         self.temporary_directory = tempfile.TemporaryDirectory()
         self.root = Path(self.temporary_directory.name)

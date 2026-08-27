@@ -1,0 +1,45 @@
+{
+  "artifact": "evidence/evaluations/goal-review/run-001-canary-retry/result.json",
+  "candidate_identity": "sha256:7e35e95d2d410dcc447460b973cc6756efe0475ddba9a1148eb8cc19417fa980",
+  "capabilities": [
+    "request-binding",
+    "selection",
+    "fail-fast",
+    "limits",
+    "typed-outcomes",
+    "checkpoint-resume",
+    "input-bound-receipts",
+    "transcript-regrade"
+  ],
+  "checkpoint_identity": "sha256:19d3123afe85c5be0d8cf8f2fb4e5430a0f8cb73810b804cf99b8efd63cad7b9",
+  "contract": "generic-verifier-receipt",
+  "diagnostic_decision": "One authorised infrastructure retry for the bounded experimental-alpha canary",
+  "elapsed_seconds": 14,
+  "evaluator_calls": 1,
+  "evaluator_identity": "sha256:0cc2b8712161bacd325721e3abf954e8e32c3182ca0ff8eb53e247e172b626b1",
+  "limits": {
+    "max_elapsed_seconds": 900,
+    "max_failures": 1,
+    "max_target_calls": 1
+  },
+  "mode": "diagnostic",
+  "outcome": "pass",
+  "proof_contract_identity": "sha256:2942b4a2bd197d1585ab1ae945b446d8b497feaf3f86258b70c765645d1e9fa8",
+  "receipt_identity": "sha256:970e924fa1de3e4793277089b78e31bab1631b12c078965eebb1228bedb8767f",
+  "regrade": false,
+  "runtime_identity": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6",
+  "schema_version": 1,
+  "selected_scope": [
+    "SAGR-001"
+  ],
+  "source_identity": "sha256:d2c8db2cb2de143c3bd7cafec6b35b18c169b4ad8c1b326c1518998a3553973f",
+  "stage_complete": true,
+  "target_calls": 1,
+  "target_identity": "sha256:74190289951c0ce0319c4243bf6f929a965c75d4b5bb395f018c21ade2f787df",
+  "telemetry_totals": {
+    "elapsed_seconds": 14,
+    "evaluator_calls": 1,
+    "failures": 0,
+    "target_calls": 1
+  }
+}

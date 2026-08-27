@@ -1,0 +1,25 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "SAGR-009",
+      "session_id": "01a0419e-1742-7912-977c-5bfd9f22473a",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/people-leadership.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "SAGR-014",
+      "session_id": "01a0419f-2f2a-7861-a6ac-9936a3e1f535",
+      "successful_runtime_reads": []
+    }
+  ],
+  "schema_version": 1
+}

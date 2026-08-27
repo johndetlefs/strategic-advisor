@@ -11,43 +11,43 @@
 ## Intent
 
 Make the accepted public behaviour internally consistent across runtime,
-generic templates, product claims and deterministic packages, then hand the
-exact contract to a separate private Strategy Workspace v1 without mutating or
-claiming that consumer.
+generic templates, product claims and deterministic packages; publish and
+fresh-verify the next experimental prerelease; then install that public artifact
+in the owner's Codex. The separate Strategy Workspace handoff is deferred from
+this release by owner authority.
 
 ## Intent Spine
 
-- OC1 — Completion capability: A user can obtain one coherent prepared public
-  Strategic Advisor distribution and a precise downstream private-workspace
-  brief with no ambiguity about proof, privacy, ownership or next authority.
+- OC1 — Completion capability: A user can obtain one coherent, publicly
+  downloadable Strategic Advisor prerelease whose exact artifact is verified
+  and loaded in the owner's Codex with no ambiguity about proof boundaries.
 - OC2 — Material capabilities: Cross-artifact claim alignment, generic record
   validation, runtime/package identity, deterministic release preparation,
-  full verification and a repository-separated dogfood/consumer handoff.
-- OC3 — Success journey: Accept TASK-034 evidence, align declarations and
-  templates, prepare and verify immutable packages if runtime bytes changed,
-  audit the parent, then issue the separate Strategy Workspace task brief.
+  public-download verification and exact local activation.
+- OC3 — Success journey: Accept the bounded TASK-034 evidence, align claims,
+  prepare and verify immutable packages, merge and publish the prerelease,
+  fresh-download it, install the public ZIP and confirm a fresh Codex load.
 - OC4 — Successful-but-wrong result: A local ZIP called released, generic
   templates called private dogfood, unsupported claims, copied private facts,
   consumer coupling, or a handoff that silently authorises mutation is wrong.
-- OC5 — Exclusions: No push, PR, merge, publication, release finalisation, host
-  activation, support claim, private workspace mutation, Sunday update or Daily
-  Checklist integration.
+- OC5 — Exclusions: No support, parity, adoption or effectiveness claim; no
+  private workspace mutation, Sunday update or Daily Checklist integration.
 - OC6 — Assumptions: TASK-034 has an honest exact-runtime verdict and the
   current canonical release tooling remains authoritative.
 - OC7 — Authority source: Parent Epic Intent and approved decomposition row.
 
 ## Owner Approval
 
-- Intent reviewed and accurately reflected: Inherited from parent epic envelope when unchanged
-- Requirements reviewed by owner: No
-- Acceptance criteria reviewed by owner: No
-- Approved for decomposition: No
-- Approved for implementation: No
-- Approved scope envelope: No
-- Approved by: Inherited from parent epic envelope when unchanged
-- Approval date: Inherited from parent epic envelope when unchanged
-- Approval note / source: Inherited from parent epic envelope when unchanged
-- Approved artifact identity: Inherited from parent epic envelope when unchanged
+- Intent reviewed and accurately reflected: Yes
+- Requirements reviewed by owner: Yes
+- Acceptance criteria reviewed by owner: Yes
+- Approved for decomposition: Inherited from approved parent decomposition
+- Approved for implementation: Yes
+- Approved scope envelope: Prepare, push, merge, publish, fresh-verify, install and activate the next experimental prerelease; defer the separate Strategy Workspace handoff
+- Approved by: John (owner)
+- Approval date: 2026-08-27
+- Approval note / source: Current Codex task directive to finish the release and local update without further approval prompts; coordination amendment `owner-release-scope-2026-08-27`
+- Approved artifact identity: Current requirements after this recorded amendment
 
 ## Child Charter
 
@@ -110,12 +110,13 @@ claiming that consumer.
 
 ## Goal
 
-Close the public implementation and proof boundary cleanly and make the next
-private v1 task executable without cross-repository ambiguity.
+Close the experimental public release boundary cleanly and leave the owner's
+current Codex running the exact fresh-verified public artifact.
 
 ## Non-Goals
 
-- Publishing or finalising a release without separate owner authority.
+- Promoting the prerelease to supported, cross-model, cross-host, adopted or
+  effective without separate evidence.
 - Claiming the private review process has been dogfooded or accepted.
 - Storing John's facts in public templates, cases or handoff examples.
 - Adding runtime dependencies on any downstream consumer.
@@ -144,16 +145,15 @@ mutations.
 - R4. If allowlisted runtime bytes changed, prepare the next immutable
   distribution through the canonical release command, build twice and verify
   source/runtime/provenance/package identity and evaluation exclusion.
-- R5. Run focused/full tests, aggregate validators, deterministic evaluations,
-  affected smoke, privacy/diff/package checks, Project Workflow Doctor, child
-  QA and parent acceptance/intent audits; retain blockers honestly.
-- R6. Produce a downstream brief for a separate Strategy Workspace v1 task
-  containing accepted public semantics, required private records, event/weekly/
-  monthly questions, material-progress/drift tests, owner reconciliation,
-  dispositions, process falsifiers, dogfood evidence and Sunday/Daily
-  Checklist boundaries.
-- R7. The brief must state repository and authority boundaries and must not
-  mutate, create workflow state in, or claim acceptance for Strategy Workspace.
+- R5. Run focused and full deterministic tests, aggregate validators, the
+  bounded TASK-034 affected smoke, privacy/diff/package checks, Project Workflow
+  Doctor, one child QA and parent acceptance/intent audits; retain blockers
+  honestly without commissioning another behavioural campaign.
+- R6. Publish the prepared GitHub prerelease, fresh-download and verify its
+  exact public artifacts, install the public standalone Skill into the owner's
+  Codex and confirm fresh runtime loading.
+- R7. Record the owner-approved deferral of the separate Strategy Workspace v1
+  handoff; it is not a release or activation prerequisite.
 
 ## Acceptance Criteria (Verifiable)
 
@@ -164,14 +164,14 @@ mutations.
 - AC3: Any changed runtime is bound to a newly prepared immutable identity; two
   clean package builds are byte-identical and independently verified with no
   evaluation leakage.
-- AC4: Focused/full validation, exact-runtime evidence, privacy/diff/package
-  checks, child QA, current intent audit and parent acceptance audit pass or
-  retain explicit blockers without claim weakening.
-- AC5: The downstream brief completely specifies the private v1, dogfood and
-  consumer boundaries without changing Strategy Workspace or implying its
-  approval.
-- AC6: Public preparation remains distinct from push, merge, publication,
-  finalisation, activation, support, adoption and effectiveness.
+- AC4: Focused/full deterministic validation, bounded exact-runtime evidence,
+  privacy/diff/package checks, one child QA, current intent audit and parent
+  acceptance audit pass or retain explicit blockers without claim weakening.
+- AC5: The public prerelease is fresh-downloaded, byte/provenance verified,
+  installed locally and observed loading its new goal-review runtime; the
+  separate private handoff remains an approved deferral.
+- AC6: Publication and activation remain distinct from support, parity,
+  adoption and effectiveness.
 
 ## Open Questions (Answer Needed)
 
@@ -181,9 +181,11 @@ mutations.
 ## Decisions (Resolved)
 
 - D1. Align every affected public artifact from one canonical runtime.
-- D2. Prepare but do not publish changed runtime packages.
+- D2. Prepare, merge and publish the changed runtime as the next immutable
+  experimental prerelease, then verify it from the public download.
 - D3. Treat generic templates and private dogfood as different proof layers.
-- D4. End with a separate downstream task brief, not a cross-repository mutation.
+- D4. Defer the downstream Strategy Workspace brief; end this task with public
+  artifact verification and exact local Codex activation.
 
 ## Validation Plan
 
@@ -193,5 +195,6 @@ mutations.
   clean builds, independent verification and evaluation exclusion.
 - AC4: Full repository validation, retained TASK-034 evidence, workflow Doctor,
   independent child QA, current intent audit and parent audit.
-- AC5-AC6: Review downstream brief against EPIC-007 and verify no external
-  mutation, delivery or unsupported claim occurred.
+- AC5-AC6: Verify public release metadata and downloaded bytes, install the
+  public standalone ZIP, prove fresh Codex source loading, and verify that no
+  unsupported claim or private-workspace mutation occurred.

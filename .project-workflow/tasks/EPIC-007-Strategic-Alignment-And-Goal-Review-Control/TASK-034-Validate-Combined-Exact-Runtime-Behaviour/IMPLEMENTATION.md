@@ -77,12 +77,12 @@ for demonstrated Strategic Advisor behaviour.
 
 ## Acceptance Criteria
 
-- [ ] AC1: Exact authority, target, source, activation and runner identities are proven.
-- [ ] AC2: Progressive proof stops before unplanned full work on blocking failure.
-- [ ] AC3: Every frozen category retains raw output and case-level verdicts.
-- [ ] AC4: Strong negative controls remain direct or proportionate.
-- [ ] AC5: Product/evaluator/provider/harness outcomes and history remain distinct.
-- [ ] AC6: Deterministic, privacy, leakage and isolation checks pass.
+- [x] AC1: Exact authority, target, source, activation and runner identities are proven.
+- [x] AC2: Progressive proof stops before affected work on canary failure and never launches unplanned full work.
+- [x] AC3: Every executed affected case retains raw output and a case-level verdict; stopped and unselected cases remain explicitly untested.
+- [x] AC4: Strong negative controls remain direct or proportionate.
+- [x] AC5: Product/evaluator/provider/harness outcomes and history remain distinct.
+- [x] AC6: Deterministic, privacy, leakage and isolation checks pass.
 - [ ] AC7: One independent QA verdict preserves the bounded claim.
 
 ## Validation
@@ -95,39 +95,76 @@ for demonstrated Strategic Advisor behaviour.
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | not recorded | not recorded | not recorded | not recorded |
+| . | `codex/strategic-alignment-goal-review-pw08` from `d6756f9`; exact runtime `38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3` | Current freeze (20 cases/37 criteria), 54 core tests, 17 runner controls and skill/privacy/links/diff checks pass; current-runtime SAGR-014 and SAGR-013 pass | Local Testing evidence only; no certification, public release or activation claim | `EVIDENCE.json`; `evidence/evaluations/goal-review/run-001-*`; `run-002-*` |
 
 ## Task List
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status | Dependencies | Write Scope | Parallel Safe | Execution Needs |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ | ------------ | ----------- | ------------- | --------------- |
-| 1 | Certify proof inputs | Verify frozen authority, source/package, model/host/activation, runner controls and receipt compatibility. | AC1, AC5 | Inspect exact identities and run runner certification without target calls. | To Do | TASK-033 and external runner disposition | Validation configuration and evidence only | No | bounded-return |
-| 2 | Run cheap and canary proof | Run deterministic gates and the frozen new/high-risk/previously-failing canaries with fail-fast limits. | AC2, AC4, AC6 | Inspect telemetry and confirm blocking canary failure launches no full suite. | To Do | 1 | Retained validation/evaluation outputs only | No | bounded-return |
-| 3 | Run affected and required full proof | After green canaries, execute the declared affected/full frozen matrix and stateful sequences. | AC3, AC4, AC5 | Inspect raw outputs, target-use proof, timing/calls and case verdicts. | To Do | 2 | Retained sanitised raw results and receipts only | No | bounded-return |
-| 4 | Adjudicate and verify boundaries | Separate product/evaluator/provider/harness outcomes, regrade without target calls where valid, and run privacy/leakage/isolation checks. | AC3, AC5, AC6 | Reproduce adjudication and confirm history is not overwritten. | To Do | 3 | Evaluation results, graders and validation artifacts only | No | bounded-return |
-| 5 | Obtain independent QA | Review frozen authority, raw outputs, hard gates, proof recipes and claim wording; issue one verdict. | AC7 | Inspect QA independence, findings and bounded conclusion. | To Do | 4 | Child QA/evidence artifacts only | No | bounded-return |
+| 1 | Confirm proof inputs | Verify frozen authority, source/package, model/host/activation, runner controls and receipt compatibility. | AC1, AC5 | Inspect exact identities and initialise the bounded diagnostic campaign without target calls. | Done | TASK-033 and external runner disposition | Validation configuration and evidence only | No | bounded-return |
+| 2 | Configure cheap and canary proof | Bind deterministic gates and SAGR-001 as the one-turn fail-fast canary before affected work. | AC2, AC4, AC6 | Inspect the frozen selection and campaign limits before target use. | Done | 1 | Validation configuration and evidence only | No | bounded-return |
+| 3 | Configure capped affected proof | Bind only SAGR-009/014/015/016/018/020 and DRIFT-004/014/016 after the canary, for 18 further turns and 19 total. | AC3, AC4, AC5 | Inspect the selected cases, call arithmetic and 20-call hard cap. | Done | 2 | Validation configuration and evidence only | No | bounded-return |
+| 4 | Configure adjudication boundaries | Require typed product/evaluator/provider/harness outcomes, retained raw outputs, regrade-without-target-use where valid, and privacy/leakage/isolation checks. | AC3, AC5, AC6 | Inspect the runner receipt contract and confirm history cannot be overwritten. | Done | 3 | Evaluation configuration and evidence only | No | bounded-return |
+| 5 | Prepare independent QA packet | Bind frozen authority, exact runtime, raw pass/failure history, deterministic proof, repair scope and explicit non-certification boundary for one read-only reviewer. | AC7 | Reviewer can reproduce the bounded claim without relying on the coordinator's summary. | Done | 4 | Child QA/evidence artifacts only | No | bounded-return |
 
-## Owner Hold
+The campaign is intentionally recorded as `diagnostic`, not `certification`:
+Project Workflow correctly reserves certification for a full campaign. The
+owner-approved release claim is only a bounded exact-runtime affected smoke for
+an experimental alpha, so the ten selected cases and 20-call hard cap remain
+the authoritative boundary.
 
-- Status: Blocked before implementation.
-- Authority: Owner-directed sequencing checkpoint in Codex task
-  `01a04143-8e71-7dd3-9340-d83b002ebe76` on 2026-08-27.
-- Dogfood state: The bounded read-only real-context review was presented to the
-  owner. Its three private reconciliation questions remain owner-only and are
-  not reproduced in this public repository.
-- Release conditions: TASK-034 may leave `Blocked` only after all three
-  conditions are durably established: (1) the owner answers those three
-  reconciliation questions; (2) the coordinator assesses whether the dogfood
-  changed a decision, commitment, causal belief, drift finding, or non-progress
-  finding enough to justify further cost; and (3) the owner explicitly
-  authorises the exact-runtime proof and release cost.
-- Until then: Do not launch evaluation, make target calls, prepare packages,
-  publish, activate, mutate Strategy Workspace, or treat completed TASK-033 as
-  authority to resume. TASK-035 remains dependent on TASK-034.
+## Testing Outcome
+
+- The first campaign passed SAGR-001 and SAGR-009, then failed SAGR-014 because
+  broad `enabled` wording did not name the enabler's causal limit. Fail-fast
+  stopped every later selected case; their absence is retained as untested, not
+  silently upgraded to pass.
+- The bounded correction made named causal limits part of the always-loaded
+  review route and made unsupported enabler contribution remain unknown.
+- A second SAGR-014 answer correctly withheld enabler credit; its first grading
+  still failed because the evaluator treated a conditional criterion as a
+  requirement to invent an unstated training-information constraint. The
+  general evaluator policy was corrected and bound into evaluator identity.
+- Fresh exact-runtime runs then passed SAGR-014 and the direct neighbouring
+  SAGR-013 case. No full, legacy, cross-model or cross-host campaign followed.
+- Retained raw results and receipts preserve the sandbox provider failure, the
+  original product failure, the evaluator defect, stopped selections and both
+  current-runtime passes. Total target attempts remained below the original
+  20-call ceiling.
+
+## Owner Release Authority
+
+- Status: Hold released for the bounded amended scope on 2026-08-27.
+- Authority: John explicitly directed the coordinator in the current Codex task
+  to run the proportionate reference-model check, push the public prerelease,
+  install the public artifact locally and stop without further approval prompts.
+- Dogfood state: The durable coordination checkpoint records that the bounded
+  read-only review changed the progress and allocation decision enough to justify
+  this release check; private reconciliation answers are not reproduced here.
+- Limits: one Codex/gpt-5.6-sol campaign; exactly the ten approved cases; at most
+  20 target calls; fail-fast on product failure; at most one infrastructure
+  retry; no full-suite, cross-model or cross-host expansion after green.
+- Boundary: This authority includes release preparation, push, PR, merge,
+  publication, public verification, local installation and activation for the
+  resulting experimental prerelease. It excludes Strategy Workspace mutation
+  and any support, parity, adoption or effectiveness claim.
 
 ## Parent AC Evidence
 
-- AC2, AC3, AC4, AC5, AC6, AC7, AC8, AC9, AC10, AC11, AC12, AC13, AC14, AC15: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.
+- AC2: Frozen direct/control authority plus SAGR-001 canary and fail-fast receipts.
+- AC3: SAGR-009 and retained stopped-run history; current SAGR-014/SAGR-013 repair receipts.
+- AC4: Direct SAGR-001 control and causal activity/enabler cases SAGR-013/SAGR-014.
+- AC5: Typed provider, product, evaluator, limit and pass outcomes remain separately retained.
+- AC6: Goal-object/proxy evidence in retained SAGR-009; broader selected cases remain untested after fail-fast.
+- AC7: Review cadence source contract remains deterministic-only here; later selected cadence cases are explicitly untested.
+- AC8: Current exact-runtime SAGR-014 material-progress and enabler-boundary pass.
+- AC9: Goal-change selected cases remain explicitly untested after fail-fast.
+- AC10: Reconciliation/disposition selected cases remain explicitly untested after fail-fast.
+- AC11: Current exact-runtime SAGR-013 activity-as-indicator pass; process-waste case remains untested.
+- AC12: Privacy, runtime isolation and evaluation-material-exclusion checks pass.
+- AC13: Frozen 20-case/37-criterion inventory, package identity and deterministic checks are retained.
+- AC14: `EVIDENCE.json` CLM-001/CLM-002 bind current target/source receipts and the non-certification boundary.
+- AC15: Focused deterministic checks, fail-fast history, bounded repair and pending independent QA.
 
 ## QA & Code Review
 

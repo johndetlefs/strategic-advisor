@@ -1,0 +1,45 @@
+{
+  "artifact": "evidence/evaluations/goal-review/run-002-repair-affected/result.json",
+  "candidate_identity": "sha256:4a0888de61a6d68ac40ab72223ffab225479e173d478f8b00fdba41c16ee3e21",
+  "capabilities": [
+    "request-binding",
+    "selection",
+    "fail-fast",
+    "limits",
+    "typed-outcomes",
+    "checkpoint-resume",
+    "input-bound-receipts",
+    "transcript-regrade"
+  ],
+  "checkpoint_identity": "sha256:97e320e3c4cf30b18d1abb83ad2cb0da17ac65a33053074da9c621e84deb43c3",
+  "contract": "generic-verifier-receipt",
+  "diagnostic_decision": "Direct-neighbour check for the bounded causal-boundary repair",
+  "elapsed_seconds": 54,
+  "evaluator_calls": 1,
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "limits": {
+    "max_elapsed_seconds": 900,
+    "max_failures": 1,
+    "max_target_calls": 1
+  },
+  "mode": "diagnostic",
+  "outcome": "pass",
+  "proof_contract_identity": "sha256:15867251b150a9abb1c544ea306d71559a37acfab772bd8e0933d9483ccb9e32",
+  "receipt_identity": "sha256:7adc2d5a12fc19e5fd49d84c034d63bacc19967bc314f7422216c220e404f384",
+  "regrade": false,
+  "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+  "schema_version": 1,
+  "selected_scope": [
+    "SAGR-013"
+  ],
+  "source_identity": "sha256:9d758e1bf56c088650dcf2aa69ad5ba3c7d3c320ce4fdfae2c0712f27829fe41",
+  "stage_complete": true,
+  "target_calls": 1,
+  "target_identity": "sha256:b3e0485a84de1e332cb1f00d67479bd720d9d9e960aa6b84cd2f8b23f392b1af",
+  "telemetry_totals": {
+    "elapsed_seconds": 54,
+    "evaluator_calls": 1,
+    "failures": 0,
+    "target_calls": 1
+  }
+}

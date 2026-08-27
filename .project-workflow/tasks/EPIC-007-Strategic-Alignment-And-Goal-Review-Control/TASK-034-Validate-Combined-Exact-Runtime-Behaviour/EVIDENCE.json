@@ -1,4 +1,64 @@
 {
   "task_id": "TASK-034",
-  "claims": []
+  "claims": [
+    {
+      "id": "CLM-001",
+      "parent_ac": "AC14",
+      "claim": "The corrected exact runtime passed the failed SAGR-014 material-progress case and the directly neighbouring SAGR-013 activity-as-indicator case in two fresh isolated Codex/gpt-5.6-sol sessions.",
+      "recipe": "runtime-target-source",
+      "status": "pass",
+      "commit": "d6756f92fde3cf9e9dd2538f2c7e165e2ed5f6f7",
+      "timestamp": "2026-08-27T05:16:00Z",
+      "execution_target": "Codex CLI 0.148.0-alpha.9 / gpt-5.6-sol / bounded repair diagnostic",
+      "source_artifact": "Allowlisted runtime package sha256:38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3; commit is base lineage while exact uncommitted runtime bytes are independently bound by the retained manifests.",
+      "observation_method": "Run the failed case as a fresh canary, stop on failure, then run one direct neighbour only; disclose frozen criteria later to a separate adjudicator and retain raw turns, verdicts, identities and telemetry.",
+      "target_used_source_proof": "Both current-runtime result artifacts record an isolated installed SKILL.md read; evaluation material remained excluded from the target sessions.",
+      "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair-canary-v2/result.json",
+      "evidence_artifact_hash": "sha256:15a9e1f6ae7378cc615bf03c6ee2cec7a353ac383ad82cf938b6996a746eef6a",
+      "invalid_substitutes": [
+        "A full current-runtime campaign",
+        "Cross-model or cross-host support",
+        "Adoption or strategic effectiveness"
+      ]
+    },
+    {
+      "id": "CLM-002",
+      "parent_ac": "AC15",
+      "claim": "The diagnostic preserved the original SAGR-014 product failure, stopped later selected cases, separated the later conditional-rubric evaluator defect, and reran only the failed case plus one direct neighbour after bounded corrections.",
+      "recipe": "runtime-target-source",
+      "status": "pass",
+      "commit": "d6756f92fde3cf9e9dd2538f2c7e165e2ed5f6f7",
+      "timestamp": "2026-08-27T05:16:00Z",
+      "execution_target": "Generic verifier fail-fast, typed-outcome, receipt and repair controls",
+      "source_artifact": "Run-001 and run-002 raw results plus evidence/evaluations/goal-review/run-002-repair-decision.json",
+      "observation_method": "Inspect runner receipts, raw case reviews, target/evaluator events, retained stopped selection and the current repair campaign ledger.",
+      "target_used_source_proof": "The old result retains SAGR-009 pass and SAGR-014 failure with later cases absent; the current repair receipts retain two passes and exactly two target calls.",
+      "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair-affected/result.json",
+      "evidence_artifact_hash": "sha256:bd361cae04b9360ddd46f925d3e75135c6bca5ee69ceee0b7508893fceb223af",
+      "invalid_substitutes": [
+        "Treating the stopped untouched cases as passed",
+        "Overwriting the original failure",
+        "Calling the diagnostic certification"
+      ]
+    },
+    {
+      "id": "CLM-003",
+      "parent_ac": "AC13",
+      "claim": "The corrected source passed the focused alignment, goal-review, freeze, generic-runner, skill, privacy, links and diff checks while the release-state checks remained explicitly deferred to alpha.7 preparation in TASK-035.",
+      "recipe": "runtime-target-source",
+      "status": "pass",
+      "commit": "d6756f92fde3cf9e9dd2538f2c7e165e2ed5f6f7",
+      "timestamp": "2026-08-27T05:16:00Z",
+      "execution_target": "Deterministic TASK-034 source, authority, privacy and runner-control gates",
+      "source_artifact": "evidence/evaluations/goal-review/run-002-repair/deterministic.json",
+      "observation_method": "Run the frozen-authority builder check, focused contract and runner controls, scoped validators and diff check before target use and after the repair.",
+      "target_used_source_proof": "The retained deterministic record binds the checks to runtime sha256:38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3 and keeps release-state validation as a separate downstream gate.",
+      "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair/deterministic.json",
+      "evidence_artifact_hash": "sha256:52e87d3a674bc23aabc36ce737331107b07b506b5b38669464a575fd1f84ff58",
+      "invalid_substitutes": [
+        "Deterministic checks as behavioural proof",
+        "A prepared package as publication proof"
+      ]
+    }
+  ]
 }
