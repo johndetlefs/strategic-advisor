@@ -6,7 +6,7 @@
     "epic": "EPIC-007",
     "task": "TASK-031",
     "requirements_identity": "sha256:cdbd03660ff1ac27a395209ca8cf128a3894a8a581edcf7717974cdc8358235c",
-    "intent_audit_identity": "sha256:96f2dc03f4351372e94175e53b9c6aeabbafbc6a37c9c3d762328e72421c81a3",
+    "intent_audit_identity": "sha256:6b48621541ef9046f189de65c8aaa73f7a5e5038479886546e44cec1c6a851cb",
     "owner_approval": "John Detlefs, SA: Goal Review Workshop, 2026-08-27"
   },
   "untreated_repository_baseline": {
@@ -130,7 +130,7 @@
     "rule": "TASK-034 may use this frozen model and host only after it records the exact reconciled runner commit, treatment source revision, installed runtime-package identity and activation trace. Viewing a target output before those identities are sealed invalidates the run."
   },
   "freeze_scope": {
-    "authority_commit": "acd01e4c82380e22c66662f3a7a34964f24abf53",
+    "authority_commit": "c3b6790e93af8bccc59b76a712e47e2a0991ca07",
     "allowed_prefixes": [
       ".project-workflow/TRACKER.md",
       ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control",
