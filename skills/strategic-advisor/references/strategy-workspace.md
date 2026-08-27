@@ -24,6 +24,15 @@ The portfolio records current commitments and candidates; it is not an exhaustiv
 
 Conversation is not automatically durable context. In `durable-full` or an applicable `durable-bounded` scope, a standing durable-write authority may permit ordinary structured capture. Write the exact decision-relevant fact, objective, context, claim, or decision with provenance, freshness, limitations, and authority basis, then record the change in `CHANGELOG.md`. Outside that authority, propose the exact update and wait.
 
+When [goal-review.md](goal-review.md) produces a material goal or path
+disposition, the private workspace owns any durable personal record. Preserve
+the objective in `OBJECTIVES.md`, the separate goal/path decision and reversal
+conditions in `DECISIONS.md`, and the approved amendment or closeout in
+`CHANGELOG.md`; use an owner-declared linked-detail file only when the full
+generic review record would make a root register unreadable. An execution or
+scheduled consumer may supply evidence or receive selected commitments, but it
+does not own strategy or gain workspace authority.
+
 Never ingest a raw transcript by default. Do not durably store speculative pathways merely because they were explored; capture them only when standing authority clearly covers structured option capture or the user approves the exact update. Corrections, deletions, disclosures, external actions, and cross-workspace copies require their own authority. The scaffold command creates only a new blank workspace and never overwrites an existing one. The migration command copies an explicitly named legacy workspace to a new destination and leaves the source unchanged.
 
 ## Portable file contract
