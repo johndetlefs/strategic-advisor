@@ -107,6 +107,24 @@ for demonstrated Strategic Advisor behaviour.
 | 4 | Adjudicate and verify boundaries | Separate product/evaluator/provider/harness outcomes, regrade without target calls where valid, and run privacy/leakage/isolation checks. | AC3, AC5, AC6 | Reproduce adjudication and confirm history is not overwritten. | To Do | 3 | Evaluation results, graders and validation artifacts only | No | bounded-return |
 | 5 | Obtain independent QA | Review frozen authority, raw outputs, hard gates, proof recipes and claim wording; issue one verdict. | AC7 | Inspect QA independence, findings and bounded conclusion. | To Do | 4 | Child QA/evidence artifacts only | No | bounded-return |
 
+## Owner Hold
+
+- Status: Blocked before implementation.
+- Authority: Owner-directed sequencing checkpoint in Codex task
+  `01a04143-8e71-7dd3-9340-d83b002ebe76` on 2026-08-27.
+- Dogfood state: The bounded read-only real-context review was presented to the
+  owner. Its three private reconciliation questions remain owner-only and are
+  not reproduced in this public repository.
+- Release conditions: TASK-034 may leave `Blocked` only after all three
+  conditions are durably established: (1) the owner answers those three
+  reconciliation questions; (2) the coordinator assesses whether the dogfood
+  changed a decision, commitment, causal belief, drift finding, or non-progress
+  finding enough to justify further cost; and (3) the owner explicitly
+  authorises the exact-runtime proof and release cost.
+- Until then: Do not launch evaluation, make target calls, prepare packages,
+  publish, activate, mutate Strategy Workspace, or treat completed TASK-033 as
+  authority to resume. TASK-035 remains dependent on TASK-034.
+
 ## Parent AC Evidence
 
 - AC2, AC3, AC4, AC5, AC6, AC7, AC8, AC9, AC10, AC11, AC12, AC13, AC14, AC15: Pending implementation evidence. Recipe-triggered claims must also be backed by `EVIDENCE.json`.

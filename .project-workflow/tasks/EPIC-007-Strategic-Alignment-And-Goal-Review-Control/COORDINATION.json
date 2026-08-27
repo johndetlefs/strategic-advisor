@@ -496,6 +496,32 @@
       "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
       "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
       "user_consequence": "Complete TASK-033 only; TASK-034/TASK-035 stay held."
+    },
+    {
+      "affected_units": [
+        "TASK-034",
+        "TASK-035"
+      ],
+      "amendment_identity": "owner-hold-01a04143-2026-08-27-task034",
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "The owner-visible read-only dogfood has been presented, but its three private reconciliation questions, value assessment, and explicit authorization of the remaining exact-runtime proof/release cost are unresolved; TASK-034 must fail closed rather than remain launch-eligible.",
+      "classification": "approved-change",
+      "decided_by": "John (owner)",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:c1a89c514aad5ef6b62b7b65a418baf76f5d68433ce7adf766b8ee101cdd50a4",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
+      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+      "user_consequence": "Move TASK-034 to canonical Blocked state. It may resume only after all three owner-held release conditions in its existing implementation authority are satisfied; TASK-035 remains blocked behind it."
     }
   ],
   "decisions": [
@@ -508,29 +534,32 @@
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:fd860af546dc9e6cc5f9e15807d5435a620020d28da13ca4e60ffb0a69dcfe30",
+  "intent_identity": "sha256:c1a89c514aad5ef6b62b7b65a418baf76f5d68433ce7adf766b8ee101cdd50a4",
   "last_boundary": {
     "affected_units": [
-      "TASK-033"
+      "TASK-034",
+      "TASK-035"
     ],
-    "amendment_identity": null,
-    "boundary": "before-review-or-complete",
-    "capability_change": "The exact AC7-AC12 evidence rows now point to the already-reviewed bounded source artifacts; no capability or proof claim changed.",
-    "classification": "inside-envelope",
-    "decided_by": "Goal Review Workshop coordinator",
+    "amendment_identity": "owner-hold-01a04143-2026-08-27-task034",
+    "boundary": "new-evidence-or-owner-reframe",
+    "capability_change": "The owner-visible read-only dogfood has been presented, but its three private reconciliation questions, value assessment, and explicit authorization of the remaining exact-runtime proof/release cost are unresolved; TASK-034 must fail closed rather than remain launch-eligible.",
+    "classification": "approved-change",
+    "decided_by": "John (owner)",
     "decision_date": "2026-08-27",
-    "intent_identity": "sha256:fd860af546dc9e6cc5f9e15807d5435a620020d28da13ca4e60ffb0a69dcfe30",
+    "intent_identity": "sha256:c1a89c514aad5ef6b62b7b65a418baf76f5d68433ce7adf766b8ee101cdd50a4",
     "relevant_ocs": [
       "OC1",
       "OC2",
       "OC3",
       "OC4",
-      "OC5"
+      "OC5",
+      "OC6",
+      "OC7"
     ],
     "shared_premises_valid": "yes",
     "source_identity": "sha256:eb471de3c79c1e54cececb43d890ab73d76e53af1a92bd82f6f34f5bbbbc270d",
     "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
-    "user_consequence": "Complete TASK-033 only; TASK-034/TASK-035 stay held."
+    "user_consequence": "Move TASK-034 to canonical Blocked state. It may resume only after all three owner-held release conditions in its existing implementation authority are satisfied; TASK-035 remains blocked behind it."
   },
   "loaded_contract": {
     "asset_version": "7",
@@ -539,7 +568,7 @@
     "package_version": "0.8.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Complete TASK-033 and commit the retained QA record before read-only owner dogfood.",
+  "next_action": "Await John's three private reconciliation answers, assess whether dogfood value justifies further cost, and obtain explicit authorization before unblocking TASK-034; TASK-035 remains blocked.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-034",
     "claim_class": "user-facing",
@@ -547,14 +576,14 @@
     "required": true,
     "status": "pending"
   },
-  "phase": "TASK-033 bounded deterministic validation and affected-only QA",
+  "phase": "Owner-held dogfood reconciliation before TASK-034",
   "repositories": {
     ".": {
-      "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c"
+      "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50"
     }
   },
   "schema_version": 2,
-  "source_revision": "41a383b5899f2b4460afa7e5a154658a5682f47c",
+  "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50",
   "target_id": "EPIC-007",
   "work_item_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control"
 }
