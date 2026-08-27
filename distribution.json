@@ -7,11 +7,11 @@
     "version": "0.2.0-alpha.6"
   },
   "distribution": {
-    "runtime_package_identity_sha256": "8944982b82ca7807f33258dcdb3907b36aa1cc2dff9ee21d54492a68bcc9ecbb",
-    "version": "0.2.0-alpha.6"
+    "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+    "version": "0.2.0-alpha.7"
   },
   "schema_version": 2,
-  "state": "published",
+  "state": "prepared",
   "superseded": [
     {
       "reason": "Superseded before publication because FIX-004 corrects owner-led recommendation drift in the prepared runtime; publishing alpha.4 would knowingly ship the defect.",

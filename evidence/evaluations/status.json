@@ -4,6 +4,15 @@
   "bounded_drift_smoke_model": "gpt-5.6-sol",
   "bounded_drift_smoke_run": "run-009",
   "bounded_drift_smoke_runtime_package_identity_sha256": "8944982b82ca7807f33258dcdb3907b36aa1cc2dff9ee21d54492a68bcc9ecbb",
+  "bounded_drift_smoke_scope": "historical-alpha.6-runtime",
+  "current_goal_review_evidence_inventory_sha256": "721016916e42a74d729179c64312d211b7c3da2f6f3807e7d7e647991fef1eef",
+  "current_goal_review_repair_cases": [
+    "SAGR-014",
+    "SAGR-013"
+  ],
+  "current_goal_review_repair_diagnostic": "pass",
+  "current_goal_review_repair_model": "gpt-5.6-sol",
+  "current_goal_review_repair_runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
   "schema_version": 1,
   "behavioral_comparison": "not-run",
   "frozen_iteration_manifest": "not-created",
