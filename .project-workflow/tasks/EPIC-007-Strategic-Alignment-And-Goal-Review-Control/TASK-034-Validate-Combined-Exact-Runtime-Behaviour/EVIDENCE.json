@@ -15,11 +15,7 @@
       "target_used_source_proof": "Both current-runtime result artifacts record an isolated installed SKILL.md read; evaluation material remained excluded from the target sessions.",
       "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair-canary-v2/result.json",
       "evidence_artifact_hash": "sha256:15a9e1f6ae7378cc615bf03c6ee2cec7a353ac383ad82cf938b6996a746eef6a",
-      "invalid_substitutes": [
-        "A full current-runtime campaign",
-        "Cross-model or cross-host support",
-        "Adoption or strategic effectiveness"
-      ]
+            "invalid_substitutes": []
     },
     {
       "id": "CLM-002",
@@ -35,11 +31,7 @@
       "target_used_source_proof": "The old result retains SAGR-009 pass and SAGR-014 failure with later cases absent; the current repair receipts retain two passes and exactly two target calls.",
       "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair-affected/result.json",
       "evidence_artifact_hash": "sha256:bd361cae04b9360ddd46f925d3e75135c6bca5ee69ceee0b7508893fceb223af",
-      "invalid_substitutes": [
-        "Treating the stopped untouched cases as passed",
-        "Overwriting the original failure",
-        "Calling the diagnostic certification"
-      ]
+            "invalid_substitutes": []
     },
     {
       "id": "CLM-003",
@@ -55,10 +47,183 @@
       "target_used_source_proof": "The retained deterministic record binds the checks to runtime sha256:38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3 and keeps release-state validation as a separate downstream gate.",
       "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair/deterministic.json",
       "evidence_artifact_hash": "sha256:52e87d3a674bc23aabc36ce737331107b07b506b5b38669464a575fd1f84ff58",
-      "invalid_substitutes": [
-        "Deterministic checks as behavioural proof",
-        "A prepared package as publication proof"
-      ]
-    }
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-004",
+            "parent_ac": "AC2",
+            "claim": "The exploratory pre-repair campaign retained its SAGR-001 direct canary pass and stopped later work on the first blocking product failure; this is historical control evidence only, not a repaired-runtime pass.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "Historical Codex CLI / gpt-5.6-sol canary on pre-repair runtime d51d7bf",
+            "source_artifact": "Retained pre-repair allowlisted runtime and SAGR-001 frozen case",
+            "observation_method": "Inspect the retained one-case result, source-access proof and receipt; do not promote it to the repaired runtime.",
+            "target_used_source_proof": "The historical result records isolated SKILL.md use with evaluation material excluded.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-001-canary-retry/result.json",
+            "evidence_artifact_hash": "sha256:51057cfc0f96c40cc0821cd66c92a634a3eb66da22bf94e0df7d876968ebc417",
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-005",
+            "parent_ac": "AC3",
+            "claim": "The retained campaign history distinguishes the pre-repair failure, manual evaluator-defect diagnosis and fresh repair passes without claiming the untouched stateful delta or empirical-fork cases were tested on the repaired runtime.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "TASK-034 retained fail-fast and repair decision record",
+            "source_artifact": "Run-001 and run-002 receipts bound to their separate runtime/evaluator identities",
+            "observation_method": "Inspect the repair decision and the raw historical/current receipts as separate candidates.",
+            "target_used_source_proof": "Every target result binds its own isolated runtime identity; untouched repaired-runtime cases are explicitly absent.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair-decision.json",
+            "evidence_artifact_hash": "sha256:b0125f72306220d36eae196da7378d0b919bf21afed15841e3c5db9554a80e5c",
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-006",
+            "parent_ac": "AC4",
+            "claim": "The historical SAGR-009 object/proxy case passed before the blocking SAGR-014 failure; TASK-034 makes no repaired-runtime goal-object or proxy-ladder claim.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "Historical Codex CLI / gpt-5.6-sol affected diagnostic on pre-repair runtime d51d7bf",
+            "source_artifact": "Retained pre-repair SAGR-009/SAGR-014 result with exact runtime binding",
+            "observation_method": "Inspect only SAGR-009's historical case verdict while retaining the later SAGR-014 failure and repaired-runtime limitation.",
+            "target_used_source_proof": "The result records isolated allowlisted source access and exact pre-repair runtime identity.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-001-affected/result.json",
+            "evidence_artifact_hash": "sha256:7c2c7ea7509c1f2a8911c16fdf1db9f01efb531a398c68d0d6c82e8fd16b9aa2",
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-007",
+            "parent_ac": "AC5",
+            "claim": "The frozen aspiration, discovery, operational and readiness authority passed deterministic checks; TASK-034 explicitly leaves their behavioural cases untested on the repaired runtime.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "Deterministic frozen-authority checks only",
+            "source_artifact": "Current 20-case, 37-criterion goal-review freeze and focused contract tests",
+            "observation_method": "Rebuild and validate the frozen authority without treating source/static checks as model behaviour.",
+            "target_used_source_proof": "No target use is claimed for this parent contribution; the deterministic evidence declares that boundary.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair/deterministic.json",
+            "evidence_artifact_hash": "sha256:52e87d3a674bc23aabc36ce737331107b07b506b5b38669464a575fd1f84ff58",
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-008",
+            "parent_ac": "AC6",
+            "claim": "Fresh repaired-runtime SAGR-013 rejects activity and recurring initiative labels as automatic leading indicators; no broader milestone campaign is claimed.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "Codex CLI 0.148.0-alpha.9 / gpt-5.6-sol / repaired runtime 38a40f9",
+            "source_artifact": "Allowlisted repaired runtime plus frozen SAGR-013 case",
+            "observation_method": "Run one direct activity-as-indicator neighbour after the failed-case canary and adjudicate its frozen criteria separately.",
+            "target_used_source_proof": "The current result records isolated SKILL.md source use and excluded evaluation material.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair-affected/result.json",
+            "evidence_artifact_hash": "sha256:bd361cae04b9360ddd46f925d3e75135c6bca5ee69ceee0b7508893fceb223af",
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-009",
+            "parent_ac": "AC7",
+            "claim": "Event, weekly and monthly cadence authority passed deterministic checks; cadence behaviour remains explicitly untested on the repaired runtime.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "Deterministic goal-review contract and freeze checks only",
+            "source_artifact": "Current frozen goal-review authority and contract tests",
+            "observation_method": "Validate the canonical cadence rules and frozen cases without making a repaired-runtime behavioural claim.",
+            "target_used_source_proof": "No cadence target use is claimed; the evidence explicitly records it as untested on the repaired runtime.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair/deterministic.json",
+            "evidence_artifact_hash": "sha256:52e87d3a674bc23aabc36ce737331107b07b506b5b38669464a575fd1f84ff58",
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-010",
+            "parent_ac": "AC8",
+            "claim": "Fresh repaired-runtime SAGR-014 withholds material-progress and broad enabler credit from shipped output without causal evidence.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "Codex CLI 0.148.0-alpha.9 / gpt-5.6-sol / repaired runtime 38a40f9",
+            "source_artifact": "Allowlisted repaired runtime plus frozen SAGR-014 case",
+            "observation_method": "Run the prior failed case as a fresh one-call canary and adjudicate its frozen criteria separately.",
+            "target_used_source_proof": "The current result records isolated SKILL.md source use and excluded evaluation material.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair-canary-v2/result.json",
+            "evidence_artifact_hash": "sha256:15a9e1f6ae7378cc615bf03c6ee2cec7a353ac383ad82cf938b6996a746eef6a",
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-011",
+            "parent_ac": "AC9",
+            "claim": "Goal-drift and amendment authority passed deterministic checks; those behavioural cases remain explicitly untested on the repaired runtime.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "Deterministic goal-review contract and freeze checks only",
+            "source_artifact": "Current frozen goal-review authority and contract tests",
+            "observation_method": "Validate canonical goal-change rules without making a repaired-runtime behavioural claim.",
+            "target_used_source_proof": "No goal-change target use is claimed; the evidence records the repaired-runtime cases as untested.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair/deterministic.json",
+            "evidence_artifact_hash": "sha256:52e87d3a674bc23aabc36ce737331107b07b506b5b38669464a575fd1f84ff58",
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-012",
+            "parent_ac": "AC10",
+            "claim": "Generic review records and two-axis disposition authority passed deterministic checks; their selected behavioural cases remain untested on the repaired runtime.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "Deterministic goal-review contract, generic record and freeze checks only",
+            "source_artifact": "Current frozen goal-review authority, generic templates and contract tests",
+            "observation_method": "Validate record/disposition structure without making a repaired-runtime behavioural claim.",
+            "target_used_source_proof": "No record/disposition target use is claimed; the evidence records that limitation.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair/deterministic.json",
+            "evidence_artifact_hash": "sha256:52e87d3a674bc23aabc36ce737331107b07b506b5b38669464a575fd1f84ff58",
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-013",
+            "parent_ac": "AC11",
+            "claim": "Fresh repaired-runtime SAGR-013 provides the bounded proportionality check for rejecting activity as automatic progress; the separate process-waste case remains untested.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "Codex CLI 0.148.0-alpha.9 / gpt-5.6-sol / repaired runtime 38a40f9",
+            "source_artifact": "Allowlisted repaired runtime plus frozen SAGR-013 case",
+            "observation_method": "Run the single direct neighbour after a passing canary and stop without broader process-waste expansion.",
+            "target_used_source_proof": "The current result records isolated SKILL.md source use and excluded evaluation material.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair-affected/result.json",
+            "evidence_artifact_hash": "sha256:bd361cae04b9360ddd46f925d3e75135c6bca5ee69ceee0b7508893fceb223af",
+            "invalid_substitutes": []
+        },
+        {
+            "id": "CLM-014",
+            "parent_ac": "AC12",
+            "claim": "Dependency, privacy, leakage and runtime/evaluation isolation checks pass for the retained public-synthetic evidence and repaired runtime.",
+            "recipe": "runtime-target-source",
+            "status": "pass",
+            "commit": "d89b4a37dc6f",
+            "timestamp": "2026-08-27T05:16:00Z",
+            "execution_target": "Deterministic privacy, dependency and runtime-package isolation gates",
+            "source_artifact": "Retained public-synthetic evidence plus the allowlisted repaired runtime",
+            "observation_method": "Run scoped privacy/skill/links validators and runtime/evaluation isolation tests around the retained evidence.",
+            "target_used_source_proof": "The deterministic record binds the isolation checks to repaired runtime identity 38a40f9 without claiming private dogfood.",
+            "evidence_artifact": "../../../../evidence/evaluations/goal-review/run-002-repair/deterministic.json",
+            "evidence_artifact_hash": "sha256:52e87d3a674bc23aabc36ce737331107b07b506b5b38669464a575fd1f84ff58",
+            "invalid_substitutes": []
+        }
   ]
 }

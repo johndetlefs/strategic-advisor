@@ -83,7 +83,7 @@ for demonstrated Strategic Advisor behaviour.
 - [x] AC4: Strong negative controls remain direct or proportionate.
 - [x] AC5: Product/evaluator/provider/harness outcomes and history remain distinct.
 - [x] AC6: Deterministic, privacy, leakage and isolation checks pass.
-- [ ] AC7: One independent QA verdict preserves the bounded claim.
+- [x] AC7: One independent QA verdict preserves the bounded claim.
 
 ## Validation
 
@@ -175,20 +175,35 @@ pre-repair campaign, not an unfulfilled current-runtime promise.
 ## QA & Code Review
 
 - Intent QA contract: adversarial
-- Verdict: ____
-- Intent adversarial verdict: ____
-- Could every AC pass while the approved user job remains undone: ____
-- Intent audit state: ____
-- Outcome journey evidence: ____
-- Reviewer independence: ____
-- Evidence: ____
-- Findings: ____
+- Verdict: Pass at exact clean commit `d89b4a37dc6f`.
+- Intent adversarial verdict: Pass.
+- Could every AC pass while the approved user job remains undone: No; the
+  approved job is exactly the current-runtime `SAGR-014`/`SAGR-013` repair
+  diagnostic, and both fresh receipts are retained with the historical failure
+  and untested boundary intact.
+- Intent audit state: Current/pass at review time; no unresolved drift.
+- Outcome journey evidence: Current runtime `38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3`,
+  two target calls, two case-level passes, raw outputs, exact receipts and
+  privacy/deterministic checks.
+- Reviewer independence: Read-only independent reviewer; no repository,
+  workflow, Git, external-system or target-model mutation.
+- Evidence: `EVIDENCE.json`; retained run-001 failure/stop receipts; retained
+  run-002 SAGR-014 and SAGR-013 result/receipt/source artifacts; current
+  TASK-034 coordination campaign.
+- Findings: No blocker. The visible Doctor warning accurately preserves that a
+  diagnostic cannot certify delivery and must remain visible in TASK-035 and
+  release wording; it does not invalidate this task's non-certification ACs.
 
 ## Retro
 
-- Reusable lessons: ____
-- Conventions or agent assets updated: ____
-- Follow-up tasks: ____
+- Reusable lessons: A fail-fast repair diagnostic must amend its proof claim to
+  the cases actually rerun; historical passes from another runtime cannot be
+  silently promoted to current evidence.
+- Conventions or agent assets updated: Generic conditional-criterion evaluator
+  policy now treats explicit refusal of conditional credit as satisfying that
+  condition without inventing an absent premise.
+- Follow-up tasks: TASK-035 must retain the diagnostic/non-certification
+  boundary while preparing, publishing, verifying and activating alpha.7.
 
 ## Notes
 

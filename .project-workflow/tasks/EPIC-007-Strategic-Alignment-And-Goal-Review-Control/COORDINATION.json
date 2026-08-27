@@ -597,6 +597,32 @@
       "source_identity": "sha256:2751b9b3684e15d66842ad32b002707090465e97cdc7d4d9ee1f3cd7b98aefdf",
       "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50",
       "user_consequence": "TASK-034 may enter Testing for the bounded diagnostic campaign; failure stops later stages and green results do not become certification."
+    },
+    {
+      "affected_units": [
+        "TASK-034",
+        "TASK-035"
+      ],
+      "amendment_identity": "owner-release-scope-2026-08-27",
+      "boundary": "before-review-or-complete",
+      "capability_change": "TASK-034 release proof is narrowed to the actual repaired-runtime SAGR-014 plus SAGR-013 diagnostic; untouched cases remain untested and the result is not certification.",
+      "classification": "approved-change",
+      "decided_by": "EPIC-007 coordinator under explicit owner release directive",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:4b379e44a63a3ab9df4893254254fc254df70c01563b44ec855d2c40f0c189ec",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:2751b9b3684e15d66842ad32b002707090465e97cdc7d4d9ee1f3cd7b98aefdf",
+      "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50",
+      "user_consequence": "Independent QA passed the bounded TASK-034 claim; it may close without further target calls, and TASK-035 must preserve this boundary."
     }
   ],
   "decisions": [
@@ -609,30 +635,32 @@
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:5ec07923aa337b239697b04cf96134732f82c32062a8c8eb2b8fe7d424c09605",
+  "intent_identity": "sha256:4b379e44a63a3ab9df4893254254fc254df70c01563b44ec855d2c40f0c189ec",
   "last_boundary": {
     "affected_units": [
-      "TASK-034"
+      "TASK-034",
+      "TASK-035"
     ],
-    "amendment_identity": null,
-    "boundary": "unit-return-or-dependency-join",
-    "capability_change": "TASK-034 verification configuration is complete: the frozen authorities, exact runtime identity, canary, affected selection, typed outcomes and finite limits are bound without any model call or broader claim.",
-    "classification": "inside-envelope",
-    "decided_by": "EPIC-007 coordinator",
+    "amendment_identity": "owner-release-scope-2026-08-27",
+    "boundary": "before-review-or-complete",
+    "capability_change": "TASK-034 release proof is narrowed to the actual repaired-runtime SAGR-014 plus SAGR-013 diagnostic; untouched cases remain untested and the result is not certification.",
+    "classification": "approved-change",
+    "decided_by": "EPIC-007 coordinator under explicit owner release directive",
     "decision_date": "2026-08-27",
-    "intent_identity": "sha256:b2cde61c1894e8d4e97499c13b778ea0f52e1cb61896874c70b3b33daf1ed9f6",
+    "intent_identity": "sha256:4b379e44a63a3ab9df4893254254fc254df70c01563b44ec855d2c40f0c189ec",
     "relevant_ocs": [
       "OC1",
       "OC2",
       "OC3",
       "OC4",
       "OC5",
-      "OC6"
+      "OC6",
+      "OC7"
     ],
     "shared_premises_valid": "yes",
     "source_identity": "sha256:2751b9b3684e15d66842ad32b002707090465e97cdc7d4d9ee1f3cd7b98aefdf",
     "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50",
-    "user_consequence": "TASK-034 may enter Testing for the bounded diagnostic campaign; failure stops later stages and green results do not become certification."
+    "user_consequence": "Independent QA passed the bounded TASK-034 claim; it may close without further target calls, and TASK-035 must preserve this boundary."
   },
   "loaded_contract": {
     "asset_version": "7",
@@ -641,7 +669,7 @@
     "package_version": "0.8.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Complete TASK-034 bounded QA, then prepare TASK-035 release.",
+  "next_action": "Refresh the existing canonical plan and Delegate packet for affected units: TASK-034, TASK-035",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-034",
     "claim_class": "user-facing",
