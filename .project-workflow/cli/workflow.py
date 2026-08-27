@@ -31,6 +31,7 @@ PROMPT_FILES = [
     "Backlog.prompt.md",
     "Constitution.prompt.md",
     "Clarify.prompt.md",
+    "Coordinator.prompt.md",
     "Delegate.prompt.md",
     "Epic.prompt.md",
     "Fix.prompt.md",
@@ -52,6 +53,7 @@ CODEX_SKILL_NAMES = [
     "project-requirements",
     "project-planner",
     "project-clarify",
+    "project-coordinator",
     "project-delegate",
     "project-implement",
     "project-qa-review",
@@ -66,11 +68,35 @@ BACKLOG_ID_PREFIX = "BL"
 ID_PADDING = 3
 WORKFLOW_CONFIG_FILENAME = "config.json"
 WORKFLOW_MANIFEST_FILENAME = "manifest.json"
-CURRENT_PACKAGE_VERSION = "0.6.0"
+CURRENT_PACKAGE_VERSION = "0.7.0"
 CURRENT_MANIFEST_VERSION = 1
-CURRENT_ASSET_VERSION = 5
+CURRENT_ASSET_VERSION = 6
 CURRENT_SCHEMA_VERSION = 1
-SUPPORTED_ASSET_VERSIONS = (1, 2, 3, 4, 5)
+COORDINATION_SCHEMA_VERSION = 2
+COORDINATION_CONTRACT_VERSION = 2
+COORDINATION_FILENAME = "COORDINATION.json"
+COORDINATION_BOUNDARIES = (
+    "after-plan-or-decomposition",
+    "before-unit-start",
+    "unit-return-or-dependency-join",
+    "new-evidence-or-owner-reframe",
+    "before-review-or-complete",
+)
+COORDINATION_DRIFT_CLASSIFICATIONS = (
+    "inside-envelope",
+    "drift-detected",
+    "approved-change",
+)
+EARLY_OUTCOME_CLAIM_CLASSES = (
+    "mechanical",
+    "user-facing",
+    "authoring",
+    "visual",
+    "gameplay-feel",
+    "migration",
+    "replacement",
+)
+SUPPORTED_ASSET_VERSIONS = (1, 2, 3, 4, 5, 6)
 SUPPORTED_SCHEMA_VERSIONS = (0, 1)
 REPOSITORY_COMPATIBILITY_STATES = (
     "current",
@@ -163,6 +189,7 @@ OPERATIONAL_STATUS_SCHEMA_VERSION = 1
 OPERATIONAL_STATUS_SOURCE_KINDS = (
     "acceptance",
     "backlog",
+    "coordination-state",
     "delivery-receipt",
     "doctor",
     "epic-tracker",
@@ -182,6 +209,7 @@ OPERATIONAL_STATUS_SOURCE_PRECEDENCE = (
     ("installation", ("repository-compatibility", "manifest", "local-helper")),
     ("workspace", ("workspace-config", "git")),
     ("work", ("epic-tracker", "global-tracker")),
+    ("coordination", ("coordination-state",)),
     ("approval", ("requirements",)),
     ("intent", ("intent-audit",)),
     ("implementation", ("implementation",)),
@@ -977,6 +1005,10 @@ def _managed_project_workflow_block() -> str:
         "independent items to a Task, and coordinated workstreams to an Epic. The user's label "
         "is evidence, not a binding classification. Fixes use one `FIX.md`, the shared tasks "
         "directory, and the global tracker; do not create a separate Fix tracker.\n"
+        "- Use Coordinator as the single owner-facing role from conversational intake through "
+        "delivery. Delegation is one Coordinator action, not a second role. The Coordinator alone "
+        "writes shared workflow state and chooses the smallest sufficient context, execution, and "
+        "proof surface for a named delivery need.\n"
         "- Begin current-contract Task and Epic requirements with a one- or two-sentence "
         "plain-language Intent and stable outcome commitments. Before planning, run "
         "`task approval-summary` or `epic approval-summary`, show its Intent/capability/"
@@ -992,9 +1024,11 @@ def _managed_project_workflow_block() -> str:
         "state without mutation. Child readiness, Review, and Complete fail closed on any "
         "non-current state; material narrowing, proxy substitution, omission, or broadening "
         "requires restoration or a current owner-approved capability amendment.\n"
-        "- After requirements approval, run Planner, post-plan Clarify, `task ready`, and move "
-        "new tasks to `Ready` autonomously unless material drift or exceptional risk requires "
-        "owner input. `Plan Confirmed` remains legacy-compatible.\n"
+        "- After requirements approval, the Coordinator runs Planner and bounded post-plan "
+        "Clarify, then `task ready`, and move new tasks to `Ready` autonomously unless material "
+        "drift or exceptional risk requires owner input. Clarify supports Epic parents and concrete "
+        "Coordinator-routed ambiguity; it is boundary-triggered, not periodic, and never creates a "
+        "QA/review loop. `Plan Confirmed` remains legacy-compatible.\n"
         "- For pre-existing work, use `task adopt` or `epic adopt`; pre-adoption inferred "
         "evidence stays untrusted until refreshed.\n"
         "- For epics, `epic decompose` writes `DECOMPOSITION.md`; child rows must match "
@@ -1015,13 +1049,27 @@ def _managed_project_workflow_block() -> str:
         "- For a sanitized client handoff, use canonical `project smoke-bomb` from a clean "
         "dedicated worktree to review exact removal, run explicit validations, preserve useful "
         "client agent guidance, and export a ZIP without Git or workflow internals.\n"
-        "- Delegate coordinates existing approved rows for exactly one Task or Epic. Select the "
+        "- `project-delegate` is the first-release compatibility entry for Coordinator execution "
+        "of existing approved rows for exactly one Task or Epic; it does not create another role "
+        "or writer. Select the "
         "lightest sufficient coordinator, subagent, persistent-task, or peer-team surface from "
         "approved Execution Needs rather than Task-versus-Epic kind. Resolve surface-specific "
         "isolation, monitoring, reconciliation, retirement, and capacity capabilities as "
         "runtime-observed `verified`, `unsupported`, or `unknown`; only verified capability plus "
         "current-host authority authorizes native launch, otherwise use a safe coordinator/"
         "sequential fallback or block. Never hard-code worker capacity.\n"
+        "- In current-contract plans, verified capacity never earns a non-Coordinator surface "
+        "alone. Require `benefit:<slug>`, `overhead:<slug>`, and `tradeoff:<slug>`; without all "
+        "three, keep non-binding work Coordinator/sequential or block an unmet binding need.\n"
+        "- Use `coordinate` durable state for material phase/repository/reframe/context handoffs, "
+        "current Intent and source identity, material decisions, context declaration, the five "
+        "named drift boundaries, one earliest material real-outcome checkpoint, and next action. "
+        "Contract version `2` identifies this Coordinator contract. Keep execution units, "
+        "dependencies, packets, returns, and worker lifecycle in the canonical plan and Delegate "
+        "only. Repository upgrade never proves a loaded context refreshed; the same physical "
+        "context may continue after explicitly loading the current contract when there is no "
+        "conflict or isolation need. Existing lifecycle transitions fail closed on missing, "
+        "stale, or drifted decisions; handoff, drift, and checkpoints never create QA.\n"
         "- The coordinator alone writes shared workflow state and verifies worker identity, source, "
         "scope, validation, and evidence before satisfying dependencies. A failure blocks its "
         "descendants; unrelated branches continue only while shared premises remain valid. "
@@ -1305,6 +1353,10 @@ class DelegationExecutionNeeds:
     direct_owner_steering: bool = False
     isolated_worktree: bool = False
     peer_group: str | None = None
+    execution_benefit: str | None = None
+    expected_overhead: str | None = None
+    benefit_overhead_basis: str | None = None
+    earned_surface_required: bool = False
 
     @property
     def requested_executor(self) -> str:
@@ -1312,10 +1364,12 @@ class DelegationExecutionNeeds:
             return "peer-team"
         if self.durable_resume or self.direct_owner_steering:
             return "persistent-task"
+        if self.earned_surface_required and self.execution_benefit is None:
+            return "coordinator"
         return "subagent"
 
     def properties(self) -> dict[str, object]:
-        return {
+        properties = {
             "tokens": list(self.tokens),
             "durability": "durable-resume" if self.durable_resume else "bounded-return",
             "isolation": "isolated-worktree" if self.isolated_worktree else "shared-worktree",
@@ -1325,6 +1379,17 @@ class DelegationExecutionNeeds:
                 "direct-owner-steering" if self.direct_owner_steering else "coordinator-mediated"
             ),
         }
+        if self.earned_surface_required or any(
+            (self.execution_benefit, self.expected_overhead, self.benefit_overhead_basis)
+        ):
+            properties.update(
+                {
+                    "execution_benefit": self.execution_benefit,
+                    "expected_overhead": self.expected_overhead,
+                    "benefit_overhead_basis": self.benefit_overhead_basis,
+                }
+            )
+        return properties
 
 
 @dataclass(frozen=True)
@@ -1492,6 +1557,8 @@ class TaskExecutorDecision:
 @dataclass(frozen=True)
 class TaskWorkPacket:
     target_id: str
+    target_source: str
+    target_source_hash: str
     unit_id: str
     unit_title: str
     acceptance_criteria: tuple[str, ...]
@@ -1509,8 +1576,13 @@ class TaskWorkPacket:
 
     def payload(self) -> dict[str, object]:
         return {
-            "schema_version": 1,
-            "target": {"id": self.target_id, "kind": "task"},
+            "schema_version": 2,
+            "target": {
+                "id": self.target_id,
+                "kind": "task",
+                "authority_source": self.target_source,
+                "authority_hash": self.target_source_hash,
+            },
             "unit": {"id": self.unit_id, "title": self.unit_title},
             "acceptance_criteria": list(self.acceptance_criteria),
             "verified_dependencies": list(self.verified_dependencies),
@@ -1524,6 +1596,8 @@ class TaskWorkPacket:
             },
             "forbidden_actions": list(self.forbidden_actions),
             "stop_conditions": list(self.stop_conditions),
+            "invalid_substitutes": list(WORK_PACKET_INVALID_SUBSTITUTES),
+            "return_contract": list(WORK_PACKET_RETURN_CONTRACT),
             "baseline_hash": self.baseline_hash,
             "plan_fingerprint": self.plan_fingerprint,
             "executor": self.executor,
@@ -1791,6 +1865,20 @@ TASK_WORKER_STOP_CONDITIONS = (
     "the observed diff leaves the allowed scope",
     "the shared baseline changes or another worker collides",
     "a shared-premise failure invalidates the run",
+)
+WORK_PACKET_INVALID_SUBSTITUTES = (
+    "a worker completion claim without the required validation and evidence",
+    "green lower-layer validation substituted for a higher proof obligation",
+    "authority, evidence, or source from another revision or scope",
+    "full conversation history substituted for this bounded authority packet",
+)
+WORK_PACKET_RETURN_CONTRACT = (
+    "worker identity plus the exact launch identity and attempt",
+    "authority source and hash actually used",
+    "actual changed scope and coordinator-observable diff",
+    "required validation and evidence results",
+    "material decisions, risks, and blockers",
+    "dependency result and shared-premise validity",
 )
 
 
@@ -2286,6 +2374,8 @@ class TaskOrchestrator:
         self.state.used_handles.add(handle)
         return TaskWorkPacket(
             target_id=self.state.target_id,
+            target_source=self.plan.target.source_path,
+            target_source_hash=self.plan.target.source_hash,
             unit_id=unit_id,
             unit_title=unit.title,
             acceptance_criteria=duty.acceptance_criteria,
@@ -2923,6 +3013,8 @@ class EpicChildWorkPacket:
             },
             "forbidden_actions": list(self.forbidden_actions),
             "stop_conditions": list(self.stop_conditions),
+            "invalid_substitutes": list(WORK_PACKET_INVALID_SUBSTITUTES),
+            "return_contract": list(WORK_PACKET_RETURN_CONTRACT),
             "base_commit": self.base_commit,
             "plan_fingerprint": self.plan_fingerprint,
             "executor": self.executor,
@@ -6263,7 +6355,7 @@ def _operational_item_proof_layers(
             and _qa_passed(implementation_path.read_text(encoding="utf-8"))
             for row, _requirements_path, implementation_path in epic_children
         )
-        qa_summary_pass = "Every completed Epic child records a passing QA verdict."
+        qa_summary_pass = "Every completed Epic child records a passing final QA disposition."
         qa_sources = tuple(
             _operational_status_document_source(
                 root, "implementation", implementation_path, fallback
@@ -6272,7 +6364,7 @@ def _operational_item_proof_layers(
         ) or (fallback,)
     else:
         qa_pass = bool(implementation_text and _qa_passed(implementation_text))
-        qa_summary_pass = "QA and code review verdict is Pass."
+        qa_summary_pass = "QA and code review has a passing final disposition."
         qa_sources = (implementation_source,)
     if qa_pass:
         qa_state = "pass"
@@ -7026,6 +7118,92 @@ def _operational_validation_impact_action(
     return None
 
 
+def _operational_coordination_action(
+    root: Path,
+    item: OperationalStatusWorkItem,
+    work_order: int,
+) -> _OperationalStatusActionCandidate | None:
+    try:
+        path = _coordination_state_path(root, item.item_id)
+    except ValueError:
+        return None
+    if not path.is_file():
+        return None
+    source = (
+        OperationalStatusSource(
+            "coordination-state",
+            _operational_status_artifact(root, path),
+            "durable Coordinator authority and next action",
+        ),
+    )
+    try:
+        status = _coordination_status_payload(root, item.item_id)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        return _operational_action_candidate(
+            "blocking-current-finding",
+            _operational_action(
+                "PW_STATUS_COORDINATION_INVALID",
+                f"Repair coordination state for {item.item_id}",
+                "agent",
+                str(exc),
+                source,
+                request="Repair the cited durable state, then rerun coordinate status and Doctor.",
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+    contract_state = str(status["contract_state"])
+    if contract_state not in {"current", "compatible"}:
+        return _operational_action_candidate(
+            "missing-workflow-gate",
+            _operational_action(
+                "PW_STATUS_COORDINATION_HANDOFF_REQUIRED",
+                f"Load Coordinator contract for {item.item_id}",
+                "agent",
+                f"Declared physical-context contract is {contract_state}; explicitly load the applicable contract.",
+                source,
+                command=(
+                    f"./.project-workflow/cli/workflow coordinate preflight --id {item.item_id}"
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+    last_boundary = status.get("last_boundary")
+    if isinstance(last_boundary, dict) and last_boundary.get("classification") == "drift-detected":
+        return _operational_action_candidate(
+            "missing-workflow-gate",
+            _operational_action(
+                "PW_STATUS_COORDINATION_BLOCKED",
+                f"Resolve affected coordination branch for {item.item_id}",
+                "agent",
+                str(status["next_action"]),
+                source,
+                command=(
+                    f"./.project-workflow/cli/workflow coordinate status --id {item.item_id}"
+                ),
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+    checkpoint = status.get("outcome_checkpoint")
+    if isinstance(checkpoint, dict) and checkpoint.get("status") in {"pending", "fail"}:
+        return _operational_action_candidate(
+            "missing-workflow-gate",
+            _operational_action(
+                "PW_STATUS_COORDINATION_CHECKPOINT",
+                f"Resolve outcome checkpoint for {item.item_id}",
+                "agent",
+                str(status["next_action"]),
+                source,
+                command=f"./.project-workflow/cli/workflow coordinate status --id {item.item_id}",
+            ),
+            work_order=work_order,
+            item_id=item.item_id,
+        )
+    return None
+
+
 def _operational_item_action(
     root: Path,
     item: OperationalStatusWorkItem,
@@ -7053,6 +7231,10 @@ def _operational_item_action(
             work_order=work_order,
             item_id=item.item_id,
         )
+
+    coordination_action = _operational_coordination_action(root, item, work_order)
+    if coordination_action is not None:
+        return coordination_action
 
     if item.kind == "epic-child" and item.lifecycle == "Proposed" and owner_epic:
         return _operational_action_candidate(
@@ -11470,18 +11652,23 @@ def _delegation_parallel_safe(value: str, *, unit_id: str) -> bool:
 
 
 def _delegation_execution_needs(
-    value: str, *, unit_id: str
+    value: str, *, unit_id: str, require_earned_surface: bool = False
 ) -> DelegationExecutionNeeds:
     """Parse optional execution needs without inferring any host capability."""
     normalized = value.strip()
     if not normalized or normalized.lower() in {"none", "n/a", "-"}:
-        return DelegationExecutionNeeds()
+        return DelegationExecutionNeeds(
+            earned_surface_required=require_earned_surface
+        )
 
     tokens: list[str] = []
     peer_group: str | None = None
     durable_resume = False
     direct_owner_steering = False
     isolated_worktree = False
+    execution_benefit: str | None = None
+    expected_overhead: str | None = None
+    benefit_overhead_basis: str | None = None
     for raw_token in normalized.split(","):
         token = raw_token.strip().lower()
         if not token:
@@ -11503,6 +11690,48 @@ def _delegation_execution_needs(
                 )
             peer_group = group
             canonical = f"peer:{group}"
+        elif token.startswith("benefit:"):
+            value_text = token.removeprefix("benefit:").strip()
+            if not re.fullmatch(r"[a-z0-9][a-z0-9._-]{2,95}", value_text):
+                raise _delegation_error(
+                    "PW_DELEGATION_EXECUTION_NEEDS_INVALID",
+                    f"{unit_id} has invalid execution benefit '{value_text}'.",
+                )
+            if execution_benefit is not None and execution_benefit != value_text:
+                raise _delegation_error(
+                    "PW_DELEGATION_EXECUTION_NEEDS_INVALID",
+                    f"{unit_id} declares more than one execution benefit.",
+                )
+            execution_benefit = value_text
+            canonical = f"benefit:{value_text}"
+        elif token.startswith("overhead:"):
+            value_text = token.removeprefix("overhead:").strip()
+            if not re.fullmatch(r"[a-z0-9][a-z0-9._-]{2,95}", value_text):
+                raise _delegation_error(
+                    "PW_DELEGATION_EXECUTION_NEEDS_INVALID",
+                    f"{unit_id} has invalid expected overhead '{value_text}'.",
+                )
+            if expected_overhead is not None and expected_overhead != value_text:
+                raise _delegation_error(
+                    "PW_DELEGATION_EXECUTION_NEEDS_INVALID",
+                    f"{unit_id} declares more than one expected overhead.",
+                )
+            expected_overhead = value_text
+            canonical = f"overhead:{value_text}"
+        elif token.startswith("tradeoff:"):
+            value_text = token.removeprefix("tradeoff:").strip()
+            if not re.fullmatch(r"[a-z0-9][a-z0-9._-]{2,95}", value_text):
+                raise _delegation_error(
+                    "PW_DELEGATION_EXECUTION_NEEDS_INVALID",
+                    f"{unit_id} has invalid benefit-overhead basis '{value_text}'.",
+                )
+            if benefit_overhead_basis is not None and benefit_overhead_basis != value_text:
+                raise _delegation_error(
+                    "PW_DELEGATION_EXECUTION_NEEDS_INVALID",
+                    f"{unit_id} declares more than one benefit-overhead basis.",
+                )
+            benefit_overhead_basis = value_text
+            canonical = f"tradeoff:{value_text}"
         elif token in DELEGATION_EXECUTION_NEED_TOKENS:
             canonical = token
             durable_resume = durable_resume or token == "durable-resume"
@@ -11528,6 +11757,10 @@ def _delegation_execution_needs(
         direct_owner_steering=direct_owner_steering,
         isolated_worktree=isolated_worktree,
         peer_group=peer_group,
+        execution_benefit=execution_benefit,
+        expected_overhead=expected_overhead,
+        benefit_overhead_basis=benefit_overhead_basis,
+        earned_surface_required=require_earned_surface,
     )
 
 
@@ -11609,7 +11842,11 @@ def _delegation_task_units(root: Path, implementation_path: Path) -> tuple[Deleg
                     )
                 ),
                 execution_needs=_delegation_execution_needs(
-                    row.get("Execution Needs", ""), unit_id=unit_id
+                    row.get("Execution Needs", ""),
+                    unit_id=unit_id,
+                    require_earned_surface=(
+                        row.get("_execution_needs_metadata") == "present"
+                    ),
                 ),
                 repository_scope=repository_scope,
             )
@@ -11626,12 +11863,14 @@ def _delegation_epic_units(
         "Authorized Child Rows",
         expected_columns=DELEGATION_EXECUTION_NEEDS_DECOMPOSITION_PLAN_COLUMNS,
     )
+    earned_surface_required = bool(rows)
     if not rows:
         rows = _markdown_table_rows_from_section(
             text,
             "Authorized Child Rows",
             expected_columns=DELEGATION_DECOMPOSITION_PLAN_COLUMNS,
         )
+        earned_surface_required = False
     if not rows:
         legacy_rows = _markdown_table_rows_from_section(
             text,
@@ -11716,7 +11955,9 @@ def _delegation_epic_units(
                     )
                 ),
                 execution_needs=_delegation_execution_needs(
-                    row.get("Execution Needs", ""), unit_id=unit_id
+                    row.get("Execution Needs", ""),
+                    unit_id=unit_id,
+                    require_earned_surface=earned_surface_required,
                 ),
                 repository_scope=child_repository_scope,
             )
@@ -11914,6 +12155,13 @@ def _delegation_select_executor(
         or needs.isolated_worktree
         or needs.peer_group is not None
     )
+    earned_surface = all(
+        (
+            needs.execution_benefit,
+            needs.expected_overhead,
+            needs.benefit_overhead_basis,
+        )
+    )
     if coordinator_owned:
         if binding_needs:
             issue = (
@@ -11925,6 +12173,29 @@ def _delegation_select_executor(
         return result(
             "coordinator",
             "Coordinator-owned workflow scope requires the single shared-state writer.",
+            requested_executor="coordinator",
+        )
+
+    if needs.earned_surface_required and not earned_surface:
+        missing = [
+            label
+            for label, value in (
+                ("benefit", needs.execution_benefit),
+                ("overhead", needs.expected_overhead),
+                ("tradeoff", needs.benefit_overhead_basis),
+            )
+            if value is None
+        ]
+        reason = (
+            "Non-Coordinator execution has no complete earned-surface basis; missing "
+            + ", ".join(missing)
+            + "."
+        )
+        if binding_needs:
+            return result("none", reason, blocking_reasons=(reason,))
+        return result(
+            "coordinator",
+            reason + " Coordinator sequential execution is sufficient.",
             requested_executor="coordinator",
         )
 
@@ -12994,6 +13265,671 @@ def _delegation_status_payload(
     return payload
 
 
+def _coordination_work_item_dir(root: Path, target_id: str) -> Path:
+    tasks_dir = root / ".project-workflow" / "tasks"
+    matches = sorted(
+        path for path in tasks_dir.rglob(f"{target_id}-*") if path.is_dir()
+    )
+    if not matches:
+        raise ValueError(f"No work-item folder found for {target_id}.")
+    if len(matches) > 1:
+        raise ValueError(
+            f"Multiple work-item folders found for {target_id}: "
+            + ", ".join(str(path) for path in matches)
+        )
+    return matches[0]
+
+
+def _coordination_state_path(root: Path, target_id: str) -> Path:
+    return _coordination_work_item_dir(root, target_id) / COORDINATION_FILENAME
+
+
+def _coordination_artifact_identity(root: Path, target_id: str) -> str:
+    work_dir = _coordination_work_item_dir(root, target_id)
+    authority_paths = [work_dir / "REQUIREMENTS.md"]
+    if (work_dir / EPIC_CONTRACT_FILENAME).is_file():
+        authority_paths.extend(
+            (
+                work_dir / EPIC_CONTRACT_FILENAME,
+                work_dir / DECOMPOSITION_PLAN_FILENAME,
+                work_dir / EPIC_AMENDMENTS_FILENAME,
+                work_dir / INTENT_AUDIT_FILENAME,
+            )
+        )
+    elif (work_dir.parent / EPIC_CONTRACT_FILENAME).is_file():
+        authority_paths.extend(
+            (
+                work_dir.parent / "REQUIREMENTS.md",
+                work_dir.parent / EPIC_CONTRACT_FILENAME,
+                work_dir.parent / DECOMPOSITION_PLAN_FILENAME,
+                work_dir.parent / EPIC_AMENDMENTS_FILENAME,
+                work_dir.parent / INTENT_AUDIT_FILENAME,
+            )
+        )
+    digest = hashlib.sha256()
+    existing = [path for path in authority_paths if path.is_file()]
+    if not existing:
+        raise ValueError(f"{target_id} has no readable requirements authority.")
+    for path in sorted(dict.fromkeys(existing)):
+        digest.update(_delegation_relative_path(root, path).encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return f"sha256:{digest.hexdigest()}"
+
+
+def _coordination_required_text(value: object, field_name: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise ValueError(f"{field_name} must be a non-empty string.")
+    return value.strip()
+
+
+def _coordination_string_list(value: object, field_name: str) -> list[str]:
+    if not isinstance(value, list) or not value or any(
+        not isinstance(item, str) or not item.strip() for item in value
+    ):
+        raise ValueError(f"{field_name} must be a non-empty string list.")
+    return list(dict.fromkeys(item.strip() for item in value))
+
+
+def _coordination_load_state(root: Path, target_id: str) -> dict[str, object]:
+    path = _coordination_state_path(root, target_id)
+    if not path.is_file():
+        raise ValueError(
+            f"Missing {COORDINATION_FILENAME} for {target_id}; run `coordinate init` first."
+        )
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    _coordination_validate_state(payload, target_id=target_id)
+    return payload
+
+
+def _coordination_validate_state(payload: object, *, target_id: str | None = None) -> None:
+    if not isinstance(payload, dict):
+        raise ValueError("Coordination state must be a JSON object.")
+    if payload.get("schema_version") != COORDINATION_SCHEMA_VERSION:
+        raise ValueError(
+            f"Coordination schema_version must be {COORDINATION_SCHEMA_VERSION}."
+        )
+    actual_target = _coordination_required_text(payload.get("target_id"), "target_id")
+    if target_id is not None and actual_target != target_id:
+        raise ValueError(
+            f"Coordination target mismatch: expected {target_id}, found {actual_target}."
+        )
+    for field_name in (
+        "work_item_path",
+        "intent_identity",
+        "phase",
+        "source_revision",
+        "next_action",
+    ):
+        _coordination_required_text(payload.get(field_name), field_name)
+    loaded = payload.get("loaded_contract")
+    if not isinstance(loaded, dict):
+        raise ValueError("loaded_contract must be an object.")
+    for field_name in (
+        "package_version",
+        "asset_version",
+        "contract_version",
+        "context_id",
+        "recorded_at",
+    ):
+        _coordination_required_text(loaded.get(field_name), f"loaded_contract.{field_name}")
+    for field_name in ("decisions", "boundary_decisions"):
+        if not isinstance(payload.get(field_name), list):
+            raise ValueError(f"{field_name} must be a list.")
+    repositories = payload.get("repositories")
+    if not isinstance(repositories, dict) or not repositories:
+        raise ValueError("repositories must be a non-empty object.")
+    for repository_id, repository in repositories.items():
+        _coordination_required_text(repository_id, "repositories key")
+        if not isinstance(repository, dict):
+            raise ValueError("Each repositories entry must be an object.")
+        _coordination_required_text(
+            repository.get("source_revision"),
+            f"repositories.{repository_id}.source_revision",
+        )
+    if not isinstance(payload.get("host_facts"), dict):
+        raise ValueError("host_facts must be an object.")
+    checkpoint = payload.get("outcome_checkpoint")
+    if not isinstance(checkpoint, dict):
+        raise ValueError("outcome_checkpoint must be an object.")
+    if checkpoint.get("status") not in {"not-required", "pending", "pass", "fail"}:
+        raise ValueError("outcome_checkpoint.status is invalid.")
+
+
+def _coordination_write_state(
+    root: Path, target_id: str, payload: dict[str, object]
+) -> Path:
+    _coordination_validate_state(payload, target_id=target_id)
+    path = _coordination_state_path(root, target_id)
+    path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return path
+
+
+def _coordination_preflight_payload(
+    root: Path, target_id: str, state: dict[str, object]
+) -> dict[str, object]:
+    loaded = state["loaded_contract"]
+    assert isinstance(loaded, dict)
+    loaded_package = str(loaded.get("package_version", "unknown")).strip()
+    loaded_asset = str(loaded.get("asset_version", "unknown")).strip()
+    loaded_contract = str(loaded.get("contract_version", "unknown")).strip()
+    recorded_identity = str(state.get("intent_identity", ""))
+    current_identity = _coordination_artifact_identity(root, target_id)
+    repository_manifest = _repository_compatibility(root).manifest
+    repository_identity = (
+        {
+            "package_version": repository_manifest.package_version,
+            "asset_version": str(repository_manifest.asset_version),
+            "contract_version": str(COORDINATION_CONTRACT_VERSION),
+        }
+        if repository_manifest is not None
+        else {
+            "package_version": "unknown",
+            "asset_version": "unknown",
+            "contract_version": str(COORDINATION_CONTRACT_VERSION),
+        }
+    )
+    reasons: list[str] = []
+    unknown_tokens = {"", "unknown", "not observed"}
+    if (
+        loaded_package.lower() in unknown_tokens
+        or loaded_asset.lower() in unknown_tokens
+        or loaded_contract.lower() in unknown_tokens
+    ):
+        contract_state = "unknown"
+        reasons.append("Declared physical-context contract identity is unknown.")
+    elif recorded_identity != current_identity:
+        contract_state = "stale"
+        reasons.append("Approved Intent authority changed after coordination state was recorded.")
+    elif loaded_contract != str(COORDINATION_CONTRACT_VERSION):
+        contract_state = "stale"
+        reasons.append("Declared physical-context coordination contract is older or incompatible.")
+    elif loaded_package == CURRENT_PACKAGE_VERSION and loaded_asset == str(CURRENT_ASSET_VERSION):
+        contract_state = "current"
+        reasons.append(
+            "Declared physical-context package, assets, and coordination contract are current."
+        )
+    else:
+        contract_state = "compatible"
+        reasons.append("Declared coordination contract is current; package or asset provenance differs.")
+    if (
+        contract_state == "stale"
+        and repository_identity["package_version"] == CURRENT_PACKAGE_VERSION
+        and repository_identity["asset_version"] == str(CURRENT_ASSET_VERSION)
+    ):
+        reasons.append(
+            "Repository assets are current, but explicit contract loading has not been declared."
+        )
+    if contract_state in {"current", "compatible"}:
+        action = "proceed"
+        command = None
+    else:
+        action = "contract-load-required"
+        command = (
+            f"./.project-workflow/cli/workflow coordinate context-record --id {target_id} "
+            f"--loaded-package-version {CURRENT_PACKAGE_VERSION} "
+            f"--loaded-asset-version {CURRENT_ASSET_VERSION} "
+            f"--loaded-contract-version {COORDINATION_CONTRACT_VERSION} "
+            "--context-id <context-id-after-explicit-load> --next-action <bounded-next-action>"
+        )
+    return {
+        "schema_version": COORDINATION_SCHEMA_VERSION,
+        "target_id": target_id,
+        "contract_state": contract_state,
+        "loaded_contract": loaded,
+        "repository_contract": repository_identity,
+        "recorded_intent_identity": recorded_identity,
+        "current_intent_identity": current_identity,
+        "reasons": reasons,
+        "next_action": action,
+        "command": command,
+    }
+
+
+def _coordination_boundary_gate_issues(
+    root: Path,
+    target_id: str,
+    *,
+    boundary: str,
+    subject_id: str | None = None,
+) -> list[str]:
+    """Require one current semantic decision without creating a second execution graph."""
+    if boundary not in COORDINATION_BOUNDARIES:
+        return [f"unknown coordination boundary: {boundary}"]
+    try:
+        path = _coordination_state_path(root, target_id)
+    except ValueError:
+        return []
+    if not path.is_file():
+        return []
+    try:
+        state = _coordination_load_state(root, target_id)
+        preflight = _coordination_preflight_payload(root, target_id, state)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        return [f"coordination state is invalid: {exc}"]
+    if preflight["contract_state"] not in {"current", "compatible"}:
+        return [
+            f"coordination contract is {preflight['contract_state']}; explicitly load and declare "
+            "the applicable contract before continuing"
+        ]
+    current_identity = str(preflight["current_intent_identity"])
+    current_source_identity = _coordination_source_identity(state)
+    decisions = state.get("boundary_decisions", [])
+    assert isinstance(decisions, list)
+    stale_match = False
+    stale_source_match = False
+    for raw in reversed(decisions):
+        if not isinstance(raw, dict) or raw.get("boundary") != boundary:
+            continue
+        subjects = raw.get("affected_units", [])
+        if subject_id is not None and (
+            not isinstance(subjects, list) or subject_id not in subjects
+        ):
+            continue
+        if raw.get("intent_identity") != current_identity:
+            stale_match = True
+            continue
+        if raw.get("source_identity") != current_source_identity:
+            stale_source_match = True
+            continue
+        classification = raw.get("classification")
+        if classification in {"inside-envelope", "approved-change"}:
+            return []
+        if classification == "drift-detected":
+            consequence = str(raw.get("user_consequence", "material outcome drift"))
+            return [
+                f"{boundary} is blocked by recorded drift for {subject_id or target_id}: "
+                f"{consequence}"
+            ]
+    subject = subject_id or target_id
+    if stale_source_match:
+        return [
+            f"stale source-bound {boundary} decision for {subject}; record the bounded decision "
+            "against current repository/source authority before continuing"
+        ]
+    if stale_match:
+        return [
+            f"stale {boundary} intent decision for {subject}; record the bounded decision against "
+            "current authority before continuing"
+        ]
+    return [
+        f"missing current {boundary} intent decision for {subject}; record the bounded decision "
+        "before continuing"
+    ]
+
+
+def _coordination_checkpoint_gate_issues(
+    root: Path, target_id: str, *, subject_id: str
+) -> list[str]:
+    try:
+        path = _coordination_state_path(root, target_id)
+    except ValueError:
+        return []
+    if not path.is_file():
+        return []
+    try:
+        state = _coordination_load_state(root, target_id)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        return [f"coordination state is invalid: {exc}"]
+    checkpoint = state.get("outcome_checkpoint")
+    if not isinstance(checkpoint, dict) or checkpoint.get("required") is not True:
+        return []
+    status = checkpoint.get("status")
+    checkpoint_unit = str(checkpoint.get("checkpoint_unit") or "")
+    if status == "pass":
+        return []
+    if status == "pending" and subject_id == checkpoint_unit:
+        return []
+    if status == "pending":
+        return [
+            f"early outcome checkpoint {checkpoint_unit} must pass before starting {subject_id}"
+        ]
+    if status == "fail":
+        return ["early outcome checkpoint failed; restore or amend the approved outcome"]
+    return ["early outcome checkpoint state is invalid"]
+
+
+def _coordination_source_identity(state: Mapping[str, object]) -> str:
+    payload = {
+        "source_revision": state.get("source_revision"),
+        "repositories": state.get("repositories"),
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return "sha256:" + hashlib.sha256(encoded).hexdigest()
+
+
+def _coordination_transition_boundary(current_status: str, new_status: str) -> str | None:
+    if current_status == new_status:
+        return None
+    if new_status == "In Progress":
+        return "before-unit-start"
+    if new_status == "Testing":
+        return "unit-return-or-dependency-join"
+    if new_status in {"Review", "Complete"}:
+        return "before-review-or-complete"
+    return None
+
+
+def _coordination_csv(value: str | None, field_name: str) -> list[str]:
+    if value is None:
+        raise ValueError(f"--{field_name.replace('_', '-')} is required.")
+    values = [item.strip() for item in value.split(",") if item.strip()]
+    if not values:
+        raise ValueError(f"--{field_name.replace('_', '-')} must not be empty.")
+    return list(dict.fromkeys(values))
+
+
+def _coordination_repository_sources(values: list[str] | None, source_revision: str) -> dict[str, object]:
+    if not values:
+        return {".": {"source_revision": source_revision}}
+    result: dict[str, object] = {}
+    for raw in values:
+        repository_id, separator, revision = raw.partition("=")
+        if not separator or not repository_id.strip() or not revision.strip():
+            raise ValueError("--repository-source must use REPOSITORY-ID=SOURCE-REVISION.")
+        if repository_id.strip() in result:
+            raise ValueError(f"Duplicate repository source: {repository_id.strip()}.")
+        result[repository_id.strip()] = {"source_revision": revision.strip()}
+    return result
+
+
+def cmd_coordinate_init(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        if (
+            args.material_user_facing == "yes"
+            and args.claim_class != "mechanical"
+            and not args.checkpoint_unit
+        ):
+            raise ValueError(
+                "Material user-facing coordination requires --checkpoint-unit for the earliest proof."
+            )
+        path = _coordination_state_path(root, args.id)
+        if path.exists() and not args.force:
+            raise ValueError(
+                f"{path} already exists; use `coordinate status` or --force to replace it."
+            )
+        work_dir = path.parent
+        payload: dict[str, object] = {
+            "schema_version": COORDINATION_SCHEMA_VERSION,
+            "target_id": args.id,
+            "work_item_path": _delegation_relative_path(root, work_dir),
+            "intent_identity": _coordination_artifact_identity(root, args.id),
+            "loaded_contract": {
+                "package_version": args.loaded_package_version,
+                "asset_version": args.loaded_asset_version,
+                "contract_version": args.loaded_contract_version,
+                "context_id": args.context_id,
+                "recorded_at": date.today().isoformat(),
+            },
+            "phase": args.phase,
+            "source_revision": args.source_revision,
+            "repositories": _coordination_repository_sources(
+                args.repository_source, args.source_revision
+            ),
+            "decisions": list(dict.fromkeys(args.decision or [])),
+            "boundary_decisions": [],
+            "last_boundary": None,
+            "outcome_checkpoint": {
+                "required": args.material_user_facing == "yes"
+                and args.claim_class != "mechanical",
+                "claim_class": args.claim_class,
+                "checkpoint_unit": args.checkpoint_unit,
+                "status": (
+                    "pending"
+                    if args.material_user_facing == "yes" and args.claim_class != "mechanical"
+                    else "not-required"
+                ),
+                "record": None,
+            },
+            "next_action": args.next_action,
+            "host_facts": {
+                "context_contract": "declared",
+                "telemetry": "unknown",
+            },
+        }
+        _coordination_write_state(root, args.id, payload)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_COORDINATION_INVALID: {exc}") from exc
+    print(f"Initialized durable coordination state: {path}")
+
+
+def cmd_coordinate_context_record(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        state = _coordination_load_state(root, args.id)
+        current_intent_identity = _coordination_artifact_identity(root, args.id)
+        if state.get("intent_identity") != current_intent_identity:
+            issues = _coordination_boundary_gate_issues(
+                root,
+                args.id,
+                boundary="new-evidence-or-owner-reframe",
+            )
+            if issues:
+                raise ValueError(issues[0])
+        state["loaded_contract"] = {
+            "package_version": args.loaded_package_version,
+            "asset_version": args.loaded_asset_version,
+            "contract_version": args.loaded_contract_version,
+            "context_id": args.context_id,
+            "recorded_at": date.today().isoformat(),
+        }
+        state["intent_identity"] = current_intent_identity
+        state["next_action"] = args.next_action
+        path = _coordination_write_state(root, args.id, state)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_COORDINATION_INVALID: {exc}") from exc
+    print(f"Declared loaded physical-context contract: {path}")
+
+
+def cmd_coordinate_phase(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        state = _coordination_load_state(root, args.id)
+        state["phase"] = args.phase
+        state["source_revision"] = args.source_revision
+        state["repositories"] = _coordination_repository_sources(
+            args.repository_source, args.source_revision
+        )
+        state["next_action"] = args.next_action
+        path = _coordination_write_state(root, args.id, state)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_COORDINATION_INVALID: {exc}") from exc
+    print(f"Advanced durable coordination phase: {path}")
+
+
+def cmd_coordinate_preflight(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        state = _coordination_load_state(root, args.id)
+        payload = _coordination_preflight_payload(root, args.id, state)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_COORDINATION_INVALID: {exc}") from exc
+    if args.format == "json":
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(f"Coordination preflight: {args.id}")
+        print(f"Contract: {payload['contract_state']}")
+        for reason in payload["reasons"]:
+            print(f"- {reason}")
+        print(f"Next action: {payload['next_action']}")
+        if payload["command"]:
+            print(f"Run: {payload['command']}")
+
+
+def cmd_coordinate_boundary(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        state = _coordination_load_state(root, args.id)
+        if args.classification == "approved-change" and not args.amendment_identity:
+            raise ValueError("approved-change requires --amendment-identity.")
+        if args.classification != "approved-change" and args.amendment_identity:
+            raise ValueError("--amendment-identity is valid only for approved-change.")
+        affected = (
+            [] if not args.affected_units or args.affected_units.strip().lower() in {"none", "n/a"}
+            else _coordination_csv(args.affected_units, "affected_units")
+        )
+        if args.boundary in {
+            "before-unit-start",
+            "unit-return-or-dependency-join",
+            "before-review-or-complete",
+        } and not affected:
+            raise ValueError(f"{args.boundary} requires --affected-units for gate ownership.")
+        current_intent_identity = _coordination_artifact_identity(root, args.id)
+        decision = {
+            "boundary": args.boundary,
+            "classification": args.classification,
+            "relevant_ocs": _coordination_csv(args.ocs, "ocs"),
+            "capability_change": args.capability_change,
+            "user_consequence": args.consequence,
+            "affected_units": affected,
+            "amendment_identity": args.amendment_identity,
+            "shared_premises_valid": args.shared_premises_valid,
+            "decided_by": args.decided_by,
+            "decision_date": date.today().isoformat(),
+            "intent_identity": current_intent_identity,
+            "source_revision": state["source_revision"],
+            "source_identity": _coordination_source_identity(state),
+        }
+        for field_name in ("capability_change", "user_consequence", "decided_by"):
+            _coordination_required_text(decision[field_name], field_name)
+        decisions = state["boundary_decisions"]
+        assert isinstance(decisions, list)
+        decisions.append(decision)
+        state["last_boundary"] = decision
+        if args.classification == "drift-detected":
+            state["next_action"] = (
+                "Restore approved intent or obtain an amendment before continuing affected units: "
+                + (", ".join(affected) or "the coordination target")
+            )
+        elif args.classification == "approved-change":
+            state["intent_identity"] = current_intent_identity
+            state["next_action"] = (
+                "Refresh the existing canonical plan and Delegate packet for affected units: "
+                + (", ".join(affected) or "the coordination target")
+            )
+        else:
+            if args.boundary == "new-evidence-or-owner-reframe":
+                state["intent_identity"] = current_intent_identity
+            state["next_action"] = args.next_action
+        path = _coordination_write_state(root, args.id, state)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_COORDINATION_DRIFT_INVALID: {exc}") from exc
+    print(f"Recorded {args.classification} at {args.boundary}: {path}")
+
+
+def cmd_coordinate_checkpoint(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        state = _coordination_load_state(root, args.id)
+        checkpoint = state["outcome_checkpoint"]
+        assert isinstance(checkpoint, dict)
+        required = checkpoint.get("required") is True
+        if not required:
+            raise ValueError("This work item does not require an early real-outcome checkpoint.")
+        if args.unit != checkpoint.get("checkpoint_unit"):
+            raise ValueError("Checkpoint unit does not match the recorded earliest proof unit.")
+        if checkpoint.get("status") in {"pass", "fail"}:
+            raise ValueError("Early outcome checkpoint is already terminal; do not repeat it.")
+        for field_name in (
+            "actor",
+            "entry_point",
+            "starting_state",
+            "operations",
+            "resulting_state",
+            "source_environment",
+            "observations",
+        ):
+            _coordination_required_text(getattr(args, field_name), field_name)
+        if args.owner_judgment == "required" and args.verdict == "pass":
+            raise ValueError(
+                "Owner-only judgment cannot self-pass; use pending until owner evidence exists."
+            )
+        record = {
+            "unit_id": args.unit,
+            "claim_class": checkpoint.get("claim_class"),
+            "actor": args.actor,
+            "normal_entry_point": args.entry_point,
+            "starting_state": args.starting_state,
+            "material_operations": args.operations,
+            "resulting_state_or_artifact": args.resulting_state,
+            "source_environment": args.source_environment,
+            "observations": args.observations,
+            "owner_judgment": args.owner_judgment,
+            "verdict": args.verdict,
+            "recorded_by": args.recorded_by,
+            "recorded_at": date.today().isoformat(),
+        }
+        checkpoint["record"] = record
+        checkpoint["status"] = args.verdict
+        if args.verdict == "fail":
+            affected = (
+                set(_coordination_csv(args.affected_units, "affected_units"))
+                if args.affected_units and args.affected_units.strip().lower() not in {"none", "n/a"}
+                else {str(checkpoint.get("checkpoint_unit"))}
+            )
+            state["next_action"] = (
+                "Route the product contradiction through drift restoration/amendment; blocked: "
+                + (", ".join(sorted(affected)) or "the coordination target")
+            )
+        elif args.verdict == "pending":
+            state["next_action"] = "Obtain the named owner-only judgment before fan-out."
+        else:
+            state["next_action"] = "Continue dependent work; do not repeat unchanged checkpoint."
+        path = _coordination_write_state(root, args.id, state)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_COORDINATION_CHECKPOINT_INVALID: {exc}") from exc
+    print(f"Recorded early outcome checkpoint {args.verdict}: {path}")
+
+
+def _coordination_status_payload(root: Path, target_id: str) -> dict[str, object]:
+    state = _coordination_load_state(root, target_id)
+    preflight = _coordination_preflight_payload(root, target_id, state)
+    next_action = str(state["next_action"])
+    if preflight["contract_state"] not in {"current", "compatible"}:
+        next_action = "Explicitly load and declare the applicable context contract."
+    return {
+        "schema_version": COORDINATION_SCHEMA_VERSION,
+        "target_id": target_id,
+        "contract_state": preflight["contract_state"],
+        "phase": state["phase"],
+        "source_revision": state["source_revision"],
+        "repositories": state["repositories"],
+        "decisions": state["decisions"],
+        "last_boundary": state["last_boundary"],
+        "boundary_decisions": state["boundary_decisions"],
+        "host_facts": state["host_facts"],
+        "outcome_checkpoint": state["outcome_checkpoint"],
+        "next_action": next_action,
+        "source": _delegation_relative_path(root, _coordination_state_path(root, target_id)),
+    }
+
+
+def cmd_coordinate_status(args: argparse.Namespace) -> None:
+    root = Path.cwd()
+    try:
+        payload = _coordination_status_payload(root, args.id)
+    except (ValueError, OSError, json.JSONDecodeError) as exc:
+        raise SystemExit(f"PW_COORDINATION_INVALID: {exc}") from exc
+    if args.format == "json":
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print(f"Coordination status: {args.id}")
+        print(f"Contract: {payload['contract_state']}")
+        print(f"Phase: {payload['phase']}")
+        print(
+            "Last boundary: "
+            + (
+                str(payload["last_boundary"].get("classification"))
+                if isinstance(payload["last_boundary"], dict)
+                else "none"
+            )
+        )
+        print(f"Next action: {payload['next_action']}")
+        print(f"Source: {payload['source']}")
+
+
 def cmd_delegate_plan(args: argparse.Namespace) -> None:
     try:
         plan = _delegation_plan_from_args(Path.cwd(), args)
@@ -13399,8 +14335,53 @@ def _approved_deferral(row: dict[str, str] | None) -> bool:
 
 
 def _qa_passed(docs_text: str) -> bool:
-    qa_section = _markdown_section(docs_text, "QA & Code Review").lower()
-    return "verdict: pass" in qa_section and not _intent_qa_review_issues(docs_text)
+    values = _parse_key_value_section(_markdown_section(docs_text, "QA & Code Review"))
+    verdict = _qa_verdict_key(values.get("verdict", ""))
+    return verdict in {"pass", "changes-requested"} and not _intent_qa_review_issues(
+        docs_text
+    )
+
+
+def _qa_verdict_key(value: str) -> str:
+    return re.sub(r"[\s_]+", "-", value.strip().lower())
+
+
+def _resolved_changes_requested_issues(
+    docs_text: str, values: Mapping[str, str]
+) -> list[str]:
+    issues: list[str] = []
+    if values.get("findings disposition", "").strip().lower() != "resolved":
+        issues.append("record `Findings disposition: Resolved`")
+    if values.get("affected validation verdict", "").strip().lower() != "pass":
+        issues.append("record `Affected validation verdict: Pass`")
+    after_undone = values.get(
+        "could every ac pass after affected validation while the approved user job remains undone",
+        "",
+    ).strip().lower()
+    if after_undone != "no":
+        issues.append(
+            "record `Could every AC pass after affected validation while the approved user job "
+            "remains undone: No`"
+        )
+    evidence = values.get("affected validation evidence", "")
+    if _evidence_value_missing(evidence) or not _section_has_substantive_text(evidence):
+        issues.append("record substantive `Affected validation evidence`")
+    if values.get("second qa commissioned", "").strip().lower() != "no":
+        issues.append("record `Second QA commissioned: No`")
+    decision, impact_issues = _validation_impact_from_text(docs_text)
+    if impact_issues:
+        issues.extend(f"repair Validation Impact: {issue}" for issue in impact_issues)
+    elif decision is None:
+        issues.append("record one affected Validation Impact decision for the QA findings")
+    elif (
+        decision["classification"] != "affected"
+        or decision["validation_verdict"] != "pass"
+        or "qa-review" not in decision["affected_proof_layers"]
+    ):
+        issues.append(
+            "Validation Impact must be affected, include `qa-review`, and record verdict `pass`"
+        )
+    return issues
 
 
 def _intent_qa_review_issues(docs_text: str) -> list[str]:
@@ -13411,14 +14392,29 @@ def _intent_qa_review_issues(docs_text: str) -> list[str]:
     if mode != "adversarial":
         return ["set `Intent QA contract` to `adversarial`"]
     issues: list[str] = []
-    if values.get("verdict", "").strip().lower() != "pass":
-        issues.append("record `Verdict: Pass` after QA")
-    if values.get("intent adversarial verdict", "").strip().lower() != "pass":
+    verdict = _qa_verdict_key(values.get("verdict", ""))
+    resolved_changes = verdict == "changes-requested"
+    if verdict not in {"pass", "changes-requested"}:
+        issues.append("record `Verdict: Pass` or preserve `Verdict: Changes Requested`")
+    intent_verdict = _qa_verdict_key(values.get("intent adversarial verdict", ""))
+    if resolved_changes:
+        if intent_verdict not in {"fail", "changes-requested"}:
+            issues.append(
+                "preserve the original failed `Intent adversarial verdict` for Changes Requested"
+            )
+    elif intent_verdict != "pass":
         issues.append("record `Intent adversarial verdict: Pass` only when the user job is fulfilled")
     undone = values.get(
         "could every ac pass while the approved user job remains undone", ""
     ).strip().lower()
-    if undone != "no":
+    if resolved_changes:
+        if undone not in {"yes", "no", "unknown"}:
+            issues.append(
+                "preserve the original answer to whether every AC could pass while the user job "
+                "remained undone"
+            )
+        issues.extend(_resolved_changes_requested_issues(docs_text, values))
+    elif undone != "no":
         issues.append(
             "answer `Could every AC pass while the approved user job remains undone: No`; "
             "a Yes or unknown answer requires Changes requested"
@@ -14613,6 +15609,11 @@ def _epic_lifecycle_gate_issues(root: Path, epic_id: str, target_status: str) ->
             *contract_issues,
             *mapping_gaps,
             *_intent_audit_gate_issues(epic_dir),
+            *_coordination_boundary_gate_issues(
+                root,
+                epic_id,
+                boundary="after-plan-or-decomposition",
+            ),
         ]
     if target_status == "Closeout":
         return [*audit_gaps, *_epic_retro_issues(epic_dir)]
@@ -14852,6 +15853,11 @@ def _implementation_task_table_rows(
                 DELEGATION_IMPLEMENTATION_TASK_COLUMNS,
                 DELEGATION_EXECUTION_NEEDS_TASK_COLUMNS,
             )
+            else "legacy"
+        )
+        row["_execution_needs_metadata"] = (
+            "present"
+            if table_columns == DELEGATION_EXECUTION_NEEDS_TASK_COLUMNS
             else "legacy"
         )
         row["_line_idx"] = str(row_idx + 1)
@@ -16610,6 +17616,25 @@ def _update_global_tracker_row_status(
             if readiness_issues:
                 raise SystemExit(_format_readiness_block(row_id, readiness_issues))
 
+        boundary = _coordination_transition_boundary(current_status, new_status)
+        if boundary is not None and not force:
+            coordination_issues = _coordination_boundary_gate_issues(
+                root,
+                normalized_row_id,
+                boundary=boundary,
+                subject_id=normalized_row_id,
+            )
+            if new_status == "In Progress":
+                coordination_issues.extend(
+                    _coordination_checkpoint_gate_issues(
+                        root,
+                        normalized_row_id,
+                        subject_id=normalized_row_id,
+                    )
+                )
+            if coordination_issues:
+                raise SystemExit(_format_readiness_block(row_id, coordination_issues))
+
         if current_status == new_status:
             return current_status, new_status
 
@@ -16740,6 +17765,8 @@ def _update_epic_child_status(
     reason: str | None,
 ) -> tuple[str, str]:
     _validate_status_force_args(new_status=new_status, force=force, reason=reason)
+    epic_name_parts = epic_tracker_path.parent.name.split("-", 2)
+    epic_id = "-".join(epic_name_parts[:2]) if len(epic_name_parts) >= 2 else ""
     lines, _header_idx, rows = _epic_tracker_rows(epic_tracker_path)
     for row in rows:
         if row["ID"] != row_id:
@@ -16878,6 +17905,24 @@ def _update_epic_child_status(
                 )
             if readiness_issues:
                 raise SystemExit(_format_readiness_block(row_id, readiness_issues))
+        boundary = _coordination_transition_boundary(current_status, new_status)
+        if boundary is not None and not force and epic_id:
+            coordination_issues = _coordination_boundary_gate_issues(
+                root,
+                epic_id,
+                boundary=boundary,
+                subject_id=row_id,
+            )
+            if new_status == "In Progress":
+                coordination_issues.extend(
+                    _coordination_checkpoint_gate_issues(
+                        root,
+                        epic_id,
+                        subject_id=row_id,
+                    )
+                )
+            if coordination_issues:
+                raise SystemExit(_format_readiness_block(row_id, coordination_issues))
         row["Status"] = new_status
         lines[int(row["_line_idx"])] = _format_epic_tracker_row(row)
         epic_tracker_path.write_text("".join(lines), encoding="utf-8")
@@ -17340,6 +18385,16 @@ def _doctor_check_source_mirrors(root: Path, issues: list[DoctorIssue]) -> None:
             root / "src/project_workflow/codex/skills/project-delegate/SKILL.md",
             "Installed Codex Delegate skill differs from packaged source",
         ),
+        (
+            root / ".agents/skills/project-coordinator/SKILL.md",
+            root / "src/project_workflow/codex/skills/project-coordinator/SKILL.md",
+            "Installed Codex Coordinator skill differs from packaged source",
+        ),
+        (
+            root / ".agents/skills/project-clarify/SKILL.md",
+            root / "src/project_workflow/codex/skills/project-clarify/SKILL.md",
+            "Installed Codex Clarify skill differs from packaged source",
+        ),
     )
     for local_path, packaged_path, mismatch_label in mirror_pairs:
         if not local_path.exists() or not packaged_path.exists():
@@ -17415,6 +18470,85 @@ def _doctor_check_delegate_semantics(root: Path, issues: list[DoctorIssue]) -> N
                 mechanically_upgradeable=True,
             )
 
+
+def _doctor_check_coordinator_clarify_semantics(
+    root: Path, issues: list[DoctorIssue]
+) -> None:
+    contracts = (
+        (
+            "Coordinator",
+            (
+                "single owner-facing",
+                "only writer",
+                "smallest sufficient",
+                "bounded packet",
+                "independent qa",
+                "stop after sufficient proof",
+                "one full minor release",
+            ),
+            (
+                root / "src/project_workflow/prompts/Coordinator.prompt.md",
+                root / "src/project_workflow/codex/skills/project-coordinator/SKILL.md",
+                root / ".github/prompts/Coordinator.prompt.md",
+                root / ".agents/skills/project-coordinator/SKILL.md",
+                root / ".claude/agents/project-coordinator.md",
+                root / ".cursor/agents/project-coordinator.md",
+            ),
+        ),
+        (
+            "Clarify",
+            (
+                "pre-approval",
+                "post-plan",
+                "drift-ambiguity",
+                "epic parent",
+                "inside-envelope",
+                "drift-detected",
+                "approved-change",
+                "not periodic",
+                "does not monitor",
+            ),
+            (
+                root / "src/project_workflow/prompts/Clarify.prompt.md",
+                root / "src/project_workflow/codex/skills/project-clarify/SKILL.md",
+                root / ".github/prompts/Clarify.prompt.md",
+                root / ".agents/skills/project-clarify/SKILL.md",
+                root / ".claude/agents/project-clarify.md",
+                root / ".cursor/agents/project-clarify.md",
+            ),
+        ),
+    )
+    for label, required, candidates in contracts:
+        for path in candidates:
+            if not path.is_file():
+                continue
+            text = path.read_text(encoding="utf-8")
+            relative = path.relative_to(root).as_posix()
+            if relative.startswith((".agents/skills/", ".github/prompts/")) and not _is_generated_content(
+                text
+            ):
+                continue
+            lowered = " ".join(text.lower().split())
+            missing = [term for term in required if term not in lowered]
+            placeholder_leak = relative.startswith((".claude/agents/", ".cursor/agents/")) and (
+                "${input:" in text
+            )
+            if missing or placeholder_leak:
+                details = []
+                if missing:
+                    details.append("missing " + ", ".join(missing))
+                if placeholder_leak:
+                    details.append("contains GitHub Copilot input placeholders")
+                _add_issue(
+                    issues,
+                    "error",
+                    path,
+                    f"{label} semantic asset is invalid: " + "; ".join(details) + ".",
+                    code="PW_GENERATED_ASSET_DRIFT",
+                    remediation_owner="project-workflow",
+                    mechanically_upgradeable=True,
+                )
+
     compatibility = _repository_compatibility(root)
     if compatibility.manifest is not None and compatibility.manifest.asset_version >= 2:
         ignore_path = root / ".project-workflow/.gitignore"
@@ -17428,6 +18562,68 @@ def _doctor_check_delegate_semantics(root: Path, issues: list[DoctorIssue]) -> N
                 code="PW_GENERATED_ASSET_DRIFT",
                 remediation_owner="project-workflow",
                 mechanically_upgradeable=True,
+            )
+
+
+def _doctor_check_coordination_state(root: Path, issues: list[DoctorIssue]) -> None:
+    tasks_dir = root / ".project-workflow" / "tasks"
+    if not tasks_dir.is_dir():
+        return
+    for path in sorted(tasks_dir.rglob(COORDINATION_FILENAME)):
+        target_id = path.parent.name.split("-", 2)[:2]
+        expected_id = "-".join(target_id) if len(target_id) == 2 else ""
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            _coordination_validate_state(payload, target_id=expected_id or None)
+            actual_id = str(payload["target_id"])
+            decisions = payload["boundary_decisions"]
+            assert isinstance(decisions, list)
+            for decision in decisions:
+                if not isinstance(decision, dict):
+                    raise ValueError("boundary_decisions entries must be objects.")
+                if decision.get("boundary") not in COORDINATION_BOUNDARIES:
+                    raise ValueError("boundary_decisions contains an unknown boundary.")
+                classification = decision.get("classification")
+                if classification not in COORDINATION_DRIFT_CLASSIFICATIONS:
+                    raise ValueError("boundary_decisions contains an unknown classification.")
+                if classification == "approved-change" and not decision.get(
+                    "amendment_identity"
+                ):
+                    raise ValueError("approved-change decision is missing amendment_identity.")
+                _coordination_required_text(
+                    decision.get("intent_identity"), "boundary_decisions.intent_identity"
+                )
+                _coordination_required_text(
+                    decision.get("source_revision"), "boundary_decisions.source_revision"
+                )
+                source_identity = decision.get("source_identity")
+                if source_identity is not None and (
+                    not isinstance(source_identity, str)
+                    or not re.fullmatch(r"sha256:[0-9a-f]{64}", source_identity)
+                ):
+                    raise ValueError("boundary_decisions.source_identity is invalid.")
+            preflight = _coordination_preflight_payload(root, actual_id, payload)
+            if preflight["contract_state"] not in {"current", "compatible"}:
+                _add_issue(
+                    issues,
+                    "warning",
+                    path,
+                    "Coordination context contract is "
+                    f"{preflight['contract_state']}; explicitly load and declare the applicable "
+                    "contract before affected work continues.",
+                    code="PW_WORKFLOW_INVALID",
+                    remediation_owner="agent",
+                    mechanically_upgradeable=False,
+                )
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            _add_issue(
+                issues,
+                "error",
+                path,
+                f"Coordination state is invalid: {exc}",
+                code="PW_WORKFLOW_INVALID",
+                remediation_owner="agent",
+                mechanically_upgradeable=False,
             )
 
 
@@ -18115,6 +19311,8 @@ def run_doctor(root: Path) -> list[DoctorIssue]:
     _doctor_check_workspace_authority(root, config, issues)
     _doctor_check_source_mirrors(root, issues)
     _doctor_check_delegate_semantics(root, issues)
+    _doctor_check_coordinator_clarify_semantics(root, issues)
+    _doctor_check_coordination_state(root, issues)
     _doctor_check_pending_generated_updates(root, issues)
     _doctor_check_backlog(root, issues, config=config)
     _doctor_check_duplicate_tracker_ids(root, issues)
@@ -20179,6 +21377,126 @@ def build_parser() -> argparse.ArgumentParser:
         help="Output format (default: human)",
     )
     validation_impact_parser.set_defaults(func=cmd_validation_impact)
+
+    coordinate_parser = subparsers.add_parser(
+        "coordinate",
+        help="Maintain durable logical handoff, drift, and outcome-checkpoint state",
+    )
+    coordinate_sub = coordinate_parser.add_subparsers(
+        dest="coordinate_command", required=True
+    )
+    coordinate_init_parser = coordinate_sub.add_parser(
+        "init", help="Initialize one durable coordination state"
+    )
+    coordinate_init_parser.add_argument("--id", required=True)
+    coordinate_init_parser.add_argument("--phase", required=True)
+    coordinate_init_parser.add_argument("--source-revision", required=True)
+    coordinate_init_parser.add_argument("--loaded-package-version", required=True)
+    coordinate_init_parser.add_argument("--loaded-asset-version", required=True)
+    coordinate_init_parser.add_argument("--loaded-contract-version", required=True)
+    coordinate_init_parser.add_argument("--context-id", required=True)
+    coordinate_init_parser.add_argument("--next-action", required=True)
+    coordinate_init_parser.add_argument(
+        "--repository-source", action="append", metavar="REPOSITORY=REVISION"
+    )
+    coordinate_init_parser.add_argument("--decision", action="append")
+    coordinate_init_parser.add_argument(
+        "--claim-class", choices=EARLY_OUTCOME_CLAIM_CLASSES, default="mechanical"
+    )
+    coordinate_init_parser.add_argument(
+        "--material-user-facing", choices=("yes", "no"), default="no"
+    )
+    coordinate_init_parser.add_argument("--checkpoint-unit")
+    coordinate_init_parser.add_argument("--force", action="store_true")
+    coordinate_init_parser.set_defaults(func=cmd_coordinate_init)
+
+    coordinate_context_parser = coordinate_sub.add_parser(
+        "context-record", help="Declare the contract explicitly loaded by the physical context"
+    )
+    coordinate_context_parser.add_argument("--id", required=True)
+    coordinate_context_parser.add_argument("--loaded-package-version", required=True)
+    coordinate_context_parser.add_argument("--loaded-asset-version", required=True)
+    coordinate_context_parser.add_argument("--loaded-contract-version", required=True)
+    coordinate_context_parser.add_argument("--context-id", required=True)
+    coordinate_context_parser.add_argument("--next-action", required=True)
+    coordinate_context_parser.set_defaults(func=cmd_coordinate_context_record)
+
+    coordinate_phase_parser = coordinate_sub.add_parser(
+        "phase", help="Advance phase and exact repository/source identities without losing state"
+    )
+    coordinate_phase_parser.add_argument("--id", required=True)
+    coordinate_phase_parser.add_argument("--phase", required=True)
+    coordinate_phase_parser.add_argument("--source-revision", required=True)
+    coordinate_phase_parser.add_argument(
+        "--repository-source", action="append", metavar="REPOSITORY=REVISION"
+    )
+    coordinate_phase_parser.add_argument("--next-action", required=True)
+    coordinate_phase_parser.set_defaults(func=cmd_coordinate_phase)
+
+    coordinate_preflight_parser = coordinate_sub.add_parser(
+        "preflight", help="Read loaded contract and Intent freshness without mutation"
+    )
+    coordinate_preflight_parser.add_argument("--id", required=True)
+    coordinate_preflight_parser.add_argument(
+        "--format", choices=("human", "json"), default="human"
+    )
+    coordinate_preflight_parser.set_defaults(func=cmd_coordinate_preflight)
+
+    coordinate_boundary_parser = coordinate_sub.add_parser(
+        "boundary", help="Record one of the five Coordinator-owned drift decisions"
+    )
+    coordinate_boundary_parser.add_argument(
+        "--id", required=True
+    )
+    coordinate_boundary_parser.add_argument(
+        "--boundary", required=True, choices=COORDINATION_BOUNDARIES
+    )
+    coordinate_boundary_parser.add_argument(
+        "--classification", required=True, choices=COORDINATION_DRIFT_CLASSIFICATIONS
+    )
+    coordinate_boundary_parser.add_argument("--ocs", required=True)
+    coordinate_boundary_parser.add_argument("--capability-change", required=True)
+    coordinate_boundary_parser.add_argument("--consequence", required=True)
+    coordinate_boundary_parser.add_argument("--affected-units", default="none")
+    coordinate_boundary_parser.add_argument("--amendment-identity")
+    coordinate_boundary_parser.add_argument(
+        "--shared-premises-valid", choices=("yes", "no", "unknown"), required=True
+    )
+    coordinate_boundary_parser.add_argument("--decided-by", required=True)
+    coordinate_boundary_parser.add_argument("--next-action", default="Continue inside envelope.")
+    coordinate_boundary_parser.set_defaults(func=cmd_coordinate_boundary)
+
+    coordinate_checkpoint_parser = coordinate_sub.add_parser(
+        "checkpoint",
+        help="Record the earliest sufficient normal-user-journey result before fan-out",
+    )
+    coordinate_checkpoint_parser.add_argument("--id", required=True)
+    coordinate_checkpoint_parser.add_argument("--unit", required=True)
+    coordinate_checkpoint_parser.add_argument("--actor", required=True)
+    coordinate_checkpoint_parser.add_argument("--entry-point", required=True)
+    coordinate_checkpoint_parser.add_argument("--starting-state", required=True)
+    coordinate_checkpoint_parser.add_argument("--operations", required=True)
+    coordinate_checkpoint_parser.add_argument("--resulting-state", required=True)
+    coordinate_checkpoint_parser.add_argument("--source-environment", required=True)
+    coordinate_checkpoint_parser.add_argument("--observations", required=True)
+    coordinate_checkpoint_parser.add_argument(
+        "--owner-judgment", choices=("not-required", "required", "provided"), required=True
+    )
+    coordinate_checkpoint_parser.add_argument(
+        "--verdict", choices=("pass", "fail", "pending"), required=True
+    )
+    coordinate_checkpoint_parser.add_argument("--affected-units", default="none")
+    coordinate_checkpoint_parser.add_argument("--recorded-by", required=True)
+    coordinate_checkpoint_parser.set_defaults(func=cmd_coordinate_checkpoint)
+
+    coordinate_status_parser = coordinate_sub.add_parser(
+        "status", help="Report sourced durable coordination state and one next action"
+    )
+    coordinate_status_parser.add_argument("--id", required=True)
+    coordinate_status_parser.add_argument(
+        "--format", choices=("human", "json"), default="human"
+    )
+    coordinate_status_parser.set_defaults(func=cmd_coordinate_status)
 
     delegate_parser = subparsers.add_parser(
         "delegate",

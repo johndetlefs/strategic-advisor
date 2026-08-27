@@ -77,10 +77,13 @@ Turn confirmed requirements into a safe, incremental implementation plan.
     and before completion.
 16. Do not implement code during planning.
 
-For Delegate-capable plans, extend the task table with `Dependencies`, `Write Scope`,
-`Parallel Safe`, and `Execution Needs`. Use blank or `bounded-return` for ordinary bounded work;
-use `durable-resume`, `direct-owner-steering`, `isolated-worktree`, or `peer:<group-id>` only when
-the approved work actually requires that property. These are work facts, not host-capability claims.
+For Coordinator execution plans, extend the task table with `Dependencies`, `Write Scope`,
+`Parallel Safe`, and `Execution Needs`. Use blank or `bounded-return` for ordinary work that should
+remain Coordinator/sequential. A non-Coordinator surface must also declare exactly one
+`benefit:<slug>`, `overhead:<slug>`, and `tradeoff:<slug>` basis explaining its delivery benefit,
+expected setup/synthesis overhead, and why the benefit outweighs that overhead. Use
+`durable-resume`, `direct-owner-steering`, `isolated-worktree`, or `peer:<group-id>` only when the
+approved work actually requires that binding property. These are work facts, not host-capability claims.
 Keep Task rows distinct from Epic child Tasks. Plan no fixed worker count: runtime
 capacity is observed at execution. Include coordinator-only workflow writes, bounded worker packets,
 coordinator verification, descendant blocking, and independent-branch continuation while shared

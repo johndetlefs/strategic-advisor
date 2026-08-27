@@ -138,6 +138,44 @@ Run one scope with `python3 scripts/validate.py --scope <scope>`.
 
 `evaluation_harness.py` is the deterministic freeze/run verifier. It makes no model calls: it freezes and rechecks the exact authority/runtime/context identity, emits the complete matched work plan, and rejects incomplete, contaminated, non-inverted, or source-mismatched retained artifacts. It can establish a failed release gate from confirmed hard-gate or leakage evidence, but it deliberately cannot emit a passing effectiveness verdict until the still-pending aggregation, assertion, trigger, holdout, and human-review requirements exist.
 
+### Bounded live drift-smoke campaigns
+
+`scripts/run_drift_smoke_live.py` is the standalone paid-model runner for the
+frozen drift-smoke authority. Its default is a full **certification** campaign:
+cases stay in canonical spec order and the runner stops at the first product
+failure. A failed canary therefore cannot silently expand into the remaining
+suite. Select only the proof actually needed with repeatable `--case` or
+`--affected-case`, exact `--metadata KEY=VALUE`, or `--previously-failing`.
+
+```sh
+python3 scripts/run_drift_smoke_live.py \
+  --output-dir evidence/evaluations/drift-smoke/local-canary \
+  --case <case-id> \
+  --model <target-model>
+```
+
+Provider or harness failures receive at most the declared zero-or-one
+infrastructure retry. Certification is always fail-fast and derives finite
+target-call and elapsed-time limits when they are omitted. Diagnostic mode is
+deliberately non-certifying and requires a named decision, an explicit selected
+scope, and explicit `--max-failures`, `--max-target-calls`, and
+`--max-elapsed-seconds` limits.
+
+Interrupted work may resume with `--continue-run` only when the source,
+runtime, target, selection, proof contract, and limits still match the retained
+checkpoint. `--continue-run --regrade` requires a changed
+`--adjudicator-model` and reuses the exact retained target transcripts without
+new target calls. The final `runner-receipt.json` binds the result and call
+counts to those inputs; a limit or typed failure never becomes a pass.
+
+The runner has no workflow-system dependency. External coordinators may query
+its generic JSON capabilities with `--print-capabilities` and request a single
+machine-readable final receipt with `--adapter-json`. A coordinator that sends
+an invocation request on standard input also adds `--adapter-request-stdin`;
+the runner rejects identity, mode, scope, or limit drift and echoes the exact
+request identity in its content-addressed receipt. Ordinary standalone use does
+not require a coordinator or Project Workflow installation.
+
 | Scope | What it proves | What it does not prove |
 | --- | --- | --- |
 | `skill` | Canonical location, basic Agent Skill structure, required resources, and runtime allowlist integrity | Model behaviour or host loading |
