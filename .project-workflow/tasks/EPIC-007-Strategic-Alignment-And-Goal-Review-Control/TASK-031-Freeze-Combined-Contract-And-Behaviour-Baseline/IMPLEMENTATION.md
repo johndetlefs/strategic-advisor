@@ -54,7 +54,10 @@ success after observing its own behaviour.
 - Evaluation authority: `evals/core_cases.json`, `eval_queries.json`, `recommendation_gate_cases.json`, `drift_smoke_cases.json`, generated `evals.json`, the smallest necessary case/assertion/runner changes and exact raw result artifacts kept outside the model-visible runtime.
 - Public contract: `PRODUCT-CONTRACT.md`, `ARCHITECTURE.md`, `README.md`, `INSTALL.md`, onboarding/agent metadata and only directly affected contributor/security documentation.
 - Runtime/package declarations: `runtime-manifest.json`, `distribution.json`, generated install-artifact provenance, exact inventories and deterministic package comparison.
-- Retained proof: child `EVIDENCE.json`, deterministic validation output, exact-runtime target/source/activation evidence, sanitised raw case outputs, case-level verdicts, independent QA, parent audit and explicit blockers.
+- Retained proof for this child: deterministic validation output, frozen
+  identities, sanitised case authority and provenance review, independent QA,
+  parent audit and explicit blockers. Behavioural execution evidence and raw
+  verdicts belong to TASK-034.
 - Downstream handoff: a public-contract-derived Strategy Workspace v1 brief identifying private record, dogfood, Sunday and Daily Checklist boundaries without mutating that repository or copying its facts.
 - Workflow: EPIC-007 requirements, contract, decomposition, child artifacts, tracker, intent audit, acceptance map/audit, deferrals/amendments if required and retro.
 
@@ -117,8 +120,8 @@ success after observing its own behaviour.
   authority and proof boundary. This establishes only pre-treatment authority
   and deterministic structure; TASK-032, TASK-033 and TASK-034 still own the
   documented runtime semantics and exact-runtime behavioural results required
-  for parent acceptance. No structured external/runtime proof recipe applies
-  to this baseline-only child, so `EVIDENCE.json` remains empty by design.
+  for parent acceptance. No structured proof recipe applies to this
+  baseline-only child, so `EVIDENCE.json` remains empty by design.
 
 ## QA & Code Review
 
