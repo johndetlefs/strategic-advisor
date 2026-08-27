@@ -6,7 +6,7 @@
     "epic": "EPIC-007",
     "task": "TASK-031",
     "requirements_identity": "sha256:cdbd03660ff1ac27a395209ca8cf128a3894a8a581edcf7717974cdc8358235c",
-    "intent_audit_identity": "sha256:d57e0e39b32a5a9c62ad82705e8aeadbe5a73b8cb7bf7259b99ad2387351e404",
+    "intent_audit_identity": "sha256:8c20f72bfca093e04f88ba698bc5810e81b4715b86db11ba9d6944eaf97f46ed",
     "owner_approval": "John Detlefs, SA: Goal Review Workshop, 2026-08-27"
   },
   "untreated_repository_baseline": {

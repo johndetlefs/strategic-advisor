@@ -28,7 +28,7 @@ accepted all five remediated findings and returned Pass.
 - Untreated tree: `771e009464dee70fcfdcfb64ff18d92ce7108fd8`
 - Case authority: `sha256:d94ab8fad7dab599ab045068152d7f67c48f569902d49f986bc4a6c673cb2274`
 - Derived inventory: `sha256:c41908344bb5fd2bbb4a47661534530361eeb27fb14b72434e38805e8855bd2a`
-- Freeze manifest: `sha256:64442fcb0c710866a0a3d6abcee48a09747f3d84218633e8a9556fcf3b9de579`
+- Freeze manifest: `sha256:e2f378507dd32eb52af81d511c6b7b94809fdf8f38ca0d9db90bef14fd42730d`
 - Claim/proof matrix: `sha256:ce35a7d82e68d12495f70c84d3c77fa6bfd5c4d4326f271caa01301cd14a5252`
 - Provenance review: `sha256:ba974e4b56cf7f0402fdc24c225966789fda0e8d8a56cc544f0b59c353cf97a8`
 - Freeze authority commit: `c3b6790e93af8bccc59b76a712e47e2a0991ca07`
