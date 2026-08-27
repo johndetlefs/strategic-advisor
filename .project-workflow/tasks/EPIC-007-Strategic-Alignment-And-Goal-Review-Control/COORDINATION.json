@@ -99,6 +99,34 @@
       "source_identity": "sha256:827deaa16d9e373680b5c59680fe0b668099299143d94c8dd0cff05e8e7ff3c1",
       "source_revision": "f2bcca4bfa9005b4a99512b8eb727fe6d2069466",
       "user_consequence": "Independent review can assess the bounded source contract without accepting downstream behaviour, packaging, release or private-record claims."
+    },
+    {
+      "affected_units": [
+        "TASK-032",
+        "TASK-033",
+        "TASK-034",
+        "TASK-035"
+      ],
+      "amendment_identity": null,
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "Independent QA required selective-invalidation corrections; release coordination subsequently introduced a PW 0.8 runner-reconciliation prerequisite. Neither changes the approved capability.",
+      "classification": "inside-envelope",
+      "decided_by": "Goal Review Workshop coordinator",
+      "decision_date": "2026-08-27",
+      "intent_identity": "sha256:2fe57ba4905f956449adcb62664995b22310dd23bdca9108cbec8444f034fd17",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:461dda9805c9fd130a840407802c0f3f649ea7f531d4680e8e37f363b984ee30",
+      "source_revision": "905c1ebc",
+      "user_consequence": "Preserve TASK-032 remediation at 905c1eb, do not start TASK-033 or behavioural evaluation, and resume only from the explicitly reconciled runner/base."
     }
   ],
   "decisions": [
@@ -110,18 +138,21 @@
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:863c2646d6a4f3c46dcb4dff4ee69983c43a677214ca5c1d8eb6fa9d9afd0c30",
+  "intent_identity": "sha256:2fe57ba4905f956449adcb62664995b22310dd23bdca9108cbec8444f034fd17",
   "last_boundary": {
     "affected_units": [
-      "TASK-032"
+      "TASK-032",
+      "TASK-033",
+      "TASK-034",
+      "TASK-035"
     ],
     "amendment_identity": null,
-    "boundary": "before-review-or-complete",
-    "capability_change": "TASK-032 implements only the approved alignment, selective re-clarification and goal-qualification semantics; it does not claim recurring review or runtime behavioural proof.",
+    "boundary": "new-evidence-or-owner-reframe",
+    "capability_change": "Independent QA required selective-invalidation corrections; release coordination subsequently introduced a PW 0.8 runner-reconciliation prerequisite. Neither changes the approved capability.",
     "classification": "inside-envelope",
     "decided_by": "Goal Review Workshop coordinator",
     "decision_date": "2026-08-27",
-    "intent_identity": "sha256:863c2646d6a4f3c46dcb4dff4ee69983c43a677214ca5c1d8eb6fa9d9afd0c30",
+    "intent_identity": "sha256:2fe57ba4905f956449adcb62664995b22310dd23bdca9108cbec8444f034fd17",
     "relevant_ocs": [
       "OC1",
       "OC2",
@@ -132,9 +163,9 @@
       "OC7"
     ],
     "shared_premises_valid": "yes",
-    "source_identity": "sha256:827deaa16d9e373680b5c59680fe0b668099299143d94c8dd0cff05e8e7ff3c1",
-    "source_revision": "f2bcca4bfa9005b4a99512b8eb727fe6d2069466",
-    "user_consequence": "Independent review can assess the bounded source contract without accepting downstream behaviour, packaging, release or private-record claims."
+    "source_identity": "sha256:461dda9805c9fd130a840407802c0f3f649ea7f531d4680e8e37f363b984ee30",
+    "source_revision": "905c1ebc",
+    "user_consequence": "Preserve TASK-032 remediation at 905c1eb, do not start TASK-033 or behavioural evaluation, and resume only from the explicitly reconciled runner/base."
   },
   "loaded_contract": {
     "asset_version": "6",
@@ -143,7 +174,7 @@
     "package_version": "0.7.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Move TASK-032 to Review and obtain independent adversarial QA.",
+  "next_action": "Pause TASK-033 and runtime/evaluation work until the release coordinator reports the verified PW 0.8 runner integration base.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-034",
     "claim_class": "user-facing",
@@ -151,14 +182,14 @@
     "required": true,
     "status": "pending"
   },
-  "phase": "TASK-032 validation and QA",
+  "phase": "TASK-032 QA remediation preserved; awaiting PW 0.8 runner reconciliation",
   "repositories": {
     ".": {
-      "source_revision": "f2bcca4bfa9005b4a99512b8eb727fe6d2069466"
+      "source_revision": "905c1ebb04f689e27e31f45ec1ee4d25ef9f27ae"
     }
   },
   "schema_version": 2,
-  "source_revision": "f2bcca4bfa9005b4a99512b8eb727fe6d2069466",
+  "source_revision": "905c1ebb04f689e27e31f45ec1ee4d25ef9f27ae",
   "target_id": "EPIC-007",
   "work_item_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control"
 }
