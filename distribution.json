@@ -1,17 +1,17 @@
 {
   "current_public": {
-    "evidence": "evidence/releases/v0.2.0-alpha.6.json",
-    "runtime_package_identity_sha256": "8944982b82ca7807f33258dcdb3907b36aa1cc2dff9ee21d54492a68bcc9ecbb",
-    "source_revision": "ca474cc9ead383b631a013de7cc1535fc3f295a0",
-    "tag": "v0.2.0-alpha.6",
-    "version": "0.2.0-alpha.6"
+    "evidence": "evidence/releases/v0.2.0-alpha.7.json",
+    "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+    "source_revision": "0be59190b6e048e31ce990024841c2a0d42a282a",
+    "tag": "v0.2.0-alpha.7",
+    "version": "0.2.0-alpha.7"
   },
   "distribution": {
     "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
     "version": "0.2.0-alpha.7"
   },
   "schema_version": 2,
-  "state": "prepared",
+  "state": "published",
   "superseded": [
     {
       "reason": "Superseded before publication because FIX-004 corrects owner-led recommendation drift in the prepared runtime; publishing alpha.4 would knowingly ship the defect.",

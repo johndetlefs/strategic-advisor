@@ -14,6 +14,8 @@ from unittest import mock
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 RELEASE_STATE = REPOSITORY_ROOT / "scripts" / "release_state.py"
+FIXTURE_PREPARED_VERSION = "99.0.0-alpha.1"
+FIXTURE_REPLACEMENT_VERSION = "99.0.0-alpha.2"
 
 
 def load_module(name: str, path: Path):
@@ -163,20 +165,22 @@ class ReleaseStateTests(unittest.TestCase):
         ).stdout.strip()
 
     def prepare_committed_candidate(self) -> str:
-        self.module.prepare(self.root, "0.2.0-alpha.7")
-        return self.git_commit("prepare alpha.7")
+        self.module.prepare(self.root, FIXTURE_PREPARED_VERSION)
+        return self.git_commit("prepare fixture candidate")
 
     def test_prepare_advances_and_synchronizes_release_state(self) -> None:
-        authority = self.module.prepare(self.root, "0.2.0-alpha.7")
+        authority = self.module.prepare(self.root, FIXTURE_PREPARED_VERSION)
         self.assertEqual(authority["state"], "prepared")
-        self.assertEqual(authority["distribution"]["version"], "0.2.0-alpha.7")
+        self.assertEqual(
+            authority["distribution"]["version"], FIXTURE_PREPARED_VERSION
+        )
         self.assertEqual(
             authority["distribution"]["runtime_package_identity_sha256"],
             self.module.runtime_identity(self.root),
         )
         self.assertEqual(self.module.validate(self.root), authority)
         self.assertIn(
-            "`v0.2.0-alpha.7` is release intent only",
+            f"`v{FIXTURE_PREPARED_VERSION}` is release intent only",
             (self.root / "README.md").read_text(encoding="utf-8"),
         )
 
@@ -188,12 +192,17 @@ class ReleaseStateTests(unittest.TestCase):
                     self.module.prepare(self.root, version)
                 self.assertEqual(self.tracked_hashes(), before)
 
-        reused = self.root / "evidence" / "releases" / "v0.2.0-alpha.7.json"
+        reused = (
+            self.root
+            / "evidence"
+            / "releases"
+            / f"v{FIXTURE_PREPARED_VERSION}.json"
+        )
         reused.write_text("{}\n", encoding="utf-8")
         with self.assertRaisesRegex(
             self.module.ReleaseStateError, "already used"
         ):
-            self.module.prepare(self.root, "0.2.0-alpha.7")
+            self.module.prepare(self.root, FIXTURE_PREPARED_VERSION)
         self.assertEqual(self.tracked_hashes(), before)
 
     def test_transaction_rolls_back_if_replace_fails(self) -> None:
@@ -210,7 +219,7 @@ class ReleaseStateTests(unittest.TestCase):
 
         with mock.patch.object(self.module.os, "replace", side_effect=fail_second):
             with self.assertRaisesRegex(OSError, "synthetic replace failure"):
-                self.module.prepare(self.root, "0.2.0-alpha.7")
+                self.module.prepare(self.root, FIXTURE_PREPARED_VERSION)
         self.assertEqual(self.tracked_hashes(), before)
 
     def test_runtime_drift_fails_but_documentation_drift_does_not(self) -> None:
@@ -245,7 +254,7 @@ class ReleaseStateTests(unittest.TestCase):
 
         authority = self.module.supersede(
             self.root,
-            next_version="0.2.0-alpha.8",
+            next_version=FIXTURE_REPLACEMENT_VERSION,
             prepared_source_revision=prepared_revision,
             reason="Corrected before publication.",
             superseded_at="2026-08-24T01:02:03Z",
@@ -253,7 +262,9 @@ class ReleaseStateTests(unittest.TestCase):
 
         self.assertEqual(authority["schema_version"], 2)
         self.assertEqual(authority["state"], "prepared")
-        self.assertEqual(authority["distribution"]["version"], "0.2.0-alpha.8")
+        self.assertEqual(
+            authority["distribution"]["version"], FIXTURE_REPLACEMENT_VERSION
+        )
         self.assertEqual(
             authority["distribution"]["runtime_package_identity_sha256"],
             self.module.runtime_identity(self.root),
@@ -263,20 +274,20 @@ class ReleaseStateTests(unittest.TestCase):
             [
                 {
                     "reason": "Corrected before publication.",
-                    "replacement_version": "0.2.0-alpha.8",
+                    "replacement_version": FIXTURE_REPLACEMENT_VERSION,
                     "runtime_package_identity_sha256": prepared_identity,
                     "source_revision": prepared_revision,
                     "superseded_at": "2026-08-24T01:02:03Z",
-                    "version": "0.2.0-alpha.7",
+                    "version": FIXTURE_PREPARED_VERSION,
                 }
             ],
         )
         self.assertEqual(self.module.validate(self.root), authority)
         self.assertIn(
-            "`v0.2.0-alpha.8` is release intent only",
+            f"`v{FIXTURE_REPLACEMENT_VERSION}` is release intent only",
             (self.root / "README.md").read_text(encoding="utf-8"),
         )
-        evidence = self.root / "alpha.8-evidence.json"
+        evidence = self.root / "replacement-evidence.json"
         evidence.write_bytes(
             self.module.rendered_json_bytes(
                 {
@@ -287,8 +298,8 @@ class ReleaseStateTests(unittest.TestCase):
                         ]["runtime_package_identity_sha256"],
                         "source_revision": "3" * 40,
                         "status": "prerelease",
-                        "tag": "v0.2.0-alpha.8",
-                        "version": "0.2.0-alpha.8",
+                        "tag": f"v{FIXTURE_REPLACEMENT_VERSION}",
+                        "version": FIXTURE_REPLACEMENT_VERSION,
                     },
                     "proof_boundary": {
                         "clean_public_download_proven": True,
@@ -304,7 +315,7 @@ class ReleaseStateTests(unittest.TestCase):
             self.module.ReleaseStateError, "superseded prepared candidate"
         ):
             self.module.ensure_version_unused(
-                self.root, "0.2.0-alpha.7", authority
+                self.root, FIXTURE_PREPARED_VERSION, authority
             )
 
     def test_supersede_rejects_unproven_published_or_invalid_transition(self) -> None:
@@ -313,7 +324,7 @@ class ReleaseStateTests(unittest.TestCase):
         ):
             self.module.supersede(
                 self.root,
-                next_version="0.2.0-alpha.8",
+                next_version=FIXTURE_REPLACEMENT_VERSION,
                 prepared_source_revision=self.initial_revision,
                 reason="Not applicable.",
                 superseded_at="2026-08-24T01:02:03Z",
@@ -323,31 +334,31 @@ class ReleaseStateTests(unittest.TestCase):
         before = self.tracked_hashes()
         invalid_cases = (
             {
-                "next_version": "0.2.0-alpha.7",
+                "next_version": FIXTURE_PREPARED_VERSION,
                 "prepared_source_revision": prepared_revision,
                 "reason": "No advance.",
                 "superseded_at": "2026-08-24T01:02:03Z",
             },
             {
-                "next_version": "0.2.0-alpha.7",
+                "next_version": FIXTURE_PREPARED_VERSION,
                 "prepared_source_revision": self.initial_revision,
                 "reason": "Wrong source.",
                 "superseded_at": "2026-08-24T01:02:03Z",
             },
             {
-                "next_version": "0.2.0-alpha.7",
+                "next_version": FIXTURE_PREPARED_VERSION,
                 "prepared_source_revision": prepared_revision,
                 "reason": "   ",
                 "superseded_at": "2026-08-24T01:02:03Z",
             },
             {
-                "next_version": "0.2.0-alpha.7",
+                "next_version": FIXTURE_PREPARED_VERSION,
                 "prepared_source_revision": prepared_revision,
                 "reason": "Invalid timestamp.",
                 "superseded_at": "yesterday",
             },
             {
-                "next_version": "0.2.0-alpha.7",
+                "next_version": FIXTURE_PREPARED_VERSION,
                 "prepared_source_revision": prepared_revision,
                 "reason": "Invalid calendar timestamp.",
                 "superseded_at": "2026-02-31T01:02:03Z",
@@ -362,7 +373,7 @@ class ReleaseStateTests(unittest.TestCase):
     def test_supersede_rejects_tagged_prepared_candidate(self) -> None:
         prepared_revision = self.prepare_committed_candidate()
         subprocess.run(
-            ["git", "-C", str(self.root), "tag", "v0.2.0-alpha.7"],
+            ["git", "-C", str(self.root), "tag", f"v{FIXTURE_PREPARED_VERSION}"],
             check=True,
             capture_output=True,
             text=True,
@@ -374,7 +385,7 @@ class ReleaseStateTests(unittest.TestCase):
         ):
             self.module.supersede(
                 self.root,
-                next_version="0.2.0-alpha.8",
+                next_version=FIXTURE_REPLACEMENT_VERSION,
                 prepared_source_revision=prepared_revision,
                 reason="Must not supersede a tagged candidate.",
                 superseded_at="2026-08-24T01:02:03Z",
@@ -385,7 +396,7 @@ class ReleaseStateTests(unittest.TestCase):
         prepared_revision = self.prepare_committed_candidate()
         authority = self.module.supersede(
             self.root,
-            next_version="0.2.0-alpha.8",
+            next_version=FIXTURE_REPLACEMENT_VERSION,
             prepared_source_revision=prepared_revision,
             reason="Corrected before publication.",
             superseded_at="2026-08-24T01:02:03Z",
@@ -421,7 +432,7 @@ class ReleaseStateTests(unittest.TestCase):
             ):
                 self.module.supersede(
                     self.root,
-                    next_version="0.2.0-alpha.8",
+                    next_version=FIXTURE_REPLACEMENT_VERSION,
                     prepared_source_revision=prepared_revision,
                     reason="Corrected before publication.",
                     superseded_at="2026-08-24T01:02:03Z",

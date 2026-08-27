@@ -25,7 +25,6 @@ RUNTIME_MANIFEST = Path("skills/strategic-advisor/runtime-manifest.json")
 PARENT_ROOT = TASK_ROOT.parent
 PARENT_REQUIREMENTS = PARENT_ROOT / "REQUIREMENTS.md"
 INTENT_AUDIT = PARENT_ROOT / "INTENT-AUDIT.json"
-DISTRIBUTION = Path("distribution.json")
 EXPECTED_CATEGORIES = {
     "routine-direct-assistance",
     "bounded-reconnaissance",
@@ -319,13 +318,16 @@ def validate_freeze_manifest(root: Path, inventory: dict[str, Any]) -> None:
         raise FreezeError(
             f"baseline source_tree mismatch: expected {expected_tree}, got {actual_tree}"
         )
-    distribution = read_json(root / DISTRIBUTION)
-    current_public = (
-        distribution.get("current_public") if isinstance(distribution, dict) else None
+    baseline_tag = _nonempty(
+        baseline.get("current_public_tag"), "baseline current_public_tag"
     )
-    if not isinstance(current_public, dict):
-        raise FreezeError("distribution current_public identity is unavailable")
-    distribution_bindings = {
+    public_evidence = read_json(root / "evidence" / "releases" / f"{baseline_tag}.json")
+    public_release = (
+        public_evidence.get("release") if isinstance(public_evidence, dict) else None
+    )
+    if not isinstance(public_release, dict):
+        raise FreezeError("baseline public release evidence is unavailable")
+    release_bindings = {
         "current_public_version": "version",
         "current_public_tag": "tag",
         "current_public_source_revision": "source_revision",
@@ -333,12 +335,14 @@ def validate_freeze_manifest(root: Path, inventory: dict[str, Any]) -> None:
             "runtime_package_identity_sha256"
         ),
     }
-    for baseline_key, distribution_key in distribution_bindings.items():
-        if baseline.get(baseline_key) != current_public.get(distribution_key):
-            raise FreezeError(f"{baseline_key} differs from distribution.json")
+    for baseline_key, release_key in release_bindings.items():
+        if baseline.get(baseline_key) != public_release.get(release_key):
+            raise FreezeError(
+                f"{baseline_key} differs from retained public release evidence"
+            )
     tag_commit = _git_output(
         root,
-        ["rev-list", "-n", "1", str(baseline["current_public_tag"])],
+        ["rev-list", "-n", "1", baseline_tag],
         "public tag commit",
     )
     if tag_commit != baseline["current_public_source_revision"]:

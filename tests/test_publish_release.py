@@ -13,6 +13,7 @@ from pathlib import Path
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 PUBLISH_RELEASE = REPOSITORY_ROOT / "scripts" / "publish_release.py"
+FIXTURE_PREPARED_VERSION = "99.0.0-alpha.1"
 
 
 def load_module(name: str, path: Path):
@@ -52,7 +53,7 @@ class PublishReleaseTests(unittest.TestCase):
         authority["schema_version"] = 2
         authority["superseded"] = []
         authority["state"] = "prepared"
-        authority["distribution"]["version"] = "0.2.0-alpha.7"
+        authority["distribution"]["version"] = FIXTURE_PREPARED_VERSION
         changes = {
             self.root / "distribution.json": (
                 self.module.release_state.rendered_json_bytes(authority)
