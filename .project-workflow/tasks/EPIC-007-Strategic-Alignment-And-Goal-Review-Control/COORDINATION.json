@@ -609,7 +609,7 @@
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:b2cde61c1894e8d4e97499c13b778ea0f52e1cb61896874c70b3b33daf1ed9f6",
+  "intent_identity": "sha256:5ec07923aa337b239697b04cf96134732f82c32062a8c8eb2b8fe7d424c09605",
   "last_boundary": {
     "affected_units": [
       "TASK-034"
@@ -636,12 +636,12 @@
   },
   "loaded_contract": {
     "asset_version": "7",
-    "context_id": "codex-current-task-2026-08-27",
+    "context_id": "codex-current-task-2026-08-27-parent-rebound",
     "contract_version": "2",
     "package_version": "0.8.0",
     "recorded_at": "2026-08-27"
   },
-  "next_action": "Enter TASK-034 Testing and run deterministic checks first.",
+  "next_action": "Complete TASK-034 bounded QA, then prepare TASK-035 release.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-034",
     "claim_class": "user-facing",
@@ -672,51 +672,6 @@
   "schema_version": 2,
   "source_revision": "8adf3fb2198dee9e356c27ba56e84a563d5f4b50",
   "target_id": "EPIC-007",
-  "verification_campaign": {
-    "adapter": {
-      "capabilities": [],
-      "command": null,
-      "kind": "manual",
-      "manual_command": "python3 scripts/run_drift_smoke_live.py with the owner-approved selected cases, fail-fast and per-stage limits"
-    },
-    "affected_scope": [
-      "SAGR-001",
-      "SAGR-009",
-      "SAGR-014",
-      "SAGR-015",
-      "SAGR-016",
-      "SAGR-018",
-      "SAGR-020",
-      "DRIFT-004",
-      "DRIFT-014",
-      "DRIFT-016"
-    ],
-    "candidate_identity": "d51d7bf19f5ce3a34ab5432d393a5deccdff3b223fe54f4b8ccf7ad08c7020c6",
-    "claims": [
-      "bounded exact-runtime affected alpha smoke on Codex gpt-5.6-sol only; not certification"
-    ],
-    "current_stage": "deterministic",
-    "diagnostic_decision": "If all selected cases pass, allow experimental alpha release with affected-smoke wording only; do not claim full current-runtime or cross-model certification.",
-    "impact": "known",
-    "intent_identity": "sha256:b2cde61c1894e8d4e97499c13b778ea0f52e1cb61896874c70b3b33daf1ed9f6",
-    "limits": {
-      "max_elapsed_seconds": 3600,
-      "max_failures": 1,
-      "max_target_calls": 20
-    },
-    "mode": "diagnostic",
-    "next_action": "Complete implementation before invoking the verifier.",
-    "outcome": "pending",
-    "proof_contract_identity": "sha256:9d01e275f193ca437272ed40bca0fba2cadef8a343fa7fc163118e0ba30e4b4e",
-    "receipt_ledger_identity": "sha256:af9b52ec31a3133fbedfdb1ef44c045a5e9445c9d0688c47b5c0211dd0ffccef",
-    "receipts": [],
-    "schema_version": 1,
-    "source_identity": "sha256:2751b9b3684e15d66842ad32b002707090465e97cdc7d4d9ee1f3cd7b98aefdf",
-    "stages": [
-      "deterministic",
-      "canary",
-      "affected"
-    ]
-  },
+  "verification_campaign": null,
   "work_item_path": ".project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control"
 }

@@ -10,24 +10,25 @@
 
 ## Intent
 
-Determine whether the exact implemented Strategic Advisor runtime performs the
-owner-approved changed alignment, goal-qualification and review behaviours on
-one reference Codex model while remaining proportionate for a strong negative
-control and honest about every failure. This is an affected alpha-release smoke,
-not comprehensive model, host or behavioural certification.
+Determine whether the exact repaired Strategic Advisor runtime corrects the
+observed material-progress/enabler defect without regressing its direct
+activity-as-indicator neighbour on one reference Codex model, while retaining
+the stopped exploratory campaign and every failure honestly. This is a
+two-case alpha-release repair diagnostic, not comprehensive model, host or
+behavioural certification.
 
 ## Intent Spine
 
 - OC1 — Completion capability: A reviewer can reproduce case-level verdicts
   against the exact source/package/model/host and know whether each claimed
   behaviour passed, failed or remained untested.
-- OC2 — Material capabilities: Frozen deterministic checks, one capped canary
-  and affected exact-runtime selection, raw outputs, target-use proof, case
-  assertions, telemetry, privacy review and one independent release QA.
-- OC3 — Success journey: Certify the reconciled runner, run cheap checks and a
-  negative canary first, stop on blocking failure, execute only the ten
-  owner-approved affected cases within a 20-target-call cap, retain exact
-  receipts and adjudicate those cases once.
+- OC2 — Material capabilities: Frozen deterministic checks, the failed case as
+  one capped canary, one directly affected neighbouring case, raw outputs,
+  target-use proof, case assertions, telemetry, privacy review and one
+  independent release QA.
+- OC3 — Success journey: Preserve the exploratory campaign's fail-fast result,
+  run cheap checks, execute `SAGR-014` and then `SAGR-013` against the repaired
+  runtime within a two-target-call cap, retain exact receipts and stop.
 - OC4 — Successful-but-wrong result: Plausible prose, aggregate green despite a
   hard-gate failure, source-tree self-report, stale receipt, treatment-informed
   assertion, later recovery erasing an earlier failure, or private case leakage
@@ -46,7 +47,7 @@ not comprehensive model, host or behavioural certification.
 - Acceptance criteria reviewed by owner: Yes
 - Approved for decomposition: Inherited from approved parent decomposition
 - Approved for implementation: Yes
-- Approved scope envelope: One reference Codex model/host; ten selected cases; at most 20 target calls; fail-fast; one infrastructure retry; no comprehensive or cross-model certification
+- Approved scope envelope: One reference Codex model/host; retain the stopped exploratory campaign under its original 20-call ceiling; release proof limited to repaired-case `SAGR-014` plus direct neighbour `SAGR-013`; at most two fresh repair target calls; fail-fast; no further retry, full-suite or cross-model certification
 - Approved by: John (owner)
 - Approval date: 2026-08-27
 - Approval note / source: Current Codex task directive to finish the public release and local installation without further approval prompts; coordination amendment `owner-release-scope-2026-08-27`
@@ -152,12 +153,14 @@ reimplementing it.
 - R1. Verify the exact frozen authority, implemented source, runtime/package,
   model, host, activation and runner identities before any target call.
 - R2. Use the reconciled runner's bounded controls: deterministic checks,
-  canaries, affected selection, fail-fast, call/time limits, receipts,
-  infrastructure retry and evaluator-only regrade where applicable.
-- R3. Execute only the approved affected selection: `SAGR-001`, `SAGR-009`,
-  `SAGR-014`, `SAGR-015`, `SAGR-016`, `SAGR-018`, `SAGR-020`, `DRIFT-004`,
-  `DRIFT-014` and `DRIFT-016`. The selection contains 19 planned target turns;
-  the campaign must cap target calls at 20 and must not expand after green.
+  canary then affected selection, fail-fast, call/time limits and input-bound
+  receipts. Retain the earlier evaluator defect as an independent manual
+  diagnosis; do not present it as a formal transcript regrade.
+- R3. Execute only the repair diagnostic selection: `SAGR-014` as the failed-case
+  canary and `SAGR-013` as its direct activity-as-indicator neighbour. Cap this
+  campaign at two fresh target calls and do not expand after green. Retain the
+  original `SAGR-001`/`SAGR-009` results and stopped selection only as historical
+  evidence against the pre-repair runtime; they are not current-runtime passes.
 - R4. Retain raw prompts/turns/outputs, case assertions, forbidden behaviours,
   target-use proof, timing/call telemetry and case-level verdicts outside the
   model-visible runtime.
@@ -176,13 +179,14 @@ reimplementing it.
 
 - AC1: Preflight proves exact authority/source/package/model/host/activation and
   runner identity before calls, and stale or mismatched receipts are rejected.
-- AC2: Cheap checks and the routine-direct canary gate the selected affected
-  work; a canary failure causes zero affected or full-suite target calls.
-- AC3: Every owner-approved affected case has a case-level pass/fail verdict
-  with raw stateful outputs and forbidden-behaviour review; unselected cases
-  remain explicitly untested on this runtime.
-- AC4: Strong direct-assistance, same-robust-move, empirical-fork and routine
-  controls remain non-triggering or proportionate as specified.
+- AC2: Cheap checks and `SAGR-014` gate the one directly affected neighbour;
+  canary failure causes zero neighbour or full-suite target calls.
+- AC3: `SAGR-014` and `SAGR-013` each have a current-runtime case-level verdict,
+  raw output and forbidden-behaviour review. Every other originally considered
+  case remains explicitly untested on the repaired runtime.
+- AC4: The repaired material-progress/enabler boundary and its direct
+  activity-as-indicator neighbour behave as specified; no broader negative
+  control, cadence, fork or goal-change claim is inferred.
 - AC5: Product, evaluator, provider and harness failures remain distinct;
   bounded limits cannot waive proof and later recovery preserves history.
 - AC6: Privacy, leakage, deterministic inventory and runtime/evaluation
@@ -202,19 +206,22 @@ reimplementing it.
 - D2. Freeze before treatment and stage proof from cheap to expensive.
 - D3. Fail closed without erasing history or weakening claims.
 - D4. Keep exact-runtime synthetic proof separate from private dogfood.
-- D5. One exact Codex/gpt-5.6-sol affected smoke is the release gate; model and
-  host variability is a documented limitation, not an invitation to a matrix.
-- D6. A green selected smoke ends behavioural testing for this release. Expand
-  only when a material failure demonstrates broader affected scope.
+- D5. One exact Codex/gpt-5.6-sol two-case repair diagnostic is the behavioural
+  release gate; model and host variability is a documented limitation, not an
+  invitation to a matrix.
+- D6. Green results for the failed case and its direct neighbour end behavioural
+  testing for this release. Untouched cases remain untested on the repaired
+  runtime rather than being inferred green.
 
 ## Validation Plan
 
 - AC1-AC6 use the runtime-target/source proof recipe. `EVIDENCE.json` will
   retain execution target, source artifact, observation method, positive target
   use proof and hashed raw result artifacts for the exact claims.
-- AC2: Runner telemetry must show exact selected scope, the 20-call cap,
-  canary/affected boundaries and zero prohibited calls after a blocking failure.
-- AC3-AC5: Case-by-case adjudication against frozen assertions and raw stateful
-  transcripts; aggregate green cannot waive a hard gate.
+- AC2: Runner telemetry must show the exact two-case repair scope, two-call cap,
+  canary/affected boundary and zero prohibited calls after a blocking failure.
+- AC3-AC5: Case-by-case adjudication of `SAGR-014` and `SAGR-013` against frozen
+  assertions and raw transcripts; the earlier product and evaluator failures
+  remain distinct, and aggregate green cannot waive a hard gate.
 - AC6-AC7: Deterministic/privacy/isolation checks and independent QA review of
   the exact evidence and bounded claim.

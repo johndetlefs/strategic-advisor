@@ -102,16 +102,18 @@ for demonstrated Strategic Advisor behaviour.
 | ID | Title | Description | Acceptance Criteria | User Verification | Status | Dependencies | Write Scope | Parallel Safe | Execution Needs |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ | ------------ | ----------- | ------------- | --------------- |
 | 1 | Confirm proof inputs | Verify frozen authority, source/package, model/host/activation, runner controls and receipt compatibility. | AC1, AC5 | Inspect exact identities and initialise the bounded diagnostic campaign without target calls. | Done | TASK-033 and external runner disposition | Validation configuration and evidence only | No | bounded-return |
-| 2 | Configure cheap and canary proof | Bind deterministic gates and SAGR-001 as the one-turn fail-fast canary before affected work. | AC2, AC4, AC6 | Inspect the frozen selection and campaign limits before target use. | Done | 1 | Validation configuration and evidence only | No | bounded-return |
-| 3 | Configure capped affected proof | Bind only SAGR-009/014/015/016/018/020 and DRIFT-004/014/016 after the canary, for 18 further turns and 19 total. | AC3, AC4, AC5 | Inspect the selected cases, call arithmetic and 20-call hard cap. | Done | 2 | Validation configuration and evidence only | No | bounded-return |
+| 2 | Configure cheap and canary proof | Bind deterministic gates and repaired-case SAGR-014 as the one-turn fail-fast canary. | AC2, AC4, AC6 | Inspect the frozen failed case and two-call campaign limit before target use. | Done | 1 | Validation configuration and evidence only | No | bounded-return |
+| 3 | Configure capped affected proof | Bind only direct neighbour SAGR-013 after the canary, for one further turn and two total. | AC3, AC4, AC5 | Inspect the two-case selection and two-call hard cap. | Done | 2 | Validation configuration and evidence only | No | bounded-return |
 | 4 | Configure adjudication boundaries | Require typed product/evaluator/provider/harness outcomes, retained raw outputs, regrade-without-target-use where valid, and privacy/leakage/isolation checks. | AC3, AC5, AC6 | Inspect the runner receipt contract and confirm history cannot be overwritten. | Done | 3 | Evaluation configuration and evidence only | No | bounded-return |
 | 5 | Prepare independent QA packet | Bind frozen authority, exact runtime, raw pass/failure history, deterministic proof, repair scope and explicit non-certification boundary for one read-only reviewer. | AC7 | Reviewer can reproduce the bounded claim without relying on the coordinator's summary. | Done | 4 | Child QA/evidence artifacts only | No | bounded-return |
 
 The campaign is intentionally recorded as `diagnostic`, not `certification`:
 Project Workflow correctly reserves certification for a full campaign. The
-owner-approved release claim is only a bounded exact-runtime affected smoke for
-an experimental alpha, so the ten selected cases and 20-call hard cap remain
-the authoritative boundary.
+owner-approved release claim is only a bounded exact-runtime repair diagnostic
+for an experimental alpha. `SAGR-014` and `SAGR-013`, with a two-target-call
+hard cap, are the authoritative current-runtime proof boundary. The original
+selection and 20-call ceiling remain historical limits on the stopped
+pre-repair campaign, not an unfulfilled current-runtime promise.
 
 ## Testing Outcome
 
@@ -123,8 +125,10 @@ the authoritative boundary.
   review route and made unsupported enabler contribution remain unknown.
 - A second SAGR-014 answer correctly withheld enabler credit; its first grading
   still failed because the evaluator treated a conditional criterion as a
-  requirement to invent an unstated training-information constraint. The
-  general evaluator policy was corrected and bound into evaluator identity.
+  requirement to invent an unstated training-information constraint. An
+  independent manual review classified that result as an evaluator defect; it
+  is not claimed as an input-bound formal regrade. The general evaluator policy
+  was corrected and bound into the identity of the subsequent fresh runs.
 - Fresh exact-runtime runs then passed SAGR-014 and the direct neighbouring
   SAGR-013 case. No full, legacy, cross-model or cross-host campaign followed.
 - Retained raw results and receipts preserve the sandbox provider failure, the
@@ -141,9 +145,11 @@ the authoritative boundary.
 - Dogfood state: The durable coordination checkpoint records that the bounded
   read-only review changed the progress and allocation decision enough to justify
   this release check; private reconciliation answers are not reproduced here.
-- Limits: one Codex/gpt-5.6-sol campaign; exactly the ten approved cases; at most
-  20 target calls; fail-fast on product failure; at most one infrastructure
-  retry; no full-suite, cross-model or cross-host expansion after green.
+- Limits: one Codex/gpt-5.6-sol repair campaign; exactly `SAGR-014` and
+  `SAGR-013`; at most two fresh target calls; fail-fast on product failure; no
+  further infrastructure retry and no full-suite, cross-model or cross-host
+  expansion after green. The original stopped campaign remains below its
+  historical 20-call ceiling.
 - Boundary: This authority includes release preparation, push, PR, merge,
   publication, public verification, local installation and activation for the
   resulting experimental prerelease. It excludes Strategy Workspace mutation
@@ -151,11 +157,11 @@ the authoritative boundary.
 
 ## Parent AC Evidence
 
-- AC2: Frozen direct/control authority plus SAGR-001 canary and fail-fast receipts.
-- AC3: SAGR-009 and retained stopped-run history; current SAGR-014/SAGR-013 repair receipts.
-- AC4: Direct SAGR-001 control and causal activity/enabler cases SAGR-013/SAGR-014.
+- AC2: Frozen direct/control authority plus retained historical SAGR-001 canary and fail-fast receipts; no current-runtime SAGR-001 claim.
+- AC3: Retained stopped-run history plus current SAGR-014/SAGR-013 repair receipts; all other original selections are untested on the repaired runtime.
+- AC4: Current causal activity/enabler cases SAGR-013/SAGR-014 only; broader direct, fork and routine controls are not claimed on the repaired runtime.
 - AC5: Typed provider, product, evaluator, limit and pass outcomes remain separately retained.
-- AC6: Goal-object/proxy evidence in retained SAGR-009; broader selected cases remain untested after fail-fast.
+- AC6: Goal-object/proxy evidence in historical SAGR-009 only; no current-runtime goal-object/proxy claim, and broader selected cases remain untested.
 - AC7: Review cadence source contract remains deterministic-only here; later selected cadence cases are explicitly untested.
 - AC8: Current exact-runtime SAGR-014 material-progress and enabler-boundary pass.
 - AC9: Goal-change selected cases remain explicitly untested after fail-fast.
