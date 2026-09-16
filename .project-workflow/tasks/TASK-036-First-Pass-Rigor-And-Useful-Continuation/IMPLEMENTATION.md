@@ -29,6 +29,7 @@ As a person seeking strategic advice, I want a rigorous first answer and useful 
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ | ------------ | ----------- | ------------- | --------------- |
 | 1 | Preserve tooling upgrade and freeze proof | Include canonical PW 0.9.2; freeze eight cases and baseline controls | AC4, AC5 | Review bounded evidence | Done | | .project-workflow, AGENTS.md, skills/strategic-advisor/evals | No | bounded-return |
 | 2 | Strengthen first-pass and continuation | Update canonical runtime and affected assertions; prepare immutable candidate | AC1, AC2, AC3, AC5 | Inspect before/after examples | Done | 1 | skills/strategic-advisor, scripts, tests, distribution metadata | No | bounded-return |
+| 3 | Separate exploration from endorsement | One recommendation-update correction and example; amended first-turn rubric; frozen 12-turn proof | AC2, AC3, AC4, AC5 | Inspect changed response and bounded evidence | Done | 2 | skills/strategic-advisor, distribution metadata, evidence/recommendation-update | No | bounded-return |
 
 ## Post-plan Clarify
 
@@ -62,3 +63,13 @@ Independent QA uses one read-only subagent after the campaign passes: benefit:in
 Owner approved canonical 0.10.0 and one fixed remaining allowance; see OWNER-AMENDMENT.md. The canonical upgrade changed four managed files, all matching the package plan. Existing completed tests and runtime were retained. The paused regression checkpoint resumed once: 42 additional target calls and 13 adjudications; no retries, product repairs or new campaigns. DRIFT-016 failed. No independent QA was launched, and no sealed-host enforcement claim is made. The task is Blocked and the branch is an explicitly incomplete draft.
 
 AC1–AC3 remain unchecked as complete capabilities: the focused comparison passes, but the stronger regression exposes an unresolved first-pass/selective-retraction gap. AC4 has honest executed proof, not passing certification. AC5 has canonical tooling and prepared packaging, but independent QA remains blocked. Existing 226-test initial suite, 46 validator tests and 21 runner tests remain scoped to their recorded sources; no new broad suite was run after the owner imposed the continuation limit.
+
+## Current follow-up
+
+The owner-approved FOLLOWUP-AMENDMENT.md narrows new proof to 12 turns and allows one implementation attempt. The preceding failed campaign is historical and retained in evidence/recommendation-update/previous-coordination.json. Independent QA has never run; it remains one gate after passing affected proof.
+
+## Architecture Impact
+
+- Classification: no
+- Reason: This correction changes canonical advice-handling prose and synthetic scoring wording within the existing skill and runner. It adds no component, dependency, ownership boundary, shared state, extension point, or measurable architecture constraint.
+- Architecture authority: Not applicable

@@ -7,8 +7,8 @@
     "version": "0.2.0-alpha.7"
   },
   "distribution": {
-    "runtime_package_identity_sha256": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
-    "version": "0.2.0-alpha.9"
+    "runtime_package_identity_sha256": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+    "version": "0.2.0-alpha.10"
   },
   "schema_version": 2,
   "state": "prepared",
@@ -28,6 +28,14 @@
       "source_revision": "659ad6bda8ca39c49efc9bbe2361baa57986c551",
       "superseded_at": "2026-09-16T02:25:29Z",
       "version": "0.2.0-alpha.8"
+    },
+    {
+      "reason": "Owner-approved TASK-036 follow-up separates exploration from endorsement after retained DRIFT-016 failure; one affected-only 12-turn correction attempt.",
+      "replacement_version": "0.2.0-alpha.10",
+      "runtime_package_identity_sha256": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+      "source_revision": "ce6563fcd22fb4ded1b525325e7660f5c5a99465",
+      "superseded_at": "2026-09-16T03:57:40Z",
+      "version": "0.2.0-alpha.9"
     }
   ]
 }

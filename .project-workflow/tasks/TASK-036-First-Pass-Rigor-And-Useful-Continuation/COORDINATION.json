@@ -4,26 +4,23 @@
       "affected_units": [
         "TASK-036"
       ],
-      "amendment_identity": null,
+      "amendment_identity": ".project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/FOLLOWUP-AMENDMENT.md",
       "boundary": "after-plan-or-decomposition",
-      "capability_change": "Runtime unchanged; correct target resume cwd and failure counter; earlier source-invalid proof retained in archived campaign",
-      "classification": "inside-envelope",
-      "decided_by": "Coordinator",
+      "capability_change": "One targeted correction and corrected first-turn rubric with 12-turn affected-only proof",
+      "classification": "approved-change",
+      "decided_by": "John Detlefs via current approval",
       "decision_date": "2026-09-16",
-      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+      "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
       "relevant_ocs": [
         "OC1",
         "OC2",
         "OC3",
-        "OC4",
-        "OC5",
-        "OC6",
         "OC7"
       ],
       "shared_premises_valid": "yes",
-      "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
-      "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
+      "source_identity": "sha256:fb5633baff764a00c23b5bdb92c02d863d30177b3d011334c7c2713b9a734f91",
+      "source_revision": "2b47337a11e070b4fafd52fdc736ee2a15fb7a18",
+      "user_consequence": "Keep old failure and source-specific passes; no full-suite or universal effectiveness claim"
     },
     {
       "affected_units": [
@@ -31,123 +28,52 @@
       ],
       "amendment_identity": null,
       "boundary": "before-unit-start",
-      "capability_change": "Runtime unchanged; correct target resume cwd and failure counter; earlier source-invalid proof retained in archived campaign",
+      "capability_change": "Execute approved follow-up row 3 only",
       "classification": "inside-envelope",
       "decided_by": "Coordinator",
       "decision_date": "2026-09-16",
-      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+      "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
       "relevant_ocs": [
         "OC1",
         "OC2",
         "OC3",
-        "OC4",
-        "OC5",
-        "OC6",
         "OC7"
       ],
       "shared_premises_valid": "yes",
-      "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
-      "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
-    },
-    {
-      "affected_units": [
-        "TASK-036"
-      ],
-      "amendment_identity": null,
-      "boundary": "unit-return-or-dependency-join",
-      "capability_change": "Runtime unchanged; correct target resume cwd and failure counter; earlier source-invalid proof retained in archived campaign",
-      "classification": "inside-envelope",
-      "decided_by": "Coordinator",
-      "decision_date": "2026-09-16",
-      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
-      "relevant_ocs": [
-        "OC1",
-        "OC2",
-        "OC3",
-        "OC4",
-        "OC5",
-        "OC6",
-        "OC7"
-      ],
-      "shared_premises_valid": "yes",
-      "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
-      "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
-    },
-    {
-      "affected_units": [
-        "TASK-036"
-      ],
-      "amendment_identity": null,
-      "boundary": "new-evidence-or-owner-reframe",
-      "capability_change": "Runtime unchanged; correct target resume cwd and failure counter; earlier source-invalid proof retained in archived campaign",
-      "classification": "inside-envelope",
-      "decided_by": "Coordinator",
-      "decision_date": "2026-09-16",
-      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
-      "relevant_ocs": [
-        "OC1",
-        "OC2",
-        "OC3",
-        "OC4",
-        "OC5",
-        "OC6",
-        "OC7"
-      ],
-      "shared_premises_valid": "yes",
-      "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
-      "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
-    },
-    {
-      "affected_units": [
-        "TASK-036"
-      ],
-      "amendment_identity": ".project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/OWNER-AMENDMENT.md",
-      "boundary": "new-evidence-or-owner-reframe",
-      "capability_change": "Owner approves canonical 0.10 upgrade and fixed remaining continuation; no runtime or case change",
-      "classification": "approved-change",
-      "decided_by": "John Detlefs via current task approval",
-      "decision_date": "2026-09-16",
-      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
-      "relevant_ocs": [
-        "OC5",
-        "OC6",
-        "OC7"
-      ],
-      "shared_premises_valid": "yes",
-      "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
-      "user_consequence": "Reuse passing proof; one resume within original checkpoint counters; one sealed independent QA if green"
+      "source_identity": "sha256:fb5633baff764a00c23b5bdb92c02d863d30177b3d011334c7c2713b9a734f91",
+      "source_revision": "2b47337a11e070b4fafd52fdc736ee2a15fb7a18",
+      "user_consequence": "One attempt; no new evaluator machinery"
     }
   ],
-  "decisions": [],
+  "decisions": [
+    "Owner expressly approved one further correction and affected-only proof; previous consumed campaign retained in evidence/recommendation-update/previous-coordination.json"
+  ],
   "host_facts": {
     "context_contract": "declared",
     "telemetry": "unknown"
   },
-  "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+  "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
   "last_boundary": {
     "affected_units": [
       "TASK-036"
     ],
-    "amendment_identity": ".project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/OWNER-AMENDMENT.md",
-    "boundary": "new-evidence-or-owner-reframe",
-    "capability_change": "Owner approves canonical 0.10 upgrade and fixed remaining continuation; no runtime or case change",
-    "classification": "approved-change",
-    "decided_by": "John Detlefs via current task approval",
+    "amendment_identity": null,
+    "boundary": "before-unit-start",
+    "capability_change": "Execute approved follow-up row 3 only",
+    "classification": "inside-envelope",
+    "decided_by": "Coordinator",
     "decision_date": "2026-09-16",
-    "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+    "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
     "relevant_ocs": [
-      "OC5",
-      "OC6",
+      "OC1",
+      "OC2",
+      "OC3",
       "OC7"
     ],
     "shared_premises_valid": "yes",
-    "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-    "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
-    "user_consequence": "Reuse passing proof; one resume within original checkpoint counters; one sealed independent QA if green"
+    "source_identity": "sha256:fb5633baff764a00c23b5bdb92c02d863d30177b3d011334c7c2713b9a734f91",
+    "source_revision": "2b47337a11e070b4fafd52fdc736ee2a15fb7a18",
+    "user_consequence": "One attempt; no new evaluator machinery"
   },
   "loaded_contract": {
     "asset_version": "8",
@@ -156,7 +82,7 @@
     "package_version": "0.10.0",
     "recorded_at": "2026-09-16"
   },
-  "next_action": "Blocked after DRIFT-016 failure; no further tests, repairs or QA within the consumed allowance. Push the documented draft; any later correction needs a new bounded owner decision.",
+  "next_action": "Continue inside envelope.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-036",
     "claim_class": "user-facing",
@@ -164,154 +90,28 @@
     "required": true,
     "status": "pending"
   },
-  "phase": "verification",
+  "phase": "implementation",
   "repositories": {
     ".": {
-      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b"
+      "source_revision": "2b47337a11e070b4fafd52fdc736ee2a15fb7a18"
     }
   },
   "schema_version": 2,
-  "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
+  "source_revision": "2b47337a11e070b4fafd52fdc736ee2a15fb7a18",
   "target_id": "TASK-036",
-  "verification_campaign": {
-    "adapter": {
-      "capabilities": [],
-      "command": null,
-      "kind": "manual",
-      "manual_command": "Existing runner: DRIFT-011 canary (2 calls), FIRST-001/FIRST-006 recovery on both comparison sides (16 calls), then remaining drift groups (50 calls). No automatic infrastructure retry; no product repair."
-    },
-    "affected_scope": [
-      "TASK-036 eight synthetic cases and current-source drift smoke"
-    ],
-    "candidate_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
-    "claims": [
-      "Bounded CLI first-pass",
-      "continuation and stable correction behaviour"
-    ],
-    "current_stage": "full",
-    "diagnostic_decision": null,
-    "impact": "known",
-    "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
-    "limits": {
-      "max_elapsed_seconds": 3600,
-      "max_failures": 1,
-      "max_target_calls": 68
-    },
-    "mode": "certification",
-    "next_action": "Campaign limit reached with required proof still missing: max_failures reached or exceeded (1/1); max_target_calls reached or exceeded (68/68). Record a current scope/limit decision; no pass is implied.",
-    "outcome": "limit-reached",
-    "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
-    "receipt_ledger_identity": "sha256:3d115a90151bdf4d215e3a8551740dccbdf502ebefe73ec431fc22cd02329c5b",
-    "receipts": [
-      {
-        "artifact": "evidence/first-pass/resume-regression-tests.log",
-        "candidate_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
-        "elapsed_seconds": 1,
-        "evaluator_identity": "real-subprocess-regression-tests",
-        "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
-        "outcome": "pass",
-        "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
-        "receipt_identity": "sha256:773be7149511c4b4cdbcc46447e208bcdb89ad4e39ec26bb1e127a39c464b6c4",
-        "recorded_at": "2026-09-16",
-        "regrade": false,
-        "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
-        "scope": [
-          "TASK-036 eight synthetic cases and current-source drift smoke"
-        ],
-        "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-        "stage": "deterministic",
-        "stage_complete": true,
-        "target_calls": 0,
-        "target_identity": "ec9d005-isolated-runner"
-      },
-      {
-        "artifact": "evidence/first-pass/isolated-resume-canary/result.json",
-        "candidate_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
-        "elapsed_seconds": 58,
-        "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
-        "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
-        "outcome": "pass",
-        "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
-        "receipt_identity": "sha256:402e2d57e79d221afe2e000811c9afb5e46067d291a133f0446b6aba9ca071a6",
-        "recorded_at": "2026-09-16",
-        "regrade": false,
-        "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
-        "scope": [
-          "TASK-036 eight synthetic cases and current-source drift smoke"
-        ],
-        "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-        "stage": "canary",
-        "stage_complete": true,
-        "target_calls": 2,
-        "target_identity": "sha256:05bb6911b287c3400ed8aef8a726b893a515d89538b9f047a2a80d3cf335a8dc"
-      },
-      {
-        "artifact": "evidence/first-pass/comparison.json",
-        "candidate_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
-        "elapsed_seconds": 602,
-        "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
-        "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
-        "outcome": "pass",
-        "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
-        "receipt_identity": "sha256:ace33c5bbd365cbfb547d7eacaf9b14258c1dc1f703cfbb2e2731fa53835cf40",
-        "recorded_at": "2026-09-16",
-        "regrade": false,
-        "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
-        "scope": [
-          "TASK-036 eight synthetic cases and current-source drift smoke"
-        ],
-        "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-        "stage": "affected",
-        "stage_complete": true,
-        "target_calls": 16,
-        "target_identity": "sha256:aeeba01b027100984a97ba2ff557e495c64a6ca22ad8d14a1641fc1bb6adb8cb"
-      },
-      {
-        "artifact": "evidence/first-pass/completed-drift-remaining/result.json",
-        "candidate_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
-        "elapsed_seconds": 1463,
-        "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
-        "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
-        "outcome": "product-failure",
-        "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
-        "receipt_identity": "sha256:4e2b04ac10a3342b87e85658230eb04d595c27efd67fcc6eddfd1a4edee31250",
-        "recorded_at": "2026-09-16",
-        "regrade": false,
-        "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
-        "scope": [
-          "TASK-036 eight synthetic cases and current-source drift smoke"
-        ],
-        "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-        "stage": "full",
-        "stage_complete": true,
-        "target_calls": 50,
-        "target_identity": "sha256:b3595b3f1f1de9e533f21ec9da661c71d86e8ff54b46e00ea9dd408ee957b76a"
-      }
-    ],
-    "schema_version": 1,
-    "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
-    "stages": [
-      "deterministic",
-      "canary",
-      "affected",
-      "full"
-    ]
-  },
+  "verification_campaign": null,
   "verification_requirement": {
     "affected_scope": [
-      "TASK-036 eight synthetic cases and current-source drift smoke"
+      "Frozen recommendation-update follow-up: three groups and twelve turns"
     ],
     "claims": [
-      "Bounded CLI first-pass",
-      "continuation and stable correction behaviour"
+      "Exploration and endorsement remain distinct while genuine priority changes can revise advice"
     ],
-    "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
+    "proof_contract_identity": "sha256:56aa5b9707a6512326e00d96aedc12b312dea26266957d013d5cfaa38c61c658",
     "required": true,
     "stages": [
       "deterministic",
-      "canary",
-      "affected",
-      "full"
+      "affected"
     ]
   },
   "work_item_path": ".project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation"

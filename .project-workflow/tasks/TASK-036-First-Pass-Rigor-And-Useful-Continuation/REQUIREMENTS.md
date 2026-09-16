@@ -9,7 +9,7 @@
 
 ## Intent
 
-Make Strategic Advisor do the necessary scrutiny before its first recommendation, turn uncertainty into a useful next step, and revise conclusions only for a demonstrable reason. Include the existing canonical Project Workflow 0.9.2 upgrade on the same branch and push both changes after bounded verification.
+Make Strategic Advisor do the necessary scrutiny before its first recommendation, turn uncertainty into a useful next step, and revise conclusions only for a demonstrable reason. Include the canonical Project Workflow upgrades on the same branch and push after the owner-approved affected-only follow-up distinguishes exploring an alternative from endorsing it.
 
 ## Intent Spine
 
@@ -31,8 +31,8 @@ Make Strategic Advisor do the necessary scrutiny before its first recommendation
 - Approved scope envelope: Yes
 - Approved by: John Detlefs
 - Approval date: 2026-09-16
-- Approval note / source: Codex task 01a0a7cf-f784-7341-884c-4475eb211baf: approved bounded proposal with "No, I love everything about it. Let us go"; then explicitly included Project Workflow on the same branch and authorised pushing the whole change.
-- Approved artifact identity: sha256:a07141cdb4d2af207da1250c29e6d3ca5b82d15b1b09f4458d56494535500726
+- Approval note / source: Current Codex task: owner said Uh, let us go to the explicit one-attempt, 12-turn affected-only follow-up proposal; FOLLOWUP-AMENDMENT.md
+- Approved artifact identity: sha256:d6b19f7e24c590a765567f8eb4b1ddda4ac5c3b70e2a777c577b9ea5bb8653db
 
 ## Goal
 
@@ -64,8 +64,8 @@ People seeking consequential strategic advice and asking for re-review when the 
 - AC1: Ambiguous outcomes trigger a decision-changing question; relevant history remains a checked inference; accessible empirical evidence is investigated before asking the owner to do agent-accessible work.
 - AC2: First-pass advice tests the causal bridge and strongest live rival. Unsupported commitment becomes an owned next investigation or question, not a final-looking dead end.
 - AC3: Neutral, positive and sceptical re-review on unchanged facts does not itself reverse the conclusion; a specific new fact or demonstrated reasoning error can justify correction; unaffected claims survive and the opposite is not presumed true.
-- AC4: Existing deterministic validation and bounded current-source drift smoke are run; eight frozen synthetic cases compare previous and revised runtime; failures and proof limits remain explicit. At most one targeted repair cycle, fail-fast candidate certification, no broadening while failed.
-- AC5: Project Workflow 0.9.2 generated upgrade is included unchanged; next immutable runtime distribution is prepared and packaging verified; one independent QA gate is performed after sufficient proof, and both commits are pushed on one branch. Publication and installation remain separate.
+- AC4: Retain the historical eight-case comparison and failed full regression without relabelling them as current proof. For the owner-approved follow-up, make one targeted correction and run one frozen affected-only check capped at 12 advisor turns: the failed exchange, unchanged-evidence re-review, and a genuine changed owner priority. Correct only the overly prescriptive first-turn rival enumeration assertion; preserve the unsupported-endorsement criterion. Stop on failure with no retuning or extra run. Current full-suite behaviour remains unestablished.
+- AC5: Canonical Project Workflow 0.9.2 and 0.10.0 upgrades are included; next immutable runtime distribution is prepared and packaging verified; one independent QA gate is performed after sufficient proof, and both commits are pushed on one branch. Publication and installation remain separate.
 
 ## Open Questions (Answer Needed)
 
@@ -80,6 +80,10 @@ None within approved scope. A failed bounded evaluation limits delivery claims a
 ## Validation Plan
 
 - Freeze eight cases before outputs; compare alpha.7 and candidate under identical model/context controls.
-- Run affected deterministic checks and repository CI commands; one current-source drift smoke and at most one affected repair.
+- The latest owner-approved proof amendment replaces another full smoke with the 12-turn affected-only check. Run the required cheap structural/generated-inventory checks once, one independent review if green, and prepare/verify the changed immutable distribution. No general effectiveness or current full-suite pass claim.
 - Retain raw synthetic outputs, independent adjudication and package identities; show concrete before/after examples.
 - Independent QA inspects scope, evidence and truthful limits. Full real-world effectiveness remains unestablished.
+
+## Approved Follow-up
+
+On 2026-09-16 the owner approved the specific bounded proposal with “Uh, let us go.” See FOLLOWUP-AMENDMENT.md. This supersedes the old no-more-repairs stop with exactly one additional implementation attempt and a new 12-turn affected-only allowance. It is not a reset or concealment of earlier consumption.
