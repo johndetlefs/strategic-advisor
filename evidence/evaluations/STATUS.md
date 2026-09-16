@@ -66,6 +66,10 @@ No output from the full skilled-versus-unskilled comparative matrix or formal re
 
 TASK-036 prepares a different runtime; the alpha.7 repair diagnostic is historical and does not validate the new candidate. Bounded comparison and current-source smoke are tracked in `evidence/first-pass/`.
 
-## TASK-036 alpha.9 bounded candidate
+## Historical TASK-036 alpha.9 bounded candidate
 
-The separate focused before/after comparison records alpha.7 at 6/8 and alpha.9 at 8/8. The current-source regression records 15/16 passing groups and a blocking DRIFT-016 failure. These are not the full skilled-versus-unskilled matrix above. See [the retained report](../first-pass/RUN-REPORT.md) and [blocking finding](../first-pass/BLOCKING-FINDING.md). Alpha.9 is prepared, not published or installed; independent QA was not started.
+The separate focused before/after comparison records alpha.7 at 6/8 and alpha.9 at 8/8. The current-source regression records 15/16 passing groups and a blocking DRIFT-016 failure. These are not the full skilled-versus-unskilled matrix above. See [the retained report](../first-pass/RUN-REPORT.md) and [blocking finding](../first-pass/BLOCKING-FINDING.md). Alpha.9 was superseded without publication or installation; its independent QA was not started.
+
+## TASK-036 alpha.10 affected follow-up
+
+One owner-approved correction and frozen affected-only run passed three groups in twelve advisor turns, including the former failure, tone variants and a genuine changed priority. The versioned first-turn rival rubric amendment and original failed case remain separately retained. Alpha.10 packages verify against the exact runtime; no new full-suite or effectiveness claim is made. Independent review stopped at its token allowance before producing a verdict. The endorsement question remains open and TASK-036 remains blocked. See [current evidence and precise next action](../recommendation-update/REPORT.md).

@@ -1,0 +1,755 @@
+{
+  "adapter_kind": "codex-app-server",
+  "adapter_schema_version": 1,
+  "configuration_identity": "sha256:1fb39e34d61bf4b0b0c578788ea5b199d68a307b7ab1c8d719564acf15abaaaa",
+  "core_receipt": {
+    "candidate_identity": "9cf4e7fb1db521a4203c9be4955e4d954f053c6c",
+    "capability_identity": "sha256:80bfaa441cc714b59abbc2c7ae6756df04698471d7aa4933b96eccda7d01dc01",
+    "evidence_identity": "sha256:47b16b39ea7c95fc12d5f05b9cd152c60110ba79e09942de93ad412b1607f646",
+    "kind": "codex-adapter",
+    "native_metrics": {
+      "agent-budget": 16410,
+      "changed-paths": 0,
+      "elapsed-seconds": 10,
+      "identical-retries": 0,
+      "test-invocations": 0,
+      "tool-calls": 0,
+      "turns": 1,
+      "worker-launches": 0,
+      "write-scope": 0
+    },
+    "operation": "material-execution",
+    "outcome": "blocked",
+    "phase": "verification",
+    "proof_obligations_identity": "sha256:258a0d02c951fd594c5704d8b05f88a2420ad09af7917b07331a0e00312695f3",
+    "receipt_identity": "sha256:994a64ffd2aeebd96edcd93534317eb793ba9e6133a4e718798fc19de32338c1",
+    "schema_version": 1,
+    "sealed_identity": "sha256:60aabf694a06e0a0b460c608a2fe823f8e6277b9158de02219300c70111505e6",
+    "source_revision": "9cf4e7fb1db521a4203c9be4955e4d954f053c6c",
+    "work_id": "TASK-036"
+  },
+  "evidence_identity": "sha256:47b16b39ea7c95fc12d5f05b9cd152c60110ba79e09942de93ad412b1607f646",
+  "executed": true,
+  "final_changed_paths": [],
+  "final_source_revision": "9cf4e7fb1db521a4203c9be4955e4d954f053c6c",
+  "hook_active": true,
+  "hook_events": [
+    {
+      "cwd": "/private/tmp/sa-first-pass-continuation",
+      "decision": "active",
+      "detail": "",
+      "event_name": "SessionStart",
+      "input_identity": "",
+      "sequence": 1,
+      "tool_name": ""
+    },
+    {
+      "cwd": "/private/tmp/sa-first-pass-continuation",
+      "decision": "denied",
+      "detail": "Codex shell command is outside sealed command authority.",
+      "event_name": "PreToolUse",
+      "input_identity": "sha256:d552a35842756122295d858db197ad46637140db238135cb90786f5cd556ea70",
+      "sequence": 2,
+      "tool_name": "Bash"
+    }
+  ],
+  "host": "codex",
+  "mutated": true,
+  "native_metrics": {
+    "agent-budget": 16410,
+    "changed-paths": 0,
+    "elapsed-seconds": 10,
+    "identical-retries": 0,
+    "test-invocations": 0,
+    "tool-calls": 0,
+    "turns": 1,
+    "worker-launches": 0,
+    "write-scope": 0
+  },
+  "protocol_events": [
+    {
+      "direction": "client",
+      "id": 1,
+      "method": "initialize",
+      "parameter_keys": [
+        "capabilities",
+        "clientInfo"
+      ]
+    },
+    {
+      "direction": "server",
+      "id": 1,
+      "keys": [
+        "id",
+        "result"
+      ],
+      "method": ""
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "remoteControl/status/changed"
+    },
+    {
+      "direction": "client",
+      "id": null,
+      "method": "initialized",
+      "parameter_keys": []
+    },
+    {
+      "direction": "client",
+      "id": 2,
+      "method": "thread/start",
+      "parameter_keys": [
+        "approvalPolicy",
+        "config",
+        "cwd",
+        "developerInstructions",
+        "ephemeral",
+        "model",
+        "permissions",
+        "runtimeWorkspaceRoots",
+        "serviceName"
+      ]
+    },
+    {
+      "direction": "server",
+      "id": 2,
+      "keys": [
+        "id",
+        "result"
+      ],
+      "method": ""
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "thread/started"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "warning"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "mcpServer/startupStatus/updated"
+    },
+    {
+      "direction": "client",
+      "id": 3,
+      "method": "hooks/list",
+      "parameter_keys": [
+        "cwds"
+      ]
+    },
+    {
+      "direction": "server",
+      "id": 3,
+      "keys": [
+        "id",
+        "result"
+      ],
+      "method": ""
+    },
+    {
+      "direction": "client",
+      "id": 4,
+      "method": "turn/start",
+      "parameter_keys": [
+        "approvalPolicy",
+        "cwd",
+        "input",
+        "permissions",
+        "runtimeWorkspaceRoots",
+        "threadId"
+      ]
+    },
+    {
+      "direction": "server",
+      "id": 4,
+      "keys": [
+        "id",
+        "result"
+      ],
+      "method": ""
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "thread/status/changed"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "turn/started"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "mcpServer/startupStatus/updated"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "hook/started"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "hook/completed"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/started"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/completed"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/started"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "mcpServer/startupStatus/updated"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/completed"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/started"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/agentMessage/delta"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "item/completed"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "hook/started"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "hook/completed"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "thread/tokenUsage/updated"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "account/rateLimits/updated"
+    },
+    {
+      "direction": "client",
+      "id": 10,
+      "method": "turn/interrupt",
+      "parameter_keys": [
+        "threadId",
+        "turnId"
+      ]
+    },
+    {
+      "direction": "server",
+      "id": 10,
+      "keys": [
+        "id",
+        "result"
+      ],
+      "method": ""
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "thread/status/changed"
+    },
+    {
+      "direction": "server",
+      "id": null,
+      "keys": [
+        "emittedAtMs",
+        "method",
+        "params"
+      ],
+      "method": "turn/completed"
+    }
+  ],
+  "stderr_tail": [
+    "{\"timestamp\":\"2026-09-16T04:14:04.970512Z\",\"level\":\"ERROR\",\"fields\":{\"error\":\"Command blocked by PreToolUse hook: Codex shell command is outside sealed command authority.. Command: cat /private/tmp/sa-first-pass-continuation/.agents/skills/project-qa-review/SKILL.md\"},\"target\":\"codex_core::tools::router\"}"
+  ],
+  "terminal_reason": "Codex shell command is outside sealed command authority. Closeout: Codex required changes are missing: evidence/recommendation-update/INDEPENDENT-QA.md",
+  "terminal_status": "interrupted",
+  "thread_id": "01a0a86b-d6d4-75d3-ae9e-0854811d2b30",
+  "turn_id": "01a0a86b-d6f0-7642-89e3-276a229bb7a3",
+  "version": "codex-cli 0.153.4"
+}

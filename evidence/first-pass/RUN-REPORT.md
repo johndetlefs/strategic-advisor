@@ -42,15 +42,19 @@ The corrected alpha.8 run still failed FIRST-004 on missing ownership. The one p
 
 For the shared-runtime proposal, alpha.7 correctly withheld a merger and proposed tracing the duplicate-entry path, but left ownership unstated. Alpha.9 says to have each team's process owner trace one real weekly cycle, including the source, transformations, approval point and re-entry location. It then states what would justify revisiting a shared runtime and when the smaller remedy is sufficient. That is an observed continuation difference, not proof of downstream business success.
 
-## Current proof boundary
+## Historical alpha.9 proof boundary
 
 Prepared and structurally verified is not published, installed, supported, owner-accepted or strategically effective. Behavioural observations apply to these frozen CLI cases only. Historical alpha.6/alpha.7 diagnostics remain labelled historical, and historical source-access summaries have not been re-audited by this task.
 
 Final comparison: **Eight recovered scenario groups recorded in comparison.json: baseline six pass, alpha.9 eight pass.** Invalid earlier multi-turn observations remain excluded. The current index uses isolated-baseline-recovery and isolated-candidate-recovery for FIRST-001/FIRST-006.
-Current-source drift regression: **FAIL: 15/16 groups passed; DRIFT-016 failed.** See BLOCKING-FINDING.md and drift-summary.json. The resumed checkpoint completed 42 additional advisor calls and 13 additional adjudications without another repair. Total retained checkpoint consumption is 50 advisor calls and 15 adjudications; the separate canary accounts for two more turns.
-Independent QA: **Not started; verification failed and the allowed repair was already used.** The prepared sealed review was not activated.
+Alpha.9 source drift regression: **FAIL: 15/16 groups passed; DRIFT-016 failed.** See BLOCKING-FINDING.md and drift-summary.json. The resumed checkpoint completed 42 additional advisor calls and 13 additional adjudications without another repair. Total retained checkpoint consumption is 50 advisor calls and 15 adjudications; the separate canary accounts for two more turns.
+Alpha.9 independent QA: **Not started; verification failed and the allowed repair was already used.** The prepared sealed review was not activated.
 Push: authorised for a blocked draft; the remote branch and draft PR are the delivery evidence.
 
 The owner-challenged verification overrun is retained in VERIFICATION-PAUSE.md. Project Workflow 0.10 applies sealed execution is available for a later local review; external model verification uses its separately supported manual path and the unchanged runner checkpoint limits. No aggregate nested-model enforcement claim is made.
 
 The failure is a remaining gap against the task’s core user outcome. The candidate is implemented but not fully behaviourally validated. No later passing answer, narrow 8/8 comparison, static test, or prepared ZIP overrides it.
+
+## Alpha.10 follow-up
+
+The owner subsequently approved one correction and amended the remaining proof scope to twelve affected turns. All three groups passed on alpha.10; original alpha.9 failure and rubric are retained. Independent review was interrupted before a verdict, so substantive completion remains blocked. See [the current follow-up report](../recommendation-update/REPORT.md). No alpha.10 full-suite claim is made.

@@ -12,9 +12,9 @@ As a person seeking strategic advice, I want a rigorous first answer and useful 
 
 - [x] AC1: Outcome alignment, relevant context and accessible investigation are implemented; historical first-pass observations remain source-labelled.
 - [x] AC2: Rival scrutiny and owned continuation without mandatory labels are implemented and included in the bounded affected observation.
-- [x] AC3: Evidence-based continuity plus explicit exploration/testing/endorsement distinction; genuine changed priorities remain effective. Automatic 12-turn check passes; substantive independent QA pending.
+- [x] AC3: Evidence-based continuity plus explicit exploration/testing/endorsement distinction; genuine changed priorities remain effective. Automatic 12-turn check passes; substantive independent QA incomplete.
 - [x] AC4: Owner-amended affected-only proof executed once: three groups, five sessions, twelve turns. Original failure and rubric retained; no current full-suite claim.
-- [ ] AC5: Canonical PW0.9.2/0.10 upgrades and clean-source alpha.10 artifacts verified; independent QA and updated same-branch push pending.
+- [ ] AC5: Canonical PW0.9.2/0.10 upgrades and clean-source alpha.10 artifacts verified; independent QA incomplete; follow-up delivery uses the same draft PR.
 
 ## Validation
 
@@ -28,7 +28,7 @@ As a person seeking strategic advice, I want a rigorous first answer and useful 
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | codex/advisor-first-pass-continuation; PR #24 | current 12-turn affected result and package verification pass; independent QA pending | prior draft pushed; latest follow-up push pending; merge/publication/install excluded | evidence/recommendation-update/REPORT.md |
+| . | codex/advisor-first-pass-continuation; PR #24 | current 12-turn affected result and package verification pass; independent QA incomplete | same draft PR delivery; merge/publication/install excluded | evidence/recommendation-update/REPORT.md |
 
 ## Task List
 
@@ -45,17 +45,19 @@ The owner approved FOLLOWUP-AMENDMENT.md and its explicit affected-only proof sc
 ## QA & Code Review
 
 - Intent QA contract: adversarial
-- Verdict: Pending
-- Intent adversarial verdict: Pending
-- Could every AC pass while the approved user job remains undone: Pending independent judgment
+- Verdict: Incomplete; no independent verdict produced
+- Intent adversarial verdict: Not produced
+- Could every AC pass while the approved user job remains undone: Unknown; substantive T3 question remains open
 - Intent audit state: Current owner-approved requirements and FOLLOWUP-AMENDMENT.md
 - Outcome journey evidence: evidence/recommendation-update/run/result.json and T3-COMPARISON.md
-- Reviewer independence: One separate sealed Codex context; no shared workflow write authority; not yet launched
-- Evidence: Pending independent report
-- Findings: Pending independent judgment; T3 endorsement language explicitly called out for review
+- Reviewer independence: One separate sealed Codex context; no shared workflow write authority; interrupted before report after one infrastructure recovery
+- Evidence: evidence/recommendation-update/review-read-denied.json and review-token-limit.json; no independent report
+- Findings: No independent findings issued. T3 endorsement language remains an unresolved Coordinator concern; automatic grades are insufficient to close it.
 
 ## Execution and proof boundaries
 
-Coordinator is the sole shared-state writer. Independent review: benefit:substantive-independent-assessment; overhead:one-bounded-context; tradeoff:review-only-after-affected-proof. The sealed review permits eight exact read commands and one report file; no tests or worker launches. The external behavioural runner separately enforces the frozen twelve-call limit. No claim of aggregate nested-model enforcement is made.
+Coordinator is the sole shared-state writer. Independent review: benefit:substantive-independent-assessment; overhead:one-bounded-context; tradeoff:review-only-after-affected-proof. The sealed review permitted exact read commands and one report file; no tests or worker launches. It stopped on token exhaustion with no report. No further invocation is authorised under this envelope. The external behavioural runner separately enforces the frozen twelve-call limit. No claim of aggregate nested-model enforcement is made.
 
 Historical failed campaigns remain in evidence/first-pass and evidence/recommendation-update/previous-coordination.json. Current release metadata supersedes unpublished alpha.9 with prepared alpha.10. Publication, installation, adoption and owner acceptance are not established.
+
+Review closeout: 112,818 observed native tokens across the initial denied read and one recovery; five permitted read-only calls, zero tests, workers or changed files. The task remains Blocked, with no fictional QA pass. See evidence/recommendation-update/REPORT.md for the precise interruption and next action.

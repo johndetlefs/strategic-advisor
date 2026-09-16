@@ -1,0 +1,4 @@
+project doctor: checked /private/tmp/sa-first-pass-continuation
+WARNING: /private/tmp/sa-first-pass-continuation/.project-workflow/tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control/TASK-034-Validate-Combined-Exact-Runtime-Behaviour/COORDINATION.json: Material verification is verification-required: Diagnostic evidence cannot certify delivery; initialize a current certification campaign after the named decision is resolved. [code: PW_WORKFLOW_INVALID] [owner: agent] [mechanical: no] [fingerprint: 30464457a82ba03d]
+WARNING: /private/tmp/sa-first-pass-continuation/.project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/COORDINATION.json: Material execution is blocked: execution-limit-exhausted: agent-budget, turns. Return to the Coordinator with required proof still visibly incomplete. [code: PW_WORKFLOW_INVALID] [owner: agent] [mechanical: no] [fingerprint: 3a2657bc322438d0]
+project doctor: passed with warnings

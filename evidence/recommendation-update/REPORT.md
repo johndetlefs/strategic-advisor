@@ -12,8 +12,19 @@ The automatic grader passed the new T3, but it still contains approval language.
 
 Structural validation passes all seven scopes and the generated 56-case inventory is current. Alpha.10 ZIPs were built from a clean exact-source clone and independently checked against the expected runtime identity; see package-verification.json. Prepared artifact mode is not public release, host installation, activation, support, owner acceptance or strategic effectiveness. There is no alpha.10 full-suite behaviour claim.
 
-Independent QA: pending, one sealed local review only. Delivery: update existing PR #24 after the review, preserving any finding. No merge, publication or installation authority.
+Independent QA: incomplete; no independent verdict or report was produced. The task remains blocked on substantive review, including the T3 endorsement question. Delivery is the same draft PR #24; no merge, publication or installation authority.
 
 ## Review launch boundary
 
 The generated repository CLI failed before configuration with a missing helper; the canonical pinned project-workflow==0.10.0 command configured successfully. Its first execute call required a clean worktree and stopped before any model invocation (zero tokens, turns, tools or workers). The evidence is committed before the one actual review. Source binding is refreshed for this evidence-only commit; the same runtime, spec, runner and consumed twelve-call proof are retained, with no additional verification allowance.
+
+
+## Independent review stopped (2026-09-16)
+
+The first actual sealed invocation stopped on a mandatory skill-file read omitted from the command allowlist: 16,410 native tokens, 10 seconds, zero allowed tools. One infrastructure recovery added that exact read and used the remaining allowance (83,590 tokens, 290 seconds), without tests, product edits or worker authority. It was interrupted after five read-only calls when native accounting reported 96,408 tokens in 35 seconds. No report or changed file resulted. See review-read-denied.json and review-token-limit.json.
+
+The total observed review consumption is 112,818 native tokens and 45 seconds, exceeding the selected 100,000-token envelope before interruption. The receipts establish detection and interruption, not a strict token ceiling. The Coordinator supplied an oversized evidence/context packet and omitted a required read in the initial allowlist. Neither failure establishes a product defect or a passing review.
+
+No further review, model verification or implementation attempt is commissioned. The outstanding action is one independent judgment using a reduced, self-contained packet covering the two runtime edits, requirements, exact T3 before/after responses, affected proof boundaries and packaging evidence. Renewed reviewer authority is required before that action. The automatic passing score is retained without claiming that the unresolved endorsement question is settled.
+
+Closeout Doctor passed with warnings: the current TASK-036 execution limit is exhausted and independent proof remains incomplete; an existing TASK-034 diagnostic-only campaign is also not certification. See closeout-doctor.log. These warnings were retained, not waived.
