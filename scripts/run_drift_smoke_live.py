@@ -643,11 +643,12 @@ def successful_runtime_reads(
 
 
 def run_json_events(
-    command: list[str], prompt: str, raw_path: Path, timeout: int
+    command: list[str], prompt: str, raw_path: Path, timeout: int, *, cwd: Path | None = None
 ) -> tuple[list[dict[str, Any]], str]:
     process = subprocess.run(
         command,
         input=prompt,
+        cwd=cwd,
         text=True,
         capture_output=True,
         timeout=timeout,
@@ -768,7 +769,7 @@ def target_turn(
             "-",
         ]
     command.extend(["-c", skill_config])
-    events, _ = run_json_events(command, routing + prompt, raw_path, timeout)
+    events, _ = run_json_events(command, routing + prompt, raw_path, timeout, cwd=target_root)
     resolved_session = session_id or thread_id_from(events)
     answer = (
         answer_path.read_text(encoding="utf-8").strip()
@@ -1398,6 +1399,25 @@ def main(argv: Sequence[str] | None = None) -> int:
                     )
                 except HarnessFailure as error:
                     raise EvaluatorFailure(str(error)) from error
+                if case.get("activation") == "implicit-negative":
+                    trace_reads = {
+                        path
+                        for variant, _turns in sessions_for(case)
+                        for path in progress["sessions"][f"{case['id']}::{variant}"][
+                            "successful_runtime_reads"
+                        ]
+                    }
+                    for review in reviews:
+                        if review["id"] == "ROUTINE_NO_SKILL_READ":
+                            review["status"] = "pass" if not trace_reads else "fail"
+                            review["observation"] = (
+                                "The retained successful-command trace records no installed Strategic "
+                                "Advisor runtime reads for this implicit-negative session."
+                                if not trace_reads
+                                else "The retained successful-command trace records an unexpected "
+                                "installed Strategic Advisor runtime read."
+                            )
+                            review.pop("turn_reviews", None)
                 scenario_status = (
                     "pass"
                     if all(item["status"] == "pass" for item in reviews)
@@ -1415,27 +1435,6 @@ def main(argv: Sequence[str] | None = None) -> int:
                 progress["adjudications"][case["id"]] = reviews
                 write_json(progress_path, progress)
             reviews = progress["adjudications"][case["id"]]
-            if case.get("activation") == "implicit-negative":
-                trace_reads = {
-                    path
-                    for variant, _turns in sessions_for(case)
-                    for path in progress["sessions"][f"{case['id']}::{variant}"][
-                        "successful_runtime_reads"
-                    ]
-                }
-                for review in reviews:
-                    if review["id"] == "ROUTINE_NO_SKILL_READ":
-                        review["status"] = "pass" if not trace_reads else "fail"
-                        review["observation"] = (
-                            "The retained successful-command trace records no installed Strategic "
-                            "Advisor runtime reads for this implicit-negative session."
-                            if not trace_reads
-                            else "The retained successful-command trace records an unexpected "
-                            "installed Strategic Advisor runtime read."
-                        )
-                        review.pop("turn_reviews", None)
-                progress["adjudications"][case["id"]] = reviews
-                write_json(progress_path, progress)
             scenario_status = (
                 "pass" if all(item["status"] == "pass" for item in reviews) else "fail"
             )
