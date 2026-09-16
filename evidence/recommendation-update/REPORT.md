@@ -32,3 +32,7 @@ Closeout Doctor passed with warnings: the current TASK-036 execution limit is ex
 ## Final independent disposition
 
 The independent reviewer passed the scoped correction with no blocking findings. The preceding owner preference against manual drafting supports the proposed design-time drafting method; the answer preserves frozen deterministic lookup and removes the old recommendation to build an authoring pipeline now. This resolves the recorded interpretive question without another model evaluation, rubric change or product revision. See INDEPENDENT-QA.md for coverage and limitations. Existing CI passed on 7dc6683. Final delivery records update the same PR; merge, publication and installation remain excluded.
+
+## Published alpha.10
+
+The owner subsequently authorized merge, publication and the exact Protect main rule change adding merge commits while preserving all other protections. PR24 merged at e7b3cf4c95acec94d6af89c160ed6e9b9a6bfa1f. Release workflow35057752382 attempt1 stopped on a temporary-directory cleanup error in test teardown; attempt2 passed without source changes. It published v0.2.0-alpha.10 at 2026-09-16T05:02:30Z and verified freshly downloaded public artifacts against the clean build and trusted runtime identity. Canonical public evidence is evidence/releases/v0.2.0-alpha.10.json. No host installation or activation is claimed.
