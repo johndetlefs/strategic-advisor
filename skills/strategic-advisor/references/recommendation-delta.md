@@ -50,11 +50,17 @@ accessible evidence can discriminate it. Return to the owner only for outcomes,
 values, constraints, authority, acceptable trade-offs, or genuinely
 irreducible choice that evidence cannot settle.
 
+## Reviewing the same recommendation
+
+A request to review again does not imply disagreement and is not itself a qualifying delta. Recheck the recommendation against the original outcome, accessible evidence, causal bridge and strongest rival. Retain it when it survives; say why. Tone and repeated requests alone cannot justify a reversal.
+
+New outside facts are not the only legitimate reason to correct advice. A demonstrated error in arithmetic, inference, comparison, baseline selection or an overlooked contradiction can change the conclusion on the same underlying evidence. Identify the exact prior error, the evidence that demonstrates it, its dependent claims and the supported correction. Do not claim an error merely because the owner is dissatisfied, and do not preserve a known error to satisfy consistency. In typed delta records, represent this as an `evidence` change in the analysis with provenance pointing to the original facts and the demonstrated correction; do not pretend new external observations arrived. A structurally valid record alone does not prove that correction true.
+
 ## Recommendation delta
 
 Before changing the recommendation, name:
 
-1. which outcome, evidence, framing, scope, constraint, owner value, or substantive candidate specification changed, including the owner-settled version when applicable;
+1. which outcome, evidence, framing, scope, constraint, owner value, or substantive candidate specification changed, or which specific prior analytical error was demonstrated, including the owner-settled version when applicable;
 2. which prior claims actually depended on anything falsified;
 3. which claims, constraints, and rivals survive;
 4. what evidence supports the replacement; and

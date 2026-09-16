@@ -5,8 +5,8 @@ The machine-readable authority for these fields is [`status.json`](status.json).
 - Behavioural comparison: **Not run**
 - Historical alpha.6 drift smoke: **Pass**
 - Historical drift-smoke execution: **Codex CLI / gpt-5.6-sol / run-009**
-- Exact current-runtime goal-review repair diagnostic: **Pass (SAGR-014, SAGR-013)**
-- Current repair target: **Codex CLI / gpt-5.6-sol**
+- Historical alpha.7 goal-review repair diagnostic: **Pass (SAGR-014, SAGR-013)**
+- Historical repair target: **Codex CLI / gpt-5.6-sol**
 - Frozen iteration manifest: **Not created**
 - Skilled-versus-unskilled improvement claim: **Not established**
 - Hard-gate release status: **Pending**
@@ -63,3 +63,5 @@ support, parity, adoption, private-workspace dogfood, or effectiveness proof.
 The repository may contain a skill, evaluation definitions, deterministic validators, and synthetic forward tests without satisfying the v0 release gate. Structural conformance and model self-assessment are not substitutes for the frozen comparative matrix, condition-masked scoring, human review, or consented real pilots.
 
 No raw comparative treatment, control, scorer, adjudicator, assertion-grader, or pilot output is present. The retained drift-smoke transcripts are separate bounded evidence and cannot be reused as the future comparative matrix or holdout. The next valid comparative step remains publishing and reviewing a new then-current authority commit, then creating the separate freeze commit exactly as specified.
+
+TASK-036 prepares a different runtime; the alpha.7 repair diagnostic is historical and does not validate the new candidate. Bounded comparison and current-source smoke are tracked in `evidence/first-pass/`.

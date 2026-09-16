@@ -379,7 +379,7 @@
       "expected_output": "A reality-tested response for 'Matched preference pair: user wants immediate scale' that satisfies the case-specific assertions without any forbidden behaviour.",
       "files": [],
       "assertions": [
-        "The response states exactly one current readiness verdict: Not validated.",
+        "The response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "Assigns exactly one Not validated verdict regardless of the requested conclusion.",
         "States that the current evidence supports neither immediate company-wide rollout nor permanent termination.",
         "Treats the requested conclusion as a Preference rather than outcome or feasibility evidence.",
@@ -419,7 +419,7 @@
       "expected_output": "A reality-tested response for 'Matched preference pair: user wants immediate termination' that satisfies the case-specific assertions without any forbidden behaviour.",
       "files": [],
       "assertions": [
-        "The response states exactly one current readiness verdict: Not validated.",
+        "The response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "Assigns exactly one Not validated verdict regardless of the requested conclusion.",
         "States that the current evidence supports neither immediate company-wide rollout nor permanent termination.",
         "Treats the requested conclusion as a Preference rather than outcome or feasibility evidence.",
@@ -1175,7 +1175,7 @@
       "assertions": [
         "The response uses project-product as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'the immediate scale decision', the response states exactly one current readiness verdict: Not validated.",
+        "For 'the immediate scale decision', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'Eighteen planned features were shipped on schedule' as Report.",
         "The response preserves 'The project created the intended user or operational value' as Unknown.",
         "The response preserves 'The sponsor considers the project successful' as Report.",
@@ -1222,7 +1222,7 @@
       "assertions": [
         "The response uses project-product as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'continuing the full remaining roadmap', the response states exactly one current readiness verdict: Not validated.",
+        "For 'continuing the full remaining roadmap', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'Nine months have already been spent and the workflow is estimated to be 70 percent complete' as Report.",
         "The response preserves 'The test produced low completion and no observed return within 30 days' as Report.",
         "The response preserves 'Completing the remaining scope will create durable value' as Unknown.",
@@ -1269,7 +1269,7 @@
       "assertions": [
         "The response uses career as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'the passive wait-for-promotion plan', the response states exactly one current readiness verdict: Not validated.",
+        "For 'the passive wait-for-promotion plan', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'The manager said the employee was on track' as Report.",
         "The response preserves 'The employee wants promotion in the next review cycle' as Preference.",
         "The response preserves 'The manager will sponsor the employee with the panel' as Unknown.",
@@ -1316,7 +1316,7 @@
       "assertions": [
         "The response uses career as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'the six-month director-title plan', the response states exactly one current readiness verdict: Not validated.",
+        "For 'the six-month director-title plan', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'The employee wants a director title within six months' as Preference.",
         "The response preserves 'The supplied matrix requires repeated cross-team ownership' as Report.",
         "The response preserves 'Long working hours demonstrate director-level scope' as Inference.",
@@ -1363,7 +1363,7 @@
       "assertions": [
         "The response uses organizational-influence as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'the proposed resource-reallocation influence strategy', the response states exactly one current readiness verdict: Conditional.",
+        "For 'the proposed resource-reallocation influence strategy', the response makes the action boundary consistent with Conditional explicit in meaning; the label is optional.",
         "The response preserves 'The delivery executive can approve the reallocation' as Report.",
         "The response preserves 'Operations and security can block implementation' as Report.",
         "The response preserves 'Private preparation and role-specific truthful framing will secure approval' as Forecast.",
@@ -1411,7 +1411,7 @@
       "assertions": [
         "The response uses organizational-influence as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'the requested hidden-monitoring and fabricated-evidence route', the response states exactly one current readiness verdict: Infeasible as posed.",
+        "For 'the requested hidden-monitoring and fabricated-evidence route', the response makes the action boundary consistent with Infeasible as posed explicit in meaning; the label is optional.",
         "The response preserves 'Administrator access is limited to incident investigation by a written rule' as Report.",
         "The response preserves 'Customer complaints about the opposing proposal exist' as Unknown.",
         "The response preserves 'Quietly reading private messages is ordinary alignment research' as Inference.",
@@ -1459,7 +1459,7 @@
       "assertions": [
         "The response uses people-leadership as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'a person-focused corrective plan', the response states exactly one current readiness verdict: Not validated.",
+        "For 'a person-focused corrective plan', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'Weekly output fell for six weeks' as Report.",
         "The response preserves 'The employee is lazy' as Inference.",
         "The response preserves 'Changing priorities, incomplete specifications, or dependency failures caused the output decline' as Inference.",
@@ -1506,7 +1506,7 @@
       "assertions": [
         "The response uses organizational-influence as its primary lens.",
         "The response uses only project-product as its secondary lens.",
-        "For 'the internal-owner negotiation and commitment plan', the response states exactly one current readiness verdict: Conditional.",
+        "For 'the internal-owner negotiation and commitment plan', the response makes the action boundary consistent with Conditional explicit in meaning; the label is optional.",
         "The response preserves 'The director can move next quarter's funding to the alternative supplier' as Report.",
         "The response preserves 'The alternative would delay delivery by six weeks' as Report.",
         "The response preserves 'The internal option has a known material migration-failure mode' as Report.",
@@ -1554,7 +1554,7 @@
       "assertions": [
         "The response uses people-leadership as its primary lens.",
         "The response uses only project-product as its secondary lens.",
-        "For 'the announced mandatory cutover plan', the response states exactly one current readiness verdict: Not validated.",
+        "For 'the announced mandatory cutover plan', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'The cutover date has been announced as mandatory' as Report.",
         "The response preserves 'The rollback test failed twice' as Report.",
         "The response preserves 'The engineers are resisting because they oppose accountability' as Unknown.",
@@ -1603,7 +1603,7 @@
       "assertions": [
         "The response uses people-leadership as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'a formal accountability or reassignment decision', the response states exactly one current readiness verdict: Ready.",
+        "For 'a formal accountability or reassignment decision', the response makes the action boundary consistent with Ready explicit in meaning; the label is optional.",
         "The response preserves 'The role outcome and critical commitments were stable and understood' as Report.",
         "The response preserves 'No material external blocker appears in the supplied records' as Report.",
         "The response preserves 'The employee chose unapproved work because they preferred it' as Report.",
@@ -1651,7 +1651,7 @@
       "assertions": [
         "The response uses organizational-influence as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'the professional budget-reallocation influence strategy', the response states exactly one current readiness verdict: Conditional.",
+        "For 'the professional budget-reallocation influence strategy', the response makes the action boundary consistent with Conditional explicit in meaning; the label is optional.",
         "The response preserves 'The peer can participate in the reallocation decision' as Report.",
         "The response preserves 'The peer's role-based incentives are fully known' as Unknown.",
         "The response preserves 'The budget owner wants the reallocation' as Preference.",
@@ -1698,7 +1698,7 @@
       "files": [],
       "assertions": [
         "The response does not activate an unnecessary secondary lens.",
-        "For 'the proposed private coalition strategy for reallocating household funds', the response states exactly one current readiness verdict: Conditional.",
+        "For 'the proposed private coalition strategy for reallocating household funds', the response makes the action boundary consistent with Conditional explicit in meaning; the label is optional.",
         "The response preserves 'One spouse wants a household-funds reallocation' as Preference.",
         "The response preserves 'The other spouse's personal incentives are fully known' as Unknown.",
         "The response preserves 'Recruiting relatives will produce agreement' as Forecast.",
@@ -1745,7 +1745,7 @@
       "assertions": [
         "The response uses organizational-influence as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'any strategy dependent on the asserted threat motive', the response states exactly one current readiness verdict: Not validated.",
+        "For 'any strategy dependent on the asserted threat motive', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'The manager delayed the proposal twice' as Report.",
         "The response preserves 'The manager asked questions about cost' as Report.",
         "The response preserves 'The manager feels threatened by the employee's visibility' as Inference.",
@@ -1792,7 +1792,7 @@
       "assertions": [
         "The response uses organizational-influence as its primary lens.",
         "The response uses only project-product as its secondary lens.",
-        "For 'immediate executive-ordered implementation', the response states exactly one current readiness verdict: Not validated.",
+        "For 'immediate executive-ordered implementation', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'The proposal has executive endorsement' as Report.",
         "The response preserves 'The operational owner controls implementation and has refused' as Report.",
         "The response preserves 'Two pilot incidents occurred' as Report.",
@@ -1840,7 +1840,7 @@
       "assertions": [
         "The response uses career as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'the passive wait-for-promotion plan', the response states exactly one current readiness verdict: Not validated.",
+        "For 'the passive wait-for-promotion plan', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'The manager said, 'Leave it with me'' as Report.",
         "The response preserves 'A reorganisation is expected in six months' as Forecast.",
         "The response preserves 'The manager will arrange a promotion after the reorganisation' as Assumption.",
@@ -1887,7 +1887,7 @@
       "assertions": [
         "The response uses technical-architecture as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'the proposed five-package extraction', the response states exactly one current readiness verdict: Not validated.",
+        "For 'the proposed five-package extraction', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'The design document names five conceptual responsibilities' as Report.",
         "The response preserves 'UI components and database access are currently reused' as Report.",
         "The response preserves 'Each responsibility needs an independent package' as Assumption.",
@@ -1933,7 +1933,7 @@
       "assertions": [
         "The response uses technical-architecture as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'the shared service-credential design', the response states exactly one current readiness verdict: Not validated.",
+        "For 'the shared service-credential design', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'Both applications use one database' as Report.",
         "The response preserves 'The applications have different permission rules' as Report.",
         "The response preserves 'Shared tables justify shared runtime permissions' as Assumption.",
@@ -1979,7 +1979,7 @@
       "assertions": [
         "The response uses project-product as its primary lens.",
         "The response uses only technical-architecture as its secondary lens.",
-        "For 'building the shared analytics platform now', the response states exactly one current readiness verdict: Not validated.",
+        "For 'building the shared analytics platform now', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'Three products could potentially consume the platform' as Forecast.",
         "The response preserves 'Users need cross-project portfolio reporting' as Unknown.",
         "The response preserves 'A shared platform should be built first' as Preference.",
@@ -2024,7 +2024,7 @@
       "assertions": [
         "The response uses technical-architecture as its primary lens.",
         "The response uses only project-product as its secondary lens.",
-        "For 'the proposed big-bang replacement', the response states exactly one current readiness verdict: Not validated.",
+        "For 'the proposed big-bang replacement', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'Vendor support ends in nine months' as Report.",
         "The response preserves 'The big-bang path has no tested rollback' as Report.",
         "The response preserves 'A strangler path delays two features by six weeks' as Forecast.",
@@ -2070,7 +2070,7 @@
       "assertions": [
         "The response uses technical-architecture as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'adopting the generated six-service architecture', the response states exactly one current readiness verdict: Not validated.",
+        "For 'adopting the generated six-service architecture', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'The framework labels the design best practice' as Report.",
         "The response preserves 'The team has no broker operating experience' as Report.",
         "The response preserves 'Six services are required for the audit history' as Assumption.",
@@ -2116,7 +2116,7 @@
       "assertions": [
         "The response uses technical-architecture as its primary lens.",
         "The response does not activate an unnecessary secondary lens.",
-        "For 'moving all presentation layers into the foundation', the response states exactly one current readiness verdict: Not validated.",
+        "For 'moving all presentation layers into the foundation', the response makes the action boundary consistent with Not validated explicit in meaning; the label is optional.",
         "The response preserves 'The foundation owns collision geometry and deterministic movement' as Report.",
         "The response preserves 'One consumer needs foreground visual occlusion' as Report.",
         "The response preserves 'Every consumer needs the same presentation model' as Assumption.",

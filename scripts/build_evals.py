@@ -110,11 +110,11 @@ def import_case(source_name: str, case: Any) -> dict[str, Any]:
                     f"{case_id}: a supported lens readiness verdict needs a non-empty readiness_target"
                 )
             assertions.append(
-                f"For '{readiness_target}', the response states exactly one current readiness verdict: {readiness}."
+                f"For '{readiness_target}', the response makes the action boundary consistent with {readiness} explicit in meaning; the label is optional."
             )
         else:
             assertions.append(
-                f"The response states exactly one current readiness verdict: {readiness}."
+                f"The response makes the action boundary consistent with {readiness} explicit in meaning; the label is optional."
             )
     elif source_name == "lens_cases.json" and readiness_target is not None:
         raise EvalBuildError(

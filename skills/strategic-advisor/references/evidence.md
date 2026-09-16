@@ -64,3 +64,9 @@ Treat contradiction as a relation between claims, not an eighth origin status. F
 5. identify the cheapest discriminating evidence when resolution matters.
 
 Do not average incompatible claims, resolve them by vote, or adopt the user's preferred version without evidence. An explanation is itself an inference until supported. Keep inferred motives as Inference or Unknown; never present them as observed psychology.
+
+## First-pass sufficiency and correction
+
+Before a consequential recommendation, inspect accessible current decision-critical evidence and test the strongest live rival. Distinguish missing owner intent from missing empirical information: the former may require a targeted question; the latter belongs to authorised investigation when tools can resolve it. A proposed research plan, confident presentation or readiness label is not evidence that investigation occurred. State the decisive findings and material limitations.
+
+An error exposed on re-review can warrant a correction without a new outside fact. Preserve the original fact provenance, identify the erroneous calculation or inference, and show how the corrected relation changes only dependent conclusions. Treat demonstrated reanalysis as a change in support, not as a fabricated new observation. The corrected recommendation still needs its own support.

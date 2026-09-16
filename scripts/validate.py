@@ -543,7 +543,7 @@ def validate_current_goal_review_diagnostic(root: Path) -> dict:
     }
     if not isinstance(evidence, dict) or set(evidence) != required_keys:
         raise ValueError("current goal-review release evidence has invalid fields")
-    runtime_identity = canonical_runtime_identity(root)
+    runtime_identity = json.loads((root / "evidence/releases/v0.2.0-alpha.7.json").read_text())["release"]["runtime_package_identity_sha256"]
     if (
         evidence.get("schema_version") != 1
         or evidence.get("mode") != "diagnostic"
@@ -1064,7 +1064,7 @@ def check_claims(root: Path) -> list[Diagnostic]:
             evaluation = readme_table_value(readme, "Evaluation") or ""
             expected_prefix = (
                 f"Historical bounded {scenario_group_count}-scenario-group Codex drift smoke "
-                f"({current_drift_run}) passed on the alpha.6 runtime; current two-case "
+                f"({current_drift_run}) passed on the alpha.6 runtime; historical alpha.7 two-case "
                 "goal-review repair diagnostic (SAGR-014, SAGR-013) passed on "
                 "Codex CLI / gpt-5.6-sol;"
             )
@@ -2419,7 +2419,7 @@ def check_evals(root: Path) -> list[Diagnostic]:
                 "runtime_package_identity_sha256", ""
             ),
             "bounded_drift_smoke_scope": "historical-alpha.6-runtime",
-            "current_goal_review_repair_diagnostic": "pass",
+            "current_goal_review_repair_diagnostic": "historical-alpha.7-pass",
             "current_goal_review_repair_cases": ["SAGR-014", "SAGR-013"],
             "current_goal_review_repair_model": "gpt-5.6-sol",
             "current_goal_review_repair_runtime_package_identity_sha256": (
@@ -2453,8 +2453,8 @@ def check_evals(root: Path) -> list[Diagnostic]:
             f"Trigger inventory: **{trigger_query_count} queries**",
             "Historical alpha.6 drift smoke: **Pass**",
             f"Historical drift-smoke execution: **Codex CLI / gpt-5.6-sol / {current_drift_run}**",
-            "Exact current-runtime goal-review repair diagnostic: **Pass (SAGR-014, SAGR-013)**",
-            "Current repair target: **Codex CLI / gpt-5.6-sol**",
+            "Historical alpha.7 goal-review repair diagnostic: **Pass (SAGR-014, SAGR-013)**",
+            "Historical repair target: **Codex CLI / gpt-5.6-sol**",
         )
         if not status_markdown.is_file() or any(
             line not in read_text(status_markdown) for line in required_status_lines
