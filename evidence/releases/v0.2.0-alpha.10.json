@@ -1,0 +1,50 @@
+{
+  "proof_boundary": {
+    "chatgpt_account_activation_proven_here": false,
+    "claude_account_activation_proven_here": false,
+    "clean_public_download_proven": true,
+    "codex_account_activation_proven_here": false,
+    "cross_host_parity_proven": false,
+    "package_and_release_alignment_proven": true,
+    "strategic_effectiveness_proven": false,
+    "supported_capability_claimed": false
+  },
+  "release": {
+    "assets": [
+      {
+        "name": "install-artifacts.json",
+        "sha256": "f3d8f3cf20e98434e3ef6a57b431e3446e0ed2acbc430058a0a4783c7675e9ae",
+        "size_bytes": 56674
+      },
+      {
+        "name": "strategic-advisor-chatgpt.zip",
+        "sha256": "e7a825469579d18a156de912bf977cd6250555bbacf9222597e44c6d82a139fc",
+        "size_bytes": 171238
+      },
+      {
+        "name": "strategic-advisor-plugin.zip",
+        "sha256": "b0ee0040c5ca294327f8ae6cbf51a201bb0409b8102d92c1c1bc400200fa544a",
+        "size_bytes": 165381
+      },
+      {
+        "name": "strategic-advisor.zip",
+        "sha256": "a8d5b2c58b3adc4cf8a8ee3ad17f03c7242d7c363358666cb197f3080cf6d459",
+        "size_bytes": 160961
+      }
+    ],
+    "published_at": "2026-09-16T05:02:30Z",
+    "runtime_package_identity_sha256": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+    "source_revision": "e7b3cf4c95acec94d6af89c160ed6e9b9a6bfa1f",
+    "status": "prerelease",
+    "tag": "v0.2.0-alpha.10",
+    "url": "https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.10",
+    "version": "0.2.0-alpha.10"
+  },
+  "reproduction": {
+    "clean_download_consumer_verification": "pass",
+    "public_asset_digests_match_local_build": true,
+    "trusted_provenance_matched": true,
+    "trusted_runtime_identity_matched": true
+  },
+  "schema_version": 1
+}

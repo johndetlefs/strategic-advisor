@@ -31,3 +31,5 @@ Use this file for repo-specific workflow guidance that should survive project-wo
   proof and promote current-download references; publication never promotes
   host activation, support, parity, adoption, or effectiveness.
 - Use `./.project-workflow/cli/workflow doctor` after workflow-state changes. Record exact validation commands and artifacts in child evidence before review.
+
+- Before merging a prepared distribution with `superseded[].source_revision` records, confirm the permitted merge method preserves those original commits as ancestors. The canonical release validator checks ancestry, so squash/rebase can invalidate provenance even when runtime bytes are unchanged. Inspect repository rules before the delivery step; policy changes require owner authority.

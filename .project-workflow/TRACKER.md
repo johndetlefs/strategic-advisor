@@ -15,4 +15,4 @@
 | FIX-004 | Prevent Owner-Led Recommendation Drift | Complete | `tasks/FIX-004-Prevent-Owner-Led-Recommendation-Drift/FIX.md` |
 | FIX-005 | Supersede Unpublished Prepared Release | Complete | `tasks/FIX-005-Supersede-Unpublished-Prepared-Release/FIX.md` |
 | EPIC-007 | Strategic Alignment And Goal Review Control | In Progress | `tasks/EPIC-007-Strategic-Alignment-And-Goal-Review-Control/REQUIREMENTS.md` |
-| TASK-036 | First-pass rigor and useful continuation | Review | `tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/IMPLEMENTATION.md` |
+| TASK-036 | First-pass rigor and useful continuation | Complete | `tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/IMPLEMENTATION.md` |
