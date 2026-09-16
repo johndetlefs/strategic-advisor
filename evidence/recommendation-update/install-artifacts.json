@@ -1,0 +1,1533 @@
+{
+  "archive_policy": {
+    "compression": "ZIP_STORED",
+    "directory_mode": "0755",
+    "entry_order": "ascending-posix-path-v1",
+    "file_mode": "0644",
+    "timestamp": "1980-01-01T00:00:00",
+    "timestamp_basis": "fixed ZIP DOS minimum tuple"
+  },
+  "artifacts": {
+    "chatgpt_custom_gpt": {
+      "distribution": "chatgpt-custom-gpt-kit",
+      "format": "zip",
+      "instructions_source_sha256": "aae688fe63e3ae228c96d960979a27fc22f68054f24a3cf267b03ae4fac3f67b",
+      "inventory": [
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 0,
+          "path": "strategic-advisor-chatgpt/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 1,
+          "path": "strategic-advisor-chatgpt/CONFIG.json",
+          "role": "chatgpt-config",
+          "sha256": "8de749d44a41898efe1a356a338ec73177a3d10eaa52abe1bee5fb00d6fdb760",
+          "size_bytes": 1355,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 2,
+          "path": "strategic-advisor-chatgpt/INSTRUCTIONS.md",
+          "role": "chatgpt-instructions",
+          "sha256": "d06a4f60cc27bf7414ac5f8a4d1c4cca4b6a6c3045e458f9b40558c2f9c79092",
+          "size_bytes": 15194,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 3,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 4,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/WORKSPACE-TEMPLATES.md",
+          "role": "runtime-knowledge",
+          "sha256": "1f1f9867c99dc6cc07e6974b51000cbc3e36c0a93a69acbefc52b37a2a6a6819",
+          "size_bytes": 5824,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 5,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/action-policy.md",
+          "role": "runtime-knowledge",
+          "sha256": "03a07d59592d4610fc32c32a9fb7a36c5c7fa2d3796bcde34a048b6f2c4d9504",
+          "size_bytes": 3081,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 6,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/boundaries.md",
+          "role": "runtime-knowledge",
+          "sha256": "e806feb4fa266803cd12976b7b335a51c12f917acd580edce4d0958cd39ec213",
+          "size_bytes": 2773,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 7,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/business-venture.md",
+          "role": "runtime-knowledge",
+          "sha256": "bc8175056595b9c634732bd37b0f888f37989cfce1ec23b12728ce21ff985a79",
+          "size_bytes": 6449,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 8,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/career.md",
+          "role": "runtime-knowledge",
+          "sha256": "61ed321ecfb105ff6c8db921c252d9d9830940c3ad1c062174ce1ecd53681c37",
+          "size_bytes": 7560,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 9,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/competing-worlds.md",
+          "role": "runtime-knowledge",
+          "sha256": "243a7b6b022217b29a927b5ce00101912f559e777ddff429144b851e3fff8fe4",
+          "size_bytes": 1771,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 10,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/context-policy.md",
+          "role": "runtime-knowledge",
+          "sha256": "8166d90274ff40a2fa104d5f993348593ca03624fcede1cf516c5477cb4fc5db",
+          "size_bytes": 4273,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 11,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/conversational-strategy.md",
+          "role": "runtime-knowledge",
+          "sha256": "8419c18396a6fa5610484321f237e4999937302e11deebac50204f3f34caff13",
+          "size_bytes": 15427,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 12,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/evidence.md",
+          "role": "runtime-knowledge",
+          "sha256": "00977b5d458be8e3c13fb8e20318e48ca8aff4d16654c4718de7bdecb3bf4e07",
+          "size_bytes": 6341,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 13,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/goal-qualification.md",
+          "role": "runtime-knowledge",
+          "sha256": "7944f05edfb0419d016da3855729bb5e1711420bba4ef4c2619c59b19f591273",
+          "size_bytes": 5185,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 14,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/goal-review.md",
+          "role": "runtime-knowledge",
+          "sha256": "32a918d52e5069806fdc060230c186e18d7455bb49d46fe4bde3dde3bfe97ed9",
+          "size_bytes": 10309,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 15,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/marketing-growth.md",
+          "role": "runtime-knowledge",
+          "sha256": "337e9daaa470ed9723245b547f3b8d089771cc51a11eb2a64d81488e1a238172",
+          "size_bytes": 6331,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 16,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/organizational-influence.md",
+          "role": "runtime-knowledge",
+          "sha256": "50baeef98d11985f0f3401a4b48c47f34cf7c5e29c79f39be87be20ff370a481",
+          "size_bytes": 8323,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 17,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/people-leadership.md",
+          "role": "runtime-knowledge",
+          "sha256": "601129a909460469b539231c4d8d02a637226e37d83206e94339319ce52c9151",
+          "size_bytes": 7828,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 18,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/project-product.md",
+          "role": "runtime-knowledge",
+          "sha256": "c25d3e363f8f57cdb3e01ea33ed6ac6592c478525ad393a57e01446d8f2ddb71",
+          "size_bytes": 7782,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 19,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/readiness.md",
+          "role": "runtime-knowledge",
+          "sha256": "b4bd75312d3138dec97e4eae70ab941c0076974ed228ea18a87c9187dcedf678",
+          "size_bytes": 4311,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 20,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/recommendation-delta.md",
+          "role": "runtime-knowledge",
+          "sha256": "34cda7d782b2ea527566294b9efd4a93192b0819c9fdc38479e2f140335e268f",
+          "size_bytes": 8740,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 21,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/response-contract.md",
+          "role": "runtime-knowledge",
+          "sha256": "51e57b657aab50d79e1982343e0ebf0c260edb8169226c7d3002324412da5f2a",
+          "size_bytes": 4087,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 22,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/strategy-workspace.md",
+          "role": "runtime-knowledge",
+          "sha256": "485c6124b21d12c2a26d4852d98b72e2a0a0043a00101283d657eb615691d6f9",
+          "size_bytes": 5318,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 23,
+          "path": "strategic-advisor-chatgpt/KNOWLEDGE/technical-architecture.md",
+          "role": "runtime-knowledge",
+          "sha256": "cb9d109052e1aaf8e5e36e6641dec330e15de7345789281d415d377ed1043289",
+          "size_bytes": 8317,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 24,
+          "path": "strategic-advisor-chatgpt/LICENSE",
+          "role": "license",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "size_bytes": 11357,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 25,
+          "path": "strategic-advisor-chatgpt/MANIFEST.json",
+          "role": "chatgpt-manifest",
+          "sha256": "5b9cb0fd499f1bf200726833cc657ea054118e6d60b2a821cd05f187d28667c8",
+          "size_bytes": 7077,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 26,
+          "path": "strategic-advisor-chatgpt/README.md",
+          "role": "chatgpt-readme",
+          "sha256": "1c17bf55eb9a02e22b096eade0bba595882839f223f4b78f879a18394a331acc",
+          "size_bytes": 1473,
+          "timestamp": "1980-01-01T00:00:00"
+        }
+      ],
+      "knowledge_file_count": 20,
+      "sha256": "e7a825469579d18a156de912bf977cd6250555bbacf9222597e44c6d82a139fc",
+      "size_bytes": 171238,
+      "target_surface": "chatgpt-custom-gpt"
+    },
+    "openai_local_marketplace": {
+      "distribution": "openai-local-marketplace-plugin",
+      "excluded_distribution_claims": [
+        "chatgpt-personal-skill-upload",
+        "public-plugin-directory-submission"
+      ],
+      "format": "zip",
+      "inventory": [
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 0,
+          "path": ".agents/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 1,
+          "path": ".agents/plugins/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 2,
+          "path": ".agents/plugins/marketplace.json",
+          "role": "marketplace-metadata",
+          "sha256": "fd82a62a4cc409879eb6e87bb7b3624defea4f0e4804536c80d13dc3ba6b75d5",
+          "size_bytes": 398,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 3,
+          "path": "plugins/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 4,
+          "path": "plugins/strategic-advisor/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 5,
+          "path": "plugins/strategic-advisor/.codex-plugin/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 6,
+          "path": "plugins/strategic-advisor/.codex-plugin/plugin.json",
+          "role": "plugin-metadata",
+          "sha256": "406716168af6d90b25f8405aec822fe21bd0c4b392c5e06c9391fc5b2b450068",
+          "size_bytes": 742,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 7,
+          "path": "plugins/strategic-advisor/skills/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 8,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 9,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/LICENSE",
+          "role": "license",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "size_bytes": 11357,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 10,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/SKILL.md",
+          "role": "runtime",
+          "sha256": "aae688fe63e3ae228c96d960979a27fc22f68054f24a3cf267b03ae4fac3f67b",
+          "size_bytes": 14301,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 11,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/agents/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 12,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/agents/openai.yaml",
+          "role": "runtime",
+          "sha256": "fe1a33ff30efbd9c0298691c3292c8ca3db696086cd039ed7ab8346a5978935f",
+          "size_bytes": 241,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 13,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 14,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/action-policy.md",
+          "role": "runtime",
+          "sha256": "03a07d59592d4610fc32c32a9fb7a36c5c7fa2d3796bcde34a048b6f2c4d9504",
+          "size_bytes": 3081,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 15,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/boundaries.md",
+          "role": "runtime",
+          "sha256": "e806feb4fa266803cd12976b7b335a51c12f917acd580edce4d0958cd39ec213",
+          "size_bytes": 2773,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 16,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/business-venture.md",
+          "role": "runtime",
+          "sha256": "bc8175056595b9c634732bd37b0f888f37989cfce1ec23b12728ce21ff985a79",
+          "size_bytes": 6449,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 17,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/career.md",
+          "role": "runtime",
+          "sha256": "61ed321ecfb105ff6c8db921c252d9d9830940c3ad1c062174ce1ecd53681c37",
+          "size_bytes": 7560,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 18,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/competing-worlds.md",
+          "role": "runtime",
+          "sha256": "243a7b6b022217b29a927b5ce00101912f559e777ddff429144b851e3fff8fe4",
+          "size_bytes": 1771,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 19,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/context-policy.md",
+          "role": "runtime",
+          "sha256": "8166d90274ff40a2fa104d5f993348593ca03624fcede1cf516c5477cb4fc5db",
+          "size_bytes": 4273,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 20,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/conversational-strategy.md",
+          "role": "runtime",
+          "sha256": "8419c18396a6fa5610484321f237e4999937302e11deebac50204f3f34caff13",
+          "size_bytes": 15427,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 21,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/evidence.md",
+          "role": "runtime",
+          "sha256": "00977b5d458be8e3c13fb8e20318e48ca8aff4d16654c4718de7bdecb3bf4e07",
+          "size_bytes": 6341,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 22,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/goal-qualification.md",
+          "role": "runtime",
+          "sha256": "7944f05edfb0419d016da3855729bb5e1711420bba4ef4c2619c59b19f591273",
+          "size_bytes": 5185,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 23,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/goal-review.md",
+          "role": "runtime",
+          "sha256": "32a918d52e5069806fdc060230c186e18d7455bb49d46fe4bde3dde3bfe97ed9",
+          "size_bytes": 10309,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 24,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/marketing-growth.md",
+          "role": "runtime",
+          "sha256": "337e9daaa470ed9723245b547f3b8d089771cc51a11eb2a64d81488e1a238172",
+          "size_bytes": 6331,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 25,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/organizational-influence.md",
+          "role": "runtime",
+          "sha256": "50baeef98d11985f0f3401a4b48c47f34cf7c5e29c79f39be87be20ff370a481",
+          "size_bytes": 8323,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 26,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/people-leadership.md",
+          "role": "runtime",
+          "sha256": "601129a909460469b539231c4d8d02a637226e37d83206e94339319ce52c9151",
+          "size_bytes": 7828,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 27,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/project-product.md",
+          "role": "runtime",
+          "sha256": "c25d3e363f8f57cdb3e01ea33ed6ac6592c478525ad393a57e01446d8f2ddb71",
+          "size_bytes": 7782,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 28,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/readiness.md",
+          "role": "runtime",
+          "sha256": "b4bd75312d3138dec97e4eae70ab941c0076974ed228ea18a87c9187dcedf678",
+          "size_bytes": 4311,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 29,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/recommendation-delta.md",
+          "role": "runtime",
+          "sha256": "34cda7d782b2ea527566294b9efd4a93192b0819c9fdc38479e2f140335e268f",
+          "size_bytes": 8740,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 30,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/response-contract.md",
+          "role": "runtime",
+          "sha256": "51e57b657aab50d79e1982343e0ebf0c260edb8169226c7d3002324412da5f2a",
+          "size_bytes": 4087,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 31,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/strategy-workspace.md",
+          "role": "runtime",
+          "sha256": "485c6124b21d12c2a26d4852d98b72e2a0a0043a00101283d657eb615691d6f9",
+          "size_bytes": 5318,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 32,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/references/technical-architecture.md",
+          "role": "runtime",
+          "sha256": "cb9d109052e1aaf8e5e36e6641dec330e15de7345789281d415d377ed1043289",
+          "size_bytes": 8317,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 33,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/workspace-templates/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 34,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/workspace-templates/CHANGELOG.md",
+          "role": "runtime",
+          "sha256": "da640a74db910115214ae33ebf88e01416a62df1b4b1c70817013a41724df670",
+          "size_bytes": 577,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 35,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/workspace-templates/CLAIMS.md",
+          "role": "runtime",
+          "sha256": "502cd7aebfb876f463e5c0cf29b1708a6379daecdb905db1b22ed0dcb25bf8c7",
+          "size_bytes": 505,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 36,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/workspace-templates/CONTEXTS.md",
+          "role": "runtime",
+          "sha256": "fbe8d54b814907571009c7ff5bb267bc30132fd704877ad9609ba168b61980cf",
+          "size_bytes": 449,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 37,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/workspace-templates/DECISIONS.md",
+          "role": "runtime",
+          "sha256": "8a9f5b51b0791f865c95d6733c8a71d7f8782b9c9fd3a7f9f9ca725edabc4107",
+          "size_bytes": 697,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 38,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/workspace-templates/OBJECTIVES.md",
+          "role": "runtime",
+          "sha256": "a134738ca984588fd7ae00366fba87d2e465dec1c207042861bdfb5aef4c5f6b",
+          "size_bytes": 671,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 39,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/workspace-templates/PORTFOLIO.md",
+          "role": "runtime",
+          "sha256": "f69ddca1330c83dc7eb029267abef09a77f53db25a940ff0d0aa4edf76f602d4",
+          "size_bytes": 735,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 40,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/workspace-templates/PROFILE.md",
+          "role": "runtime",
+          "sha256": "51d90612c1e3575e910e3ef4158ad9a6463cfbfa73f7dcb539c7d57d9969c3fc",
+          "size_bytes": 444,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 41,
+          "path": "plugins/strategic-advisor/skills/strategic-advisor/workspace-templates/WORKSPACE.md",
+          "role": "runtime",
+          "sha256": "902c4ca88b336e78fe6406364590caae5ad82e68fd634cffa494db5fad47e1ec",
+          "size_bytes": 1186,
+          "timestamp": "1980-01-01T00:00:00"
+        }
+      ],
+      "sha256": "b0ee0040c5ca294327f8ae6cbf51a201bb0409b8102d92c1c1bc400200fa544a",
+      "size_bytes": 165381,
+      "target_surfaces": [
+        "chatgpt-desktop-work",
+        "codex"
+      ]
+    },
+    "standalone_skill": {
+      "distribution": "agent-skills-archive",
+      "format": "zip",
+      "inventory": [
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 0,
+          "path": "strategic-advisor/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 1,
+          "path": "strategic-advisor/LICENSE",
+          "role": "license",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "size_bytes": 11357,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 2,
+          "path": "strategic-advisor/SKILL.md",
+          "role": "runtime",
+          "sha256": "aae688fe63e3ae228c96d960979a27fc22f68054f24a3cf267b03ae4fac3f67b",
+          "size_bytes": 14301,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 3,
+          "path": "strategic-advisor/agents/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 4,
+          "path": "strategic-advisor/agents/openai.yaml",
+          "role": "runtime",
+          "sha256": "fe1a33ff30efbd9c0298691c3292c8ca3db696086cd039ed7ab8346a5978935f",
+          "size_bytes": 241,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 5,
+          "path": "strategic-advisor/references/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 6,
+          "path": "strategic-advisor/references/action-policy.md",
+          "role": "runtime",
+          "sha256": "03a07d59592d4610fc32c32a9fb7a36c5c7fa2d3796bcde34a048b6f2c4d9504",
+          "size_bytes": 3081,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 7,
+          "path": "strategic-advisor/references/boundaries.md",
+          "role": "runtime",
+          "sha256": "e806feb4fa266803cd12976b7b335a51c12f917acd580edce4d0958cd39ec213",
+          "size_bytes": 2773,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 8,
+          "path": "strategic-advisor/references/business-venture.md",
+          "role": "runtime",
+          "sha256": "bc8175056595b9c634732bd37b0f888f37989cfce1ec23b12728ce21ff985a79",
+          "size_bytes": 6449,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 9,
+          "path": "strategic-advisor/references/career.md",
+          "role": "runtime",
+          "sha256": "61ed321ecfb105ff6c8db921c252d9d9830940c3ad1c062174ce1ecd53681c37",
+          "size_bytes": 7560,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 10,
+          "path": "strategic-advisor/references/competing-worlds.md",
+          "role": "runtime",
+          "sha256": "243a7b6b022217b29a927b5ce00101912f559e777ddff429144b851e3fff8fe4",
+          "size_bytes": 1771,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 11,
+          "path": "strategic-advisor/references/context-policy.md",
+          "role": "runtime",
+          "sha256": "8166d90274ff40a2fa104d5f993348593ca03624fcede1cf516c5477cb4fc5db",
+          "size_bytes": 4273,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 12,
+          "path": "strategic-advisor/references/conversational-strategy.md",
+          "role": "runtime",
+          "sha256": "8419c18396a6fa5610484321f237e4999937302e11deebac50204f3f34caff13",
+          "size_bytes": 15427,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 13,
+          "path": "strategic-advisor/references/evidence.md",
+          "role": "runtime",
+          "sha256": "00977b5d458be8e3c13fb8e20318e48ca8aff4d16654c4718de7bdecb3bf4e07",
+          "size_bytes": 6341,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 14,
+          "path": "strategic-advisor/references/goal-qualification.md",
+          "role": "runtime",
+          "sha256": "7944f05edfb0419d016da3855729bb5e1711420bba4ef4c2619c59b19f591273",
+          "size_bytes": 5185,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 15,
+          "path": "strategic-advisor/references/goal-review.md",
+          "role": "runtime",
+          "sha256": "32a918d52e5069806fdc060230c186e18d7455bb49d46fe4bde3dde3bfe97ed9",
+          "size_bytes": 10309,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 16,
+          "path": "strategic-advisor/references/marketing-growth.md",
+          "role": "runtime",
+          "sha256": "337e9daaa470ed9723245b547f3b8d089771cc51a11eb2a64d81488e1a238172",
+          "size_bytes": 6331,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 17,
+          "path": "strategic-advisor/references/organizational-influence.md",
+          "role": "runtime",
+          "sha256": "50baeef98d11985f0f3401a4b48c47f34cf7c5e29c79f39be87be20ff370a481",
+          "size_bytes": 8323,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 18,
+          "path": "strategic-advisor/references/people-leadership.md",
+          "role": "runtime",
+          "sha256": "601129a909460469b539231c4d8d02a637226e37d83206e94339319ce52c9151",
+          "size_bytes": 7828,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 19,
+          "path": "strategic-advisor/references/project-product.md",
+          "role": "runtime",
+          "sha256": "c25d3e363f8f57cdb3e01ea33ed6ac6592c478525ad393a57e01446d8f2ddb71",
+          "size_bytes": 7782,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 20,
+          "path": "strategic-advisor/references/readiness.md",
+          "role": "runtime",
+          "sha256": "b4bd75312d3138dec97e4eae70ab941c0076974ed228ea18a87c9187dcedf678",
+          "size_bytes": 4311,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 21,
+          "path": "strategic-advisor/references/recommendation-delta.md",
+          "role": "runtime",
+          "sha256": "34cda7d782b2ea527566294b9efd4a93192b0819c9fdc38479e2f140335e268f",
+          "size_bytes": 8740,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 22,
+          "path": "strategic-advisor/references/response-contract.md",
+          "role": "runtime",
+          "sha256": "51e57b657aab50d79e1982343e0ebf0c260edb8169226c7d3002324412da5f2a",
+          "size_bytes": 4087,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 23,
+          "path": "strategic-advisor/references/strategy-workspace.md",
+          "role": "runtime",
+          "sha256": "485c6124b21d12c2a26d4852d98b72e2a0a0043a00101283d657eb615691d6f9",
+          "size_bytes": 5318,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 24,
+          "path": "strategic-advisor/references/technical-architecture.md",
+          "role": "runtime",
+          "sha256": "cb9d109052e1aaf8e5e36e6641dec330e15de7345789281d415d377ed1043289",
+          "size_bytes": 8317,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "directory",
+          "mode": "0755",
+          "order": 25,
+          "path": "strategic-advisor/workspace-templates/",
+          "role": "directory",
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 26,
+          "path": "strategic-advisor/workspace-templates/CHANGELOG.md",
+          "role": "runtime",
+          "sha256": "da640a74db910115214ae33ebf88e01416a62df1b4b1c70817013a41724df670",
+          "size_bytes": 577,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 27,
+          "path": "strategic-advisor/workspace-templates/CLAIMS.md",
+          "role": "runtime",
+          "sha256": "502cd7aebfb876f463e5c0cf29b1708a6379daecdb905db1b22ed0dcb25bf8c7",
+          "size_bytes": 505,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 28,
+          "path": "strategic-advisor/workspace-templates/CONTEXTS.md",
+          "role": "runtime",
+          "sha256": "fbe8d54b814907571009c7ff5bb267bc30132fd704877ad9609ba168b61980cf",
+          "size_bytes": 449,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 29,
+          "path": "strategic-advisor/workspace-templates/DECISIONS.md",
+          "role": "runtime",
+          "sha256": "8a9f5b51b0791f865c95d6733c8a71d7f8782b9c9fd3a7f9f9ca725edabc4107",
+          "size_bytes": 697,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 30,
+          "path": "strategic-advisor/workspace-templates/OBJECTIVES.md",
+          "role": "runtime",
+          "sha256": "a134738ca984588fd7ae00366fba87d2e465dec1c207042861bdfb5aef4c5f6b",
+          "size_bytes": 671,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 31,
+          "path": "strategic-advisor/workspace-templates/PORTFOLIO.md",
+          "role": "runtime",
+          "sha256": "f69ddca1330c83dc7eb029267abef09a77f53db25a940ff0d0aa4edf76f602d4",
+          "size_bytes": 735,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 32,
+          "path": "strategic-advisor/workspace-templates/PROFILE.md",
+          "role": "runtime",
+          "sha256": "51d90612c1e3575e910e3ef4158ad9a6463cfbfa73f7dcb539c7d57d9969c3fc",
+          "size_bytes": 444,
+          "timestamp": "1980-01-01T00:00:00"
+        },
+        {
+          "compression": "ZIP_STORED",
+          "kind": "file",
+          "mode": "0644",
+          "order": 33,
+          "path": "strategic-advisor/workspace-templates/WORKSPACE.md",
+          "role": "runtime",
+          "sha256": "902c4ca88b336e78fe6406364590caae5ad82e68fd634cffa494db5fad47e1ec",
+          "size_bytes": 1186,
+          "timestamp": "1980-01-01T00:00:00"
+        }
+      ],
+      "sha256": "a8d5b2c58b3adc4cf8a8ee3ad17f03c7242d7c363358666cb197f3080cf6d459",
+      "size_bytes": 160961
+    }
+  },
+  "build_mode": "release",
+  "distribution_authority": {
+    "current_public": {
+      "evidence": "evidence/releases/v0.2.0-alpha.7.json",
+      "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+      "source_revision": "0be59190b6e048e31ce990024841c2a0d42a282a",
+      "tag": "v0.2.0-alpha.7",
+      "version": "0.2.0-alpha.7"
+    },
+    "distribution": {
+      "runtime_package_identity_sha256": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+      "version": "0.2.0-alpha.10"
+    },
+    "schema_version": 2,
+    "state": "prepared",
+    "superseded": [
+      {
+        "reason": "Superseded before publication because FIX-004 corrects owner-led recommendation drift in the prepared runtime; publishing alpha.4 would knowingly ship the defect.",
+        "replacement_version": "0.2.0-alpha.5",
+        "runtime_package_identity_sha256": "0dd720757af6ccda598f2333b74ef055af625e48f10bb7824cced064c9f15bf1",
+        "source_revision": "9dbc7d744dc10bd5053daacf6054e978c67c3a5c",
+        "superseded_at": "2026-08-24T08:23:42Z",
+        "version": "0.2.0-alpha.4"
+      },
+      {
+        "reason": "TASK-036 bounded comparison found missing ownership of the next investigation; apply the one approved targeted repair before publication.",
+        "replacement_version": "0.2.0-alpha.9",
+        "runtime_package_identity_sha256": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+        "source_revision": "659ad6bda8ca39c49efc9bbe2361baa57986c551",
+        "superseded_at": "2026-09-16T02:25:29Z",
+        "version": "0.2.0-alpha.8"
+      },
+      {
+        "reason": "Owner-approved TASK-036 follow-up separates exploration from endorsement after retained DRIFT-016 failure; one affected-only 12-turn correction attempt.",
+        "replacement_version": "0.2.0-alpha.10",
+        "runtime_package_identity_sha256": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+        "source_revision": "ce6563fcd22fb4ded1b525325e7660f5c5a99465",
+        "superseded_at": "2026-09-16T03:57:40Z",
+        "version": "0.2.0-alpha.9"
+      }
+    ]
+  },
+  "distribution_version": "0.2.0-alpha.10",
+  "git_source_verification": {
+    "input_files": [
+      {
+        "path": "LICENSE",
+        "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+        "size_bytes": 11357
+      },
+      {
+        "path": "distribution.json",
+        "sha256": "adb5a002dec4353aacd7f7a3be636bc7f029d776c94aa8b35e508b4e68c13ee8",
+        "size_bytes": 2016
+      },
+      {
+        "path": "skills/strategic-advisor/SKILL.md",
+        "sha256": "aae688fe63e3ae228c96d960979a27fc22f68054f24a3cf267b03ae4fac3f67b",
+        "size_bytes": 14301
+      },
+      {
+        "path": "skills/strategic-advisor/agents/openai.yaml",
+        "sha256": "fe1a33ff30efbd9c0298691c3292c8ca3db696086cd039ed7ab8346a5978935f",
+        "size_bytes": 241
+      },
+      {
+        "path": "skills/strategic-advisor/references/action-policy.md",
+        "sha256": "03a07d59592d4610fc32c32a9fb7a36c5c7fa2d3796bcde34a048b6f2c4d9504",
+        "size_bytes": 3081
+      },
+      {
+        "path": "skills/strategic-advisor/references/boundaries.md",
+        "sha256": "e806feb4fa266803cd12976b7b335a51c12f917acd580edce4d0958cd39ec213",
+        "size_bytes": 2773
+      },
+      {
+        "path": "skills/strategic-advisor/references/business-venture.md",
+        "sha256": "bc8175056595b9c634732bd37b0f888f37989cfce1ec23b12728ce21ff985a79",
+        "size_bytes": 6449
+      },
+      {
+        "path": "skills/strategic-advisor/references/career.md",
+        "sha256": "61ed321ecfb105ff6c8db921c252d9d9830940c3ad1c062174ce1ecd53681c37",
+        "size_bytes": 7560
+      },
+      {
+        "path": "skills/strategic-advisor/references/competing-worlds.md",
+        "sha256": "243a7b6b022217b29a927b5ce00101912f559e777ddff429144b851e3fff8fe4",
+        "size_bytes": 1771
+      },
+      {
+        "path": "skills/strategic-advisor/references/context-policy.md",
+        "sha256": "8166d90274ff40a2fa104d5f993348593ca03624fcede1cf516c5477cb4fc5db",
+        "size_bytes": 4273
+      },
+      {
+        "path": "skills/strategic-advisor/references/conversational-strategy.md",
+        "sha256": "8419c18396a6fa5610484321f237e4999937302e11deebac50204f3f34caff13",
+        "size_bytes": 15427
+      },
+      {
+        "path": "skills/strategic-advisor/references/evidence.md",
+        "sha256": "00977b5d458be8e3c13fb8e20318e48ca8aff4d16654c4718de7bdecb3bf4e07",
+        "size_bytes": 6341
+      },
+      {
+        "path": "skills/strategic-advisor/references/goal-qualification.md",
+        "sha256": "7944f05edfb0419d016da3855729bb5e1711420bba4ef4c2619c59b19f591273",
+        "size_bytes": 5185
+      },
+      {
+        "path": "skills/strategic-advisor/references/goal-review.md",
+        "sha256": "32a918d52e5069806fdc060230c186e18d7455bb49d46fe4bde3dde3bfe97ed9",
+        "size_bytes": 10309
+      },
+      {
+        "path": "skills/strategic-advisor/references/marketing-growth.md",
+        "sha256": "337e9daaa470ed9723245b547f3b8d089771cc51a11eb2a64d81488e1a238172",
+        "size_bytes": 6331
+      },
+      {
+        "path": "skills/strategic-advisor/references/organizational-influence.md",
+        "sha256": "50baeef98d11985f0f3401a4b48c47f34cf7c5e29c79f39be87be20ff370a481",
+        "size_bytes": 8323
+      },
+      {
+        "path": "skills/strategic-advisor/references/people-leadership.md",
+        "sha256": "601129a909460469b539231c4d8d02a637226e37d83206e94339319ce52c9151",
+        "size_bytes": 7828
+      },
+      {
+        "path": "skills/strategic-advisor/references/project-product.md",
+        "sha256": "c25d3e363f8f57cdb3e01ea33ed6ac6592c478525ad393a57e01446d8f2ddb71",
+        "size_bytes": 7782
+      },
+      {
+        "path": "skills/strategic-advisor/references/readiness.md",
+        "sha256": "b4bd75312d3138dec97e4eae70ab941c0076974ed228ea18a87c9187dcedf678",
+        "size_bytes": 4311
+      },
+      {
+        "path": "skills/strategic-advisor/references/recommendation-delta.md",
+        "sha256": "34cda7d782b2ea527566294b9efd4a93192b0819c9fdc38479e2f140335e268f",
+        "size_bytes": 8740
+      },
+      {
+        "path": "skills/strategic-advisor/references/response-contract.md",
+        "sha256": "51e57b657aab50d79e1982343e0ebf0c260edb8169226c7d3002324412da5f2a",
+        "size_bytes": 4087
+      },
+      {
+        "path": "skills/strategic-advisor/references/strategy-workspace.md",
+        "sha256": "485c6124b21d12c2a26d4852d98b72e2a0a0043a00101283d657eb615691d6f9",
+        "size_bytes": 5318
+      },
+      {
+        "path": "skills/strategic-advisor/references/technical-architecture.md",
+        "sha256": "cb9d109052e1aaf8e5e36e6641dec330e15de7345789281d415d377ed1043289",
+        "size_bytes": 8317
+      },
+      {
+        "path": "skills/strategic-advisor/runtime-manifest.json",
+        "sha256": "ccb01bb000742f537e01516b3e5718c0ab39a91f52070470016b9ea1bbe96802",
+        "size_bytes": 1224
+      },
+      {
+        "path": "skills/strategic-advisor/workspace-templates/CHANGELOG.md",
+        "sha256": "da640a74db910115214ae33ebf88e01416a62df1b4b1c70817013a41724df670",
+        "size_bytes": 577
+      },
+      {
+        "path": "skills/strategic-advisor/workspace-templates/CLAIMS.md",
+        "sha256": "502cd7aebfb876f463e5c0cf29b1708a6379daecdb905db1b22ed0dcb25bf8c7",
+        "size_bytes": 505
+      },
+      {
+        "path": "skills/strategic-advisor/workspace-templates/CONTEXTS.md",
+        "sha256": "fbe8d54b814907571009c7ff5bb267bc30132fd704877ad9609ba168b61980cf",
+        "size_bytes": 449
+      },
+      {
+        "path": "skills/strategic-advisor/workspace-templates/DECISIONS.md",
+        "sha256": "8a9f5b51b0791f865c95d6733c8a71d7f8782b9c9fd3a7f9f9ca725edabc4107",
+        "size_bytes": 697
+      },
+      {
+        "path": "skills/strategic-advisor/workspace-templates/OBJECTIVES.md",
+        "sha256": "a134738ca984588fd7ae00366fba87d2e465dec1c207042861bdfb5aef4c5f6b",
+        "size_bytes": 671
+      },
+      {
+        "path": "skills/strategic-advisor/workspace-templates/PORTFOLIO.md",
+        "sha256": "f69ddca1330c83dc7eb029267abef09a77f53db25a940ff0d0aa4edf76f602d4",
+        "size_bytes": 735
+      },
+      {
+        "path": "skills/strategic-advisor/workspace-templates/PROFILE.md",
+        "sha256": "51d90612c1e3575e910e3ef4158ad9a6463cfbfa73f7dcb539c7d57d9969c3fc",
+        "size_bytes": 444
+      },
+      {
+        "path": "skills/strategic-advisor/workspace-templates/WORKSPACE.md",
+        "sha256": "902c4ca88b336e78fe6406364590caae5ad82e68fd634cffa494db5fad47e1ec",
+        "size_bytes": 1186
+      }
+    ],
+    "performed": true,
+    "revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+    "status_rechecked_before_write": true
+  },
+  "identity_algorithm": "sha256-install-artifacts-v3",
+  "license": {
+    "apache_2_0_canonical": true,
+    "chatgpt_kit_path": "strategic-advisor-chatgpt/LICENSE",
+    "included": true,
+    "plugin_archive_path": "plugins/strategic-advisor/skills/strategic-advisor/LICENSE",
+    "provenance": "repository-root-apache-2.0",
+    "runtime_allowlisted": false,
+    "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "size_bytes": 11357,
+    "source_repository_path": "LICENSE",
+    "standalone_archive_path": "strategic-advisor/LICENSE"
+  },
+  "runtime_package": {
+    "file_count": 29,
+    "files": [
+      {
+        "path": "SKILL.md",
+        "sha256": "aae688fe63e3ae228c96d960979a27fc22f68054f24a3cf267b03ae4fac3f67b",
+        "size_bytes": 14301
+      },
+      {
+        "path": "agents/openai.yaml",
+        "sha256": "fe1a33ff30efbd9c0298691c3292c8ca3db696086cd039ed7ab8346a5978935f",
+        "size_bytes": 241
+      },
+      {
+        "path": "references/action-policy.md",
+        "sha256": "03a07d59592d4610fc32c32a9fb7a36c5c7fa2d3796bcde34a048b6f2c4d9504",
+        "size_bytes": 3081
+      },
+      {
+        "path": "references/boundaries.md",
+        "sha256": "e806feb4fa266803cd12976b7b335a51c12f917acd580edce4d0958cd39ec213",
+        "size_bytes": 2773
+      },
+      {
+        "path": "references/business-venture.md",
+        "sha256": "bc8175056595b9c634732bd37b0f888f37989cfce1ec23b12728ce21ff985a79",
+        "size_bytes": 6449
+      },
+      {
+        "path": "references/career.md",
+        "sha256": "61ed321ecfb105ff6c8db921c252d9d9830940c3ad1c062174ce1ecd53681c37",
+        "size_bytes": 7560
+      },
+      {
+        "path": "references/competing-worlds.md",
+        "sha256": "243a7b6b022217b29a927b5ce00101912f559e777ddff429144b851e3fff8fe4",
+        "size_bytes": 1771
+      },
+      {
+        "path": "references/context-policy.md",
+        "sha256": "8166d90274ff40a2fa104d5f993348593ca03624fcede1cf516c5477cb4fc5db",
+        "size_bytes": 4273
+      },
+      {
+        "path": "references/conversational-strategy.md",
+        "sha256": "8419c18396a6fa5610484321f237e4999937302e11deebac50204f3f34caff13",
+        "size_bytes": 15427
+      },
+      {
+        "path": "references/evidence.md",
+        "sha256": "00977b5d458be8e3c13fb8e20318e48ca8aff4d16654c4718de7bdecb3bf4e07",
+        "size_bytes": 6341
+      },
+      {
+        "path": "references/goal-qualification.md",
+        "sha256": "7944f05edfb0419d016da3855729bb5e1711420bba4ef4c2619c59b19f591273",
+        "size_bytes": 5185
+      },
+      {
+        "path": "references/goal-review.md",
+        "sha256": "32a918d52e5069806fdc060230c186e18d7455bb49d46fe4bde3dde3bfe97ed9",
+        "size_bytes": 10309
+      },
+      {
+        "path": "references/marketing-growth.md",
+        "sha256": "337e9daaa470ed9723245b547f3b8d089771cc51a11eb2a64d81488e1a238172",
+        "size_bytes": 6331
+      },
+      {
+        "path": "references/organizational-influence.md",
+        "sha256": "50baeef98d11985f0f3401a4b48c47f34cf7c5e29c79f39be87be20ff370a481",
+        "size_bytes": 8323
+      },
+      {
+        "path": "references/people-leadership.md",
+        "sha256": "601129a909460469b539231c4d8d02a637226e37d83206e94339319ce52c9151",
+        "size_bytes": 7828
+      },
+      {
+        "path": "references/project-product.md",
+        "sha256": "c25d3e363f8f57cdb3e01ea33ed6ac6592c478525ad393a57e01446d8f2ddb71",
+        "size_bytes": 7782
+      },
+      {
+        "path": "references/readiness.md",
+        "sha256": "b4bd75312d3138dec97e4eae70ab941c0076974ed228ea18a87c9187dcedf678",
+        "size_bytes": 4311
+      },
+      {
+        "path": "references/recommendation-delta.md",
+        "sha256": "34cda7d782b2ea527566294b9efd4a93192b0819c9fdc38479e2f140335e268f",
+        "size_bytes": 8740
+      },
+      {
+        "path": "references/response-contract.md",
+        "sha256": "51e57b657aab50d79e1982343e0ebf0c260edb8169226c7d3002324412da5f2a",
+        "size_bytes": 4087
+      },
+      {
+        "path": "references/strategy-workspace.md",
+        "sha256": "485c6124b21d12c2a26d4852d98b72e2a0a0043a00101283d657eb615691d6f9",
+        "size_bytes": 5318
+      },
+      {
+        "path": "references/technical-architecture.md",
+        "sha256": "cb9d109052e1aaf8e5e36e6641dec330e15de7345789281d415d377ed1043289",
+        "size_bytes": 8317
+      },
+      {
+        "path": "workspace-templates/CHANGELOG.md",
+        "sha256": "da640a74db910115214ae33ebf88e01416a62df1b4b1c70817013a41724df670",
+        "size_bytes": 577
+      },
+      {
+        "path": "workspace-templates/CLAIMS.md",
+        "sha256": "502cd7aebfb876f463e5c0cf29b1708a6379daecdb905db1b22ed0dcb25bf8c7",
+        "size_bytes": 505
+      },
+      {
+        "path": "workspace-templates/CONTEXTS.md",
+        "sha256": "fbe8d54b814907571009c7ff5bb267bc30132fd704877ad9609ba168b61980cf",
+        "size_bytes": 449
+      },
+      {
+        "path": "workspace-templates/DECISIONS.md",
+        "sha256": "8a9f5b51b0791f865c95d6733c8a71d7f8782b9c9fd3a7f9f9ca725edabc4107",
+        "size_bytes": 697
+      },
+      {
+        "path": "workspace-templates/OBJECTIVES.md",
+        "sha256": "a134738ca984588fd7ae00366fba87d2e465dec1c207042861bdfb5aef4c5f6b",
+        "size_bytes": 671
+      },
+      {
+        "path": "workspace-templates/PORTFOLIO.md",
+        "sha256": "f69ddca1330c83dc7eb029267abef09a77f53db25a940ff0d0aa4edf76f602d4",
+        "size_bytes": 735
+      },
+      {
+        "path": "workspace-templates/PROFILE.md",
+        "sha256": "51d90612c1e3575e910e3ef4158ad9a6463cfbfa73f7dcb539c7d57d9969c3fc",
+        "size_bytes": 444
+      },
+      {
+        "path": "workspace-templates/WORKSPACE.md",
+        "sha256": "902c4ca88b336e78fe6406364590caae5ad82e68fd634cffa494db5fad47e1ec",
+        "size_bytes": 1186
+      }
+    ],
+    "identity_algorithm": "sha256-canonical-json-v1",
+    "package_identity_sha256": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+    "package_root": "skills/strategic-advisor",
+    "schema_version": 1,
+    "source_allowlist": {
+      "path": "skills/strategic-advisor/runtime-manifest.json",
+      "sha256": "ccb01bb000742f537e01516b3e5718c0ab39a91f52070470016b9ea1bbe96802"
+    }
+  },
+  "schema_version": 3,
+  "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+  "source_revision_exact": true,
+  "source_tree_state": "clean"
+}

@@ -2,74 +2,60 @@
 
 As a person seeking strategic advice, I want a rigorous first answer and useful continuation so I do not have to provoke arbitrary revisions to discover whether the work was done.
 
+## Architecture Impact
+
+- Classification: no
+- Reason: Canonical instruction and synthetic scoring changes use the existing skill, evaluator and packaging. No component, dependency, ownership boundary, shared-state boundary or extension point changes.
+- Architecture authority: Not applicable
+
 ## Acceptance Criteria
 
-- [ ] AC1: Outcome alignment, relevant context and accessible investigation.
-- [ ] AC2: First-pass rival scrutiny and owned continuation without mandatory labels.
-- [ ] AC3: Stable re-review and specific evidence-based correction.
-- [ ] AC4: Frozen eight-case comparison, current-source smoke and deterministic checks with honest failure bounds.
-- [ ] AC5: Canonical tooling upgrade, immutable candidate, independent QA and same-branch push.
+- [x] AC1: Outcome alignment, relevant context and accessible investigation are implemented; historical first-pass observations remain source-labelled.
+- [x] AC2: Rival scrutiny and owned continuation without mandatory labels are implemented and included in the bounded affected observation.
+- [x] AC3: Evidence-based continuity plus explicit exploration/testing/endorsement distinction; genuine changed priorities remain effective. Automatic 12-turn check passes; substantive independent QA pending.
+- [x] AC4: Owner-amended affected-only proof executed once: three groups, five sessions, twelve turns. Original failure and rubric retained; no current full-suite claim.
+- [ ] AC5: Canonical PW0.9.2/0.10 upgrades and clean-source alpha.10 artifacts verified; independent QA and updated same-branch push pending.
 
 ## Validation
 
-- AC1–AC3: Frozen synthetic eight-case comparison of alpha.7 and candidate; exact outputs and adjudication retained.
-- AC4: Current-source drift smoke; validate.py, build_evals.py --check, unittest discovery.
-- AC5: Canonical tooling provenance already byte-checked against PyPI 0.9.2 wheel; Doctor; prepare alpha.9; reproducible installation artifacts and verification; one independent QA gate; pushed commit identity.
-- Evaluation budget: one baseline diagnostic comparison, one candidate certification, one current-source smoke, at most one targeted repair and affected validation. Per run finite call/time/failure limits; stop certification on first product failure. No efficacy or desktop-host claims.
+- Current alpha.10: evidence/recommendation-update/run/result.json, source-audit.json, structural-validation.log, generated-inventory.log, package-verification.json and install-artifacts.json.
+- Scope: twelve target turns, three adjudications, 453 recorded seconds, zero retries or retuning. This is the complete owner-approved affected envelope; the CLI calls this its full stage without implying the historical full regression suite.
+- Historical alpha.9: evidence/first-pass/comparison.json (8/8 focused) and drift-summary.json (15/16 regression with DRIFT-016 failure). These are not reused as current-runtime passing observations.
+- Earlier code-level tests remain at their recorded sources; no runner or validator code changed in this follow-up. CI remains the repository-declared integration check.
+- T3-COMPARISON.md is an explicit substantive-review concern; automatic grades do not settle whether the recommendation gap is fixed.
 
 ## Repository Evidence
 
 | Repository | Branch / PR | Validation | Delivery | Evidence |
 | ---------- | ----------- | ---------- | -------- | -------- |
-| . | codex/advisor-first-pass-continuation from origin/main a456589ee3a5631ee246a491225dca0c7deea17e | focused comparison 8/8; drift 15/16 and blocked; prepared alpha.9 artifacts verified | blocked draft push authorised; merge/publication/install excluded | evidence/first-pass/RUN-REPORT.md |
+| . | codex/advisor-first-pass-continuation; PR #24 | current 12-turn affected result and package verification pass; independent QA pending | prior draft pushed; latest follow-up push pending; merge/publication/install excluded | evidence/recommendation-update/REPORT.md |
 
 ## Task List
 
 | ID | Title | Description | Acceptance Criteria | User Verification | Status | Dependencies | Write Scope | Parallel Safe | Execution Needs |
 | --: | ----- | ----------- | ------------------- | ----------------- | ------ | ------------ | ----------- | ------------- | --------------- |
-| 1 | Preserve tooling upgrade and freeze proof | Include canonical PW 0.9.2; freeze eight cases and baseline controls | AC4, AC5 | Review bounded evidence | Done | | .project-workflow, AGENTS.md, skills/strategic-advisor/evals | No | bounded-return |
-| 2 | Strengthen first-pass and continuation | Update canonical runtime and affected assertions; prepare immutable candidate | AC1, AC2, AC3, AC5 | Inspect before/after examples | Done | 1 | skills/strategic-advisor, scripts, tests, distribution metadata | No | bounded-return |
-| 3 | Separate exploration from endorsement | One recommendation-update correction and example; amended first-turn rubric; frozen 12-turn proof | AC2, AC3, AC4, AC5 | Inspect changed response and bounded evidence | Done | 2 | skills/strategic-advisor, distribution metadata, evidence/recommendation-update | No | bounded-return |
+| 1 | Preserve tooling upgrade and freeze proof | Include canonical PW upgrades and frozen authority | AC4, AC5 | Inspect retained evidence | Done | | .project-workflow, AGENTS.md, skills/strategic-advisor/evals | No | bounded-return |
+| 2 | Strengthen first-pass and continuation | Canonical runtime and affected assertions | AC1, AC2, AC3, AC5 | Inspect before/after examples | Done | 1 | skills/strategic-advisor, scripts, tests, distribution metadata | No | bounded-return |
+| 3 | Separate exploration from endorsement | One targeted update correction, versioned rubric and 12-turn proof | AC2, AC3, AC4, AC5 | Inspect new responses | Done | 2 | skills/strategic-advisor, distribution metadata, evidence/recommendation-update | No | bounded-return |
 
 ## Post-plan Clarify
 
-The plan preserves the approved outcomes. Removing mandatory public labels does not remove evidence calibration. Same-evidence corrections require inspectable error and replacement support; no requirement to invent a reversal. Project Workflow is included unchanged, with no legacy state repair. No unresolved material choice requires another owner question.
+The owner approved FOLLOWUP-AMENDMENT.md and its explicit affected-only proof scope. The old failure is retained. There is one implementation attempt and one independent QA; no further model test or prompt repair is authorised after output. Routine direct help and legitimate owner-value changes remain permitted.
 
 ## QA & Code Review
 
 - Intent QA contract: adversarial
-- Verdict: Not run — blocked by DRIFT-016 verification failure
-- Intent adversarial verdict: Not run
-- Could every AC pass while the approved user job remains undone: Not assessed by independent QA; the observed DRIFT-016 failure already shows an unresolved outcome gap
-- Intent audit state: approved task requirements
-- Outcome journey evidence: evidence/first-pass/comparison.json and drift-summary.json; the latter fails DRIFT-016
-- Reviewer independence: No reviewer commissioned because campaign proof failed
-- Evidence: evidence/first-pass/BLOCKING-FINDING.md
-- Findings: Unsupported replacement in DRIFT-016 T3 and insufficient smaller-rival comparison in T1; no further repair authorised in this allowance
+- Verdict: Pending
+- Intent adversarial verdict: Pending
+- Could every AC pass while the approved user job remains undone: Pending independent judgment
+- Intent audit state: Current owner-approved requirements and FOLLOWUP-AMENDMENT.md
+- Outcome journey evidence: evidence/recommendation-update/run/result.json and T3-COMPARISON.md
+- Reviewer independence: One separate sealed Codex context; no shared workflow write authority; not yet launched
+- Evidence: Pending independent report
+- Findings: Pending independent judgment; T3 endorsement language explicitly called out for review
 
-## Notes
+## Execution and proof boundaries
 
-- Task: TASK-036
-- Loaded Project Workflow package 0.10.0, asset 8, coordination contract 2.
-- Coordinator executes sequentially; independent reviewer owns no shared workflow writes.
-- Python 3.14.6 available locally; CI declares 3.11. Project is standard-library-only and has no lockfile or Codex environment to bootstrap.
+Coordinator is the sole shared-state writer. Independent review: benefit:substantive-independent-assessment; overhead:one-bounded-context; tradeoff:review-only-after-affected-proof. The sealed review permits eight exact read commands and one report file; no tests or worker launches. The external behavioural runner separately enforces the frozen twelve-call limit. No claim of aggregate nested-model enforcement is made.
 
-Verification follows implementation rows: bounded baseline comparison, candidate certification and smoke. Independent QA then reviews proof before the authorised commits and push. These are lifecycle gates, not prerequisite implementation rows.
-
-Independent QA uses one read-only subagent after the campaign passes: benefit:independent-evidence-audit; overhead:one-bounded-context; tradeoff:review-only-after-proof. The Coordinator retains all tracker and evidence writes.
-
-## Bounded continuation outcome
-
-Owner approved canonical 0.10.0 and one fixed remaining allowance; see OWNER-AMENDMENT.md. The canonical upgrade changed four managed files, all matching the package plan. Existing completed tests and runtime were retained. The paused regression checkpoint resumed once: 42 additional target calls and 13 adjudications; no retries, product repairs or new campaigns. DRIFT-016 failed. No independent QA was launched, and no sealed-host enforcement claim is made. The task is Blocked and the branch is an explicitly incomplete draft.
-
-AC1–AC3 remain unchecked as complete capabilities: the focused comparison passes, but the stronger regression exposes an unresolved first-pass/selective-retraction gap. AC4 has honest executed proof, not passing certification. AC5 has canonical tooling and prepared packaging, but independent QA remains blocked. Existing 226-test initial suite, 46 validator tests and 21 runner tests remain scoped to their recorded sources; no new broad suite was run after the owner imposed the continuation limit.
-
-## Current follow-up
-
-The owner-approved FOLLOWUP-AMENDMENT.md narrows new proof to 12 turns and allows one implementation attempt. The preceding failed campaign is historical and retained in evidence/recommendation-update/previous-coordination.json. Independent QA has never run; it remains one gate after passing affected proof.
-
-## Architecture Impact
-
-- Classification: no
-- Reason: This correction changes canonical advice-handling prose and synthetic scoring wording within the existing skill and runner. It adds no component, dependency, ownership boundary, shared state, extension point, or measurable architecture constraint.
-- Architecture authority: Not applicable
+Historical failed campaigns remain in evidence/first-pass and evidence/recommendation-update/previous-coordination.json. Current release metadata supersedes unpublished alpha.9 with prepared alpha.10. Publication, installation, adoption and owner acceptance are not established.

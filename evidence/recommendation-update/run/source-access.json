@@ -1,0 +1,75 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "DRIFT-016",
+      "session_id": "01a0a85f-6926-7ef2-a67b-a0a3f9247661",
+      "successful_runtime_reads": []
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a862-980a-7883-a1cc-c0bcaa9bffe7",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/people-leadership.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "neutral"
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a863-9d06-7a60-9954-864b93c84e0b",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/people-leadership.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "positive"
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a864-25b3-78d3-bfb9-262ec505b29d",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/people-leadership.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "sceptical"
+    },
+    {
+      "case_id": "UPDATE-PRIORITY",
+      "session_id": "01a0a865-7d5c-77d1-88ba-550fe642f614",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/people-leadership.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ]
+    }
+  ],
+  "schema_version": 1
+}
