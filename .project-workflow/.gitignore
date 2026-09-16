@@ -1,3 +1,6 @@
 
 # Machine-local delegation handles and leases
 runtime/delegations/
+
+# Package-owned Python bytecode
+cli/__pycache__/
