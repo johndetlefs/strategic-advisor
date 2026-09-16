@@ -13,6 +13,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -606,7 +607,6 @@ def successful_runtime_reads(
 ) -> set[str]:
     """Reduce successful command events to package-relative runtime paths."""
     reads: set[str] = set()
-    package_prefix = str(package_root.resolve()) + "/"
     for event in events:
         if event.get("type") != "item.completed":
             continue
@@ -621,15 +621,23 @@ def successful_runtime_reads(
         command = item.get("command")
         if not isinstance(command, str):
             continue
+        # Match whole paths, never the suffix inside a global installation.
+        paths = re.findall(r"(?<![\w/.-])/[^\s\"';]*strategic-advisor/[^\s\"';]+", command)
+        for path in paths:
+            relative = path.split("/strategic-advisor/", 1)[1]
+            if relative not in runtime_paths:
+                continue  # e.g. an explicitly authorised synthetic CSV
+            resolved = Path(path).resolve()
+            expected = (package_root / relative).resolve()
+            if resolved != expected:
+                raise HarnessFailure("target read a Strategic Advisor installation outside the frozen runtime")
+            reads.add(relative)
         for relative in runtime_paths:
-            absolute = package_prefix + relative
-            relative_reference = f".agents/skills/strategic-advisor/{relative}"
-            reference_loop = (
-                relative.startswith("references/")
-                and ".agents/skills/strategic-advisor" in command
-                and Path(relative).name in command
-            )
-            if absolute in command or relative_reference in command or reference_loop:
+            local = f".agents/skills/strategic-advisor/{relative}"
+            if re.search(
+                r"(?<![\w/.-])(?:\./)?" + re.escape(local) + r"(?=$|[\s\"';])",
+                command,
+            ):
                 reads.add(relative)
     return reads
 
@@ -714,6 +722,17 @@ def target_turn(
 ) -> tuple[str, str, list[dict[str, Any]]]:
     if answer_path.exists():
         answer_path.unlink()
+    hidden = [Path.home() / ".agents/skills/strategic-advisor/SKILL.md",
+              Path.home() / ".codex/skills/strategic-advisor/SKILL.md"]
+    skill_config = "skills.config=[" + ",".join(
+        "{path=" + json.dumps(str(path)) + ",enabled=false}" for path in hidden
+    ) + "]"
+    routing = (
+        "Runtime routing only: when Strategic Advisor applies, use only the frozen "
+        f"runtime at {target_root / '.agents/skills/strategic-advisor/SKILL.md'}. "
+        "Do not read another installed copy. This does not activate the skill for "
+        "a request outside its normal scope.\n\n"
+    )
     if session_id is None:
         command = [
             str(codex),
@@ -748,7 +767,8 @@ def target_turn(
             str(answer_path),
             "-",
         ]
-    events, _ = run_json_events(command, prompt, raw_path, timeout)
+    command.extend(["-c", skill_config])
+    events, _ = run_json_events(command, routing + prompt, raw_path, timeout)
     resolved_session = session_id or thread_id_from(events)
     answer = (
         answer_path.read_text(encoding="utf-8").strip()

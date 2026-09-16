@@ -147,6 +147,25 @@ class LiveDriftSmokeControlTests(unittest.TestCase):
             adjudicate=adjudicator,
         )
 
+    def test_runtime_reads_reject_global_suffix_and_mixed_installations(self) -> None:
+        package = self.root / ".agents/skills/strategic-advisor"
+        def events(command, code=0):
+            return [{"type": "item.completed", "item": {"type": "command_execution",
+                     "status": "completed", "exit_code": code, "command": command}}]
+        paths = {"SKILL.md", "references/evidence.md"}
+        self.assertEqual(RUNNER.successful_runtime_reads(
+            events("cat .agents/skills/strategic-advisor/SKILL.md"), package, paths), {"SKILL.md"})
+        self.assertEqual(RUNNER.successful_runtime_reads(
+            events(f"cat '{package}/references/evidence.md'"), package, paths), {"references/evidence.md"})
+        global_read = "cat /another/home/.agents/skills/strategic-advisor/SKILL.md"
+        with self.assertRaises(RUNNER.HarnessFailure):
+            RUNNER.successful_runtime_reads(events(global_read), package, paths)
+        with self.assertRaises(RUNNER.HarnessFailure):
+            RUNNER.successful_runtime_reads(events(global_read + "; cat .agents/skills/strategic-advisor/SKILL.md"), package, paths)
+        self.assertEqual(RUNNER.successful_runtime_reads(events(global_read, 1), package, paths), set())
+        self.assertEqual(RUNNER.successful_runtime_reads(
+            events("cat /fixture/skills/strategic-advisor/evals/data.csv"), package, paths), set())
+
     def test_selection_supports_exact_metadata_affected_and_previous_failure(
         self,
     ) -> None:
