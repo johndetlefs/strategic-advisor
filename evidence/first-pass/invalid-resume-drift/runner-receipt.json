@@ -1,0 +1,60 @@
+{
+  "artifact": "evidence/evaluations/first-pass-final-drift/result.json",
+  "candidate_identity": "sha256:5bb42eaa3aca19cb8feb83ab5bd2cefee3afe6e401ab898296d7910a8e478fb0",
+  "capabilities": [
+    "request-binding",
+    "selection",
+    "fail-fast",
+    "limits",
+    "typed-outcomes",
+    "checkpoint-resume",
+    "input-bound-receipts",
+    "transcript-regrade"
+  ],
+  "checkpoint_identity": "sha256:5ad3330f9d691a39bdcf23badfe0c1697af726fe9eae91f41f858f788d624c68",
+  "contract": "generic-verifier-receipt",
+  "diagnostic_decision": null,
+  "elapsed_seconds": 984,
+  "evaluator_calls": 11,
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "limits": {
+    "max_elapsed_seconds": 3600,
+    "max_failures": 1,
+    "max_target_calls": 64
+  },
+  "mode": "certification",
+  "outcome": "limit-reached",
+  "proof_contract_identity": "sha256:b46f6e164af8b0fa4ba0caa509a779f710eb6108ffec708163ada4f7742c19ac",
+  "receipt_identity": "sha256:1f82015f5314e0e153ce0069c7e7abddf6f36deca13ed239e9a3611b0ce062d5",
+  "regrade": false,
+  "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+  "schema_version": 1,
+  "selected_scope": [
+    "DRIFT-001",
+    "DRIFT-002",
+    "DRIFT-003",
+    "DRIFT-004",
+    "DRIFT-005",
+    "DRIFT-006",
+    "DRIFT-007",
+    "DRIFT-008",
+    "DRIFT-009",
+    "DRIFT-010",
+    "DRIFT-011",
+    "DRIFT-012",
+    "DRIFT-013",
+    "DRIFT-014",
+    "DRIFT-015",
+    "DRIFT-016"
+  ],
+  "source_identity": "sha256:67c740fd625bdf4812cac915538e9830a07928554d83ec0ffd22518338554d0b",
+  "stage_complete": false,
+  "target_calls": 34,
+  "target_identity": "sha256:a96eb4c61350cd6061e89cf72221e3f763c3a1a4c91d37e6281231b1c508fa86",
+  "telemetry_totals": {
+    "elapsed_seconds": 984,
+    "evaluator_calls": 11,
+    "failures": 1,
+    "target_calls": 34
+  }
+}

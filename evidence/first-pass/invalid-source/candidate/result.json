@@ -1,0 +1,261 @@
+{
+  "authority_commit": "659ad6bda8ca39c49efc9bbe2361baa57986c551",
+  "authority_commit_scope": "Base lineage only because the current correction remains uncommitted; exact spec and model-visible runtime are independently bound by spec_sha256 and runtime_package_identity_sha256.",
+  "completed_at": "2026-09-16T02:14:44Z",
+  "runner": {
+    "checkpoint_identity": "sha256:e0e906c8ce575146e944afaf1d371c68ca5fec26cde62a9eef59d89a16d2a7d1",
+    "limits": {
+      "max_elapsed_seconds": 3600,
+      "max_failures": 1,
+      "max_target_calls": 32
+    },
+    "outcome": "product-failure",
+    "telemetry": {
+      "elapsed_seconds": 347,
+      "evaluator_calls": 4,
+      "events": [
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 40,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 32,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T2"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 9,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-002",
+          "elapsed_seconds": 52,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-002",
+          "elapsed_seconds": 10,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-003",
+          "elapsed_seconds": 76,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-003",
+          "elapsed_seconds": 12,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-004",
+          "elapsed_seconds": 105,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-004",
+          "elapsed_seconds": 11,
+          "kind": "evaluator",
+          "outcome": "product-failure",
+          "unit_id": "adjudication"
+        }
+      ],
+      "failures": 1,
+      "outcome_counts": {
+        "evaluator-failure": 0,
+        "harness-failure": 0,
+        "limit-reached": 0,
+        "pass": 8,
+        "product-failure": 1,
+        "provider-failure": 0
+      },
+      "target_calls": 5
+    }
+  },
+  "scenarios": [
+    {
+      "case_id": "FIRST-001",
+      "criteria": [
+        {
+          "id": "FIRST_001_1",
+          "observation": "At T1, the assistant explicitly identified “better” as underspecified, quantified the trade-off between time and correctness, asked which of maintaining roughly 90% correctness or maximizing time savings was non-negotiable, and withheld a mechanism recommendation pending that clarification.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_001_2",
+          "observation": "At T2, the assistant preserved the clarified priority that correctness must not be sacrificed, rejected autonomous replacement at the reported 65% rate, and proposed a bounded shadow-mode trial with staff review and a 90% correctness adoption threshold. It did not repeat the resolved outcome question.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a7f9-84d5-7552-bb16-c5cb6473d1a2",
+          "turns": [
+            {
+              "assistant": "“Better” is underspecified because the evidence exposes a real trade-off:\n\n- Current: 120 minutes, 90% correct first submission.\n- Automated: 20 minutes, 65% correct first submission.\n- Automation saves 100 minutes but produces 25 more incorrect first submissions per 100 clients.\n\nWhich outcome is non-negotiable: maintaining roughly 90% first-submission correctness, or maximising staff-time savings while accepting lower correctness? Until that is settled, neither full automation nor the current process is supportably “better.”",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. We want to make client onboarding better. Our current approach takes two staff hours and gives 90 percent of clients a correct first submission. An automated proposal takes 20 minutes and gives 65 percent correct first submissions. Recommend our direction."
+            },
+            {
+              "assistant": "## Bottom line\n\nKeep the staff-led process as the production baseline. Do not replace it with the current automated proposal: its reported 65% correctness conflicts directly with the objective of preserving submission quality against the current 90% baseline.\n\n## Readiness — Conditional\n\nAutomation is justified only as a staff-assistive, shadow-tested tool—not as an autonomous replacement. Staff must retain review and submission control until comparable evidence shows automation can achieve at least the existing 90% correct-first-submission rate.\n\n## Reality check\n\nAll figures are user-supplied synthetic evidence:\n\n- Staff-led: 120 minutes, 90% correct.\n- Automated: 20 minutes, 65% correct.\n- Therefore, automation saves 100 minutes but creates 25 additional incorrect first submissions per 100 clients.\n\nThe binding constraint is submission correctness. The leverage point is identifying whether automation can reduce preparation time without controlling the final submission.\n\n## Next moves\n\n1. Run automation in shadow mode alongside the staff process on comparable cases.\n2. Have staff correct the automated drafts before submission and measure both total staff time and first-submission correctness.\n3. Adopt it more broadly only if correctness remains at least 90%; otherwise retain the existing process and use automation only for tasks proven not to degrade quality.\n\nStop or redesign the trial if quality falls below the current baseline. Staff-time savings count only after that quality condition is met.",
+              "id": "T2",
+              "user": "Correct first submissions are the objective. Staff time is secondary; do not sacrifice submission quality to save time."
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "case_id": "FIRST-002",
+      "criteria": [
+        {
+          "id": "FIRST_002_1",
+          "observation": "The assistant used the supplied history to infer that renewal/retention may be the intended outcome, explicitly noting that recent planning emphasized “reliable renewals and fewer avoidable cancellations” while also stating this did not establish that renewal outranked acquisition. It then asked the user which current outcome takes priority—acquired customers or retained renewals/fewer cancellations—rather than silently selecting either interpretation or asking the user to redesign the feature.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a7fa-bbac-7240-a59e-b4aa73443b6a",
+          "turns": [
+            {
+              "assistant": "Do not commit the two engineer-weeks to building automated outreach yet. Commit only to a bounded validation step.\n\nThe authorised evidence establishes that recent planning repeatedly emphasised reliable renewals and fewer avoidable cancellations. It does not establish:\n\n- whether renewal now outranks acquisition;\n- that insufficient outreach causes either problem;\n- that automation would outperform a manual process or another product fix.\n\nThe strongest rival is therefore not “build a smaller automation.” It is a manual outreach test that reveals whether outreach changes customer behaviour before engineering capacity is consumed.\n\nUse a small sample of customers approaching renewal or showing a known cancellation trigger. Send outreach manually using the proposed timing and message, retain a comparable no-outreach group where practical, and observe completed renewals or avoided cancellations—not messages sent or replies. If there is no identifiable audience, trigger, or measurable outcome, stop: the feature thesis is not yet testable.\n\nOne owner decision is required before choosing the test:\n\n**For the next planning horizon, which outcome takes priority: incremental acquired customers, or incremental retained renewals/fewer avoidable cancellations?**\n\nThat answer materially changes the audience, trigger, workflow, success measure, and likely feature. Until it is settled, building “automated outreach” risks creating a generic delivery mechanism without a confirmed job. Preserve the engineering capacity; use it only after a bounded test demonstrates behavioural lift and exposes a repeated workflow worth automating.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. Authorised prior project notes: three recent planning conversations prioritised reliable renewals and reducing avoidable cancellations; no decision established whether acquisition or renewal now has priority. Today I ask: should we build an automated outreach feature? We have two engineer weeks. What do you advise?"
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "case_id": "FIRST-003",
+      "criteria": [
+        {
+          "id": "FIRST_003_1",
+          "observation": "The assistant directly used the authorised CSV’s figures: current 32/40 completions at 12 minutes and proposal 20/40 at 18 minutes. It did not ask the owner to retrieve or summarise the file, and its cited values match the criterion.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_003_2",
+          "observation": "The assistant explicitly advised, “Do not roll out the proposed workflow,” quantified the proposal’s 30-percentage-point completion reduction and 50% longer median time, and recommended keeping the current workflow while investigating the loss mechanism through a bounded randomized comparison. It appropriately limited certainty by identifying ambiguity in the meaning of “completed” and the absence of individual timing and dispersion data rather than asserting a universal cause.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a7fb-ab2d-7a31-97f0-1a1addf0a109",
+          "turns": [
+            {
+              "assistant": "Do not roll out the proposed workflow. The sponsor’s conclusion is contradicted by the only authorised evidence.\n\nFrom the [synthetic pilot CSV](/private/tmp/sa-first-pass-continuation/skills/strategic-advisor/evals/first_pass_fixture.csv):\n\n| Condition | Completed | Completion rate | Median time |\n|---|---:|---:|---:|\n| Current | 32/40 | 80% | 12 min |\n| Proposal | 20/40 | 50% | 18 min |\n\nThe proposal produced:\n\n- 12 fewer completions: a 30-percentage-point reduction.\n- Six additional median minutes: 50% slower.\n\nThe CSV describes both cohorts as representative and randomly assigned, making the current workflow the strongest available comparator. Sponsor endorsement is a preference/report, not evidence capable of overriding these results.\n\nOne limitation strengthens caution rather than rollout: the file does not define whether `completed` means “correctly completed.” If it does, the proposal is worse on both objectives. If it does not, correctness remains unmeasured while observed completion and time are already worse. Individual timing data and dispersion are absent, so no claim about statistical uncertainty in median time is supportable.\n\nThe proposed full rollout is therefore infeasible as an improvement on the evidence supplied. Keep the current workflow. If the proposal is revised, its owner should first identify the mechanism behind the losses and run another bounded, randomly assigned comparison measuring explicitly correct completion and user time. Reconsider rollout only if the revised version improves correctness without an unacceptable time penalty.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. We want more correct workflow completions and less user time. A sponsor says the proposed workflow is an improvement and wants rollout. The current matched pilot results are in /private/tmp/sa-first-pass-continuation/skills/strategic-advisor/evals/first_pass_fixture.csv; you have read permission for that exact synthetic CSV and tools can read it. Assess rollout using the available evidence."
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "case_id": "FIRST-004",
+      "criteria": [
+        {
+          "id": "FIRST_004_1",
+          "observation": "The response explicitly rejects endorsing a merger before diagnosis, identifies the unproven causal claim that separate runtimes cause duplicate entry, surfaces coordinated-release, approval-enforcement, and shared-failure-domain costs, and compares the merger with a smaller shared-template or export/import intervention.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_004_2",
+          "observation": "The response gives a discriminating next move—observe one or two weekly cycles, map the duplicate-entry path, and pilot the least-coupled remedy—but it does not assign an owner to that work.",
+          "status": "fail"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a7fc-fe43-7d63-89a6-0454cfe1e0f5",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nDo not merge the software runtimes now. Preserve independent deployment and approval boundaries, then measure the duplicate-entry path and trial the smallest intervention—probably a shared input template or export/import handoff.\n\n**Readiness — Not validated.** The runtime merger depends on an unproven claim: that duplication originates from separate software rather than from the teams’ workflow, data format, or approval processes.\n\n### Reality check\n\n- **Reported:** both teams repeat a weekly data-entry step.\n- **Reported:** their approval rules differ.\n- **Reported:** they must deploy independently.\n- **Unknown:** where and why the duplicate entry originates.\n- **Inference:** a shared runtime could introduce release, approval, and failure coupling that conflicts with the independence requirement.\n- **Unknown:** whether a template, export, or other boundary-level mechanism removes enough duplication.\n\nTwo plausible worlds remain:\n\n1. The duplication is primarily data transfer or formatting. A shared schema, template, or export solves it while preserving autonomy.\n2. The duplication is embedded throughout both applications. Deeper sharing may eventually be justified, but this has not been demonstrated.\n\n### First move\n\nObserve one or two complete weekly cycles and map:\n\n- where the information is first entered;\n- which fields are re-entered;\n- why reuse currently fails;\n- where approval rules cause legitimate divergence.\n\nThen pilot the least-coupled remedy against that exact point. Escalate toward shared components only if the pilot fails because the duplication demonstrably resides in common application logic.\n\nStop considering a runtime merger if it requires coordinated releases, compromises separate approval enforcement, or expands the shared failure domain. Reconsider it only with measured evidence that smaller interfaces cannot remove the material duplication.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. Our two small teams repeat a weekly data entry step. I propose merging their software into one shared runtime to remove the duplication. They use different approval rules and must deploy independently. We have not measured where duplicate entry originates. A shared input template or a small data export might suffice. Give your first recommendation."
+            }
+          ]
+        }
+      ],
+      "status": "fail"
+    }
+  ],
+  "schema_version": 1,
+  "selection": {
+    "diagnostic_decision": null,
+    "full_suite": true,
+    "mode": "certification",
+    "selected_case_ids": [
+      "FIRST-001",
+      "FIRST-002",
+      "FIRST-003",
+      "FIRST-004",
+      "FIRST-005",
+      "FIRST-006",
+      "FIRST-007",
+      "FIRST-008"
+    ]
+  },
+  "spec_sha256": "9a1fbdfc61db347ef681bc5fec1f4177018bf1ce0c80b83bf1c9746571ced8a8",
+  "started_at": "2026-09-16T02:09:02Z",
+  "status": "fail",
+  "suite_id": "strategic-advisor-first-pass-v1",
+  "target": {
+    "cli_version": "codex-cli 0.153.4",
+    "evaluation_material_visible": false,
+    "host": "codex-cli",
+    "model": "gpt-5.6-sol",
+    "runtime_package_identity_sha256": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+    "source_access": [
+      "SKILL.md",
+      "references/action-policy.md",
+      "references/boundaries.md",
+      "references/competing-worlds.md",
+      "references/conversational-strategy.md",
+      "references/evidence.md",
+      "references/goal-qualification.md",
+      "references/marketing-growth.md",
+      "references/project-product.md",
+      "references/readiness.md",
+      "references/recommendation-delta.md",
+      "references/response-contract.md",
+      "references/technical-architecture.md"
+    ],
+    "source_access_artifact": "source-access.json",
+    "source_access_artifact_sha256": "6235ec5ea46454b62b8de3e18616da427b9f841c2d1764c2b797175a994f7c35",
+    "visibility_control": "Target sessions received only the isolated allowlisted runtime package and frozen user turns; criteria were disclosed later to separate ephemeral adjudicator sessions."
+  }
+}

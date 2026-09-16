@@ -1,10 +1,12 @@
 {
   "boundary_decisions": [
     {
-      "affected_units": [],
+      "affected_units": [
+        "TASK-036"
+      ],
       "amendment_identity": null,
       "boundary": "after-plan-or-decomposition",
-      "capability_change": "No change beyond approved envelope",
+      "capability_change": "Runtime unchanged; correct target resume cwd and failure counter; earlier source-invalid proof retained in archived campaign",
       "classification": "inside-envelope",
       "decided_by": "Coordinator",
       "decision_date": "2026-09-16",
@@ -19,9 +21,9 @@
         "OC7"
       ],
       "shared_premises_valid": "yes",
-      "source_identity": "sha256:ec36a57d1fa1d90612493f9cd107c1c36345c0a8851d4f3047792d3357715550",
-      "source_revision": "a456589ee3a5631ee246a491225dca0c7deea17e",
-      "user_consequence": "Proceed with bounded implementation and proof"
+      "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
+      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
+      "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
     },
     {
       "affected_units": [
@@ -29,7 +31,7 @@
       ],
       "amendment_identity": null,
       "boundary": "before-unit-start",
-      "capability_change": "Implement approved changes",
+      "capability_change": "Runtime unchanged; correct target resume cwd and failure counter; earlier source-invalid proof retained in archived campaign",
       "classification": "inside-envelope",
       "decided_by": "Coordinator",
       "decision_date": "2026-09-16",
@@ -44,9 +46,9 @@
         "OC7"
       ],
       "shared_premises_valid": "yes",
-      "source_identity": "sha256:ec36a57d1fa1d90612493f9cd107c1c36345c0a8851d4f3047792d3357715550",
-      "source_revision": "a456589ee3a5631ee246a491225dca0c7deea17e",
-      "user_consequence": "Proceed sequentially"
+      "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
+      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
+      "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
     },
     {
       "affected_units": [
@@ -54,7 +56,7 @@
       ],
       "amendment_identity": null,
       "boundary": "unit-return-or-dependency-join",
-      "capability_change": "Approved runtime and assertions implemented; historical proof labelled accurately",
+      "capability_change": "Runtime unchanged; correct target resume cwd and failure counter; earlier source-invalid proof retained in archived campaign",
       "classification": "inside-envelope",
       "decided_by": "Coordinator",
       "decision_date": "2026-09-16",
@@ -69,9 +71,34 @@
         "OC7"
       ],
       "shared_premises_valid": "yes",
-      "source_identity": "sha256:ec36a57d1fa1d90612493f9cd107c1c36345c0a8851d4f3047792d3357715550",
-      "source_revision": "a456589ee3a5631ee246a491225dca0c7deea17e",
-      "user_consequence": "Proceed to frozen comparison and candidate proof"
+      "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
+      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
+      "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
+    },
+    {
+      "affected_units": [
+        "TASK-036"
+      ],
+      "amendment_identity": null,
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "Runtime unchanged; correct target resume cwd and failure counter; earlier source-invalid proof retained in archived campaign",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
+      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
+      "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
     }
   ],
   "decisions": [],
@@ -85,8 +112,8 @@
       "TASK-036"
     ],
     "amendment_identity": null,
-    "boundary": "unit-return-or-dependency-join",
-    "capability_change": "Approved runtime and assertions implemented; historical proof labelled accurately",
+    "boundary": "new-evidence-or-owner-reframe",
+    "capability_change": "Runtime unchanged; correct target resume cwd and failure counter; earlier source-invalid proof retained in archived campaign",
     "classification": "inside-envelope",
     "decided_by": "Coordinator",
     "decision_date": "2026-09-16",
@@ -101,9 +128,9 @@
       "OC7"
     ],
     "shared_premises_valid": "yes",
-    "source_identity": "sha256:ec36a57d1fa1d90612493f9cd107c1c36345c0a8851d4f3047792d3357715550",
-    "source_revision": "a456589ee3a5631ee246a491225dca0c7deea17e",
-    "user_consequence": "Proceed to frozen comparison and candidate proof"
+    "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
+    "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
+    "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
   },
   "loaded_contract": {
     "asset_version": "8",
@@ -112,7 +139,7 @@
     "package_version": "0.9.2",
     "recorded_at": "2026-09-16"
   },
-  "next_action": "Run only the current affected stage.",
+  "next_action": "Run only the current full stage.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-036",
     "claim_class": "user-facing",
@@ -120,71 +147,114 @@
     "required": true,
     "status": "pending"
   },
-  "phase": "implementation",
+  "phase": "verification",
   "repositories": {
     ".": {
-      "source_revision": "a456589ee3a5631ee246a491225dca0c7deea17e"
+      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b"
     }
   },
   "schema_version": 2,
-  "source_revision": "a456589ee3a5631ee246a491225dca0c7deea17e",
+  "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
   "target_id": "TASK-036",
   "verification_campaign": {
     "adapter": {
       "capabilities": [],
       "command": null,
       "kind": "manual",
-      "manual_command": "python3 scripts/run_drift_smoke_live.py --spec skills/strategic-advisor/evals/first_pass_cases.json --output-dir evidence/first-pass/baseline --mode diagnostic --case FIRST-001 --case FIRST-002 --case FIRST-003 --case FIRST-004 --case FIRST-005 --case FIRST-006 --case FIRST-007 --case FIRST-008 --diagnostic-decision baseline-comparison --max-failures 8 --max-target-calls 32 --max-elapsed-seconds 3600"
+      "manual_command": "Existing runner: DRIFT-011 canary (2 calls), FIRST-001/FIRST-006 recovery on both comparison sides (16 calls), then remaining drift groups (50 calls). No automatic infrastructure retry; no product repair."
     },
     "affected_scope": [
       "TASK-036 eight synthetic cases and current-source drift smoke"
     ],
-    "candidate_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+    "candidate_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
     "claims": [
       "Bounded CLI first-pass",
       "continuation and stable correction behaviour"
     ],
-    "current_stage": "affected",
-    "diagnostic_decision": "Compare alpha.7 with revised runtime on frozen cases; baseline is not certification",
+    "current_stage": "full",
+    "diagnostic_decision": null,
     "impact": "known",
     "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
     "limits": {
       "max_elapsed_seconds": 3600,
-      "max_failures": 8,
-      "max_target_calls": 32
+      "max_failures": 1,
+      "max_target_calls": 68
     },
-    "mode": "diagnostic",
-    "next_action": "Run only the current affected stage.",
+    "mode": "certification",
+    "next_action": "Run only the current full stage.",
     "outcome": "pending",
-    "proof_contract_identity": "sha256:30f1c566fbd17d29317e0cc3b84099c608745bc0eba1a0179f1e8c4aab3bdbe9",
-    "receipt_ledger_identity": "sha256:21a53fa9f4479fc0f55a21c50402e98cdaf4678540a2b4de0e6fa65cf4d2b443",
+    "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
+    "receipt_ledger_identity": "sha256:7ab0de7dccb1936c944033239a1a545821fcd1d73234d331ea97cce1f5e99ce8",
     "receipts": [
       {
-        "artifact": "/private/tmp/sa-baseline-validation.log",
-        "candidate_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+        "artifact": "evidence/first-pass/resume-regression-tests.log",
+        "candidate_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
         "elapsed_seconds": 1,
-        "evaluator_identity": "repository-validator",
+        "evaluator_identity": "real-subprocess-regression-tests",
         "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
         "outcome": "pass",
-        "proof_contract_identity": "sha256:30f1c566fbd17d29317e0cc3b84099c608745bc0eba1a0179f1e8c4aab3bdbe9",
-        "receipt_identity": "sha256:521d4bf87e630046b8bca3aef051c49926af3224e601bd273065b6eadcf27e9a",
+        "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
+        "receipt_identity": "sha256:773be7149511c4b4cdbcc46447e208bcdb89ad4e39ec26bb1e127a39c464b6c4",
         "recorded_at": "2026-09-16",
         "regrade": false,
-        "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+        "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
         "scope": [
           "TASK-036 eight synthetic cases and current-source drift smoke"
         ],
-        "source_identity": "sha256:ec36a57d1fa1d90612493f9cd107c1c36345c0a8851d4f3047792d3357715550",
+        "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
         "stage": "deterministic",
         "stage_complete": true,
         "target_calls": 0,
-        "target_identity": "alpha.7-baseline"
+        "target_identity": "ec9d005-isolated-runner"
+      },
+      {
+        "artifact": "evidence/first-pass/isolated-resume-canary/result.json",
+        "candidate_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+        "elapsed_seconds": 58,
+        "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+        "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+        "outcome": "pass",
+        "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
+        "receipt_identity": "sha256:402e2d57e79d221afe2e000811c9afb5e46067d291a133f0446b6aba9ca071a6",
+        "recorded_at": "2026-09-16",
+        "regrade": false,
+        "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+        "scope": [
+          "TASK-036 eight synthetic cases and current-source drift smoke"
+        ],
+        "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
+        "stage": "canary",
+        "stage_complete": true,
+        "target_calls": 2,
+        "target_identity": "sha256:05bb6911b287c3400ed8aef8a726b893a515d89538b9f047a2a80d3cf335a8dc"
+      },
+      {
+        "artifact": "evidence/first-pass/comparison.json",
+        "candidate_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+        "elapsed_seconds": 602,
+        "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+        "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+        "outcome": "pass",
+        "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
+        "receipt_identity": "sha256:ace33c5bbd365cbfb547d7eacaf9b14258c1dc1f703cfbb2e2731fa53835cf40",
+        "recorded_at": "2026-09-16",
+        "regrade": false,
+        "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+        "scope": [
+          "TASK-036 eight synthetic cases and current-source drift smoke"
+        ],
+        "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
+        "stage": "affected",
+        "stage_complete": true,
+        "target_calls": 16,
+        "target_identity": "sha256:aeeba01b027100984a97ba2ff557e495c64a6ca22ad8d14a1641fc1bb6adb8cb"
       }
     ],
     "schema_version": 1,
-    "source_identity": "sha256:ec36a57d1fa1d90612493f9cd107c1c36345c0a8851d4f3047792d3357715550",
+    "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
     "stages": [
       "deterministic",
+      "canary",
       "affected",
       "full"
     ]
@@ -197,10 +267,11 @@
       "Bounded CLI first-pass",
       "continuation and stable correction behaviour"
     ],
-    "proof_contract_identity": "sha256:30f1c566fbd17d29317e0cc3b84099c608745bc0eba1a0179f1e8c4aab3bdbe9",
+    "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
     "required": true,
     "stages": [
       "deterministic",
+      "canary",
       "affected",
       "full"
     ]

@@ -1,0 +1,58 @@
+{
+  "scope": "One synthetic before/after sample; no statistical effectiveness claim",
+  "baseline_runtime": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+  "candidate_runtime": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+  "cases": [
+    {
+      "case_id": "FIRST-001",
+      "baseline": "pass",
+      "alpha9": "pass"
+    },
+    {
+      "case_id": "FIRST-002",
+      "baseline": "fail",
+      "alpha9": "pass"
+    },
+    {
+      "case_id": "FIRST-003",
+      "baseline": "pass",
+      "alpha9": "pass"
+    },
+    {
+      "case_id": "FIRST-004",
+      "baseline": "fail",
+      "alpha9": "pass"
+    },
+    {
+      "case_id": "FIRST-005",
+      "baseline": "pass",
+      "alpha9": "pass"
+    },
+    {
+      "case_id": "FIRST-006",
+      "baseline": "pass",
+      "alpha9": "pass"
+    },
+    {
+      "case_id": "FIRST-007",
+      "baseline": "pass",
+      "alpha9": "pass"
+    },
+    {
+      "case_id": "FIRST-008",
+      "baseline": "pass",
+      "alpha9": "pass"
+    }
+  ],
+  "spec_sha256": "9a1fbdfc61db347ef681bc5fec1f4177018bf1ce0c80b83bf1c9746571ced8a8",
+  "baseline_result": "baseline/result.json",
+  "candidate_results": [
+    "final-canary/result.json",
+    "final-remaining/result.json"
+  ],
+  "excluded": [
+    "invalid-source",
+    "candidate-before-repair"
+  ],
+  "verdict": "pass"
+}

@@ -1,0 +1,97 @@
+{
+  "adapter_contract_identity": null,
+  "adjudications": {
+    "FIRST-004": [
+      {
+        "id": "FIRST_004_1",
+        "observation": "The assistant explicitly withheld merger endorsement: “Do not merge the software yet.” It identified the unmeasured causal bridge (“whether duplicated software causes the duplicate entry—is unknown”), exposed the costs created by different approval rules and independent deployments (“release coordination and a larger failure boundary”), and compared the smaller shared-template or bounded export/import remedy against a shared runtime.",
+        "status": "pass"
+      },
+      {
+        "id": "FIRST_004_2",
+        "observation": "The response gave a discriminating next move with clear ownership: “have each team’s process owner trace one real weekly cycle,” including the source, transformations, approval point, and re-entry location. It also specified the decision rule: reconsider shared runtime only if substantial shared logic cannot be removed at the data boundary; otherwise stop after a template or export removes re-entry while preserving independent approvals and deployments.",
+        "status": "pass"
+      }
+    ]
+  },
+  "checkpoint_identity": "sha256:217a8e331bb8062dfc0f84c163f150991cfddc08017b5f2b20846182159faba6",
+  "diagnostic_decision": null,
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "failure_detail": "",
+  "limits": {
+    "max_elapsed_seconds": 300,
+    "max_failures": 1,
+    "max_target_calls": 1
+  },
+  "mode": "certification",
+  "outcome": "pass",
+  "proof_contract_identity": "sha256:c85e5d0519a4ed21c98888461791e0fbadd163d257da5ee8f5985d9f3dd96a47",
+  "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+  "schema_version": 2,
+  "selected_case_ids": [
+    "FIRST-004"
+  ],
+  "sessions": {
+    "FIRST-004::default": {
+      "case_id": "FIRST-004",
+      "session_id": "01a0a809-8391-7280-be73-19a66d22bdb1",
+      "session_identity": "sha256:de08408c4932595cd349fcd532481fb4f13b3140571b47ffbc4f53c93f3b29fc",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ],
+      "turns": [
+        {
+          "assistant": "Do not merge the software yet. The shared-runtime proposal is not validated.\n\nThe reported facts cut against it: the teams require different approval rules and independent deployments, so one runtime would introduce release coordination and a larger failure boundary. Meanwhile, the key causal claim—that duplicated software causes the duplicate entry—is unknown.\n\nFirst, have each team’s process owner trace one real weekly cycle: field entered, original source, transformations, approval point, and where re-entry occurs. Then test the smallest remedy at the actual duplication point—preferably a shared input template or bounded export/import.\n\nReconsider a shared runtime only if that trace shows substantial shared logic that cannot be removed at the data boundary. If a template or export eliminates the re-entry while preserving separate approvals and deployments, stop there.",
+          "id": "T1",
+          "receipt_identity": "sha256:47341c7a11a655ea1047031d9792dc78b7a4ac25db9810e149acb1fc3b4f21ae",
+          "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. Our two small teams repeat a weekly data entry step. I propose merging their software into one shared runtime to remove the duplication. They use different approval rules and must deploy independently. We have not measured where duplicate entry originates. A shared input template or a small data export might suffice. Give your first recommendation."
+        }
+      ],
+      "variant_id": "default"
+    }
+  },
+  "source_identity": "sha256:b962baa745f309a1ccbb284e3ba4e9d81ca60aad89ba4373092dbed76db52020",
+  "spec_sha256": "9a1fbdfc61db347ef681bc5fec1f4177018bf1ce0c80b83bf1c9746571ced8a8",
+  "started_at": "2026-09-16T02:26:30Z",
+  "target_contract_identity": "sha256:d0efd2a8e535e343e7ef39f0b04f93df9915e96dbce7d805bb5efabfeb77433b",
+  "target_root": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-70uud9nx",
+  "telemetry": {
+    "elapsed_seconds": 75,
+    "evaluator_calls": 1,
+    "events": [
+      {
+        "attempt": 1,
+        "case_id": "FIRST-004",
+        "elapsed_seconds": 56,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "FIRST-004",
+        "elapsed_seconds": 19,
+        "kind": "evaluator",
+        "outcome": "pass",
+        "unit_id": "adjudication"
+      }
+    ],
+    "failures": 0,
+    "outcome_counts": {
+      "evaluator-failure": 0,
+      "harness-failure": 0,
+      "limit-reached": 0,
+      "pass": 2,
+      "product-failure": 0,
+      "provider-failure": 0
+    },
+    "target_calls": 1
+  }
+}

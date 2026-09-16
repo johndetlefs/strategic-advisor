@@ -1,0 +1,45 @@
+{
+  "artifact": "evidence/evaluations/first-pass-final-canary/result.json",
+  "candidate_identity": "sha256:d0efd2a8e535e343e7ef39f0b04f93df9915e96dbce7d805bb5efabfeb77433b",
+  "capabilities": [
+    "request-binding",
+    "selection",
+    "fail-fast",
+    "limits",
+    "typed-outcomes",
+    "checkpoint-resume",
+    "input-bound-receipts",
+    "transcript-regrade"
+  ],
+  "checkpoint_identity": "sha256:217a8e331bb8062dfc0f84c163f150991cfddc08017b5f2b20846182159faba6",
+  "contract": "generic-verifier-receipt",
+  "diagnostic_decision": null,
+  "elapsed_seconds": 75,
+  "evaluator_calls": 1,
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "limits": {
+    "max_elapsed_seconds": 300,
+    "max_failures": 1,
+    "max_target_calls": 1
+  },
+  "mode": "certification",
+  "outcome": "pass",
+  "proof_contract_identity": "sha256:c85e5d0519a4ed21c98888461791e0fbadd163d257da5ee8f5985d9f3dd96a47",
+  "receipt_identity": "sha256:8cf7efa3b8f0cd035fbed6263180e507eb329e23a920a84a743323e5e6dcde1c",
+  "regrade": false,
+  "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+  "schema_version": 1,
+  "selected_scope": [
+    "FIRST-004"
+  ],
+  "source_identity": "sha256:b962baa745f309a1ccbb284e3ba4e9d81ca60aad89ba4373092dbed76db52020",
+  "stage_complete": true,
+  "target_calls": 1,
+  "target_identity": "sha256:46125632faad74bd5958be284f92cf20b1b87b490995c815e41bb8558660a729",
+  "telemetry_totals": {
+    "elapsed_seconds": 75,
+    "evaluator_calls": 1,
+    "failures": 0,
+    "target_calls": 1
+  }
+}

@@ -1,0 +1,109 @@
+{
+  "authority_commit": "ce6563fcd22fb4ded1b525325e7660f5c5a99465",
+  "authority_commit_scope": "Base lineage only because the current correction remains uncommitted; exact spec and model-visible runtime are independently bound by spec_sha256 and runtime_package_identity_sha256.",
+  "completed_at": "2026-09-16T02:27:45Z",
+  "runner": {
+    "checkpoint_identity": "sha256:217a8e331bb8062dfc0f84c163f150991cfddc08017b5f2b20846182159faba6",
+    "limits": {
+      "max_elapsed_seconds": 300,
+      "max_failures": 1,
+      "max_target_calls": 1
+    },
+    "outcome": "pass",
+    "telemetry": {
+      "elapsed_seconds": 75,
+      "evaluator_calls": 1,
+      "events": [
+        {
+          "attempt": 1,
+          "case_id": "FIRST-004",
+          "elapsed_seconds": 56,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-004",
+          "elapsed_seconds": 19,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        }
+      ],
+      "failures": 0,
+      "outcome_counts": {
+        "evaluator-failure": 0,
+        "harness-failure": 0,
+        "limit-reached": 0,
+        "pass": 2,
+        "product-failure": 0,
+        "provider-failure": 0
+      },
+      "target_calls": 1
+    }
+  },
+  "scenarios": [
+    {
+      "case_id": "FIRST-004",
+      "criteria": [
+        {
+          "id": "FIRST_004_1",
+          "observation": "The assistant explicitly withheld merger endorsement: “Do not merge the software yet.” It identified the unmeasured causal bridge (“whether duplicated software causes the duplicate entry—is unknown”), exposed the costs created by different approval rules and independent deployments (“release coordination and a larger failure boundary”), and compared the smaller shared-template or bounded export/import remedy against a shared runtime.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_004_2",
+          "observation": "The response gave a discriminating next move with clear ownership: “have each team’s process owner trace one real weekly cycle,” including the source, transformations, approval point, and re-entry location. It also specified the decision rule: reconsider shared runtime only if substantial shared logic cannot be removed at the data boundary; otherwise stop after a template or export removes re-entry while preserving independent approvals and deployments.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a809-8391-7280-be73-19a66d22bdb1",
+          "turns": [
+            {
+              "assistant": "Do not merge the software yet. The shared-runtime proposal is not validated.\n\nThe reported facts cut against it: the teams require different approval rules and independent deployments, so one runtime would introduce release coordination and a larger failure boundary. Meanwhile, the key causal claim—that duplicated software causes the duplicate entry—is unknown.\n\nFirst, have each team’s process owner trace one real weekly cycle: field entered, original source, transformations, approval point, and where re-entry occurs. Then test the smallest remedy at the actual duplication point—preferably a shared input template or bounded export/import.\n\nReconsider a shared runtime only if that trace shows substantial shared logic that cannot be removed at the data boundary. If a template or export eliminates the re-entry while preserving separate approvals and deployments, stop there.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. Our two small teams repeat a weekly data entry step. I propose merging their software into one shared runtime to remove the duplication. They use different approval rules and must deploy independently. We have not measured where duplicate entry originates. A shared input template or a small data export might suffice. Give your first recommendation."
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    }
+  ],
+  "schema_version": 1,
+  "selection": {
+    "diagnostic_decision": null,
+    "full_suite": false,
+    "mode": "certification",
+    "selected_case_ids": [
+      "FIRST-004"
+    ]
+  },
+  "spec_sha256": "9a1fbdfc61db347ef681bc5fec1f4177018bf1ce0c80b83bf1c9746571ced8a8",
+  "started_at": "2026-09-16T02:26:30Z",
+  "status": "pass",
+  "suite_id": "strategic-advisor-first-pass-v1",
+  "target": {
+    "cli_version": "codex-cli 0.153.4",
+    "evaluation_material_visible": false,
+    "host": "codex-cli",
+    "model": "gpt-5.6-sol",
+    "runtime_package_identity_sha256": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+    "source_access": [
+      "SKILL.md",
+      "references/action-policy.md",
+      "references/conversational-strategy.md",
+      "references/evidence.md",
+      "references/goal-qualification.md",
+      "references/readiness.md",
+      "references/response-contract.md",
+      "references/technical-architecture.md"
+    ],
+    "source_access_artifact": "source-access.json",
+    "source_access_artifact_sha256": "a29e675c8472220bd189559bec0b1ed59bc49dcabd2bdaa54d068b6089b85c31",
+    "visibility_control": "Target sessions received only the isolated allowlisted runtime package and frozen user turns; criteria were disclosed later to separate ephemeral adjudicator sessions."
+  }
+}

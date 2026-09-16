@@ -1,0 +1,20 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "FIRST-004",
+      "session_id": "01a0a809-8391-7280-be73-19a66d22bdb1",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    }
+  ],
+  "schema_version": 1
+}

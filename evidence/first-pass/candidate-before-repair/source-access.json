@@ -1,0 +1,55 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "FIRST-001",
+      "session_id": "01a0a803-b86c-7a80-aa94-0370ecbf336a",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-002",
+      "session_id": "01a0a804-ece9-7f33-a713-68bd9831dafb",
+      "successful_runtime_reads": []
+    },
+    {
+      "case_id": "FIRST-003",
+      "session_id": "01a0a806-039c-72e1-9723-f9fe6e1f7b41",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-004",
+      "session_id": "01a0a806-cc02-7d11-a0ab-6990b6bf61c1",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/boundaries.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    }
+  ],
+  "schema_version": 1
+}

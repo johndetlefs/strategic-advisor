@@ -1,0 +1,33 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "FIRST-001",
+      "session_id": "01a0a82b-9a87-7091-9f07-a458bda78304",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82c-8f39-7171-b86f-d31f0cd6d7e2",
+      "successful_runtime_reads": [],
+      "variant_id": "neutral"
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82d-57a9-7002-89c5-2dada75e1989",
+      "successful_runtime_reads": [],
+      "variant_id": "positive"
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82e-e3e4-7af2-8b9e-7355b8ba1ee9",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ],
+      "variant_id": "sceptical"
+    }
+  ],
+  "schema_version": 1
+}

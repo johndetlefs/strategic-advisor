@@ -1,0 +1,121 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "FIRST-001",
+      "session_id": "01a0a80b-4dd8-7b00-9f54-c0f3835041a4",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-002",
+      "session_id": "01a0a80b-dd36-7ec2-bd43-04b41b6aead7",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/context-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/marketing-growth.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-003",
+      "session_id": "01a0a80c-8352-7fd3-a4e1-cef499e7b11d",
+      "successful_runtime_reads": [
+        "references/evidence.md",
+        "references/project-product.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-005",
+      "session_id": "01a0a80d-cbca-7302-9623-6b85c95a29f5",
+      "successful_runtime_reads": []
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a80e-aee3-7431-a159-69edfa0ddda2",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/context-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/project-product.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "neutral"
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a80f-c21c-77a3-8820-b701bdeb92aa",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/boundaries.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/people-leadership.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "positive"
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a810-c68a-7023-87dd-b93d3bfb4e2d",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/people-leadership.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "sceptical"
+    },
+    {
+      "case_id": "FIRST-007",
+      "session_id": "01a0a811-a167-79f3-9de6-8e56cd7fb6a7",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/business-venture.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-008",
+      "session_id": "01a0a812-20ff-7bd3-9e95-26f890202a78",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    }
+  ],
+  "schema_version": 1
+}

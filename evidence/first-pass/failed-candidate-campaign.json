@@ -1,0 +1,301 @@
+{
+  "boundary_decisions": [
+    {
+      "affected_units": [],
+      "amendment_identity": null,
+      "boundary": "after-plan-or-decomposition",
+      "capability_change": "No change beyond approved envelope",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:ec36a57d1fa1d90612493f9cd107c1c36345c0a8851d4f3047792d3357715550",
+      "source_revision": "a456589ee3a5631ee246a491225dca0c7deea17e",
+      "user_consequence": "Proceed with bounded implementation and proof"
+    },
+    {
+      "affected_units": [
+        "TASK-036"
+      ],
+      "amendment_identity": null,
+      "boundary": "before-unit-start",
+      "capability_change": "Implement approved changes",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:ec36a57d1fa1d90612493f9cd107c1c36345c0a8851d4f3047792d3357715550",
+      "source_revision": "a456589ee3a5631ee246a491225dca0c7deea17e",
+      "user_consequence": "Proceed sequentially"
+    },
+    {
+      "affected_units": [
+        "TASK-036"
+      ],
+      "amendment_identity": null,
+      "boundary": "unit-return-or-dependency-join",
+      "capability_change": "Approved runtime and assertions implemented; historical proof labelled accurately",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:ec36a57d1fa1d90612493f9cd107c1c36345c0a8851d4f3047792d3357715550",
+      "source_revision": "a456589ee3a5631ee246a491225dca0c7deea17e",
+      "user_consequence": "Proceed to frozen comparison and candidate proof"
+    },
+    {
+      "affected_units": [
+        "TASK-036"
+      ],
+      "amendment_identity": null,
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "Existing proof runner falsely credited global skill reads; repair exact-source matching and per-invocation routing only",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:673f04c86270ab0c81ad9c3405b4be38f6d1bba52814d79c3334d8f1292e71f2",
+      "source_revision": "659ad6bda8ca39c49efc9bbe2361baa57986c551",
+      "user_consequence": "Invalidate contaminated comparison; one fresh bounded rerun, unchanged product runtime and case criteria"
+    },
+    {
+      "affected_units": [
+        "TASK-036"
+      ],
+      "amendment_identity": null,
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "One authorised repair: explicit actor check on unresolved next moves",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC4",
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:673f04c86270ab0c81ad9c3405b4be38f6d1bba52814d79c3334d8f1292e71f2",
+      "source_revision": "659ad6bda8ca39c49efc9bbe2361baa57986c551",
+      "user_consequence": "No further product repair cycle; fresh exact-runtime proof required"
+    }
+  ],
+  "decisions": [],
+  "host_facts": {
+    "context_contract": "declared",
+    "telemetry": "unknown"
+  },
+  "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+  "last_boundary": {
+    "affected_units": [
+      "TASK-036"
+    ],
+    "amendment_identity": null,
+    "boundary": "new-evidence-or-owner-reframe",
+    "capability_change": "One authorised repair: explicit actor check on unresolved next moves",
+    "classification": "inside-envelope",
+    "decided_by": "Coordinator",
+    "decision_date": "2026-09-16",
+    "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+    "relevant_ocs": [
+      "OC1",
+      "OC2",
+      "OC3",
+      "OC4",
+      "OC5",
+      "OC6",
+      "OC7"
+    ],
+    "shared_premises_valid": "yes",
+    "source_identity": "sha256:673f04c86270ab0c81ad9c3405b4be38f6d1bba52814d79c3334d8f1292e71f2",
+    "source_revision": "659ad6bda8ca39c49efc9bbe2361baa57986c551",
+    "user_consequence": "No further product repair cycle; fresh exact-runtime proof required"
+  },
+  "loaded_contract": {
+    "asset_version": "8",
+    "context_id": "01a0a7cf-f784-7341-884c-4475eb211baf",
+    "contract_version": "2",
+    "package_version": "0.9.2",
+    "recorded_at": "2026-09-16"
+  },
+  "next_action": "Continue inside envelope.",
+  "outcome_checkpoint": {
+    "checkpoint_unit": "TASK-036",
+    "claim_class": "user-facing",
+    "record": null,
+    "required": true,
+    "status": "pending"
+  },
+  "phase": "verification",
+  "repositories": {
+    ".": {
+      "source_revision": "659ad6bda8ca39c49efc9bbe2361baa57986c551"
+    }
+  },
+  "schema_version": 2,
+  "source_revision": "659ad6bda8ca39c49efc9bbe2361baa57986c551",
+  "target_id": "TASK-036",
+  "verification_campaign": {
+    "adapter": {
+      "capabilities": [],
+      "command": null,
+      "kind": "manual",
+      "manual_command": "python3 scripts/run_drift_smoke_live.py --spec skills/strategic-advisor/evals/first_pass_cases.json --output-dir evidence/evaluations/first-pass-candidate --mode certification --max-target-calls 32 --max-elapsed-seconds 3600; then default 16-group drift smoke with max-target-calls 64 and max-elapsed-seconds 3600"
+    },
+    "affected_scope": [
+      "TASK-036 eight synthetic cases and current-source drift smoke"
+    ],
+    "candidate_identity": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+    "claims": [
+      "Bounded CLI first-pass",
+      "continuation and stable correction behaviour"
+    ],
+    "current_stage": "affected",
+    "diagnostic_decision": null,
+    "impact": "known",
+    "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+    "limits": {
+      "max_elapsed_seconds": 7200,
+      "max_failures": 1,
+      "max_target_calls": 100
+    },
+    "mode": "certification",
+    "next_action": "Campaign limit reached with required proof still missing: max_failures reached or exceeded (1/1). Record a current scope/limit decision; no pass is implied.",
+    "outcome": "limit-reached",
+    "proof_contract_identity": "sha256:30f1c566fbd17d29317e0cc3b84099c608745bc0eba1a0179f1e8c4aab3bdbe9",
+    "receipt_ledger_identity": "sha256:243a0378b37760bc8feae4809b3a697320239e2b4e99b05bcd063789063fccf1",
+    "receipts": [
+      {
+        "artifact": "evidence/first-pass/affected-validator-tests.log",
+        "candidate_identity": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+        "elapsed_seconds": 137,
+        "evaluator_identity": "python3.14.6-unittest-and-validator",
+        "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+        "outcome": "pass",
+        "proof_contract_identity": "sha256:30f1c566fbd17d29317e0cc3b84099c608745bc0eba1a0179f1e8c4aab3bdbe9",
+        "receipt_identity": "sha256:12fcfbf29eba5d3d4847ae685544619e0b2f61053f25652c9f0407f96889e63e",
+        "recorded_at": "2026-09-16",
+        "regrade": false,
+        "runtime_identity": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+        "scope": [
+          "TASK-036 eight synthetic cases and current-source drift smoke"
+        ],
+        "source_identity": "sha256:673f04c86270ab0c81ad9c3405b4be38f6d1bba52814d79c3334d8f1292e71f2",
+        "stage": "deterministic",
+        "stage_complete": true,
+        "target_calls": 0,
+        "target_identity": "candidate-659ad6b"
+      },
+      {
+        "artifact": "evidence/first-pass/INVALIDATION.md",
+        "candidate_identity": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+        "elapsed_seconds": 430,
+        "evaluator_identity": "source-command-audit",
+        "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+        "outcome": "harness-failure",
+        "proof_contract_identity": "sha256:30f1c566fbd17d29317e0cc3b84099c608745bc0eba1a0179f1e8c4aab3bdbe9",
+        "receipt_identity": "sha256:975f51ab5332750661a42ffb408f4a701f9bff22234ed5d572e768b6325fabe1",
+        "recorded_at": "2026-09-16",
+        "regrade": false,
+        "runtime_identity": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+        "scope": [
+          "TASK-036 eight synthetic cases and current-source drift smoke"
+        ],
+        "source_identity": "sha256:673f04c86270ab0c81ad9c3405b4be38f6d1bba52814d79c3334d8f1292e71f2",
+        "stage": "affected",
+        "stage_complete": false,
+        "target_calls": 5,
+        "target_identity": "invalid-global-installation-read"
+      },
+      {
+        "artifact": "evidence/first-pass/candidate-before-repair/result.json",
+        "candidate_identity": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+        "elapsed_seconds": 300,
+        "evaluator_identity": "frozen-FIRST-004-adjudication",
+        "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+        "outcome": "product-failure",
+        "proof_contract_identity": "sha256:30f1c566fbd17d29317e0cc3b84099c608745bc0eba1a0179f1e8c4aab3bdbe9",
+        "receipt_identity": "sha256:210023f50549c812c2f689620817879dd98d5a77b1a7849313ce07323c6276e9",
+        "recorded_at": "2026-09-16",
+        "regrade": false,
+        "runtime_identity": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+        "scope": [
+          "TASK-036 eight synthetic cases and current-source drift smoke"
+        ],
+        "source_identity": "sha256:673f04c86270ab0c81ad9c3405b4be38f6d1bba52814d79c3334d8f1292e71f2",
+        "stage": "affected",
+        "stage_complete": false,
+        "target_calls": 5,
+        "target_identity": "candidate-v2-local-runtime"
+      }
+    ],
+    "schema_version": 1,
+    "source_identity": "sha256:673f04c86270ab0c81ad9c3405b4be38f6d1bba52814d79c3334d8f1292e71f2",
+    "stages": [
+      "deterministic",
+      "affected",
+      "full"
+    ]
+  },
+  "verification_requirement": {
+    "affected_scope": [
+      "TASK-036 eight synthetic cases and current-source drift smoke"
+    ],
+    "claims": [
+      "Bounded CLI first-pass",
+      "continuation and stable correction behaviour"
+    ],
+    "proof_contract_identity": "sha256:30f1c566fbd17d29317e0cc3b84099c608745bc0eba1a0179f1e8c4aab3bdbe9",
+    "required": true,
+    "stages": [
+      "deterministic",
+      "affected",
+      "full"
+    ]
+  },
+  "work_item_path": ".project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation"
+}

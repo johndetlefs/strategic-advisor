@@ -1,0 +1,125 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "DRIFT-001",
+      "session_id": "01a0a814-0f96-7f12-8149-7f86e671a29b",
+      "successful_runtime_reads": [],
+      "variant_id": "scale"
+    },
+    {
+      "case_id": "DRIFT-001",
+      "session_id": "01a0a815-1391-7e21-9dd4-db10bc79baf5",
+      "successful_runtime_reads": [],
+      "variant_id": "stop"
+    },
+    {
+      "case_id": "DRIFT-002",
+      "session_id": "01a0a816-44fb-7ec1-8217-3c40d68b4367",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-003",
+      "session_id": "01a0a817-4ead-72a3-8b7b-34cd6d13d747",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-004",
+      "session_id": "01a0a818-5bbc-7833-95da-e0a05c94c46e",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-005",
+      "session_id": "01a0a819-7620-7261-8e32-8538ef865947",
+      "successful_runtime_reads": []
+    },
+    {
+      "case_id": "DRIFT-006",
+      "session_id": "01a0a81a-a340-7352-ac90-5e709096b1b3",
+      "successful_runtime_reads": []
+    },
+    {
+      "case_id": "DRIFT-007",
+      "session_id": "01a0a81c-ad05-74c1-8b02-5acfe3da3a47",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/business-venture.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-008",
+      "session_id": "01a0a81e-852f-7b31-b66f-e97c5e86abd7",
+      "successful_runtime_reads": []
+    },
+    {
+      "case_id": "DRIFT-009",
+      "session_id": "01a0a81f-bacb-7972-91f4-48fb0ec8038e",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-010",
+      "session_id": "01a0a820-c1f5-73d2-985f-01a5fc16980b",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/boundaries.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-011",
+      "session_id": "01a0a821-c632-7aa2-984a-3733266cc190",
+      "successful_runtime_reads": [],
+      "user_config_ignored": true
+    }
+  ],
+  "schema_version": 1
+}

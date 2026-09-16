@@ -1,0 +1,138 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "FIRST-001",
+      "session_id": "01a0a803-c1f4-76f0-ae60-8f7d6631e393",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-002",
+      "session_id": "01a0a804-7bcc-7261-a698-68c666c166d3",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/context-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/marketing-growth.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-003",
+      "session_id": "01a0a805-8465-7702-9779-7f8685cdc05d",
+      "successful_runtime_reads": [
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-004",
+      "session_id": "01a0a806-9d36-78a0-a9b6-b9086cbcc429",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-005",
+      "session_id": "01a0a807-3598-7433-864a-51367d112e16",
+      "successful_runtime_reads": []
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a807-fd7a-72f0-bfe4-df7174241343",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/people-leadership.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "neutral"
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a809-d465-7733-a46e-5b705e594e97",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "positive"
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a80a-ff6c-7bb1-89cf-3e21ff63c608",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/people-leadership.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "sceptical"
+    },
+    {
+      "case_id": "FIRST-007",
+      "session_id": "01a0a80c-3a1e-77d1-b613-847a7abe7093",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-008",
+      "session_id": "01a0a80c-a34e-71e0-9f4c-d6620c3f1f74",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    }
+  ],
+  "schema_version": 1
+}

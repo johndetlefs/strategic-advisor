@@ -54,3 +54,5 @@ The plan preserves the approved outcomes. Removing mandatory public labels does 
 - Python 3.14.6 available locally; CI declares 3.11. Project is standard-library-only and has no lockfile or Codex environment to bootstrap.
 
 Verification follows implementation rows: bounded baseline comparison, candidate certification and smoke. Independent QA then reviews proof before the authorised commits and push. These are lifecycle gates, not prerequisite implementation rows.
+
+Independent QA uses one read-only subagent after the campaign passes: benefit:independent-evidence-audit; overhead:one-bounded-context; tradeoff:review-only-after-proof. The Coordinator retains all tracker and evidence writes.

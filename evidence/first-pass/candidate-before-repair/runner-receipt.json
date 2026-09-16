@@ -1,0 +1,52 @@
+{
+  "artifact": "evidence/evaluations/first-pass-candidate-v2/result.json",
+  "candidate_identity": "sha256:4f78c37265435a1add739f037b4a69f170a225db0c6bfb4b000df162e419f790",
+  "capabilities": [
+    "request-binding",
+    "selection",
+    "fail-fast",
+    "limits",
+    "typed-outcomes",
+    "checkpoint-resume",
+    "input-bound-receipts",
+    "transcript-regrade"
+  ],
+  "checkpoint_identity": "sha256:8a4f0dfafabddd38c957e208ca2ef922d6a0b6b51ba82f027c138455afd187ee",
+  "contract": "generic-verifier-receipt",
+  "diagnostic_decision": null,
+  "elapsed_seconds": 254,
+  "evaluator_calls": 4,
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "limits": {
+    "max_elapsed_seconds": 1800,
+    "max_failures": 1,
+    "max_target_calls": 16
+  },
+  "mode": "certification",
+  "outcome": "product-failure",
+  "proof_contract_identity": "sha256:40465702ae737b88196a8ae2658504e960efc7926a6655d32671c546ef27f89d",
+  "receipt_identity": "sha256:f0a2d13a8dc0e82b3ccaa0bd5e875a0f4c7d8e66fd30f425bc6d393d9a5eb760",
+  "regrade": false,
+  "runtime_identity": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+  "schema_version": 1,
+  "selected_scope": [
+    "FIRST-001",
+    "FIRST-002",
+    "FIRST-003",
+    "FIRST-004",
+    "FIRST-005",
+    "FIRST-006",
+    "FIRST-007",
+    "FIRST-008"
+  ],
+  "source_identity": "sha256:86662d6bfd8aeca29dea272d6dc1bd80d956e2ad6e0ce1a863590f2893b39c87",
+  "stage_complete": true,
+  "target_calls": 5,
+  "target_identity": "sha256:1e08d2e3d90617f6be837ad5b6c3df9817b7c1acd8d57289a292c38eb5923928",
+  "telemetry_totals": {
+    "elapsed_seconds": 254,
+    "evaluator_calls": 4,
+    "failures": 1,
+    "target_calls": 5
+  }
+}

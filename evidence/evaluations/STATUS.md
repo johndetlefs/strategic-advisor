@@ -45,9 +45,9 @@ Because that correction was uncommitted when executed, run-009's
 and criteria are bound by `spec_sha256`, and the exact model-visible source is
 bound by `runtime_package_identity_sha256`.
 
-## Current goal-review repair diagnostic
+## Historical alpha.7 goal-review repair diagnostic
 
-The current runtime package identity
+The alpha.7 runtime package identity
 `38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3`
 passed two fresh public-synthetic Codex CLI / gpt-5.6-sol cases: the previously
 failed `SAGR-014` material-progress/enabler case and its direct `SAGR-013`
@@ -56,12 +56,12 @@ activity-as-indicator neighbour. The campaign used two target calls and stopped.
 The original `SAGR-014` failure remains retained against pre-repair runtime
 `d51d7bf...`. `SAGR-001`, `SAGR-009`, `SAGR-015`, `SAGR-016`, `SAGR-018`,
 `SAGR-020`, `DRIFT-004`, `DRIFT-014`, and `DRIFT-016` were not run on the
-current repaired runtime. This diagnostic is release evidence for that repair
+alpha.7 repaired runtime. This diagnostic is release evidence for that repair
 boundary only; it is not a current full campaign, product certification,
 support, parity, adoption, private-workspace dogfood, or effectiveness proof.
 
 The repository may contain a skill, evaluation definitions, deterministic validators, and synthetic forward tests without satisfying the v0 release gate. Structural conformance and model self-assessment are not substitutes for the frozen comparative matrix, condition-masked scoring, human review, or consented real pilots.
 
-No raw comparative treatment, control, scorer, adjudicator, assertion-grader, or pilot output is present. The retained drift-smoke transcripts are separate bounded evidence and cannot be reused as the future comparative matrix or holdout. The next valid comparative step remains publishing and reviewing a new then-current authority commit, then creating the separate freeze commit exactly as specified.
+No output from the full skilled-versus-unskilled comparative matrix or formal real-pilot programme is present. The retained drift-smoke transcripts are separate bounded evidence and cannot be reused as the future comparative matrix or holdout. The next valid comparative step remains publishing and reviewing a new then-current authority commit, then creating the separate freeze commit exactly as specified.
 
 TASK-036 prepares a different runtime; the alpha.7 repair diagnostic is historical and does not validate the new candidate. Bounded comparison and current-source smoke are tracked in `evidence/first-pass/`.

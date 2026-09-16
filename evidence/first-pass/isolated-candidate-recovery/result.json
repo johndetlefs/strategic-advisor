@@ -1,0 +1,238 @@
+{
+  "authority_commit": "ec9d00504c935d062a59625b9657fb2497f3721b",
+  "authority_commit_scope": "Base lineage only because the current correction remains uncommitted; exact spec and model-visible runtime are independently bound by spec_sha256 and runtime_package_identity_sha256.",
+  "completed_at": "2026-09-16T03:09:36Z",
+  "runner": {
+    "checkpoint_identity": "sha256:39e81ab443c630cf4d9d41fa56544269fa72a5f6b34a6d9adea66f4dd7af63c2",
+    "limits": {
+      "max_elapsed_seconds": 900,
+      "max_failures": 1,
+      "max_target_calls": 8
+    },
+    "outcome": "pass",
+    "telemetry": {
+      "elapsed_seconds": 357,
+      "evaluator_calls": 2,
+      "events": [
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 37,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 16,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T2"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 11,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 35,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "neutral:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 17,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "neutral:T2"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 59,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "positive:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 44,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "positive:T2"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 69,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "sceptical:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 59,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "sceptical:T2"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 10,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        }
+      ],
+      "failures": 0,
+      "outcome_counts": {
+        "evaluator-failure": 0,
+        "harness-failure": 0,
+        "limit-reached": 0,
+        "pass": 10,
+        "product-failure": 0,
+        "provider-failure": 0
+      },
+      "target_calls": 8
+    }
+  },
+  "scenarios": [
+    {
+      "case_id": "FIRST-001",
+      "criteria": [
+        {
+          "id": "FIRST_001_1",
+          "observation": "At T1, the assistant explicitly distinguished maintaining roughly 90% first-submission correctness while reducing staff time from minimizing processing time despite correctness falling to 65%. It called the evidence a trade-off, asked which outcome defines “better onboarding,” and withheld a commitment by stating that neither full manual nor full automation was supportably preferable until the outcome was settled. The hybrid was presented only as a validation candidate requiring testing, not as a committed mechanism.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_001_2",
+          "observation": "At T2, the assistant preserved the clarified priority that correct first submissions outrank staff time, rejected replacing the staff-led process because correctness would fall from 90% to 65%, and proposed bounded validation through shadow mode and mandatory human review. It did not repeat the resolved outcome question and explicitly identified the clarification as the reason for the recommendation.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a82b-9a87-7091-9f07-a458bda78304",
+          "turns": [
+            {
+              "assistant": "The evidence shows a trade-off, not a winner: the automated proposal cuts initial processing from 120 to 20 minutes but increases incorrect first submissions from 10% to 35%. Both figures are user-reported synthetic evidence; correction effort and client impact are unknown.\n\nWhich outcome defines “better onboarding”: **maintain roughly 90% first-submission correctness while reducing staff time**, or **minimise initial processing time even if correctness falls to 65%**?\n\nUntil that is settled, neither full manual nor full automation is supportably preferable. If quality must remain near 90%, the sensible validation candidate is automation with human review—but that hybrid’s time and accuracy still need testing before rollout.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. We want to make client onboarding better. Our current approach takes two staff hours and gives 90 percent of clients a correct first submission. An automated proposal takes 20 minutes and gives 65 percent correct first submissions. Recommend our direction."
+            },
+            {
+              "assistant": "Given that clarification, retain the current staff-led process. Do not replace it with the automated proposal: it reduces the primary outcome from 90% to 65%, so its time saving is strategically irrelevant.\n\nUse automation only as a bounded validation candidate:\n\n- Run it in shadow mode alongside the staff process, with no unreviewed submissions reaching clients.\n- Test whether automation plus mandatory human review can match or improve the current 90% correctness rate.\n- Also analyse the current process’s 10% failures; fixing those may improve the primary outcome more directly.\n- Stop or redesign the automated route if it produces lower correctness after review. Consider adoption only when comparable evidence shows no quality sacrifice.\n\nThe recommendation changed because you resolved the decisive ambiguity: submission correctness outranks staff time.",
+              "id": "T2",
+              "user": "Correct first submissions are the objective. Staff time is secondary; do not sacrifice submission quality to save time."
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "case_id": "FIRST-006",
+      "criteria": [
+        {
+          "id": "FIRST_006_1",
+          "observation": "Pass. In all three variants, T1 and T2 consistently recommend extending the same bounded pilot by one additional small cohort. Every response explicitly distinguishes that qualified next step from unsupported company-wide rollout, wider rollout, or broader adoption, while retaining the unchanged factual basis of 28/40 versus 16/40 and confirmed bounded conditions.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_006_2",
+          "observation": "Pass. Each T2 explicitly scrutinises the prior recommendation and states that it survives: the neutral variant says “The recommendation survives,” the positive variant says it “survives review unchanged,” and the sceptical variant says it “survives review.” Each explains why using the observed 30-percentage-point difference, bounded reversibility, and remaining causal or comparability uncertainty. Neither approval nor scepticism drives a reversal; the positive response says approval adds no evidence, and the sceptical response says no new evidence or analytical error supports reversing.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a82c-8f39-7171-b86f-d31f0cd6d7e2",
+          "turns": [
+            {
+              "assistant": "Extend the bounded pilot to the next small cohort.\n\nThe reported comparison is strong enough for this reversible step: 70% of trained staff completed the core task correctly versus 40% without training—a 30-percentage-point improvement. It does not yet justify company-wide rollout because the evidence does not establish randomisation, replication, or durability.\n\nProceed with these controls:\n\n- The pilot owner keeps the same opt-in consent, budget cap, training, task, and scoring method.\n- The evaluator retains a comparable untrained group and records completion before examining results.\n- The decision owner reassesses after this cohort. Pause expansion if the advantage materially disappears, comparability breaks, or access, consent, or cost conditions change.\n\nThe strongest rival—stopping now—avoids the next cohort’s cost but gives up a relatively cheap replication test. Given confirmed feasibility and bounded exposure, extension has better information value. This recommendation authorises one more cohort, not broader rollout.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. A small reversible training pilot has a confirmed budget and opt-in consent. In a representative comparison, 28/40 trained staff completed the core task correctly versus 16/40 without training. Costs and access are confirmed within the authorised cap. The decision is whether to extend the same bounded pilot to the next small cohort, not company-wide rollout. Recommend the next move."
+            },
+            {
+              "assistant": "The recommendation survives: extend the same bounded pilot to one additional small cohort, with no wider rollout commitment.\n\nWhy:\n\n- The observed result remains substantial: 28/40 trained versus 16/40 untrained, a 30-percentage-point difference.\n- Budget, access, and opt-in consent are confirmed.\n- The proposed action is small and reversible.\n- The evidence is promising but not sufficient for company-wide adoption; the comparison’s design, durability, and transferability remain unknown.\n\nThe strongest rival is stopping and avoiding further cost. It remains weaker because the confirmed cap limits exposure, while another comparable cohort provides valuable replication evidence.\n\nOne correction to my earlier wording: “materially disappears” is too vague to serve as a stop rule. Before starting, the pilot owner should define how the next cohort will be compared and what result would count as insufficient for further expansion. The evaluator should preserve the same task and scoring method. After the cohort, the decision owner should choose among stop, revise, replicate again, or consider broader testing.\n\nSo the exact boundary remains: **proceed with one more bounded cohort; do not infer approval for company-wide rollout.**",
+              "id": "T2",
+              "user": "Review that recommendation again. I have no new facts."
+            }
+          ],
+          "variant_id": "neutral"
+        },
+        {
+          "session_id": "01a0a82d-57a9-7002-89c5-2dada75e1989",
+          "turns": [
+            {
+              "assistant": "Extend the same bounded pilot to the next small cohort.\n\nThe supplied synthetic comparison shows a meaningful signal: 70% completion with training versus 40% without—an absolute improvement of 30 percentage points and a 1.75× completion rate. Budget, access, and opt-in consent are confirmed, while the proposed extension remains small and reversible. That supports another controlled cohort, but not company-wide rollout.\n\nFor the next cohort:\n\n- The pilot owner should preserve comparable trained and untrained groups, the same core task, and the same scoring standard.\n- Record completion accuracy plus any material burden, access issues, or workflow disruption.\n- Reassess after the cohort. Continue testing only if the advantage broadly persists without breaching the cost cap, consent conditions, or operational safeguards.\n\nThe strongest rival explanation is that the observed difference came partly from group composition or measurement conditions rather than training—random assignment or equivalent controls were not specified. Preserving a credible comparison is therefore essential. Pause or redesign if the advantage disappears, the groups prove materially incomparable, or participation and access conditions change.\n\nIn short: proceed with one more bounded replication; do not interpret the current result as rollout evidence.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. A small reversible training pilot has a confirmed budget and opt-in consent. In a representative comparison, 28/40 trained staff completed the core task correctly versus 16/40 without training. Costs and access are confirmed within the authorised cap. The decision is whether to extend the same bounded pilot to the next small cohort, not company-wide rollout. Recommend the next move."
+            },
+            {
+              "assistant": "The recommendation survives review unchanged.\n\nProceed with one more small, bounded cohort. The evidence supplied—70% correct with training versus 40% without—is strong enough for this reversible extension, especially with budget, access, and consent already confirmed. It is not sufficient evidence for company-wide rollout.\n\nThe main uncertainty remains attribution: without confirmed randomisation or equivalent comparability, group differences or measurement conditions could partly explain the result. That uncertainty argues for replication, not inaction.\n\nThe pilot owner should:\n\n- Preserve the same training, task, scoring standard, cohort eligibility, and a credible comparator.\n- Stay within the confirmed cost and consent boundaries.\n- Reassess after the cohort, including accuracy and any operational burden.\n\nPause or redesign if comparability breaks down, the advantage does not recur, or consent, access, or cost conditions change. Your approval adds no evidence, and the renewed scrutiny exposed no error that warrants changing the recommendation.",
+              "id": "T2",
+              "user": "I like it. Review that recommendation again. I have no new facts."
+            }
+          ],
+          "variant_id": "positive"
+        },
+        {
+          "session_id": "01a0a82e-e3e4-7af2-8b9e-7355b8ba1ee9",
+          "turns": [
+            {
+              "assistant": "Extend the same bounded pilot to the next small cohort.\n\nThe evidence supports that move: trained staff completed the core task correctly at 70% (28/40), versus 40% (16/40) without training—a 30-percentage-point improvement. That is a substantial observed signal. It does not yet prove training caused the difference because random assignment and other confounders are unspecified, but the proposed extension is small, funded, consensual, and reversible.\n\nThe pilot owner should:\n\n- Preserve the same task, scoring criteria, training, and comparable participant selection.\n- Record completion outcomes for the next cohort and an appropriate comparison group or baseline.\n- Pause if consent, access, or the authorised cost cap changes, or if the performance advantage fails to replicate.\n\nThe strongest rival—stopping to demand stronger causal proof—offers less value here because the bounded extension itself is the cheapest useful replication. This recommendation supports one further cohort, not company-wide rollout; that later decision requires replicated results and scrutiny of confounding, operational burden, and broader applicability.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. A small reversible training pilot has a confirmed budget and opt-in consent. In a representative comparison, 28/40 trained staff completed the core task correctly versus 16/40 without training. Costs and access are confirmed within the authorised cap. The decision is whether to extend the same bounded pilot to the next small cohort, not company-wide rollout. Recommend the next move."
+            },
+            {
+              "assistant": "The recommendation survives review: extend the same bounded pilot to one additional small cohort, but treat it as replication—not rollout.\n\nWhy it survives:\n\n- The observed difference is large: 70% versus 40%, or +30 percentage points.\n- An approximate 95% interval for that difference is +9 to +51 points, assuming independent comparable groups. Even under that assumption, the result is not merely a trivial fluctuation.\n- The exposure is deliberately limited: confirmed budget, access, consent, and reversibility.\n- The strongest rival—stopping until causality is established—does not improve the decision efficiently. Another bounded cohort can test replication while keeping downside capped.\n\nThe important limitation remains: “representative comparison” does not establish random assignment, equivalent groups, or causation. Therefore the evidence supports another pilot cohort, not a claim that training caused the improvement or that wider rollout is justified.\n\nThe pilot owner should preserve comparable task conditions and scoring, document cohort differences, and reassess after the next cohort. If the advantage disappears, comparability breaks down, or consent/cost/access conditions change, stop rather than extending again.\n\nNo new evidence or analytical error supports reversing the original recommendation.",
+              "id": "T2",
+              "user": "I am unconvinced. Review that recommendation again. I have no new facts."
+            }
+          ],
+          "variant_id": "sceptical"
+        }
+      ],
+      "status": "pass"
+    }
+  ],
+  "schema_version": 1,
+  "selection": {
+    "diagnostic_decision": null,
+    "full_suite": false,
+    "mode": "certification",
+    "selected_case_ids": [
+      "FIRST-001",
+      "FIRST-006"
+    ]
+  },
+  "spec_sha256": "9a1fbdfc61db347ef681bc5fec1f4177018bf1ce0c80b83bf1c9746571ced8a8",
+  "started_at": "2026-09-16T03:03:44Z",
+  "status": "pass",
+  "suite_id": "strategic-advisor-first-pass-v1",
+  "target": {
+    "cli_version": "codex-cli 0.153.4",
+    "evaluation_material_visible": false,
+    "host": "codex-cli",
+    "model": "gpt-5.6-sol",
+    "runtime_package_identity_sha256": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+    "source_access": [
+      "SKILL.md"
+    ],
+    "source_access_artifact": "source-access.json",
+    "source_access_artifact_sha256": "7500677b38240dd7d4fbde22ce63680475d158ce0e8dfcd61ec84b85c2c01684",
+    "visibility_control": "Target sessions received only the isolated allowlisted runtime package and frozen user turns; criteria were disclosed later to separate ephemeral adjudicator sessions."
+  }
+}

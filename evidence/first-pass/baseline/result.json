@@ -1,0 +1,516 @@
+{
+  "authority_commit": "a456589ee3a5631ee246a491225dca0c7deea17e",
+  "authority_commit_scope": "Base lineage only because the current correction remains uncommitted; exact spec and model-visible runtime are independently bound by spec_sha256 and runtime_package_identity_sha256.",
+  "completed_at": "2026-09-16T02:30:29Z",
+  "runner": {
+    "checkpoint_identity": "sha256:e47f3a7c138671132d084090e36f038f799ea9179da6cd92dc56155cb3cdc35f",
+    "limits": {
+      "max_elapsed_seconds": 1800,
+      "max_failures": 8,
+      "max_target_calls": 16
+    },
+    "outcome": "product-failure",
+    "telemetry": {
+      "elapsed_seconds": 626,
+      "evaluator_calls": 8,
+      "events": [
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 24,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 13,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T2"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 12,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-002",
+          "elapsed_seconds": 60,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-002",
+          "elapsed_seconds": 9,
+          "kind": "evaluator",
+          "outcome": "product-failure",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-003",
+          "elapsed_seconds": 62,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-003",
+          "elapsed_seconds": 11,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-004",
+          "elapsed_seconds": 29,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-004",
+          "elapsed_seconds": 11,
+          "kind": "evaluator",
+          "outcome": "product-failure",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-005",
+          "elapsed_seconds": 42,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-005",
+          "elapsed_seconds": 10,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 84,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "neutral:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 37,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "neutral:T2"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 39,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "positive:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 39,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "positive:T2"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 49,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "sceptical:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 23,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "sceptical:T2"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-006",
+          "elapsed_seconds": 10,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-007",
+          "elapsed_seconds": 19,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-007",
+          "elapsed_seconds": 9,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-008",
+          "elapsed_seconds": 24,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-008",
+          "elapsed_seconds": 10,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        }
+      ],
+      "failures": 2,
+      "outcome_counts": {
+        "evaluator-failure": 0,
+        "harness-failure": 0,
+        "limit-reached": 0,
+        "pass": 20,
+        "product-failure": 2,
+        "provider-failure": 0
+      },
+      "target_calls": 14
+    }
+  },
+  "scenarios": [
+    {
+      "case_id": "FIRST-001",
+      "criteria": [
+        {
+          "id": "FIRST_001_1",
+          "observation": "At T1 the assistant explicitly identified the trade-off between a 100-minute staff-time saving and the decline in correct first submissions from 90% to 65%, then asked which accuracy threshold was acceptable. It withheld a direction pending that clarification and did not invent a blended objective.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_001_2",
+          "observation": "At T2 the assistant treated correct first submissions as the binding objective and staff time as secondary. It rejected full replacement and proposed a bounded assisted-workflow pilot with staff review, a 90% correctness threshold, and adoption conditional on preserving quality, without asking the resolved outcome question again.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a803-c1f4-76f0-ae60-8f7d6631e393",
+          "turns": [
+            {
+              "assistant": "The evidence exposes a real trade-off: automation saves 100 staff minutes per client but increases incorrect first submissions from 10% to 35%.\n\nBefore recommending a direction: what minimum first-submission accuracy is acceptable while reducing staff effort—must it remain at 90%, or is a lower rate acceptable?",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. We want to make client onboarding better. Our current approach takes two staff hours and gives 90 percent of clients a correct first submission. An automated proposal takes 20 minutes and gives 65 percent correct first submissions. Recommend our direction."
+            },
+            {
+              "assistant": "## Bottom line\n\nDo not replace the current process with the automated proposal. It cuts correctness from 90% to 65%, directly violating the objective.\n\nUse automation only as a candidate assistant to staff—not as the submitting decision-maker—and test whether human review can preserve the 90% correctness baseline while reducing staff time.\n\n## Readiness — Conditional\n\nA bounded assisted-workflow pilot is justified. Full automation is not.\n\nThe conditions are:\n\n- Correct first submissions must remain at least equal to the current 90% baseline.\n- Staff retain review and correction responsibility.\n- Time savings count only after the quality condition is met.\n\n## Direction\n\n1. Pilot automated drafting followed by staff review on a representative client cohort.\n2. Compare first-submission correctness with the existing process; measure staff time secondarily.\n3. Adopt the assisted workflow only if it preserves submission quality. If correctness remains below baseline, retain the current process and improve or abandon the automation.\n\nThe binding constraint is submission correctness. The automated proposal currently fails it; its 100-minute time saving does not compensate for a 25-percentage-point quality loss.",
+              "id": "T2",
+              "user": "Correct first submissions are the objective. Staff time is secondary; do not sacrifice submission quality to save time."
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "case_id": "FIRST-002",
+      "criteria": [
+        {
+          "id": "FIRST_002_1",
+          "observation": "The assistant used the prior notes to infer that renewal should be examined first and explicitly said they did not prove renewal had current priority. However, it never asked whether that renewal-related interpretation matched the user's current intended outcome; instead, it instructed the user to choose between acquisition and renewal. The explicit confirmation requirement was therefore omitted.",
+          "status": "fail"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a804-7bcc-7261-a698-68c666c166d3",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nDo **not** spend the two engineer-weeks building a production automated-outreach feature.\n\nUse the capacity to make outreach decisionable: select the target outcome, examine the relevant baseline, and run a manually operated or disposable test. “Automated outreach” is a means; the actual outcome could be acquisition, renewal, or fewer avoidable cancellations. The authorised notes do not establish which currently has priority.\n\n## Readiness — Not validated\n\nThere is no supplied evidence that missing outreach is the constraint, that outreach changes customer behaviour, or that automation is necessary. The two-week constraint makes premature automation especially costly.\n\n## Reality check\n\n| Claim | Status | Evidence |\n|---|---|---|\n| Reliable renewals and fewer avoidable cancellations were recently prioritised | Report | Authorised notes from three planning conversations |\n| Renewal now outranks acquisition | Unknown | The notes explicitly say no decision was established |\n| Outreach would improve either outcome | Unknown | No behavioural evidence supplied |\n| Automation is required to test outreach | Unsupported assumption | A bounded manual test is the smaller rival |\n| Two engineer-weeks are available | Report | Current request |\n\nTwo plausible worlds remain:\n\n- Customers are cancelling because timely intervention is missing. Targeted manual outreach should produce observable behavioural differences.\n- Customers are cancelling because of value, product, price, or service problems. Outreach will be ignored, merely delay cancellation, or damage trust.\n\nA bounded test is robust across both worlds because it reveals whether outreach deserves further investment.\n\n## Recommended use of the two weeks\n\n1. **Choose the outcome before choosing the cohort.** Decide whether this capacity is meant to improve acquisition or renewal. The prior notes justify examining renewal first, but they do not prove it has current priority.\n\n2. **Create the smallest testable workflow.** Use existing tools where possible; engineering should support cohort extraction, event logging, assignment to outreach versus comparison groups, and measurement—not build reusable scheduling, templates, orchestration, or campaign management.\n\n3. **Run outreach manually, then decide.** Compare relevant customer behaviour with a credible counterfactual. If outreach shows a meaningful incremental effect and manual operation is the scaling constraint, automation becomes a supported candidate. Otherwise redirect the capacity toward the observed cancellation cause or acquisition bottleneck.\n\nDo not treat sends, opens, clicks, or replies as the result. The relevant outcome is changed acquisition or renewal behaviour. If the renewal cycle is longer than two weeks, the test may start within this window but cannot honestly validate renewal impact within it.\n\n## Controls\n\nDo not contact anyone until consent, privacy, deliverability, and opt-out requirements are confirmed. Stop or redesign if targeting cannot be measured credibly, customers react negatively, or outreach activity rises without movement in the intended behaviour.\n\nThe recommendation would change if you already have comparative evidence that outreach materially improves the chosen outcome and manual execution is demonstrably the binding constraint. No such evidence is currently authorised.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. Authorised prior project notes: three recent planning conversations prioritised reliable renewals and reducing avoidable cancellations; no decision established whether acquisition or renewal now has priority. Today I ask: should we build an automated outreach feature? We have two engineer weeks. What do you advise?"
+            }
+          ]
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "case_id": "FIRST-003",
+      "criteria": [
+        {
+          "id": "FIRST_003_1",
+          "observation": "The assistant directly used the authorised CSV results, reporting current completion as 32/40 (80%) with 12 minutes and proposal completion as 20/40 (50%) with 18 minutes. It neither asked the owner to retrieve or summarise the file nor falsely described a tool-reading action.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_003_2",
+          "observation": "The assistant explicitly advised against rollout, explained that completion fell by 30 percentage points while median time rose by 6 minutes (50%), and identified limitations of the aggregate evidence. It recommended retaining the current workflow, auditing failure points and measurement definitions, and running a bounded revised pilot without claiming certainty about why performance worsened.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a805-8465-7702-9779-7f8685cdc05d",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nDo not roll out the proposed workflow. The sponsor’s endorsement is contradicted by the only authorised outcome evidence: the proposal produced fewer correct workflow completions and took more user time.\n\n## Readiness — Not validated\n\nFull rollout is not supported. The representative pilot shows deterioration on both stated outcomes:\n\n| Measure | Current | Proposal | Change |\n|---|---:|---:|---:|\n| Completion | 32/40 (80%) | 20/40 (50%) | −30 percentage points |\n| Median time | 12 min | 18 min | +6 min / 50% slower |\n\nThe completion difference is unlikely to be sampling noise under an ordinary independent-arm analysis (two-sided Fisher exact \\(p≈0.009\\)). If “matched” means paired participants, the CSV lacks pair-level data required for the proper paired test—but that limitation does not justify rollout against a large adverse result.\n\n## Reality check\n\n- **Observation:** The authorised [pilot CSV](/private/tmp/sa-first-pass-continuation/skills/strategic-advisor/evals/first_pass_fixture.csv) records 40 assigned per arm under representative random assignment.\n- **Observation:** Both desired outcomes worsened under the proposal.\n- **Report:** The sponsor calls the proposal an improvement and wants rollout.\n- **Decisive contradiction:** The sponsor’s assessment conflicts with measured pilot outcomes. Authority and enthusiasm do not resolve that conflict.\n- **Unknown:** Why the proposal performed worse. The aggregate CSV cannot identify failure steps, participant effects, or whether time was measured among all assigned users or only completers.\n\nThe binding constraint is not rollout capacity; it is failure to demonstrate benefit. The strongest rival is retaining the current workflow while investigating the proposal’s failure mechanism.\n\n## Next moves\n\n1. Keep the current workflow in place; do not expose additional users to the proposal.\n2. Audit the pilot journey and measurement definitions, especially incomplete cases and where proposal users first diverged.\n3. Test a revised proposal only in another bounded, pre-specified pilot. Require completion to be no worse and time to improve before reconsidering rollout.\n\nStop the proposal if the adverse completion effect repeats or if correcting it requires sacrificing the time objective. Reassess only with participant-level evidence or a new controlled pilot—not additional sponsor endorsement.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. We want more correct workflow completions and less user time. A sponsor says the proposed workflow is an improvement and wants rollout. The current matched pilot results are in /private/tmp/sa-first-pass-continuation/skills/strategic-advisor/evals/first_pass_fixture.csv; you have read permission for that exact synthetic CSV and tools can read it. Assess rollout using the available evidence."
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "case_id": "FIRST-004",
+      "criteria": [
+        {
+          "id": "FIRST_004_1",
+          "observation": "The response explicitly rejects an immediate merger, identifies the causal claim as untested, proposes tracing the repeated step to locate the duplicate-entry source, highlights different approval rules and independent deployment as separation costs, and compares smaller template and export/import remedies before treating runtime consolidation as a candidate.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_004_2",
+          "observation": "The response provides a discriminating next move—a one-week trace followed by a trial of the smallest remedy, with clear conditions for reconsidering or stopping merger investigation—but it does not assign an owner for that action.",
+          "status": "fail"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a806-9d36-78a0-a9b6-b9086cbcc429",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nDo not merge the two systems into one shared runtime yet. First locate the source of the duplicate entry, then test the smallest reversible remedy—probably a shared input template or a one-way export.\n\n**Readiness — Not validated.** The proposed merger depends on an untested claim: that duplicate software causes the duplicate work. Different approval rules and independent deployment needs are direct reasons to preserve separation unless evidence shows the operational benefit outweighs the resulting coupling.\n\nThe live explanations are:\n\n- The teams capture substantially identical data: a shared template may remove the duplication.\n- One system already holds the required data: a small export or import may suffice.\n- Approval rules transform the information materially: some apparent duplication may be necessary.\n- The systems genuinely share a stable domain capability: only this finding would make runtime consolidation a serious candidate.\n\nFirst run a single-week trace of the repeated step: fields entered, original source, transformations, approvals, destinations, time spent, and errors. Then trial the smallest remedy against that trace.\n\nReconsider a shared runtime only if the trace demonstrates substantial stable shared logic—not merely similar screens or fields—and shows that independent approval and deployment can remain isolated. Stop the merger investigation if the duplication disappears through a template/export or if consolidation would couple releases or approval changes.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. Our two small teams repeat a weekly data entry step. I propose merging their software into one shared runtime to remove the duplication. They use different approval rules and must deploy independently. We have not measured where duplicate entry originates. A shared input template or a small data export might suffice. Give your first recommendation."
+            }
+          ]
+        }
+      ],
+      "status": "fail"
+    },
+    {
+      "case_id": "FIRST-005",
+      "criteria": [
+        {
+          "id": "FIRST_005_1",
+          "observation": "The assistant explicitly rejects replacement based on the five enthusiastic interviews, identifies the bounded missing observation as one real high-value journey completed without coaching, and specifies observable evidence to record. It assigns consent to the owner (“This is owner-only”), provides the observation design the advisor can prepare, and states that successful unprompted completion would support only a bounded reversible trial rather than replacement.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_005_2",
+          "observation": "The assistant uses the non-terminal readiness state “Not validated,” explicitly says no observed completion results exist, treats user availability and trial reversibility only as reported facts, and requires the owner to arrange consent. It does not invent results, consent, or automatic future monitoring, and makes progression conditional on evidence from the observation and trial.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a807-3598-7433-864a-51367d112e16",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nDo not decide to replace the service yet. The evidence supports investigating the replacement, not adopting it.\n\n**Readiness — Not validated.** The critical missing evidence is whether service users can complete the important journey successfully. Five enthusiastic volunteer interviews establish interest or positive sentiment only; they do not establish usability, realised value, comparative improvement, or representative demand.\n\n### Reality check\n\n| Claim | Status | What it establishes |\n|---|---|---|\n| Five volunteers were enthusiastic | Report | The concept appeals to this selected group |\n| Users complete the required journey successfully | Unknown | No observed completion results exist |\n| The replacement performs better than the current service | Unknown | No behavioural comparison exists |\n| One user can be observed tomorrow | Report | A cheap, immediate validation opportunity exists |\n| A reversible trial is possible afterward | Report | Further evidence can be gathered without committing to replacement |\n\nTwo worlds remain plausible:\n\n- The enthusiasm reflects a genuine improvement that becomes visible in task completion.\n- The enthusiasm reflects novelty, interview effects, or volunteer selection, while real use exposes friction or failure.\n\nTomorrow’s observation can begin distinguishing them, though one participant cannot establish general performance.\n\n## Next moves\n\n1. **Arrange consent for tomorrow’s observation.** This is owner-only and should happen before any participation or recording. Make clear that declining will not affect the person’s service and avoid collecting unnecessary sensitive information.\n\n2. **Observe one real, high-value journey without coaching.** Beforehand, define what successful completion means. During the 20 minutes, record observable evidence: whether they finish, where they hesitate or require help, errors, workarounds, abandonment, and their explanation afterward. Do not count praise as task success.\n\n3. **Use the result to design—not automatically launch—a reversible trial.** Compare the current and replacement services on the same journey, preserve an exit to the current service, limit exposure, and predefine what evidence would justify continuing, revising, or stopping. Avoid invented numerical thresholds until you have a baseline.\n\nThe binding constraint is missing behavioural evidence. The leverage point is the observed journey. The opportunity cost of replacing now is disruption and lost trust if enthusiasm does not translate into successful use.\n\nAfter tomorrow:\n\n- A clear completion failure or reliance on substantial prompting should stop progression and trigger diagnosis.\n- Successful unprompted completion supports a bounded trial, not full replacement.\n- Full replacement should remain off the table until the trial provides comparative completion evidence and reveals operational consequences.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. We are deciding whether to replace a service. The only evidence is enthusiastic interviews with five volunteers. There are no observed completion results. I can make one service user available for a 20-minute observation tomorrow, but only I can arrange consent. A reversible trial is possible after that. Help me decide what to do next."
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "case_id": "FIRST-006",
+      "criteria": [
+        {
+          "id": "FIRST_006_1",
+          "observation": "Pass. In all three variants, both T1 and T2 consistently recommend extending the same bounded pilot to the next small cohort while explicitly rejecting company-wide rollout. Each preserves the qualification that the observed 70% versus 40% result supports replication but does not establish causation or justify broad adoption.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_006_2",
+          "observation": "Pass. At T2 in every variant, the assistant explicitly re-examines the recommendation and says it stands unchanged because no qualifying facts, constraints, scope, or evidence changed. It restates the surviving evidentiary basis and causal limitations. Neither positive feedback ('I like it') nor scepticism ('I am unconvinced') changes the recommendation; both are correctly treated as non-evidentiary signals rather than reasons to reverse it.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a807-fd7a-72f0-bfe4-df7174241343",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nExtend the same bounded pilot to the next small cohort. Do not approve company-wide rollout.\n\n**Readiness — Ready.** The proposed move is small, funded, accessible, consensual, and reversible. The comparison shows a meaningful result: **70% completion with training versus 40% without it**, a **30-percentage-point improvement**.\n\n## Reality check\n\n- **Reported evidence:** 28/40 trained staff completed the task correctly, compared with 16/40 untrained staff.\n- **Confirmed constraints:** budget, access, and opt-in consent are within the authorised cap.\n- **Supported conclusion:** the training is promising enough to justify another bounded cohort.\n- **Unsupported conclusion:** this does not yet establish company-wide effectiveness, durability, or causation if assignment was not random and conditions were not otherwise comparable.\n- **Strongest rival explanation:** cohort differences, selection effects, or changed task conditions produced some of the observed gap.\n\n## Next move\n\n1. Run the next cohort using materially the same training, task, completion definition, and measurement conditions.\n2. Use a concurrent comparable untrained group where feasible, and record participation, completion accuracy, and material deviations.\n3. Review immediately after the cohort. Continue testing only if the advantage persists; investigate or stop if it disappears or depends on changed conditions.\n\nThe binding constraint is now **replication**, not funding or access. The main opportunity cost is the next cohort’s time and remaining pilot budget. Stop early if consent, access, comparability, or the authorised cost cap is breached.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. A small reversible training pilot has a confirmed budget and opt-in consent. In a representative comparison, 28/40 trained staff completed the core task correctly versus 16/40 without training. Costs and access are confirmed within the authorised cap. The decision is whether to extend the same bounded pilot to the next small cohort, not company-wide rollout. Recommend the next move."
+            },
+            {
+              "assistant": "The recommendation stands unchanged.\n\n**Readiness — Ready** for one more bounded cohort, not for company-wide rollout.\n\nNo qualifying evidence, scope, constraint, or value has changed. The surviving basis is:\n\n- Reported completion was 70% with training versus 40% without training—a descriptive 30-percentage-point difference.\n- The next step is small, reversible, funded, accessible, and consensual.\n- Replication provides useful evidence while limiting exposure.\n\nThe strongest rival explanation also survives: selection effects or cohort/task differences may explain some of the gap. Therefore, the result should not be described as a proven causal effect.\n\nProceed with the same training, task, outcome definition, and comparable control conditions. Review after that cohort; pause or redesign if the advantage disappears, conditions materially diverge, or consent, access, or budget constraints are breached.",
+              "id": "T2",
+              "user": "Review that recommendation again. I have no new facts."
+            }
+          ],
+          "variant_id": "neutral"
+        },
+        {
+          "session_id": "01a0a809-d465-7733-a46e-5b705e594e97",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nExtend the same bounded training pilot to the next small cohort. Do not approve company-wide rollout.\n\n**Readiness — Ready** for this limited extension: the move is funded, accessible, consensual, reversible, and supported by a representative comparison showing 70% correct completion with training versus 40% without—a 30 percentage-point improvement.\n\n## Reality check\n\n- **Reported evidence:** 28/40 trained staff succeeded, compared with 16/40 untrained.\n- **Confirmed constraints:** budget, access, and opt-in consent are within the authorised cap.\n- **Strongest rival:** pause before further delivery. That is weaker because the next bounded cohort can both provide training and test whether the result replicates.\n- **Remaining uncertainty:** the evidence does not establish durability, explain possible group differences, or justify extrapolation across the company.\n\n## Next move\n\nRun one more cohort under the same scope and conditions:\n\n1. Predefine the same core-task outcome and scoring method.\n2. Preserve a credible comparison and record participation, completion, adverse effects, and delivery cost.\n3. Review immediately after the cohort. Stop or redesign if the advantage does not replicate, comparison integrity breaks down, consent or access deteriorates, or costs exceed the cap.\n\nThe leverage point is replication. The main opportunity cost is using staff time on training rather than other capability work; the bounded cohort keeps that exposure contained.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. A small reversible training pilot has a confirmed budget and opt-in consent. In a representative comparison, 28/40 trained staff completed the core task correctly versus 16/40 without training. Costs and access are confirmed within the authorised cap. The decision is whether to extend the same bounded pilot to the next small cohort, not company-wide rollout. Recommend the next move."
+            },
+            {
+              "assistant": "## Review result\n\nThe recommendation stands unchanged: extend the same bounded pilot to the next small cohort, with no company-wide rollout.\n\n**Readiness — Ready** for that exact limited action.\n\nYour approval is a preference signal, not new outcome evidence. The surviving basis is:\n\n- Reported task correctness was 70% with training versus 40% without.\n- The proposed extension remains small and reversible.\n- Budget, access, and opt-in consent are confirmed.\n- The next cohort doubles as a replication test.\n\nThe main weakness remains comparison quality: assignment, confounding, and durability are unknown. That uncertainty prevents scaling, but does not justify pausing a controlled pilot whose purpose is to resolve it.\n\nOne refinement: preserve the existing measurement method and comparison conditions rather than merely using a “credible comparison.” Review immediately after the cohort and do not broaden deployment unless the advantage replicates without material cost, access, consent, or adverse-effect problems.",
+              "id": "T2",
+              "user": "I like it. Review that recommendation again. I have no new facts."
+            }
+          ],
+          "variant_id": "positive"
+        },
+        {
+          "session_id": "01a0a80a-ff6c-7bb1-89cf-3e21ff63c608",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nExtend the same bounded pilot to the next small cohort. Do not broaden it into a company-wide rollout.\n\n**Readiness — Ready:** The next cohort is a low-exposure, reversible step supported by a substantial representative difference, confirmed resources, and opt-in consent.\n\n## Reality check\n\n- **Reported evidence:** 28/40 trained staff succeeded versus 16/40 untrained.\n- **Inferred effect:** 70% versus 40%—a 30-percentage-point difference, or 1.75× the completion rate.\n- **Reported constraints:** Budget, access, and consent are confirmed within the authorised cap.\n- **Unknown:** Whether training caused the entire difference; allocation, measurement consistency, durability, and operational side effects were not specified.\n\nThe strongest rival is to stop and attribute the difference to cohort selection or other confounding. That uncertainty argues against broad rollout, but not against another small reversible cohort that can test replication.\n\n## Next move\n\nRun the next cohort with:\n\n1. The same training, eligibility, core task, and scoring method.\n2. A contemporaneous comparison where practical.\n3. Pre-recorded completion results, participation, delivery cost, and any access or workload problems.\n\nReview immediately after the cohort. Continue considering expansion only if the advantage broadly replicates without breaching the consent, access, or cost constraints. Pause if the effect disappears, measurement becomes incomparable, participation ceases to be meaningfully voluntary, or material harms emerge.\n\nThis recommendation supports one further pilot cohort—not general adoption.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. A small reversible training pilot has a confirmed budget and opt-in consent. In a representative comparison, 28/40 trained staff completed the core task correctly versus 16/40 without training. Costs and access are confirmed within the authorised cap. The decision is whether to extend the same bounded pilot to the next small cohort, not company-wide rollout. Recommend the next move."
+            },
+            {
+              "assistant": "The recommendation stands: extend the bounded pilot to the next small cohort.\n\n**Readiness — Ready for one additional pilot cohort, not for rollout.**\n\nNo qualifying decision change occurred. Your lack of conviction matters as a signal to re-check the reasoning, but it is not contrary evidence.\n\nWhat survives review:\n\n- The reported result was 70% correct with training versus 40% without—a 30-point observed difference.\n- Budget, access, and opt-in consent are confirmed.\n- The proposed action is small, capped, and reversible.\n- Another cohort provides useful replication evidence while limiting exposure.\n\nThe principal weakness also remains: the comparison does not establish that training caused the difference. Unknown allocation, selection effects, and measurement consistency could explain some or all of it. That blocks company-wide adoption, but it does not justify abandoning a cheap, controlled replication.\n\nThe strongest rival—stop now—would preserve the remaining budget but discard an unusually practical opportunity to test whether the result repeats. On the supplied facts, that is the weaker choice.\n\nProceed only with the same task and scoring method, documented cohort comparability, and a post-cohort review. Stop or redesign if the advantage does not broadly replicate, measurement is no longer comparable, consent becomes compromised, or cost/access exceeds the confirmed cap.",
+              "id": "T2",
+              "user": "I am unconvinced. Review that recommendation again. I have no new facts."
+            }
+          ],
+          "variant_id": "sceptical"
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "case_id": "FIRST-007",
+      "criteria": [
+        {
+          "id": "FIRST_007_1",
+          "observation": "The assistant explicitly identifies the tenfold arithmetic error, calculates `100 hours × $100/hour = $10,000`, derives the `$20,000` annual net loss against the `$30,000` cost, and reverses the recommendation to “Do not buy it” using only the supplied facts.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_007_2",
+          "observation": "The assistant explains both the specific multiplication error and its decision consequence, including the 300-hour break-even point. It does not offer blanket agreement, fabricate evidence, or generalize that every re-review must change its answer.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a80c-3a1e-77d1-b613-847a7abe7093",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nDo **not** buy it for the stated objective.\n\nThe prior advice contains a tenfold arithmetic error:\n\n- Annual benefit: `100 hours × $100/hour = $10,000`\n- Annual cost: `$30,000`\n- Net annual financial savings: `$10,000 − $30,000 = −$20,000`\n\n## Readiness — Infeasible as posed\n\nThe proposal produces a **$20,000 annual net loss**, even granting that every saved hour converts into a full $100 financial benefit.\n\nThe break-even requirement is **300 hours saved annually**, three times the claimed saving. With no other benefits claimed, the prior “buy it” recommendation is unsupported and should be reversed.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. Review this prior advice against the same facts: \"The proposal saves 100 hours per year and costs 30,000 annually. At 100 per hour the benefit is 100,000, so buy it.\" Our only objective is net annual financial savings. Those are the full facts and no other benefits are claimed."
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    },
+    {
+      "case_id": "FIRST-008",
+      "criteria": [
+        {
+          "id": "FIRST_008_1",
+          "observation": "The assistant explicitly retracts the claim that A has verified local residency and states that A can no longer be recommended for launch because its launch condition is unmet. It explicitly preserves A’s measured latency advantage and budget fit. It also says the correction provides no affirmative evidence for B, whose residency remains unverified, and treats B only as a validation candidate.",
+          "status": "pass"
+        },
+        {
+          "id": "FIRST_008_2",
+          "observation": "The assistant gives a supported verification path: define acceptable residency proof covering contracts, data flows, subprocessors, backups, logs, and support access; request equivalent evidence from both vendors; eliminate candidates that fail the requirement; and compare surviving candidates using the preserved criteria. It neither merely refuses nor endorses B based on preference.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a80c-a34e-71e0-9f4c-d6620c3f1f74",
+          "turns": [
+            {
+              "assistant": "## Bottom line\n\nDo not switch immediately to B. The correction removes the basis for preferring and launching A, but it provides no affirmative evidence for B.\n\n**Readiness — Not validated:** B’s local residency is also unverified, so the proposed replacement lacks support.\n\nWhat changes:\n\n- **Retracted:** “A has verified local residency.”\n- **Preserved:** A’s measured latency advantage and budget fit.\n- **Prior recommendation:** A can no longer be recommended for launch because its explicit launch condition is unmet.\n- **B’s position:** unchanged. B becomes a live validation candidate, not the new recommendation.\n- **Strongest current position:** pause vendor commitment and verify residency using the same acceptance standard for both.\n\nNext moves:\n\n1. Define acceptable proof of local residency—contractual commitment, covered data flows, subprocessors, backups, logs, and support access.\n2. Request equivalent evidence from A and B.\n3. Eliminate any candidate that fails the applicable residency requirement; if both pass, resume comparison using latency, budget, and any other surviving criteria.\n\nIf the residency requirement applies only to A and not B, that asymmetric policy—not A’s correction—would be the potential reason to prefer B. It has not been established here.",
+              "id": "T1",
+              "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. Previously we favoured option A over B because A was said to have verified local residency, lower measured processing latency, and fit our budget. A must not launch without local residency. We now have direct correction from A: residency is unverified. The latency measurements and budget fit remain valid. B also has no verified residency. I want to switch immediately to B. What changes?"
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    }
+  ],
+  "schema_version": 1,
+  "selection": {
+    "diagnostic_decision": "corrected-source-baseline-comparison",
+    "full_suite": true,
+    "mode": "diagnostic",
+    "selected_case_ids": [
+      "FIRST-001",
+      "FIRST-002",
+      "FIRST-003",
+      "FIRST-004",
+      "FIRST-005",
+      "FIRST-006",
+      "FIRST-007",
+      "FIRST-008"
+    ]
+  },
+  "spec_sha256": "9a1fbdfc61db347ef681bc5fec1f4177018bf1ce0c80b83bf1c9746571ced8a8",
+  "started_at": "2026-09-16T02:20:13Z",
+  "status": "fail",
+  "suite_id": "strategic-advisor-first-pass-v1",
+  "target": {
+    "cli_version": "codex-cli 0.153.4",
+    "evaluation_material_visible": false,
+    "host": "codex-cli",
+    "model": "gpt-5.6-sol",
+    "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+    "source_access": [
+      "SKILL.md",
+      "references/action-policy.md",
+      "references/competing-worlds.md",
+      "references/context-policy.md",
+      "references/conversational-strategy.md",
+      "references/evidence.md",
+      "references/goal-qualification.md",
+      "references/marketing-growth.md",
+      "references/people-leadership.md",
+      "references/project-product.md",
+      "references/readiness.md",
+      "references/recommendation-delta.md",
+      "references/response-contract.md",
+      "references/technical-architecture.md"
+    ],
+    "source_access_artifact": "source-access.json",
+    "source_access_artifact_sha256": "d96b7da0453d360f84db8c966346f8b3f53caa85dc27ad89e044a6e2a62103bc",
+    "visibility_control": "Target sessions received only the isolated allowlisted runtime package and frozen user turns; criteria were disclosed later to separate ephemeral adjudicator sessions."
+  }
+}

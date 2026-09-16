@@ -1,0 +1,26 @@
+{
+  "task_id": "TASK-036",
+  "claims": [
+    {
+      "id": "CLM-001",
+      "parent_ac": "AC1",
+      "claim": "Alpha.9 passed all eight frozen groups on Codex CLI / gpt-5.6-sol using source-valid single-turn evidence and freshly isolated multi-turn recovery. Alpha.7 passed six. This bounded sample covers AC1, AC2 and AC3, not general effectiveness.",
+      "recipe": "runtime-target-source",
+      "status": "pass",
+      "commit": "ce6563fcd22fb4ded1b525325e7660f5c5a99465",
+      "timestamp": "2026-09-16T02:43:45Z",
+      "execution_target": "Codex CLI / gpt-5.6-sol; ten fresh sessions and fourteen target turns per complete comparison side",
+      "source_artifact": "Runtime sha256:cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e; frozen first_pass_cases.json",
+      "observation_method": "Existing runner with exact local-source read checks; fresh independent criterion adjudication; coordinator inspects raw commands and key actual replies.",
+      "target_used_source_proof": "comparison.json names the authoritative result for each case. Single-turn source identity is confirmed in session-cwd-audit.json; FIRST-001/FIRST-006 use only isolated-*-recovery results. Invalidated sessions remain excluded.",
+      "evidence_artifact": "../../../evidence/first-pass/comparison.json",
+      "evidence_artifact_hash": "sha256:1c2750574afcbb3e152677d04e2a6eb13eab6377fb2d7ef637b1bb81e672dd65",
+      "invalid_substitutes": [
+        "A policy instruction by itself",
+        "Invalidated global-installation sessions",
+        "Historical runtime smoke",
+        "A claim of universal reliability"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,525 @@
+{
+  "source": "Local generated-session turn_context records; only cwd and identities retained",
+  "sessions": [
+    {
+      "run": "baseline",
+      "case_id": "FIRST-001",
+      "session_id": "01a0a803-c1f4-76f0-ae60-8f7d6631e393",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-ujv0x0wm",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-baseline",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "baseline",
+      "case_id": "FIRST-002",
+      "session_id": "01a0a804-7bcc-7261-a698-68c666c166d3",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-ujv0x0wm",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "baseline",
+      "case_id": "FIRST-003",
+      "session_id": "01a0a805-8465-7702-9779-7f8685cdc05d",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-ujv0x0wm",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "baseline",
+      "case_id": "FIRST-004",
+      "session_id": "01a0a806-9d36-78a0-a9b6-b9086cbcc429",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-ujv0x0wm",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "baseline",
+      "case_id": "FIRST-005",
+      "session_id": "01a0a807-3598-7433-864a-51367d112e16",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-ujv0x0wm",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "baseline",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a807-fd7a-72f0-bfe4-df7174241343",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-ujv0x0wm",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-baseline",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "baseline",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a809-d465-7733-a46e-5b705e594e97",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-ujv0x0wm",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-baseline",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "baseline",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a80a-ff6c-7bb1-89cf-3e21ff63c608",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-ujv0x0wm",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-baseline",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "baseline",
+      "case_id": "FIRST-007",
+      "session_id": "01a0a80c-3a1e-77d1-b613-847a7abe7093",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-ujv0x0wm",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "baseline",
+      "case_id": "FIRST-008",
+      "session_id": "01a0a80c-a34e-71e0-9f4c-d6620c3f1f74",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-ujv0x0wm",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "final-canary",
+      "case_id": "FIRST-004",
+      "session_id": "01a0a809-8391-7280-be73-19a66d22bdb1",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-70uud9nx",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "final-remaining",
+      "case_id": "FIRST-001",
+      "session_id": "01a0a80b-4dd8-7b00-9f54-c0f3835041a4",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-uqlbid6j",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "final-remaining",
+      "case_id": "FIRST-002",
+      "session_id": "01a0a80b-dd36-7ec2-bd43-04b41b6aead7",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-uqlbid6j",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "final-remaining",
+      "case_id": "FIRST-003",
+      "session_id": "01a0a80c-8352-7fd3-a4e1-cef499e7b11d",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-uqlbid6j",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "final-remaining",
+      "case_id": "FIRST-005",
+      "session_id": "01a0a80d-cbca-7302-9623-6b85c95a29f5",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-uqlbid6j",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "final-remaining",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a80e-aee3-7431-a159-69edfa0ddda2",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-uqlbid6j",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "final-remaining",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a80f-c21c-77a3-8820-b701bdeb92aa",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-uqlbid6j",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "final-remaining",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a810-c68a-7023-87dd-b93d3bfb4e2d",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-uqlbid6j",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "final-remaining",
+      "case_id": "FIRST-007",
+      "session_id": "01a0a811-a167-79f3-9de6-8e56cd7fb6a7",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-uqlbid6j",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "final-remaining",
+      "case_id": "FIRST-008",
+      "session_id": "01a0a812-20ff-7bd3-9e95-26f890202a78",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-uqlbid6j",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-001",
+      "session_id": "01a0a814-0f96-7f12-8149-7f86e671a29b",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-001",
+      "session_id": "01a0a815-1391-7e21-9dd4-db10bc79baf5",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-002",
+      "session_id": "01a0a816-44fb-7ec1-8217-3c40d68b4367",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-003",
+      "session_id": "01a0a817-4ead-72a3-8b7b-34cd6d13d747",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-004",
+      "session_id": "01a0a818-5bbc-7833-95da-e0a05c94c46e",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-005",
+      "session_id": "01a0a819-7620-7261-8e32-8538ef865947",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-006",
+      "session_id": "01a0a81a-a340-7352-ac90-5e709096b1b3",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-007",
+      "session_id": "01a0a81c-ad05-74c1-8b02-5acfe3da3a47",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-008",
+      "session_id": "01a0a81e-852f-7b31-b66f-e97c5e86abd7",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-009",
+      "session_id": "01a0a81f-bacb-7972-91f4-48fb0ec8038e",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-010",
+      "session_id": "01a0a820-c1f5-73d2-985f-01a5fc16980b",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "invalid-resume-drift",
+      "case_id": "DRIFT-011",
+      "session_id": "01a0a821-c632-7aa2-984a-3733266cc190",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-xcj3_i66",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/tmp/sa-first-pass-final",
+          "matches_frozen_target": false
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "isolated-resume-canary",
+      "case_id": "DRIFT-011",
+      "session_id": "01a0a82a-00c3-7971-be3e-2b69068d12fb",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-c5r0wq3r",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-c5r0wq3r",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    }
+  ]
+}

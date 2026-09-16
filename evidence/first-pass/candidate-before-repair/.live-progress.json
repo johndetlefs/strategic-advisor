@@ -1,0 +1,262 @@
+{
+  "adapter_contract_identity": null,
+  "adjudications": {
+    "FIRST-001": [
+      {
+        "id": "FIRST_001_1",
+        "observation": "At T1 the assistant explicitly contrasted the 100-minute staff-time saving with the 25-percentage-point reduction in correct first submissions, asked for the minimum acceptable correctness rate, and stated that the evidence did not yet support choosing either approach. It therefore clarified the outcome tradeoff without committing to or inventing a composite objective.",
+        "status": "pass"
+      },
+      {
+        "id": "FIRST_001_2",
+        "observation": "At T2 the assistant preserved correct first submissions as the controlling objective, retained the 90% current process as the production default, rejected full automation at 65%, and proposed only a bounded hybrid validation test conditional on achieving at least 90% correctness while reducing staff time. It did not repeat the resolved outcome question or claim the hybrid was already approved.",
+        "status": "pass"
+      }
+    ],
+    "FIRST-002": [
+      {
+        "id": "FIRST_002_1",
+        "observation": "The assistant used the supplied planning history to identify improving renewals and reducing avoidable cancellations as a plausible current outcome, explicitly cautioned that this history did not establish retention over acquisition, and asked whether the present two-week allocation should primarily target renewals/cancellations or acquisition. It withheld the mechanism recommendation pending that confirmation and did not ask the user to redesign the solution.",
+        "status": "pass"
+      }
+    ],
+    "FIRST-003": [
+      {
+        "id": "FIRST_003_1",
+        "observation": "The assistant directly used the authorised CSV’s figures: current 32/40 completions and 12 minutes versus proposal 20/40 and 18 minutes. It neither asked the owner to retrieve or summarise the file nor described a fabricated tool invocation.",
+        "status": "pass"
+      },
+      {
+        "id": "FIRST_003_2",
+        "observation": "The assistant explicitly advised, “Do not roll out the proposed workflow,” quantified the proposal’s 30-percentage-point completion decline and 6-minute time increase, and recommended investigating failed and slow journeys followed by a bounded revised test with a defined correctness measure. It also acknowledged that the CSV did not establish correctness, avoiding universal causal certainty.",
+        "status": "pass"
+      }
+    ],
+    "FIRST-004": [
+      {
+        "id": "FIRST_004_1",
+        "observation": "The response explicitly rejects an immediate merger, distinguishes the desired outcome (eliminating duplicate entry) from the proposed shared-runtime mechanism, and says that mechanism is unvalidated because the duplication source is unmeasured. It identifies different approval rules and weakened independent deployment as costs, and compares the merger against smaller remedies—“a shared input template or bounded export/import”—to be tested after tracing the workflow.",
+        "status": "pass"
+      },
+      {
+        "id": "FIRST_004_2",
+        "observation": "The response provides a discriminating next move—trace a complete weekly cycle for both teams, then test the smallest remedy supported by the findings—but it does not assign that investigation or test to any owner. Because the criterion separately requires both the move and its owner, this is incomplete.",
+        "status": "fail"
+      }
+    ]
+  },
+  "checkpoint_identity": "sha256:8a4f0dfafabddd38c957e208ca2ef922d6a0b6b51ba82f027c138455afd187ee",
+  "diagnostic_decision": null,
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "failure_detail": "blocking product/assertion failure: FIRST-004",
+  "limits": {
+    "max_elapsed_seconds": 1800,
+    "max_failures": 1,
+    "max_target_calls": 16
+  },
+  "mode": "certification",
+  "outcome": "product-failure",
+  "proof_contract_identity": "sha256:40465702ae737b88196a8ae2658504e960efc7926a6655d32671c546ef27f89d",
+  "runtime_identity": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+  "schema_version": 2,
+  "selected_case_ids": [
+    "FIRST-001",
+    "FIRST-002",
+    "FIRST-003",
+    "FIRST-004",
+    "FIRST-005",
+    "FIRST-006",
+    "FIRST-007",
+    "FIRST-008"
+  ],
+  "sessions": {
+    "FIRST-001::default": {
+      "case_id": "FIRST-001",
+      "session_id": "01a0a803-b86c-7a80-aa94-0370ecbf336a",
+      "session_identity": "sha256:0e94b8bf2a0beeb87d420043e00c3ab323ec246c8eda2939e9363f62142f1c94",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ],
+      "turns": [
+        {
+          "assistant": "The evidence does not yet support choosing either approach: automation saves 100 staff minutes per client but reduces correct first submissions by 25 percentage points.\n\nWhat minimum first-submission correctness rate is acceptable once the staff cost and client harm of correcting errors are included?",
+          "id": "T1",
+          "receipt_identity": "sha256:8aac91269e2734bcee67c8f842491a4f6f7add0e03267fbcafb9ebdc8d856396",
+          "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. We want to make client onboarding better. Our current approach takes two staff hours and gives 90 percent of clients a correct first submission. An automated proposal takes 20 minutes and gives 65 percent correct first submissions. Recommend our direction."
+        },
+        {
+          "assistant": "Keep the current process as the production default. Full automation is incompatible with the objective: it lowers correct first submissions from 90% to 65%, a 25-point quality loss.\n\nThe only supported automation direction is a bounded hybrid test: automation prepares the submission, staff review it before submission. Adopt it only if comparable cases demonstrate at least 90% correctness while reducing total staff time. Until then, the hybrid is a validation candidate—not an approved replacement.",
+          "id": "T2",
+          "receipt_identity": "sha256:82ce83470cf7ea8b5fe93edbc48bc3fd834b5e649897c195391f10336c0f91a3",
+          "user": "Correct first submissions are the objective. Staff time is secondary; do not sacrifice submission quality to save time."
+        }
+      ],
+      "variant_id": "default"
+    },
+    "FIRST-002::default": {
+      "case_id": "FIRST-002",
+      "session_id": "01a0a804-ece9-7f33-a713-68bd9831dafb",
+      "session_identity": "sha256:e83daa488e185e91c52e18a5f00bf80b40d3a61627d206dd406e915c973ba0f1",
+      "successful_runtime_reads": [],
+      "turns": [
+        {
+          "assistant": "Do not commit the two engineer-weeks to a full automated outreach feature yet.\n\nThe only authorised evidence says recent planning repeatedly valued reliable renewals and fewer avoidable cancellations. It does not establish that retention outranks acquisition, nor that automated outreach would improve either outcome. The strongest rival is a manually operated outreach test using existing tools; it can validate the audience, trigger, message, response, and operational burden before automation hardens an unproven workflow.\n\nOne decision-changing question: **for this two-week allocation, is the primary outcome improving renewals/reducing avoidable cancellations, or increasing acquisition?**\n\n- If renewal is primary, test targeted outreach around an evidenced cancellation or renewal-risk moment.\n- If acquisition is primary, evaluate it as a separate acquisition experiment with different targeting and success evidence.\n\nUntil that priority is set, “automated outreach” is only a proposed means, and its build case is not validated.",
+          "id": "T1",
+          "receipt_identity": "sha256:da5d4a9fa178876fdf15c586e1e4153ae2ad2801a95f9b3a9458f01bbc5cb7f1",
+          "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. Authorised prior project notes: three recent planning conversations prioritised reliable renewals and reducing avoidable cancellations; no decision established whether acquisition or renewal now has priority. Today I ask: should we build an automated outreach feature? We have two engineer weeks. What do you advise?"
+        }
+      ],
+      "variant_id": "default"
+    },
+    "FIRST-003::default": {
+      "case_id": "FIRST-003",
+      "session_id": "01a0a806-039c-72e1-9723-f9fe6e1f7b41",
+      "session_identity": "sha256:9bbb2583a5e2250ded679511c2c0987c5416c44216793435aec80b62c1b071d1",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ],
+      "turns": [
+        {
+          "assistant": "Do not roll out the proposed workflow. The available evidence supports retaining the current workflow and treating the proposal as a failed pilot candidate.\n\nFrom the authorised [pilot CSV](/private/tmp/sa-first-pass-continuation/skills/strategic-advisor/evals/first_pass_fixture.csv):\n\n| Outcome | Current | Proposal | Difference |\n|---|---:|---:|---:|\n| Completed workflows | 32/40 (80%) | 20/40 (50%) | Proposal: −30 percentage points |\n| Median user time | 12 min | 18 min | Proposal: +6 min (50% longer) |\n\nThe proposal produced 12 fewer completions per 40 assigned users while taking longer. That directly contradicts both desired outcomes. The sponsor’s endorsement is a preference/report, not evidence capable of outweighing the observed pilot results.\n\nOne limitation matters: the CSV measures `completed`, not explicitly “correctly completed.” Therefore it cannot establish correctness. But that uncertainty does not rescue rollout: either completion represents correct completion, in which case the proposal performed substantially worse, or it does not, in which case correctness remains unvalidated while completion and time still worsened.\n\nRecommended next moves:\n\n1. Keep the current workflow in place; do not expose more users to the proposal.\n2. Have the workflow owner inspect the proposal cohort’s failed and slow journeys to locate the first divergence from the current workflow.\n3. Test a revised, bounded candidate only after defining how correctness is measured. Reconsider rollout when representative comparative evidence shows improved correctness/completion without increasing user time.\n\nThe strongest rival is the existing workflow, and it currently wins on every measured outcome.",
+          "id": "T1",
+          "receipt_identity": "sha256:ca13e152069ebe331d5e9ae348185d613c6ca844c772e4a82ea548c35d95fd26",
+          "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. We want more correct workflow completions and less user time. A sponsor says the proposed workflow is an improvement and wants rollout. The current matched pilot results are in /private/tmp/sa-first-pass-continuation/skills/strategic-advisor/evals/first_pass_fixture.csv; you have read permission for that exact synthetic CSV and tools can read it. Assess rollout using the available evidence."
+        }
+      ],
+      "variant_id": "default"
+    },
+    "FIRST-004::default": {
+      "case_id": "FIRST-004",
+      "session_id": "01a0a806-cc02-7d11-a0ab-6990b6bf61c1",
+      "session_identity": "sha256:5248122105888a33eeefe38477f6e77bd1bcafd2808245c89cd93b3676f23805",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/boundaries.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ],
+      "turns": [
+        {
+          "assistant": "Do not merge the software yet.\n\nThe desired outcome is eliminating duplicate weekly entry; a shared runtime is only one possible mechanism. On the supplied evidence, it is not validated because:\n\n- The duplication’s origin has not been measured.\n- Different approval rules make shared logic potentially awkward.\n- Independent deployment is an established requirement that a shared runtime could weaken.\n\nFirst, trace one complete weekly cycle for both teams: record where each datum originates, where it is re-entered, which fields differ, and where approvals diverge. Then test the smallest remedy supported by that evidence—likely a shared input template or bounded export/import.\n\nReconsider a shared runtime only if the trace shows substantial common processing that cannot be removed at the data boundary, while preserving separate approval configuration, deployment, ownership, and failure isolation. Otherwise, merging would trade a small unmeasured inefficiency for durable coupling.",
+          "id": "T1",
+          "receipt_identity": "sha256:6bb11885077ce3e7c744e678fb70162277bf29800f021c24ec242ee97b55d1a3",
+          "user": "$strategic-advisor Synthetic case: use the installed runtime, this conversation, and only explicitly authorised synthetic evidence. Do not read memory, other projects, evaluation criteria or prior outputs. Our two small teams repeat a weekly data entry step. I propose merging their software into one shared runtime to remove the duplication. They use different approval rules and must deploy independently. We have not measured where duplicate entry originates. A shared input template or a small data export might suffice. Give your first recommendation."
+        }
+      ],
+      "variant_id": "default"
+    }
+  },
+  "source_identity": "sha256:86662d6bfd8aeca29dea272d6dc1bd80d956e2ad6e0ce1a863590f2893b39c87",
+  "spec_sha256": "9a1fbdfc61db347ef681bc5fec1f4177018bf1ce0c80b83bf1c9746571ced8a8",
+  "started_at": "2026-09-16T02:20:11Z",
+  "target_contract_identity": "sha256:4f78c37265435a1add739f037b4a69f170a225db0c6bfb4b000df162e419f790",
+  "target_root": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-dozevx5y",
+  "telemetry": {
+    "elapsed_seconds": 254,
+    "evaluator_calls": 4,
+    "events": [
+      {
+        "attempt": 1,
+        "case_id": "FIRST-001",
+        "elapsed_seconds": 54,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "FIRST-001",
+        "elapsed_seconds": 16,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T2"
+      },
+      {
+        "attempt": 1,
+        "case_id": "FIRST-001",
+        "elapsed_seconds": 10,
+        "kind": "evaluator",
+        "outcome": "pass",
+        "unit_id": "adjudication"
+      },
+      {
+        "attempt": 1,
+        "case_id": "FIRST-002",
+        "elapsed_seconds": 61,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "FIRST-002",
+        "elapsed_seconds": 11,
+        "kind": "evaluator",
+        "outcome": "pass",
+        "unit_id": "adjudication"
+      },
+      {
+        "attempt": 1,
+        "case_id": "FIRST-003",
+        "elapsed_seconds": 43,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "FIRST-003",
+        "elapsed_seconds": 9,
+        "kind": "evaluator",
+        "outcome": "pass",
+        "unit_id": "adjudication"
+      },
+      {
+        "attempt": 1,
+        "case_id": "FIRST-004",
+        "elapsed_seconds": 38,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "FIRST-004",
+        "elapsed_seconds": 12,
+        "kind": "evaluator",
+        "outcome": "product-failure",
+        "unit_id": "adjudication"
+      }
+    ],
+    "failures": 1,
+    "outcome_counts": {
+      "evaluator-failure": 0,
+      "harness-failure": 0,
+      "limit-reached": 0,
+      "pass": 8,
+      "product-failure": 1,
+      "provider-failure": 0
+    },
+    "target_calls": 5
+  }
+}
