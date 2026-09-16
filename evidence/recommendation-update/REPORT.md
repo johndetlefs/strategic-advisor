@@ -12,7 +12,7 @@ The automatic grader passed the new T3, but it still contains approval language.
 
 Structural validation passes all seven scopes and the generated 56-case inventory is current. Alpha.10 ZIPs were built from a clean exact-source clone and independently checked against the expected runtime identity; see package-verification.json. Prepared artifact mode is not public release, host installation, activation, support, owner acceptance or strategic effectiveness. There is no alpha.10 full-suite behaviour claim.
 
-Independent QA: incomplete; no independent verdict or report was produced. The task remains blocked on substantive review, including the T3 endorsement question. Delivery is the same draft PR #24; no merge, publication or installation authority.
+Independent QA: Pass after completing the existing gate in one compact fresh-context review; see INDEPENDENT-QA.md. Earlier failed invocations below remain historical receipts. Delivery is the same draft PR #24; no merge, publication or installation authority.
 
 ## Review launch boundary
 
@@ -25,6 +25,10 @@ The first actual sealed invocation stopped on a mandatory skill-file read omitte
 
 The total observed review consumption is 112,818 native tokens and 45 seconds, exceeding the selected 100,000-token envelope before interruption. The receipts establish detection and interruption, not a strict token ceiling. The Coordinator supplied an oversized evidence/context packet and omitted a required read in the initial allowlist. Neither failure establishes a product defect or a passing review.
 
-No further review, model verification or implementation attempt is commissioned. The outstanding action is one independent judgment using a reduced, self-contained packet covering the two runtime edits, requirements, exact T3 before/after responses, affected proof boundaries and packaging evidence. Renewed reviewer authority is required before that action. The automatic passing score is retained without claiming that the unresolved endorsement question is settled.
+No further review, model verification or implementation attempt is commissioned. At that stop, the outstanding action was one independent judgment using a reduced, self-contained packet covering the two runtime edits, requirements, exact T3 before/after responses, affected proof boundaries and packaging evidence. The owner subsequently directed completion; see REVIEW-RECOVERY.md. The automatic passing score is retained without claiming that the unresolved endorsement question is settled.
 
 Closeout Doctor passed with warnings: the current TASK-036 execution limit is exhausted and independent proof remains incomplete; an existing TASK-034 diagnostic-only campaign is also not certification. See closeout-doctor.log. These warnings were retained, not waived.
+
+## Final independent disposition
+
+The independent reviewer passed the scoped correction with no blocking findings. The preceding owner preference against manual drafting supports the proposed design-time drafting method; the answer preserves frozen deterministic lookup and removes the old recommendation to build an authoring pipeline now. This resolves the recorded interpretive question without another model evaluation, rubric change or product revision. See INDEPENDENT-QA.md for coverage and limitations. Existing CI passed on 7dc6683. Final delivery records update the same PR; merge, publication and installation remain excluded.

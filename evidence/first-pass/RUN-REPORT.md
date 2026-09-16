@@ -57,4 +57,4 @@ The failure is a remaining gap against the task’s core user outcome. The candi
 
 ## Alpha.10 follow-up
 
-The owner subsequently approved one correction and amended the remaining proof scope to twelve affected turns. All three groups passed on alpha.10; original alpha.9 failure and rubric are retained. Independent review was interrupted before a verdict, so substantive completion remains blocked. See [the current follow-up report](../recommendation-update/REPORT.md). No alpha.10 full-suite claim is made.
+The owner subsequently approved one correction and amended the remaining proof scope to twelve affected turns. All three groups passed on alpha.10; original alpha.9 failure and rubric are retained. Initial review invocations were interrupted; the existing independent gate subsequently completed with Pass in a compact context. See [the current follow-up report](../recommendation-update/REPORT.md). No alpha.10 full-suite claim is made.

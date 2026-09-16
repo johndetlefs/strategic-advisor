@@ -175,6 +175,29 @@
       "source_identity": "sha256:d35b986442e90ee36abb3b95c50ab7dff154738d11087b97b55fef606d67371d",
       "source_revision": "9cf4e7fb1db521a4203c9be4955e4d954f053c6c",
       "user_consequence": "Same consumed twelve-call proof reused; one review; no further model test or repair"
+    },
+    {
+      "affected_units": [
+        "1",
+        "2",
+        "3"
+      ],
+      "amendment_identity": null,
+      "boundary": "before-review-or-complete",
+      "capability_change": "Fresh-context independent review completed existing approved gate at 7dc6683; product and proof unchanged from 670b26f",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:d35b986442e90ee36abb3b95c50ab7dff154738d11087b97b55fef606d67371d",
+      "source_revision": "9cf4e7fb1db521a4203c9be4955e4d954f053c6c",
+      "user_consequence": "Pass with no blocking findings; finish same-branch documentation delivery without further verification or review"
     }
   ],
   "decisions": [
@@ -766,11 +789,13 @@
   "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
   "last_boundary": {
     "affected_units": [
-      "TASK-036"
+      "1",
+      "2",
+      "3"
     ],
     "amendment_identity": null,
     "boundary": "before-review-or-complete",
-    "capability_change": "Evidence-only commit for clean sealed review; runtime and evaluator unchanged by git diff",
+    "capability_change": "Fresh-context independent review completed existing approved gate at 7dc6683; product and proof unchanged from 670b26f",
     "classification": "inside-envelope",
     "decided_by": "Coordinator",
     "decision_date": "2026-09-16",
@@ -778,13 +803,12 @@
     "relevant_ocs": [
       "OC1",
       "OC2",
-      "OC3",
-      "OC7"
+      "OC3"
     ],
     "shared_premises_valid": "yes",
     "source_identity": "sha256:d35b986442e90ee36abb3b95c50ab7dff154738d11087b97b55fef606d67371d",
     "source_revision": "9cf4e7fb1db521a4203c9be4955e4d954f053c6c",
-    "user_consequence": "Same consumed twelve-call proof reused; one review; no further model test or repair"
+    "user_consequence": "Pass with no blocking findings; finish same-branch documentation delivery without further verification or review"
   },
   "loaded_contract": {
     "asset_version": "8",
@@ -793,7 +817,7 @@
     "package_version": "0.10.0",
     "recorded_at": "2026-09-16"
   },
-  "next_action": "Continue inside envelope.",
+  "next_action": "Push independent QA Pass and retained recovery evidence to PR24. No further model tests or review; merge, publication and installation excluded.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-036",
     "claim_class": "user-facing",
