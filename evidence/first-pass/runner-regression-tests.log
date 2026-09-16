@@ -1,0 +1,51 @@
+TARGET CASE-001 default T1
+ADJUDICATE CASE-001
+RESULT fail outcome=product-failure target_calls=1 evaluator_calls=1 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmps27hhn63/run-fail-fast/result.json
+STOP blocking product/assertion failure: CASE-001
+TARGET CASE-001 default T1
+ADJUDICATE CASE-001
+RESULT fail outcome=product-failure target_calls=1 evaluator_calls=1 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmpb4nu152k/run-regrade/result.json
+STOP blocking product/assertion failure: CASE-001
+ADJUDICATE CASE-001
+RESULT pass outcome=pass target_calls=0 evaluator_calls=1 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmpb4nu152k/run-regrade/result.json
+TARGET CASE-001 default T1
+ADJUDICATE CASE-001
+TARGET CASE-002 default T1
+TARGET CASE-002 default T2
+ADJUDICATE CASE-002
+RESULT fail outcome=product-failure target_calls=3 evaluator_calls=2 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmp63mkeeod/run-diagnostic-bounded/result.json
+TARGET CASE-001 default T1
+ADJUDICATE CASE-001
+RESULT fail outcome=limit-reached target_calls=1 evaluator_calls=1 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmpyffyb8bj/run-diagnostic-failure-limit/result.json
+STOP max_failures reached (1/1)
+TARGET CASE-002 default T1
+TARGET CASE-002 default T2
+RESULT fail outcome=limit-reached target_calls=1 evaluator_calls=0 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmpu84xaj98/run-elapsed-limit/result.json
+STOP max_elapsed_seconds reached (1/1)
+TARGET CASE-001 default T1
+ADJUDICATE CASE-001
+RESULT fail outcome=evaluator-failure target_calls=1 evaluator_calls=1 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmp957b37vb/run-evaluator-failure/result.json
+STOP invalid rubric output
+TARGET CASE-001 default T1
+RESULT fail outcome=harness-failure target_calls=2 evaluator_calls=0 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmp957b37vb/run-harness-failure/result.json
+STOP broken local harness
+TARGET CASE-001 default T1
+ADJUDICATE CASE-001
+RESULT pass outcome=pass target_calls=2 evaluator_calls=1 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmpepwkutr8/run-retry/result.json
+TARGET CASE-001 default T1
+ADJUDICATE CASE-001
+RESULT pass outcome=pass target_calls=1 evaluator_calls=1 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmp6jdxhlup/run-tamper/result.json
+TARGET CASE-001 default T1
+ADJUDICATE CASE-001
+RESULT pass outcome=pass target_calls=1 evaluator_calls=1 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmp1qrey0cu/run-tamper-session/result.json
+TARGET CASE-001 default T1
+ADJUDICATE CASE-001
+RESULT pass outcome=pass target_calls=1 evaluator_calls=1 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmp1qrey0cu/run-tamper-reads/result.json
+TARGET CASE-002 default T1
+TARGET CASE-002 default T2
+RESULT fail outcome=limit-reached target_calls=1 evaluator_calls=0 /private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/tmp7yh_l6ri/run-limit/result.json
+STOP max_target_calls reached (1/1)
+----------------------------------------------------------------------
+Ran 19 tests in 0.224s
+
+OK

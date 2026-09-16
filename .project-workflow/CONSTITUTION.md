@@ -16,7 +16,7 @@ Strategic Advisor exists to improve decisions, not to validate the user's prefer
 ## Core Outcomes
 
 - Users can distinguish what is observed, reported, inferred, assumed, forecast, preferred, contradicted, and unknown.
-- Users receive an explicit assessment of whether action is ready, conditional, not validated, or infeasible as posed.
+- Users understand whether the exact action is supported, conditional, not validated, or infeasible as posed, and what happens next; public state labels are optional.
 - Recommendations target the binding constraint and remain useful across the most plausible competing explanations of the situation.
 - High-consequence or hard-to-reverse advice requires stronger evidence; uncertainty instead produces proportionate validation or reversible experiments.
 - Users can see what would falsify the recommendation, when to review it, and what evidence would change it.

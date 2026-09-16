@@ -1,0 +1,94 @@
+{
+  "authority_commit": "a456589ee3a5631ee246a491225dca0c7deea17e",
+  "authority_commit_scope": "Base lineage only because the current correction remains uncommitted; exact spec and model-visible runtime are independently bound by spec_sha256 and runtime_package_identity_sha256.",
+  "completed_at": "2026-09-16T02:05:27Z",
+  "runner": {
+    "checkpoint_identity": "sha256:ab4841048e45f453596bd9742b570c73dd93040be06c0613abfe2c20ad431378",
+    "limits": {
+      "max_elapsed_seconds": 3600,
+      "max_failures": 8,
+      "max_target_calls": 32
+    },
+    "outcome": "provider-failure",
+    "telemetry": {
+      "elapsed_seconds": 4,
+      "evaluator_calls": 0,
+      "events": [
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 1,
+          "kind": "target",
+          "outcome": "provider-failure",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 2,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 1,
+          "kind": "target",
+          "outcome": "provider-failure",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 1,
+          "kind": "target",
+          "outcome": "provider-failure",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 2,
+          "case_id": "FIRST-001",
+          "elapsed_seconds": 1,
+          "kind": "target",
+          "outcome": "provider-failure",
+          "unit_id": "default:T1"
+        }
+      ],
+      "failures": 0,
+      "outcome_counts": {
+        "evaluator-failure": 0,
+        "harness-failure": 0,
+        "limit-reached": 0,
+        "pass": 0,
+        "product-failure": 0,
+        "provider-failure": 4
+      },
+      "target_calls": 4
+    }
+  },
+  "scenarios": [],
+  "schema_version": 1,
+  "selection": {
+    "diagnostic_decision": "baseline-comparison",
+    "full_suite": true,
+    "mode": "diagnostic",
+    "selected_case_ids": [
+      "FIRST-001",
+      "FIRST-002",
+      "FIRST-003",
+      "FIRST-004",
+      "FIRST-005",
+      "FIRST-006",
+      "FIRST-007",
+      "FIRST-008"
+    ]
+  },
+  "spec_sha256": "9a1fbdfc61db347ef681bc5fec1f4177018bf1ce0c80b83bf1c9746571ced8a8",
+  "started_at": "2026-09-16T02:05:08Z",
+  "status": "fail",
+  "suite_id": "strategic-advisor-first-pass-v1",
+  "target": {
+    "cli_version": "codex-cli 0.153.4",
+    "evaluation_material_visible": false,
+    "host": "codex-cli",
+    "model": "gpt-5.6-sol",
+    "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+    "source_access": [],
+    "source_access_artifact": "source-access.json",
+    "source_access_artifact_sha256": "239624868d8a0288959f6314914ae3130b4bfaa9730e2ae65191907730f126e4",
+    "visibility_control": "Target sessions received only the isolated allowlisted runtime package and frozen user turns; criteria were disclosed later to separate ephemeral adjudicator sessions."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "artifact": "evidence/evaluations/isolated-baseline-recovery/result.json",
+  "candidate_identity": "sha256:4810140cb75456d67536c341820f729dc84f4e35385193f284aa1693e65d29a9",
+  "capabilities": [
+    "request-binding",
+    "selection",
+    "fail-fast",
+    "limits",
+    "typed-outcomes",
+    "checkpoint-resume",
+    "input-bound-receipts",
+    "transcript-regrade"
+  ],
+  "checkpoint_identity": "sha256:dcd33a256f4bfedec7127fd0258d2412959aa0eab92bc5538869cc0fa085e5c3",
+  "contract": "generic-verifier-receipt",
+  "diagnostic_decision": "refresh-invalidated-multiturn-baseline",
+  "elapsed_seconds": 245,
+  "evaluator_calls": 2,
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "limits": {
+    "max_elapsed_seconds": 900,
+    "max_failures": 2,
+    "max_target_calls": 8
+  },
+  "mode": "diagnostic",
+  "outcome": "pass",
+  "proof_contract_identity": "sha256:8c41d062a3a53e2ed15355f6a29eec9ba7b10ce07859fdb9b97aa897c525a43d",
+  "receipt_identity": "sha256:142e02ae3e9f61500739b13f59def1926cc131b112c9795f1b62d04fc3a648aa",
+  "regrade": false,
+  "runtime_identity": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
+  "schema_version": 1,
+  "selected_scope": [
+    "FIRST-001",
+    "FIRST-006"
+  ],
+  "source_identity": "sha256:a98f0d4b08ef3186022ddb5dc1b0e5300af3b14f22726a13c42593229a24bab4",
+  "stage_complete": true,
+  "target_calls": 8,
+  "target_identity": "sha256:644f7c8c844f43ea1a90b714c28b3fb4b9af33666260f8ac873debeaba7f08ff",
+  "telemetry_totals": {
+    "elapsed_seconds": 245,
+    "evaluator_calls": 2,
+    "failures": 0,
+    "target_calls": 8
+  }
+}

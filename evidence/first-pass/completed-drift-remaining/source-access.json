@@ -1,0 +1,229 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "DRIFT-001",
+      "session_id": "01a0a832-1be7-7cb3-9283-5709cdbff809",
+      "successful_runtime_reads": [],
+      "variant_id": "scale"
+    },
+    {
+      "case_id": "DRIFT-001",
+      "session_id": "01a0a832-cb44-7740-9c04-0b45b43fbcff",
+      "successful_runtime_reads": [],
+      "variant_id": "stop"
+    },
+    {
+      "case_id": "DRIFT-002",
+      "session_id": "01a0a833-fb94-7bf1-a8ce-a8bae1a7e0d1",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-003",
+      "session_id": "01a0a834-d953-7993-840f-c976b3be4a0e",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-004",
+      "session_id": "01a0a83b-8f34-7f00-bf8c-85981caf601a",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-005",
+      "session_id": "01a0a83c-c1bc-7191-89c2-eebb32995af8",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-006",
+      "session_id": "01a0a83d-b04f-7762-9012-78219aaea467",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/business-venture.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/goal-review.md",
+        "references/marketing-growth.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-007",
+      "session_id": "01a0a83f-d2a5-70f2-8f64-3b00020dbd17",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/business-venture.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-008",
+      "session_id": "01a0a841-e227-74a2-b35d-2236f3c08fc9",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-009",
+      "session_id": "01a0a842-fc2d-7903-8f97-e6e55624a9df",
+      "successful_runtime_reads": [
+        "SKILL.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-010",
+      "session_id": "01a0a844-07cd-7610-97ee-bafbf9ae9114",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/boundaries.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-012",
+      "session_id": "01a0a844-f47c-7792-8491-1382b9f40b88",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-013",
+      "session_id": "01a0a846-12bc-74f0-920d-4f48afdf192c",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ],
+      "variant_id": "neutral"
+    },
+    {
+      "case_id": "DRIFT-013",
+      "session_id": "01a0a847-50ee-74c0-9f55-2a4e1c12fcfa",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/boundaries.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ],
+      "variant_id": "angry"
+    },
+    {
+      "case_id": "DRIFT-014",
+      "session_id": "01a0a848-8299-7cd2-b279-e24a2c86b9dd",
+      "successful_runtime_reads": []
+    },
+    {
+      "case_id": "DRIFT-015",
+      "session_id": "01a0a849-b6f4-7983-b58b-4bf0e93be22e",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "DRIFT-016",
+      "session_id": "01a0a84a-d483-7c22-91d7-8847b1a8c648",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md",
+        "references/technical-architecture.md"
+      ]
+    }
+  ],
+  "schema_version": 1
+}

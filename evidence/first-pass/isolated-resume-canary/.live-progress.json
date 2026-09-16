@@ -1,0 +1,107 @@
+{
+  "adapter_contract_identity": null,
+  "adjudications": {
+    "DRIFT-011": [
+      {
+        "id": "ROUTINE_DIRECT",
+        "observation": "T1 gives the requested factual distinction directly in exactly two concise sentences. T2 directly identifies the missing repository/source as the blocker and requests the owning repository and method, while committing to a minimal null-check change that preserves the interface.",
+        "status": "pass"
+      },
+      {
+        "id": "ROUTINE_NO_STRATEGIC_CEREMONY",
+        "observation": "Neither retained assistant turn introduces a readiness verdict, claim ledger, architecture decision, baseline checklist, or strategic checkpoint; T2 explicitly avoids revisiting architecture.",
+        "status": "pass"
+      },
+      {
+        "id": "ROUTINE_NO_SKILL_READ",
+        "observation": "The retained successful-command trace records no installed Strategic Advisor runtime reads for this implicit-negative session.",
+        "status": "pass"
+      }
+    ]
+  },
+  "checkpoint_identity": "sha256:3dd5751d433efc5c2de88ac0a3748626502f03d0c969ef22f8b8c5a9ba88fe30",
+  "diagnostic_decision": null,
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "failure_detail": "",
+  "limits": {
+    "max_elapsed_seconds": 300,
+    "max_failures": 1,
+    "max_target_calls": 2
+  },
+  "mode": "certification",
+  "outcome": "pass",
+  "proof_contract_identity": "sha256:5aefd31f2eada6ddea253c98e1d9b91e3ec6d029ab1bc600783dfc8dd6b00677",
+  "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+  "schema_version": 2,
+  "selected_case_ids": [
+    "DRIFT-011"
+  ],
+  "sessions": {
+    "DRIFT-011::default": {
+      "case_id": "DRIFT-011",
+      "session_id": "01a0a82a-00c3-7971-be3e-2b69068d12fb",
+      "session_identity": "sha256:16a9b8f0634c5867a6f1856bae5e82599394f528e9699c20c1ec4efca9b022aa",
+      "successful_runtime_reads": [],
+      "turns": [
+        {
+          "assistant": "Authentication verifies who you are. Authorisation determines what you’re allowed to access or do.",
+          "id": "T1",
+          "receipt_identity": "sha256:fc15296e4e3511c8dfb3cc2bba3d88bb30005b326b76a612cfdc65fc9c9783e1",
+          "user": "Explain the difference between authentication and authorisation in two sentences. No product or implementation decision is under review."
+        },
+        {
+          "assistant": "I can’t make the fix because the provided workspace contains no repository or source files—only `.agents/skills/strategic-advisor`. Attach or identify the owning repository and method; then I can apply the minimal null-check change without altering its public interface or architecture.",
+          "id": "T2",
+          "receipt_identity": "sha256:dddfad2488dc7dec4705879336eaba82160be72e10d3e1e43e21f40f07ce00e0",
+          "user": "Now fix a null check in a repository method while keeping its approved public interface unchanged. Do not revisit architecture."
+        }
+      ],
+      "variant_id": "default"
+    }
+  },
+  "source_identity": "sha256:0043dc0d10f1903a2cc8c0ff83582e05d2ec00e120ecf307426ad338c9dfc83f",
+  "spec_sha256": "c3295bf81a840e482a8b78b40a421c97f8163211c74bcf16974861ef6684ed6e",
+  "started_at": "2026-09-16T03:02:00Z",
+  "target_contract_identity": "sha256:e018203ee34b1f765f7c410dd75b05aa81bf4e9c3af4c2c5a3a7cd29af7f39ca",
+  "target_root": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-c5r0wq3r",
+  "telemetry": {
+    "elapsed_seconds": 58,
+    "evaluator_calls": 1,
+    "events": [
+      {
+        "attempt": 1,
+        "case_id": "DRIFT-011",
+        "elapsed_seconds": 6,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T1"
+      },
+      {
+        "attempt": 1,
+        "case_id": "DRIFT-011",
+        "elapsed_seconds": 31,
+        "kind": "target",
+        "outcome": "pass",
+        "unit_id": "default:T2"
+      },
+      {
+        "attempt": 1,
+        "case_id": "DRIFT-011",
+        "elapsed_seconds": 21,
+        "kind": "evaluator",
+        "outcome": "pass",
+        "unit_id": "adjudication"
+      }
+    ],
+    "failures": 0,
+    "outcome_counts": {
+      "evaluator-failure": 0,
+      "harness-failure": 0,
+      "limit-reached": 0,
+      "pass": 3,
+      "product-failure": 0,
+      "provider-failure": 0
+    },
+    "target_calls": 2
+  }
+}

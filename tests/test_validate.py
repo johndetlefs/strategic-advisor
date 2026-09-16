@@ -634,6 +634,15 @@ class ValidatorFixtureTests(unittest.TestCase):
         result = self.run_validator("evals")
         self.assert_named_failure(result, "GOAL_REVIEW_EVIDENCE_INVALID")
 
+    def test_historical_goal_review_cannot_be_relabelled_current(self) -> None:
+        path = self.fixture_root / "evidence/evaluations/goal-review/release-evidence.json"
+        evidence = json.loads(path.read_text(encoding="utf-8"))
+        distribution = json.loads((self.fixture_root / "distribution.json").read_text())
+        evidence["runtime_package_identity_sha256"] = distribution["distribution"]["runtime_package_identity_sha256"]
+        path.write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
+        result = self.run_validator("evals")
+        self.assert_named_failure(result, "GOAL_REVIEW_EVIDENCE_INVALID")
+
     def test_goal_review_retained_artifact_tamper_fails_inventory(self) -> None:
         path = (
             self.fixture_root

@@ -1,0 +1,118 @@
+{
+  "authority_commit": "ec9d00504c935d062a59625b9657fb2497f3721b",
+  "authority_commit_scope": "Base lineage only because the current correction remains uncommitted; exact spec and model-visible runtime are independently bound by spec_sha256 and runtime_package_identity_sha256.",
+  "completed_at": "2026-09-16T03:02:57Z",
+  "runner": {
+    "checkpoint_identity": "sha256:3dd5751d433efc5c2de88ac0a3748626502f03d0c969ef22f8b8c5a9ba88fe30",
+    "limits": {
+      "max_elapsed_seconds": 300,
+      "max_failures": 1,
+      "max_target_calls": 2
+    },
+    "outcome": "pass",
+    "telemetry": {
+      "elapsed_seconds": 58,
+      "evaluator_calls": 1,
+      "events": [
+        {
+          "attempt": 1,
+          "case_id": "DRIFT-011",
+          "elapsed_seconds": 6,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T1"
+        },
+        {
+          "attempt": 1,
+          "case_id": "DRIFT-011",
+          "elapsed_seconds": 31,
+          "kind": "target",
+          "outcome": "pass",
+          "unit_id": "default:T2"
+        },
+        {
+          "attempt": 1,
+          "case_id": "DRIFT-011",
+          "elapsed_seconds": 21,
+          "kind": "evaluator",
+          "outcome": "pass",
+          "unit_id": "adjudication"
+        }
+      ],
+      "failures": 0,
+      "outcome_counts": {
+        "evaluator-failure": 0,
+        "harness-failure": 0,
+        "limit-reached": 0,
+        "pass": 3,
+        "product-failure": 0,
+        "provider-failure": 0
+      },
+      "target_calls": 2
+    }
+  },
+  "scenarios": [
+    {
+      "case_id": "DRIFT-011",
+      "criteria": [
+        {
+          "id": "ROUTINE_DIRECT",
+          "observation": "T1 gives the requested factual distinction directly in exactly two concise sentences. T2 directly identifies the missing repository/source as the blocker and requests the owning repository and method, while committing to a minimal null-check change that preserves the interface.",
+          "status": "pass"
+        },
+        {
+          "id": "ROUTINE_NO_STRATEGIC_CEREMONY",
+          "observation": "Neither retained assistant turn introduces a readiness verdict, claim ledger, architecture decision, baseline checklist, or strategic checkpoint; T2 explicitly avoids revisiting architecture.",
+          "status": "pass"
+        },
+        {
+          "id": "ROUTINE_NO_SKILL_READ",
+          "observation": "The retained successful-command trace records no installed Strategic Advisor runtime reads for this implicit-negative session.",
+          "status": "pass"
+        }
+      ],
+      "sessions": [
+        {
+          "session_id": "01a0a82a-00c3-7971-be3e-2b69068d12fb",
+          "turns": [
+            {
+              "assistant": "Authentication verifies who you are. Authorisation determines what you’re allowed to access or do.",
+              "id": "T1",
+              "user": "Explain the difference between authentication and authorisation in two sentences. No product or implementation decision is under review."
+            },
+            {
+              "assistant": "I can’t make the fix because the provided workspace contains no repository or source files—only `.agents/skills/strategic-advisor`. Attach or identify the owning repository and method; then I can apply the minimal null-check change without altering its public interface or architecture.",
+              "id": "T2",
+              "user": "Now fix a null check in a repository method while keeping its approved public interface unchanged. Do not revisit architecture."
+            }
+          ]
+        }
+      ],
+      "status": "pass"
+    }
+  ],
+  "schema_version": 1,
+  "selection": {
+    "diagnostic_decision": null,
+    "full_suite": false,
+    "mode": "certification",
+    "selected_case_ids": [
+      "DRIFT-011"
+    ]
+  },
+  "spec_sha256": "c3295bf81a840e482a8b78b40a421c97f8163211c74bcf16974861ef6684ed6e",
+  "started_at": "2026-09-16T03:02:00Z",
+  "status": "pass",
+  "suite_id": "strategic-advisor-drift-smoke-v1",
+  "target": {
+    "cli_version": "codex-cli 0.153.4",
+    "evaluation_material_visible": false,
+    "host": "codex-cli",
+    "model": "gpt-5.6-sol",
+    "runtime_package_identity_sha256": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+    "source_access": [],
+    "source_access_artifact": "source-access.json",
+    "source_access_artifact_sha256": "61b332a2a6010898b09612bd20fcbcf7751c1a86b94775c9abb6071a01be4a5e",
+    "visibility_control": "Target sessions received only the isolated allowlisted runtime package and frozen user turns; criteria were disclosed later to separate ephemeral adjudicator sessions."
+  }
+}

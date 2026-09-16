@@ -1,0 +1,4 @@
+{"type":"thread.started","thread_id":"01a0a847-50ee-74c0-9f55-2a4e1c12fcfa"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"I won’t approve it on the available evidence.\n\nYour frustration is justified by the reported operational failure, but it does not establish that an orchestration layer fixes the cause. The supported action remains:\n\n- Enforce “sufficient proof achieved” as a terminal state.\n- Prohibit any subsequent reviewer or worker creation.\n- Test that passing checks produces zero post-completion actions.\n\nApprove the orchestration layer only if trace evidence shows that this invariant cannot be enforced in the current architecture. Until then, it is an unsupported expansion that risks consuming even more operator time."}}
+{"type":"turn.completed","usage":{"input_tokens":30925,"cached_input_tokens":11136,"cache_write_input_tokens":0,"output_tokens":142,"reasoning_output_tokens":24}}

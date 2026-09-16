@@ -13,6 +13,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -606,7 +607,6 @@ def successful_runtime_reads(
 ) -> set[str]:
     """Reduce successful command events to package-relative runtime paths."""
     reads: set[str] = set()
-    package_prefix = str(package_root.resolve()) + "/"
     for event in events:
         if event.get("type") != "item.completed":
             continue
@@ -621,25 +621,34 @@ def successful_runtime_reads(
         command = item.get("command")
         if not isinstance(command, str):
             continue
+        # Match whole paths, never the suffix inside a global installation.
+        paths = re.findall(r"(?<![\w/.-])/[^\s\"';]*strategic-advisor/[^\s\"';]+", command)
+        for path in paths:
+            relative = path.split("/strategic-advisor/", 1)[1]
+            if relative not in runtime_paths:
+                continue  # e.g. an explicitly authorised synthetic CSV
+            resolved = Path(path).resolve()
+            expected = (package_root / relative).resolve()
+            if resolved != expected:
+                raise HarnessFailure("target read a Strategic Advisor installation outside the frozen runtime")
+            reads.add(relative)
         for relative in runtime_paths:
-            absolute = package_prefix + relative
-            relative_reference = f".agents/skills/strategic-advisor/{relative}"
-            reference_loop = (
-                relative.startswith("references/")
-                and ".agents/skills/strategic-advisor" in command
-                and Path(relative).name in command
-            )
-            if absolute in command or relative_reference in command or reference_loop:
+            local = f".agents/skills/strategic-advisor/{relative}"
+            if re.search(
+                r"(?<![\w/.-])(?:\./)?" + re.escape(local) + r"(?=$|[\s\"';])",
+                command,
+            ):
                 reads.add(relative)
     return reads
 
 
 def run_json_events(
-    command: list[str], prompt: str, raw_path: Path, timeout: int
+    command: list[str], prompt: str, raw_path: Path, timeout: int, *, cwd: Path | None = None
 ) -> tuple[list[dict[str, Any]], str]:
     process = subprocess.run(
         command,
         input=prompt,
+        cwd=cwd,
         text=True,
         capture_output=True,
         timeout=timeout,
@@ -714,6 +723,17 @@ def target_turn(
 ) -> tuple[str, str, list[dict[str, Any]]]:
     if answer_path.exists():
         answer_path.unlink()
+    hidden = [Path.home() / ".agents/skills/strategic-advisor/SKILL.md",
+              Path.home() / ".codex/skills/strategic-advisor/SKILL.md"]
+    skill_config = "skills.config=[" + ",".join(
+        "{path=" + json.dumps(str(path)) + ",enabled=false}" for path in hidden
+    ) + "]"
+    routing = (
+        "Runtime routing only: when Strategic Advisor applies, use only the frozen "
+        f"runtime at {target_root / '.agents/skills/strategic-advisor/SKILL.md'}. "
+        "Do not read another installed copy. This does not activate the skill for "
+        "a request outside its normal scope.\n\n"
+    )
     if session_id is None:
         command = [
             str(codex),
@@ -748,7 +768,8 @@ def target_turn(
             str(answer_path),
             "-",
         ]
-    events, _ = run_json_events(command, prompt, raw_path, timeout)
+    command.extend(["-c", skill_config])
+    events, _ = run_json_events(command, routing + prompt, raw_path, timeout, cwd=target_root)
     resolved_session = session_id or thread_id_from(events)
     answer = (
         answer_path.read_text(encoding="utf-8").strip()
@@ -1378,6 +1399,25 @@ def main(argv: Sequence[str] | None = None) -> int:
                     )
                 except HarnessFailure as error:
                     raise EvaluatorFailure(str(error)) from error
+                if case.get("activation") == "implicit-negative":
+                    trace_reads = {
+                        path
+                        for variant, _turns in sessions_for(case)
+                        for path in progress["sessions"][f"{case['id']}::{variant}"][
+                            "successful_runtime_reads"
+                        ]
+                    }
+                    for review in reviews:
+                        if review["id"] == "ROUTINE_NO_SKILL_READ":
+                            review["status"] = "pass" if not trace_reads else "fail"
+                            review["observation"] = (
+                                "The retained successful-command trace records no installed Strategic "
+                                "Advisor runtime reads for this implicit-negative session."
+                                if not trace_reads
+                                else "The retained successful-command trace records an unexpected "
+                                "installed Strategic Advisor runtime read."
+                            )
+                            review.pop("turn_reviews", None)
                 scenario_status = (
                     "pass"
                     if all(item["status"] == "pass" for item in reviews)
@@ -1395,27 +1435,6 @@ def main(argv: Sequence[str] | None = None) -> int:
                 progress["adjudications"][case["id"]] = reviews
                 write_json(progress_path, progress)
             reviews = progress["adjudications"][case["id"]]
-            if case.get("activation") == "implicit-negative":
-                trace_reads = {
-                    path
-                    for variant, _turns in sessions_for(case)
-                    for path in progress["sessions"][f"{case['id']}::{variant}"][
-                        "successful_runtime_reads"
-                    ]
-                }
-                for review in reviews:
-                    if review["id"] == "ROUTINE_NO_SKILL_READ":
-                        review["status"] = "pass" if not trace_reads else "fail"
-                        review["observation"] = (
-                            "The retained successful-command trace records no installed Strategic "
-                            "Advisor runtime reads for this implicit-negative session."
-                            if not trace_reads
-                            else "The retained successful-command trace records an unexpected "
-                            "installed Strategic Advisor runtime read."
-                        )
-                        review.pop("turn_reviews", None)
-                progress["adjudications"][case["id"]] = reviews
-                write_json(progress_path, progress)
             scenario_status = (
                 "pass" if all(item["status"] == "pass" for item in reviews) else "fail"
             )

@@ -5,8 +5,8 @@ The machine-readable authority for these fields is [`status.json`](status.json).
 - Behavioural comparison: **Not run**
 - Historical alpha.6 drift smoke: **Pass**
 - Historical drift-smoke execution: **Codex CLI / gpt-5.6-sol / run-009**
-- Exact current-runtime goal-review repair diagnostic: **Pass (SAGR-014, SAGR-013)**
-- Current repair target: **Codex CLI / gpt-5.6-sol**
+- Historical alpha.7 goal-review repair diagnostic: **Pass (SAGR-014, SAGR-013)**
+- Historical repair target: **Codex CLI / gpt-5.6-sol**
 - Frozen iteration manifest: **Not created**
 - Skilled-versus-unskilled improvement claim: **Not established**
 - Hard-gate release status: **Pending**
@@ -45,9 +45,9 @@ Because that correction was uncommitted when executed, run-009's
 and criteria are bound by `spec_sha256`, and the exact model-visible source is
 bound by `runtime_package_identity_sha256`.
 
-## Current goal-review repair diagnostic
+## Historical alpha.7 goal-review repair diagnostic
 
-The current runtime package identity
+The alpha.7 runtime package identity
 `38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3`
 passed two fresh public-synthetic Codex CLI / gpt-5.6-sol cases: the previously
 failed `SAGR-014` material-progress/enabler case and its direct `SAGR-013`
@@ -56,10 +56,20 @@ activity-as-indicator neighbour. The campaign used two target calls and stopped.
 The original `SAGR-014` failure remains retained against pre-repair runtime
 `d51d7bf...`. `SAGR-001`, `SAGR-009`, `SAGR-015`, `SAGR-016`, `SAGR-018`,
 `SAGR-020`, `DRIFT-004`, `DRIFT-014`, and `DRIFT-016` were not run on the
-current repaired runtime. This diagnostic is release evidence for that repair
+alpha.7 repaired runtime. This diagnostic is release evidence for that repair
 boundary only; it is not a current full campaign, product certification,
 support, parity, adoption, private-workspace dogfood, or effectiveness proof.
 
 The repository may contain a skill, evaluation definitions, deterministic validators, and synthetic forward tests without satisfying the v0 release gate. Structural conformance and model self-assessment are not substitutes for the frozen comparative matrix, condition-masked scoring, human review, or consented real pilots.
 
-No raw comparative treatment, control, scorer, adjudicator, assertion-grader, or pilot output is present. The retained drift-smoke transcripts are separate bounded evidence and cannot be reused as the future comparative matrix or holdout. The next valid comparative step remains publishing and reviewing a new then-current authority commit, then creating the separate freeze commit exactly as specified.
+No output from the full skilled-versus-unskilled comparative matrix or formal real-pilot programme is present. The retained drift-smoke transcripts are separate bounded evidence and cannot be reused as the future comparative matrix or holdout. The next valid comparative step remains publishing and reviewing a new then-current authority commit, then creating the separate freeze commit exactly as specified.
+
+TASK-036 prepares a different runtime; the alpha.7 repair diagnostic is historical and does not validate the new candidate. Bounded comparison and current-source smoke are tracked in `evidence/first-pass/`.
+
+## Historical TASK-036 alpha.9 bounded candidate
+
+The separate focused before/after comparison records alpha.7 at 6/8 and alpha.9 at 8/8. The current-source regression records 15/16 passing groups and a blocking DRIFT-016 failure. These are not the full skilled-versus-unskilled matrix above. See [the retained report](../first-pass/RUN-REPORT.md) and [blocking finding](../first-pass/BLOCKING-FINDING.md). Alpha.9 was superseded without publication or installation; its independent QA was not started.
+
+## TASK-036 alpha.10 affected follow-up
+
+One owner-approved correction and frozen affected-only run passed three groups in twelve advisor turns, including the former failure, tone variants and a genuine changed priority. The versioned first-turn rival rubric amendment and original failed case remain separately retained. Alpha.10 packages verify against the exact runtime; no new full-suite or effectiveness claim is made. Initial sealed review invocations stopped without a verdict. The existing gate subsequently completed in a compact independent context with Pass; the endorsement concern was resolved using the preceding owner preference and the actual bounded recommendation. No new behavioural run or current full-suite claim follows. See [current evidence and precise next action](../recommendation-update/REPORT.md).

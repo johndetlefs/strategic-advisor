@@ -7,11 +7,11 @@
     "version": "0.2.0-alpha.7"
   },
   "distribution": {
-    "runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
-    "version": "0.2.0-alpha.7"
+    "runtime_package_identity_sha256": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+    "version": "0.2.0-alpha.10"
   },
   "schema_version": 2,
-  "state": "published",
+  "state": "prepared",
   "superseded": [
     {
       "reason": "Superseded before publication because FIX-004 corrects owner-led recommendation drift in the prepared runtime; publishing alpha.4 would knowingly ship the defect.",
@@ -20,6 +20,22 @@
       "source_revision": "9dbc7d744dc10bd5053daacf6054e978c67c3a5c",
       "superseded_at": "2026-08-24T08:23:42Z",
       "version": "0.2.0-alpha.4"
+    },
+    {
+      "reason": "TASK-036 bounded comparison found missing ownership of the next investigation; apply the one approved targeted repair before publication.",
+      "replacement_version": "0.2.0-alpha.9",
+      "runtime_package_identity_sha256": "2f11326ba5d303e0e73435c5e71500cbb420d363aee19d90c27910ab352697fb",
+      "source_revision": "659ad6bda8ca39c49efc9bbe2361baa57986c551",
+      "superseded_at": "2026-09-16T02:25:29Z",
+      "version": "0.2.0-alpha.8"
+    },
+    {
+      "reason": "Owner-approved TASK-036 follow-up separates exploration from endorsement after retained DRIFT-016 failure; one affected-only 12-turn correction attempt.",
+      "replacement_version": "0.2.0-alpha.10",
+      "runtime_package_identity_sha256": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+      "source_revision": "ce6563fcd22fb4ded1b525325e7660f5c5a99465",
+      "superseded_at": "2026-09-16T03:57:40Z",
+      "version": "0.2.0-alpha.9"
     }
   ]
 }

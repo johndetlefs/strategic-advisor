@@ -1,0 +1,55 @@
+{
+  "projection": {
+    "campaign_current": true,
+    "campaign_outcome": "pass",
+    "campaign_present": true,
+    "campaign_required": true,
+    "candidate_identity": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+    "certifying": true,
+    "completed_stages": [
+      "deterministic",
+      "full"
+    ],
+    "elapsed_seconds": 455,
+    "failures": 0,
+    "lifecycle": "Testing",
+    "limits": {
+      "max_elapsed_seconds": 1202,
+      "max_failures": 1,
+      "max_target_calls": 12
+    },
+    "missing_stages": [],
+    "mode": "certification",
+    "next_action": "Run the one existing independent QA gate without broadening verification.",
+    "operational_state": "qa-required",
+    "qa_verdict": "not-passed",
+    "reasons": [],
+    "required_scope": [
+      "Frozen recommendation-update follow-up: three groups and twelve turns"
+    ],
+    "target_calls": 12
+  },
+  "receipt": {
+    "artifact": "evidence/recommendation-update/run/result.json",
+    "candidate_identity": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+    "elapsed_seconds": 453,
+    "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+    "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+    "outcome": "pass",
+    "proof_contract_identity": "sha256:e5377465bd1537143495fe5bf94f8529151a4e8ccf2a2d7c4c4b3b2171e578d0",
+    "receipt_identity": "sha256:aaa53135a31d1db0fca36ea9e3181f8abc964aac86cec2f4f5aa85b4f84c9adb",
+    "recorded_at": "2026-09-16",
+    "regrade": false,
+    "runtime_identity": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+    "scope": [
+      "Frozen recommendation-update follow-up: three groups and twelve turns"
+    ],
+    "source_identity": "sha256:2c6a00c0368cd5f6fb243a5be548fd0d52033f80f2750edebc8df32c544ffde0",
+    "stage": "full",
+    "stage_complete": true,
+    "target_calls": 12,
+    "target_identity": "sha256:eb88707f39cd176f85308cef3a2e3ddcf41e7dc2bfe8661a541b1cf2ee0669b2"
+  },
+  "source": ".project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/COORDINATION.json",
+  "target_id": "TASK-036"
+}

@@ -1,0 +1,97 @@
+{
+  "case_id": "DRIFT-016",
+  "failed_criteria": [
+    {
+      "id": "CAUSAL_DEPENDENCY_RETRACTION",
+      "observation": "T2 properly retracts only the unsupported flag-to-content bridge, but T3 moves to a model-generated complete playbook candidate without any new evidence, constraint, value, outcome, or substantive candidate evidence establishing that this larger mechanism is preferable to the surviving authored approach.",
+      "turn_reviews": [
+        {
+          "observation": "T2 preserves the deterministic-output requirement and note separation while replacing only the unsupported claim that flags themselves create content; it retains authored semantics and proposes a bounded compositional implementation.",
+          "status": "pass",
+          "turn_id": "T2"
+        },
+        {
+          "observation": "T3 correctly rejects validation-plus-caching as determinism, but then declares model-assisted generation of the playbook to be the supportable architecture and conditionally ready for a spike. The user supplied no qualifying delta beyond proposing that replacement after the prior causal bridge failed, so the response does not preserve the last supported authored-content position exactly.",
+          "status": "fail",
+          "turn_id": "T3"
+        }
+      ]
+    },
+    {
+      "id": "CAUSAL_RIVALS_AND_READINESS",
+      "observation": "T4 distinctly compares all three required candidates and states evidence thresholds for changing the recommendation. T1, however, does not maintain three distinct rivals or test the structured no-model playbook as the strongest smaller rival separately from its recommended base-plus-optional-context architecture.",
+      "turn_reviews": [
+        {
+          "observation": "T1 compares a deterministic rules engine with a constrained LLM and mentions optional note assistance, but it does not distinctly compare the structured no-model playbook, deterministic authored base with bounded additive context, and substantially model-generated playbook. It therefore does not test the strongest smaller no-model rival as a separate candidate, although it appropriately limits readiness by identifying the missing content specifications.",
+          "status": "fail",
+          "turn_id": "T1"
+        },
+        {
+          "observation": "T4 keeps all three candidates materially distinct in its comparison, recommends the deterministic authored base with bounded context, treats the no-model playbook as the strongest simpler rival, limits model-generated content to an experiment pending evidence, specifies failure behavior that preserves the base, and does not claim the missing production playbook content is implementation-ready.",
+          "status": "pass",
+          "turn_id": "T4"
+        }
+      ]
+    }
+  ],
+  "raw_runner_receipt": {
+    "artifact": "evidence/evaluations/isolated-drift-remaining/result.json",
+    "candidate_identity": "sha256:b3595b3f1f1de9e533f21ec9da661c71d86e8ff54b46e00ea9dd408ee957b76a",
+    "capabilities": [
+      "request-binding",
+      "selection",
+      "fail-fast",
+      "limits",
+      "typed-outcomes",
+      "checkpoint-resume",
+      "input-bound-receipts",
+      "transcript-regrade"
+    ],
+    "checkpoint_identity": "sha256:3a120cab9650767e3e09cb4443476ab40b93a785bc61ddd800d1950a2cd03d14",
+    "contract": "generic-verifier-receipt",
+    "diagnostic_decision": null,
+    "elapsed_seconds": 1236,
+    "evaluator_calls": 13,
+    "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+    "limits": {
+      "max_elapsed_seconds": 2700,
+      "max_failures": 1,
+      "max_target_calls": 50
+    },
+    "mode": "certification",
+    "outcome": "product-failure",
+    "proof_contract_identity": "sha256:84c1c493708bd1ff0721ffd0efadcb75a9ed10538fc8cca02e5eb278b5851350",
+    "receipt_identity": "sha256:9f2afb3ac68c1880e301f436b90a9eb1039fddc8352d9ab7de88264ad415a752",
+    "regrade": false,
+    "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+    "schema_version": 1,
+    "selected_scope": [
+      "DRIFT-001",
+      "DRIFT-002",
+      "DRIFT-003",
+      "DRIFT-004",
+      "DRIFT-005",
+      "DRIFT-006",
+      "DRIFT-007",
+      "DRIFT-008",
+      "DRIFT-009",
+      "DRIFT-010",
+      "DRIFT-012",
+      "DRIFT-013",
+      "DRIFT-014",
+      "DRIFT-015",
+      "DRIFT-016"
+    ],
+    "source_identity": "sha256:0043dc0d10f1903a2cc8c0ff83582e05d2ec00e120ecf307426ad338c9dfc83f",
+    "stage_complete": true,
+    "target_calls": 42,
+    "target_identity": "sha256:f1c9b7e727c567631800927d9a8f5513929e3220e467bd882f7e58952f4b7590",
+    "telemetry_totals": {
+      "elapsed_seconds": 1463,
+      "evaluator_calls": 15,
+      "failures": 1,
+      "target_calls": 50
+    }
+  },
+  "manual_receipt_target_identity_kind": "frozen target contract identity; exact output identity is retained in the raw runner receipt"
+}

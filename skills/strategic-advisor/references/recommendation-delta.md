@@ -50,11 +50,17 @@ accessible evidence can discriminate it. Return to the owner only for outcomes,
 values, constraints, authority, acceptable trade-offs, or genuinely
 irreducible choice that evidence cannot settle.
 
+## Reviewing the same recommendation
+
+A request to review again does not imply disagreement and is not itself a qualifying delta. Recheck the recommendation against the original outcome, accessible evidence, causal bridge and strongest rival. Retain it when it survives; say why. Tone and repeated requests alone cannot justify a reversal.
+
+New outside facts are not the only legitimate reason to correct advice. A demonstrated error in arithmetic, inference, comparison, baseline selection or an overlooked contradiction can change the conclusion on the same underlying evidence. Identify the exact prior error, the evidence that demonstrates it, its dependent claims and the supported correction. Do not claim an error merely because the owner is dissatisfied, and do not preserve a known error to satisfy consistency. In typed delta records, represent this as an `evidence` change in the analysis with provenance pointing to the original facts and the demonstrated correction; do not pretend new external observations arrived. A structurally valid record alone does not prove that correction true.
+
 ## Recommendation delta
 
 Before changing the recommendation, name:
 
-1. which outcome, evidence, framing, scope, constraint, owner value, or substantive candidate specification changed, including the owner-settled version when applicable;
+1. which outcome, evidence, framing, scope, constraint, owner value, or substantive candidate specification changed, or which specific prior analytical error was demonstrated, including the owner-settled version when applicable;
 2. which prior claims actually depended on anything falsified;
 3. which claims, constraints, and rivals survive;
 4. what evidence supports the replacement; and
@@ -68,9 +74,21 @@ which the current recommendation or strongest rival depends must be named as
 surviving. A falsified claim must be named as affected and cannot also be
 recorded as surviving.
 
-A failed bridge retracts only its dependants. It never proves the converse or supplies support to a replacement. A candidate specification may add an option or reduce exposure; by itself it cannot establish comparative superiority, outcome readiness, or upgrade a validation candidate into a recommended commitment.
+## Exploration is not endorsement
 
-If the owner supplies a more detailed replacement in the same turn that acknowledges a failed dependency, split those events: record the failed dependency as a retraction and the replacement as a candidate specification. Return to the last supported position. Do not use the new detail itself as the qualifying delta that endorses the replacement.
+On a challenged recommendation, form the answer around three distinctions, in natural prose rather than mandatory headings:
+
+- **Surviving support:** State the part of the prior position that remains warranted. Retract only claims dependent on a demonstrated error or failed causal bridge; do not describe an already-rejected premise as a new reason to reverse.
+- **Actual change:** Separate a new candidate from a changed goal, constraint or owner priority. A preference is authoritative about what the owner values, not evidence that a mechanism works. A genuine value trade-off can justify choosing a feasible alternative on unchanged empirical facts; identify that trade-off instead of demanding unnecessary new research or inventing improved outcomes.
+- **Status of the alternative:** Explain whether you are exploring it, proposing a bounded test, or recommending a commitment. A design that could work may be worth examining without being the better choice. An implementation outline, schema, validation plan or safer failure mode does not supply the missing comparative reason to adopt it.
+
+When the owner proposes a replacement alongside a failed dependency, retain both events separately. Return to the surviving supported position, then assess the replacement against that position and the owner's actual objective. If its advantage remains unknown, name the smallest useful test and its actor. Do not label building a replacement system as a mere test when a representative sample could resolve the question. If the owner knowingly selects a feasible route for an explicit value or constraint, help within that choice while keeping unsupported outcome claims unsupported.
+
+For example, after a user challenges a content-authoring proposal and asks to replace it with model-generated drafts:
+
+> “Approved content still needs to be selected and checked; that part stands. Your wish to reduce manual authoring makes generated drafts worth exploring, but it does not yet establish their quality or justify an authoring pipeline. I can draft one representative section for comparison with the existing reference before we recommend that investment.”
+
+The response allows progress and honours the preference without turning feasibility into endorsement. If the owner instead establishes a binding change that makes the previous route unsuitable, state that reason and revise the recommendation; consistency is not an obligation to preserve a superseded choice.
 
 ## Closed dispositions
 

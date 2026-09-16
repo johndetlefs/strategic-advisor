@@ -1,0 +1,44 @@
+{
+  "core_receipt": {
+    "candidate_identity": "670b26f812b3da45440738fb1f279813c3dd047c",
+    "capability_identity": "sha256:80bfaa441cc714b59abbc2c7ae6756df04698471d7aa4933b96eccda7d01dc01",
+    "evidence_identity": "sha256:b98ad26100f2285959558d9cfaaa32476e33fd5b3f0219880db5dc092036f851",
+    "kind": "codex-adapter",
+    "native_metrics": {
+      "agent-budget": 0,
+      "changed-paths": 0,
+      "elapsed-seconds": 0,
+      "identical-retries": 0,
+      "test-invocations": 0,
+      "tool-calls": 0,
+      "turns": 0,
+      "worker-launches": 0,
+      "write-scope": 0
+    },
+    "operation": "material-execution",
+    "outcome": "infrastructure-failure",
+    "phase": "verification",
+    "proof_obligations_identity": "sha256:258a0d02c951fd594c5704d8b05f88a2420ad09af7917b07331a0e00312695f3",
+    "receipt_identity": "sha256:82fde64df0c7fdea2142a92608fb42468ee3bf2724cd3664a2c0609ba8154976",
+    "schema_version": 1,
+    "sealed_identity": "sha256:c9a9729cf7c03723c865a9e66940b1715bef4db885f481fcf09e14026a26f9bb",
+    "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+    "work_id": "TASK-036"
+  },
+  "evidence_identity": "sha256:b98ad26100f2285959558d9cfaaa32476e33fd5b3f0219880db5dc092036f851",
+  "executed": true,
+  "mutated": true,
+  "native_metrics": {
+    "agent-budget": 0,
+    "changed-paths": 0,
+    "elapsed-seconds": 0,
+    "identical-retries": 0,
+    "test-invocations": 0,
+    "tool-calls": 0,
+    "turns": 0,
+    "worker-launches": 0,
+    "write-scope": 0
+  },
+  "terminal_reason": "PW_CODEX_ADAPTER_BLOCKED: Codex adapter requires a clean starting worktree",
+  "terminal_status": "failed"
+}

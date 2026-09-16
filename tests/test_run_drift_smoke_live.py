@@ -147,6 +147,64 @@ class LiveDriftSmokeControlTests(unittest.TestCase):
             adjudicate=adjudicator,
         )
 
+    def test_runtime_reads_reject_global_suffix_and_mixed_installations(self) -> None:
+        package = self.root / ".agents/skills/strategic-advisor"
+        def events(command, code=0):
+            return [{"type": "item.completed", "item": {"type": "command_execution",
+                     "status": "completed", "exit_code": code, "command": command}}]
+        paths = {"SKILL.md", "references/evidence.md"}
+        self.assertEqual(RUNNER.successful_runtime_reads(
+            events("cat .agents/skills/strategic-advisor/SKILL.md"), package, paths), {"SKILL.md"})
+        self.assertEqual(RUNNER.successful_runtime_reads(
+            events(f"cat '{package}/references/evidence.md'"), package, paths), {"references/evidence.md"})
+        global_read = "cat /another/home/.agents/skills/strategic-advisor/SKILL.md"
+        with self.assertRaises(RUNNER.HarnessFailure):
+            RUNNER.successful_runtime_reads(events(global_read), package, paths)
+        with self.assertRaises(RUNNER.HarnessFailure):
+            RUNNER.successful_runtime_reads(events(global_read + "; cat .agents/skills/strategic-advisor/SKILL.md"), package, paths)
+        self.assertEqual(RUNNER.successful_runtime_reads(events(global_read, 1), package, paths), set())
+        self.assertEqual(RUNNER.successful_runtime_reads(
+            events("cat /fixture/skills/strategic-advisor/evals/data.csv"), package, paths), set())
+
+    def test_fresh_and_resumed_processes_stay_in_isolated_target_directory(self) -> None:
+        self.codex.write_text(
+            f"#!{sys.executable}\n"
+            "import json, os\n"
+            "print(json.dumps({'type':'thread.started','thread_id':'isolated'}))\n"
+            "print(json.dumps({'type':'item.completed','item':{'type':'agent_message','text':os.getcwd()}}))\n"
+            "print(json.dumps({'type':'turn.completed'}))\n", encoding="utf-8")
+        self.codex.chmod(0o755)
+        target_root = self.root / "isolated"
+        target_root.mkdir()
+        for index, session in enumerate((None, "isolated")):
+            with self.subTest(session=session):
+                _, answer, _ = RUNNER.target_turn(
+                    codex=self.codex, model="fixture", target_root=target_root,
+                    session_id=session, prompt="fixture", timeout=5,
+                    answer_path=self.root / f"answer-{index}.md",
+                    raw_path=self.root / f"raw-{index}.jsonl")
+                self.assertEqual(Path(answer).resolve(), target_root.resolve())
+
+    def test_host_trace_verdict_is_applied_before_failure_limit(self) -> None:
+        self.spec["cases"][0]["activation"] = "implicit-negative"
+        self.spec["cases"][0]["criteria"][0]["id"] = "ROUTINE_NO_SKILL_READ"
+        self.spec_path.write_text(json.dumps(self.spec))
+        target = mock.Mock(return_value=("session", "direct answer", []))
+        def review(**kwargs):
+            result = self.passing_review(kwargs["case"])
+            if kwargs["case"]["id"] == "CASE-001":
+                result[0]["status"] = "fail"
+                result[0]["observation"] = "The prose alone cannot establish file reads."
+            return result
+        with self.runner_patches(target, mock.Mock(side_effect=review)), mock.patch.object(
+            RUNNER.subprocess, "run", side_effect=self.fake_subprocess
+        ):
+            result = RUNNER.main(self.common_args("run-host-trace"))
+        self.assertEqual(result, 0)
+        self.assertEqual(target.call_count, 4)
+        progress = json.loads((self.root / "run-host-trace" / RUNNER.PROGRESS_FILE).read_text())
+        self.assertEqual(progress["telemetry"]["failures"], 0)
+
     def test_selection_supports_exact_metadata_affected_and_previous_failure(
         self,
     ) -> None:

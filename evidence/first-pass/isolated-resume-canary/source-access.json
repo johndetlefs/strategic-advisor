@@ -1,0 +1,12 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "DRIFT-011",
+      "session_id": "01a0a82a-00c3-7971-be3e-2b69068d12fb",
+      "successful_runtime_reads": [],
+      "user_config_ignored": true
+    }
+  ],
+  "schema_version": 1
+}

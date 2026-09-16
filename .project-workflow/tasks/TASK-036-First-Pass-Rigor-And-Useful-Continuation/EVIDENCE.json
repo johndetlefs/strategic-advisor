@@ -1,0 +1,26 @@
+{
+  "task_id": "TASK-036",
+  "claims": [
+    {
+      "id": "CLM-003",
+      "parent_ac": "AC3",
+      "claim": "Alpha.10 passed the owner-approved affected-only check: original four-turn exchange under the versioned amended first-turn rubric; three unchanged-evidence re-review tone variants; one genuine owner-priority change. Three groups, five sessions and twelve turns. This does not establish a full-suite pass.",
+      "recipe": "runtime-target-source",
+      "status": "pass",
+      "commit": "670b26f812b3da45440738fb1f279813c3dd047c",
+      "timestamp": "2026-09-16T04:10:20.134552+00:00",
+      "execution_target": "Codex CLI / gpt-5.6-sol; five isolated sessions, twelve target turns",
+      "source_artifact": "Runtime sha256:dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e; evidence/recommendation-update/cases.json sha256:f5ef0aa457e92236f2439b9b68221612a058094dc82c483188065dd3b7980913",
+      "observation_method": "Frozen user turns with hidden criteria, separate criterion adjudication, raw outputs retained, and exact session-directory audit. Independent QA still assesses substantive sufficiency.",
+      "target_used_source_proof": "source-audit.json confirms all twelve completed turns used the frozen isolated target directory; raw source-access trace and runtime package manifest are retained in run/.",
+      "evidence_artifact": "../../../evidence/recommendation-update/run/result.json",
+      "evidence_artifact_hash": "sha256:71b91e4e70caa25cf0fa65eb38e2b586a4def6fdbe5a5f095cd24ee8ca7c98be",
+      "invalid_substitutes": [
+        "Historical alpha.9 passes relabelled as alpha.10",
+        "A new full-suite pass claim",
+        "The automatic grade without substantive independent review",
+        "Publication or installation claims"
+      ]
+    }
+  ]
+}

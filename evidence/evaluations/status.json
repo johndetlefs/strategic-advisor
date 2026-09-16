@@ -10,7 +10,7 @@
     "SAGR-014",
     "SAGR-013"
   ],
-  "current_goal_review_repair_diagnostic": "pass",
+  "current_goal_review_repair_diagnostic": "historical-alpha.7-pass",
   "current_goal_review_repair_model": "gpt-5.6-sol",
   "current_goal_review_repair_runtime_package_identity_sha256": "38a40f968edcf0936dac80124565d814f587b37dd41ea8a61c9c44398093f7e3",
   "schema_version": 1,

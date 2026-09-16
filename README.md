@@ -15,6 +15,7 @@ The design is one canonical reality protocol, an owner-controlled personal-conte
 | --- | --- |
 | Maturity | Pre-release |
 | Early-access distribution | [`v0.2.0-alpha.7` GitHub prerelease](https://github.com/johndetlefs/strategic-advisor/releases/tag/v0.2.0-alpha.7) |
+| Prepared distribution | `v0.2.0-alpha.10` is release intent only until the protected-main workflow publishes and a fresh public download verifies. |
 <!-- strategic-advisor-distribution:end -->
 | Canonical product | [`skills/strategic-advisor/`](skills/strategic-advisor/) |
 | Supported installation | None |
@@ -22,7 +23,7 @@ The design is one canonical reality protocol, an owner-controlled personal-conte
 | Validated domains | None |
 | Supported connectors | None |
 | Alpha candidates, implemented but not validated | Selective interactive strategy; open-field and portfolio-bounded exploration; exact personal context; configurable durable continuity; lenses: Project / Product, Career, Organisational influence, People leadership, Business / Venture, Marketing / Growth, Technical architecture |
-| Evaluation | Historical bounded 16-scenario-group Codex drift smoke (run-009) passed on the alpha.6 runtime; current two-case goal-review repair diagnostic (SAGR-014, SAGR-013) passed on Codex CLI / gpt-5.6-sol; no current full campaign, comparative run, improvement result, independent human validation, support, parity, adoption, or effectiveness verdict |
+| Evaluation | Historical bounded 16-scenario-group Codex drift smoke (run-009) passed on the alpha.6 runtime; historical alpha.7 two-case goal-review repair diagnostic (SAGR-014, SAGR-013) passed on Codex CLI / gpt-5.6-sol; no current full campaign, comparative run, improvement result, independent human validation, support, parity, adoption, or effectiveness verdict |
 | Specialist boundary | Personal context may shape strategy; the product does not replace legal, medical, clinical, financial, or other qualified professional judgment |
 
 “Implemented but not validated” means reviewable source exists and structural checks can inspect it. It does not mean the model behaves as intended, improves decisions, or works in a particular host. The current evaluation definitions are likewise not evidence that an evaluation ran or passed.

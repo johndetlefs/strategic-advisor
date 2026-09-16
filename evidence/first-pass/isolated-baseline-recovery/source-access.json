@@ -1,0 +1,51 @@
+{
+  "observation": "Successful command events were reduced to paths under the isolated allowlisted runtime. User config and repository rules were ignored for every target session.",
+  "records": [
+    {
+      "case_id": "FIRST-001",
+      "session_id": "01a0a82b-9ac0-7ef0-b424-e97576afe020",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/conversational-strategy.md",
+        "references/project-product.md",
+        "references/response-contract.md"
+      ]
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82c-6da6-7942-97ba-b7856cf6460e",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/conversational-strategy.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "neutral"
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82d-4091-7b30-949e-733e84fab46f",
+      "successful_runtime_reads": [
+        "SKILL.md",
+        "references/recommendation-delta.md"
+      ],
+      "variant_id": "positive"
+    },
+    {
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82e-462c-7c70-bf49-9f6ab88a119e",
+      "successful_runtime_reads": [
+        "references/action-policy.md",
+        "references/competing-worlds.md",
+        "references/conversational-strategy.md",
+        "references/evidence.md",
+        "references/goal-qualification.md",
+        "references/project-product.md",
+        "references/readiness.md",
+        "references/recommendation-delta.md",
+        "references/response-contract.md"
+      ],
+      "variant_id": "sceptical"
+    }
+  ],
+  "schema_version": 1
+}

@@ -1,0 +1,19 @@
+#!/bin/sh
+# project-workflow:generated
+set -u
+
+if [ -z "${PROJECT_WORKFLOW_CLAUDE_PYTHON:-}" ]; then
+  echo "Project Workflow Claude hook has no sealed Python interpreter." >&2
+  exit 2
+fi
+if [ -z "${PROJECT_WORKFLOW_CLAUDE_ADAPTER:-}" ]; then
+  echo "Project Workflow Claude hook has no sealed adapter path." >&2
+  exit 2
+fi
+
+"$PROJECT_WORKFLOW_CLAUDE_PYTHON" "$PROJECT_WORKFLOW_CLAUDE_ADAPTER" hook
+status=$?
+if [ "$status" -ne 0 ]; then
+  exit 2
+fi
+exit 0

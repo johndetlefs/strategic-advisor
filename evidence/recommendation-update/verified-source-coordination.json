@@ -1,0 +1,445 @@
+{
+  "boundary_decisions": [
+    {
+      "affected_units": [
+        "TASK-036"
+      ],
+      "amendment_identity": null,
+      "boundary": "after-plan-or-decomposition",
+      "capability_change": "Approved two-file correction and explicitly affected-only proof at 670b26f812b3da45440738fb1f279813c3dd047c",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:2c6a00c0368cd5f6fb243a5be548fd0d52033f80f2750edebc8df32c544ffde0",
+      "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+      "user_consequence": "Retain history; 12-turn envelope only; no full historical suite claim"
+    },
+    {
+      "affected_units": [
+        "TASK-036"
+      ],
+      "amendment_identity": null,
+      "boundary": "before-unit-start",
+      "capability_change": "Approved two-file correction and explicitly affected-only proof at 670b26f812b3da45440738fb1f279813c3dd047c",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:2c6a00c0368cd5f6fb243a5be548fd0d52033f80f2750edebc8df32c544ffde0",
+      "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+      "user_consequence": "Retain history; 12-turn envelope only; no full historical suite claim"
+    },
+    {
+      "affected_units": [
+        "TASK-036"
+      ],
+      "amendment_identity": null,
+      "boundary": "unit-return-or-dependency-join",
+      "capability_change": "Approved two-file correction and explicitly affected-only proof at 670b26f812b3da45440738fb1f279813c3dd047c",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:2c6a00c0368cd5f6fb243a5be548fd0d52033f80f2750edebc8df32c544ffde0",
+      "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+      "user_consequence": "Retain history; 12-turn envelope only; no full historical suite claim"
+    },
+    {
+      "affected_units": [
+        "TASK-036"
+      ],
+      "amendment_identity": null,
+      "boundary": "before-review-or-complete",
+      "capability_change": "One committed correction; approved affected-only proof green; independent substantive review still required",
+      "classification": "inside-envelope",
+      "decided_by": "Coordinator",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+      "relevant_ocs": [
+        "OC1",
+        "OC2",
+        "OC3",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:2c6a00c0368cd5f6fb243a5be548fd0d52033f80f2750edebc8df32c544ffde0",
+      "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+      "user_consequence": "No new tests or runtime changes; one sealed reviewer evaluates the remaining T3 interpretation"
+    }
+  ],
+  "decisions": [
+    "Owner approved one additional correction and affected-only proof in FOLLOWUP-AMENDMENT.md; earlier campaign retained. Full stage certifies only this narrowed envelope."
+  ],
+  "execution_control": {
+    "allowed_write_paths": [
+      "evidence/recommendation-update/INDEPENDENT-QA.md"
+    ],
+    "authorized_findings": [],
+    "candidates": {
+      "release_candidate": null,
+      "verification_candidate": null,
+      "working_revision": "670b26f812b3da45440738fb1f279813c3dd047c"
+    },
+    "capability": {
+      "configuration_identity": "sha256:1fb39e34d61bf4b0b0c578788ea5b199d68a307b7ab1c8d719564acf15abaaaa",
+      "controls": {
+        "aggregate-activity": {
+          "source": "codex capability probe: Current Codex executable exposes the required supervised local contract.",
+          "state": "verified",
+          "unit": "aggregate-activity"
+        },
+        "interruption": {
+          "source": "codex capability probe: Current Codex executable exposes the required supervised local contract.",
+          "state": "verified",
+          "unit": "interruption"
+        },
+        "material-bypass": {
+          "source": "codex capability probe: Current Codex executable exposes the required supervised local contract.",
+          "state": "verified",
+          "unit": "material-bypass"
+        },
+        "operation-policy": {
+          "source": "codex capability probe: Current Codex executable exposes the required supervised local contract.",
+          "state": "verified",
+          "unit": "operation-policy"
+        },
+        "typed-receipts": {
+          "source": "codex capability probe: Current Codex executable exposes the required supervised local contract.",
+          "state": "verified",
+          "unit": "typed-receipts"
+        },
+        "write-scope": {
+          "source": "codex capability probe: Current Codex executable exposes the required supervised local contract.",
+          "state": "verified",
+          "unit": "write-scope"
+        }
+      },
+      "host": "codex",
+      "settings": {
+        "adapter_kind": "codex-app-server",
+        "allowed_command_patterns": [
+          "git rev-parse HEAD",
+          "cat .project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/REQUIREMENTS.md .project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/FOLLOWUP-AMENDMENT.md .project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/IMPLEMENTATION.md evidence/recommendation-update/REPORT.md evidence/recommendation-update/FREEZE.md",
+          "git diff a456589ee3a5631ee246a491225dca0c7deea17e HEAD -- skills/strategic-advisor/SKILL.md skills/strategic-advisor/references scripts/run_drift_smoke_live.py tests/test_run_drift_smoke_live.py scripts/validate.py tests/test_validate.py scripts/build_evals.py .project-workflow/CONSTITUTION.md",
+          "cat evidence/recommendation-update/run/result.json evidence/recommendation-update/source-audit.json evidence/recommendation-update/package-verification.json",
+          "cat evidence/recommendation-update/cases.json evidence/recommendation-update/drift016-original.json",
+          "cat evidence/first-pass/pw-010-upgrade.json evidence/recommendation-update/structural-validation.log evidence/recommendation-update/generated-inventory.log",
+          "git status --short",
+          "cat evidence/recommendation-update/T3-COMPARISON.md"
+        ],
+        "allowed_tools": [
+          "exec_command",
+          "apply_patch"
+        ],
+        "enabled": true,
+        "executable": "/Applications/ChatGPT.app/Contents/Resources/codex",
+        "executable_identity": "sha256:a30ec314bbd0e3721632234d07db7c99855db3b9f1e32dbe8c791947f07e7629",
+        "expected_version": "codex-cli 0.153.4",
+        "model": "gpt-5.6-sol",
+        "prompt": "Perform the one independent QA for Strategic Advisor TASK-036. Write only evidence/recommendation-update/INDEPENDENT-QA.md using apply_patch. No product/workflow edits, tests, model evaluations, agents, network, Git mutations, or extra investigation outside the seven exact read commands below. The approved task is initial first-pass/continuation improvements plus an explicit owner amendment separating exploration from endorsement. The amendment authorises affected-only proof on alpha.10 (12 turns), not another full 52-turn suite. Historical alpha.9 8/8 focused and 15/16 full-suite observations remain historical. Do not waive any actual defect, but do not demand a new full suite or universal reliability to satisfy this narrower approved scope. Review the full branch product/runner diff against a456589ee3a5631ee246a491225dca0c7deea17e; only the two recommendation-update files changed in the latest repair. Canonical PW0.9.2/0.10 upgrades have retained package identity evidence; do not re-review generated CLI internals. Inspect actual outputs, source audit, approved intent and scope, rubric correction (old failure must remain and T3 criterion unchanged), runtime/provenance, explicit next-step ownership, flexible yet evidence-based updates, and privacy/claim boundaries. One product implementation attempt is already consumed. A substantive finding may block this candidate; no further model testing can be commissioned. Report reviewed HEAD, AC coverage, evidence, prioritized findings with precise paths, and verdict Pass / Pass with follow-ups / Changes requested. Include Intent adversarial verdict and answer whether every in-scope AC could pass while the approved user job remains undone, explaining why. Scope that judgment to implemented and bounded synthetic capability, not real-world strategic effectiveness. Publication/install/merge are excluded. Spend at most 300 seconds, 100,000 tokens and ten tools. Shell commands must exactly match one of the following (no wrappers/pipes/separators). Use only necessary reads then write the report. These are existing retained artifacts; no test command is allowed.\ngit rev-parse HEAD\ncat .project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/REQUIREMENTS.md .project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/FOLLOWUP-AMENDMENT.md .project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/IMPLEMENTATION.md evidence/recommendation-update/REPORT.md evidence/recommendation-update/FREEZE.md\ngit diff a456589ee3a5631ee246a491225dca0c7deea17e HEAD -- skills/strategic-advisor/SKILL.md skills/strategic-advisor/references scripts/run_drift_smoke_live.py tests/test_run_drift_smoke_live.py scripts/validate.py tests/test_validate.py scripts/build_evals.py .project-workflow/CONSTITUTION.md\ncat evidence/recommendation-update/run/result.json evidence/recommendation-update/source-audit.json evidence/recommendation-update/package-verification.json\ncat evidence/recommendation-update/cases.json evidence/recommendation-update/drift016-original.json\ncat evidence/first-pass/pw-010-upgrade.json evidence/recommendation-update/structural-validation.log evidence/recommendation-update/generated-inventory.log\ngit status --short\nRead this exact command as well: cat evidence/recommendation-update/T3-COMPARISON.md. Pay special attention to the unresolved interpretive question it records; evaluate the actual change, not merely the automatic passing grade.",
+        "required_changed_paths": [
+          "evidence/recommendation-update/INDEPENDENT-QA.md"
+        ],
+        "schema_version": 1,
+        "test_command_patterns": [],
+        "trust": "trusted-local"
+      },
+      "version": "codex-cli 0.153.4"
+    },
+    "limits": {
+      "agent-budget": {
+        "consumed": 0,
+        "maximum": 100000,
+        "native_unit": "tokens",
+        "source": "operator configuration: sa-update-sealed-review.json",
+        "state": "verified"
+      },
+      "changed-paths": {
+        "consumed": 0,
+        "maximum": 1,
+        "native_unit": "changed-paths",
+        "source": "operator configuration: sa-update-sealed-review.json",
+        "state": "verified"
+      },
+      "elapsed-seconds": {
+        "consumed": 0,
+        "maximum": 300,
+        "native_unit": "seconds",
+        "source": "operator configuration: sa-update-sealed-review.json",
+        "state": "verified"
+      },
+      "identical-retries": {
+        "consumed": 0,
+        "maximum": 1,
+        "native_unit": "identical-retries",
+        "source": "operator configuration: sa-update-sealed-review.json",
+        "state": "verified"
+      },
+      "test-invocations": {
+        "consumed": 0,
+        "maximum": 1,
+        "native_unit": "test-invocations",
+        "source": "operator configuration: sa-update-sealed-review.json",
+        "state": "verified"
+      },
+      "tool-calls": {
+        "consumed": 0,
+        "maximum": 10,
+        "native_unit": "tool-calls",
+        "source": "operator configuration: sa-update-sealed-review.json",
+        "state": "verified"
+      },
+      "turns": {
+        "consumed": 0,
+        "maximum": 1,
+        "native_unit": "turns",
+        "source": "operator configuration: sa-update-sealed-review.json",
+        "state": "verified"
+      },
+      "worker-launches": {
+        "consumed": 0,
+        "maximum": 1,
+        "native_unit": "worker-launches",
+        "source": "operator configuration: sa-update-sealed-review.json",
+        "state": "verified"
+      },
+      "write-scope": {
+        "consumed": 0,
+        "maximum": 1,
+        "native_unit": "write-scope",
+        "source": "operator configuration: sa-update-sealed-review.json",
+        "state": "verified"
+      }
+    },
+    "permitted_operations": [
+      "material-execution"
+    ],
+    "phase": "verification",
+    "progress": {
+      "attempt": 1,
+      "baseline_evidence_identity": null,
+      "baseline_source_identity": null,
+      "current_evidence_identity": "sha256:feec0d04a093a323aa8e4953c8ded9de795223dc88cecacc54c31e8d4a405958",
+      "current_source_identity": "670b26f812b3da45440738fb1f279813c3dd047c",
+      "finding_id": null
+    },
+    "proof_obligations": [
+      "verification-contract:sha256:e5377465bd1537143495fe5bf94f8529151a4e8ccf2a2d7c4c4b3b2171e578d0",
+      "verification-claim:Exploration and endorsement remain distinct while genuine priority changes can revise advice",
+      "One independent QA of approved TASK-036 and explicit affected-only follow-up; no test or additional model call authority"
+    ],
+    "receipts": [
+      {
+        "candidate_identity": "670b26f812b3da45440738fb1f279813c3dd047c",
+        "capability_identity": "sha256:80bfaa441cc714b59abbc2c7ae6756df04698471d7aa4933b96eccda7d01dc01",
+        "evidence_identity": "sha256:b98ad26100f2285959558d9cfaaa32476e33fd5b3f0219880db5dc092036f851",
+        "kind": "codex-adapter",
+        "native_metrics": {
+          "agent-budget": 0,
+          "changed-paths": 0,
+          "elapsed-seconds": 0,
+          "identical-retries": 0,
+          "test-invocations": 0,
+          "tool-calls": 0,
+          "turns": 0,
+          "worker-launches": 0,
+          "write-scope": 0
+        },
+        "operation": "material-execution",
+        "outcome": "infrastructure-failure",
+        "phase": "verification",
+        "proof_obligations_identity": "sha256:258a0d02c951fd594c5704d8b05f88a2420ad09af7917b07331a0e00312695f3",
+        "receipt_identity": "sha256:82fde64df0c7fdea2142a92608fb42468ee3bf2724cd3664a2c0609ba8154976",
+        "schema_version": 1,
+        "sealed_identity": "sha256:c9a9729cf7c03723c865a9e66940b1715bef4db885f481fcf09e14026a26f9bb",
+        "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+        "work_id": "TASK-036"
+      }
+    ],
+    "schema_version": 1,
+    "sealed_identity": "sha256:c9a9729cf7c03723c865a9e66940b1715bef4db885f481fcf09e14026a26f9bb",
+    "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+    "work_id": "TASK-036"
+  },
+  "host_facts": {
+    "context_contract": "declared",
+    "telemetry": "unknown"
+  },
+  "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+  "last_boundary": {
+    "affected_units": [
+      "TASK-036"
+    ],
+    "amendment_identity": null,
+    "boundary": "before-review-or-complete",
+    "capability_change": "One committed correction; approved affected-only proof green; independent substantive review still required",
+    "classification": "inside-envelope",
+    "decided_by": "Coordinator",
+    "decision_date": "2026-09-16",
+    "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+    "relevant_ocs": [
+      "OC1",
+      "OC2",
+      "OC3",
+      "OC7"
+    ],
+    "shared_premises_valid": "yes",
+    "source_identity": "sha256:2c6a00c0368cd5f6fb243a5be548fd0d52033f80f2750edebc8df32c544ffde0",
+    "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+    "user_consequence": "No new tests or runtime changes; one sealed reviewer evaluates the remaining T3 interpretation"
+  },
+  "loaded_contract": {
+    "asset_version": "8",
+    "context_id": "01a0a7cf-f784-7341-884c-4475eb211baf",
+    "contract_version": "2",
+    "package_version": "0.10.0",
+    "recorded_at": "2026-09-16"
+  },
+  "next_action": "Continue inside envelope.",
+  "outcome_checkpoint": {
+    "checkpoint_unit": "TASK-036",
+    "claim_class": "user-facing",
+    "record": {
+      "actor": "Synthetic user in five isolated Codex CLI sessions",
+      "claim_class": "user-facing",
+      "material_operations": "Twelve actual advisor turns with criteria hidden; separate adjudication; exact source audit",
+      "normal_entry_point": "Explicit Strategic Advisor invocation through the existing runner",
+      "observations": "All twelve isolated turn contexts match; run/result.json and T3-COMPARISON.md retain actual behaviour; no full-suite or effectiveness claim",
+      "owner_judgment": "not-required",
+      "recorded_at": "2026-09-16",
+      "recorded_by": "Coordinator",
+      "resulting_state_or_artifact": "Three groups graded pass on alpha.10; T3 comparative endorsement remains explicitly assigned to independent QA",
+      "source_environment": "670b26f812b3da45440738fb1f279813c3dd047c; runtime dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e; Codex CLI gpt-5.6-sol",
+      "starting_state": "Frozen failed-exchange, tone variants and changed-priority prompts",
+      "unit_id": "TASK-036",
+      "verdict": "pass"
+    },
+    "required": true,
+    "status": "pass"
+  },
+  "phase": "verification",
+  "repositories": {
+    ".": {
+      "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c"
+    }
+  },
+  "schema_version": 2,
+  "source_revision": "670b26f812b3da45440738fb1f279813c3dd047c",
+  "target_id": "TASK-036",
+  "verification_campaign": {
+    "adapter": {
+      "capabilities": [],
+      "command": null,
+      "kind": "manual",
+      "manual_command": "Existing runner on frozen evidence/recommendation-update/cases.json: max 12 target calls and 1200 seconds; zero retries, no retuning; full stage is this entire affected-only envelope."
+    },
+    "affected_scope": [
+      "Frozen recommendation-update follow-up: three groups and twelve turns"
+    ],
+    "candidate_identity": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+    "claims": [
+      "Exploration and endorsement remain distinct while genuine priority changes can revise advice"
+    ],
+    "current_stage": null,
+    "diagnostic_decision": null,
+    "impact": "known",
+    "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+    "limits": {
+      "max_elapsed_seconds": 1202,
+      "max_failures": 1,
+      "max_target_calls": 12
+    },
+    "mode": "certification",
+    "next_action": "Proceed to the one existing independent QA gate.",
+    "outcome": "pass",
+    "proof_contract_identity": "sha256:e5377465bd1537143495fe5bf94f8529151a4e8ccf2a2d7c4c4b3b2171e578d0",
+    "receipt_ledger_identity": "sha256:e91c29c27a49a3a7e9ce8d401cb308298731009b4441bd7de9e358ac76f2938c",
+    "receipts": [
+      {
+        "artifact": "evidence/recommendation-update/structural-validation.log",
+        "candidate_identity": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+        "elapsed_seconds": 2,
+        "evaluator_identity": "repository-structural-and-generated-inventory-checks",
+        "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+        "outcome": "pass",
+        "proof_contract_identity": "sha256:e5377465bd1537143495fe5bf94f8529151a4e8ccf2a2d7c4c4b3b2171e578d0",
+        "receipt_identity": "sha256:7bc90c3e3cced052efdafefd57c8742514eb6e6c86720168502fa8f1c1eba248",
+        "recorded_at": "2026-09-16",
+        "regrade": false,
+        "runtime_identity": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+        "scope": [
+          "Frozen recommendation-update follow-up: three groups and twelve turns"
+        ],
+        "source_identity": "sha256:2c6a00c0368cd5f6fb243a5be548fd0d52033f80f2750edebc8df32c544ffde0",
+        "stage": "deterministic",
+        "stage_complete": true,
+        "target_calls": 0,
+        "target_identity": "670b26f812b3da45440738fb1f279813c3dd047c"
+      },
+      {
+        "artifact": "evidence/recommendation-update/run/result.json",
+        "candidate_identity": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+        "elapsed_seconds": 453,
+        "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+        "intent_identity": "sha256:9f5ff1b673deec479289c4e9fdcbc7c973761695d846d33116525518dfaec6cf",
+        "outcome": "pass",
+        "proof_contract_identity": "sha256:e5377465bd1537143495fe5bf94f8529151a4e8ccf2a2d7c4c4b3b2171e578d0",
+        "receipt_identity": "sha256:aaa53135a31d1db0fca36ea9e3181f8abc964aac86cec2f4f5aa85b4f84c9adb",
+        "recorded_at": "2026-09-16",
+        "regrade": false,
+        "runtime_identity": "dcabf9af2b62258a8b6274c4e9febedfa1130d81837acea819f4bf65c7841b5e",
+        "scope": [
+          "Frozen recommendation-update follow-up: three groups and twelve turns"
+        ],
+        "source_identity": "sha256:2c6a00c0368cd5f6fb243a5be548fd0d52033f80f2750edebc8df32c544ffde0",
+        "stage": "full",
+        "stage_complete": true,
+        "target_calls": 12,
+        "target_identity": "sha256:eb88707f39cd176f85308cef3a2e3ddcf41e7dc2bfe8661a541b1cf2ee0669b2"
+      }
+    ],
+    "schema_version": 1,
+    "source_identity": "sha256:2c6a00c0368cd5f6fb243a5be548fd0d52033f80f2750edebc8df32c544ffde0",
+    "stages": [
+      "deterministic",
+      "full"
+    ]
+  },
+  "verification_requirement": {
+    "affected_scope": [
+      "Frozen recommendation-update follow-up: three groups and twelve turns"
+    ],
+    "claims": [
+      "Exploration and endorsement remain distinct while genuine priority changes can revise advice"
+    ],
+    "proof_contract_identity": "sha256:e5377465bd1537143495fe5bf94f8529151a4e8ccf2a2d7c4c4b3b2171e578d0",
+    "required": true,
+    "stages": [
+      "deterministic",
+      "full"
+    ]
+  },
+  "work_item_path": ".project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation"
+}

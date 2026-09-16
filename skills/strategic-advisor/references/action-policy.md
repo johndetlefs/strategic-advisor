@@ -19,9 +19,9 @@ Identify:
 - the **leverage point**: the change most likely to relax that constraint or reveal that the model is wrong; and
 - the **opportunity cost**: the concrete alternative, time, capital, attention, trust, or option displaced by the recommendation.
 
-Recommend only the next one to three moves. For each move, state its purpose, required evidence or condition, exposure, and exit. Prefer moves that create information while preserving options.
+Recommend only the next one to three moves. For each move, make its owner, purpose, required evidence or condition, material exposure, and exit clear. Prefer moves that create information while preserving options. Perform authorised accessible investigation rather than hand it back as owner homework. If the owner must supply a value choice, consent or inaccessible fact, ask that focused question and explain which next actions it distinguishes. Unsupported commitment should open a concrete path to learning, not close with a verdict.
 
-Always define controls:
+Define the controls material to the proposed action; do not manufacture a checklist:
 
 - **Falsifiers**: observations that would materially break the causal thesis.
 - **Stop conditions**: events or thresholds that require pausing, exiting, or escalating.
