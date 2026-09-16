@@ -1,0 +1,42 @@
+{
+  "owner_authority": "2026-09-16: Yes, let us do that, please, and then continue.",
+  "prior_work": "Retained; no budgets reset and no previous success repeated. At least 115 advisor and 48 grading calls were recorded at pause. The unfinished checkpoint had consumed eight of its fifty advisor calls. Interrupted or unretained attempts may make the historical total higher.",
+  "verification": {
+    "path": "Project Workflow supported declared manual verification command; existing runner enforces frozen limits",
+    "checkpoint": "/private/tmp/sa-isolated-final/evidence/evaluations/isolated-drift-remaining/.live-progress.json",
+    "existing_total_target_limit": 50,
+    "already_consumed_target_calls": 8,
+    "maximum_additional_target_calls": 42,
+    "existing_total_elapsed_limit_seconds": 2700,
+    "already_consumed_elapsed_seconds": 227,
+    "maximum_additional_elapsed_seconds": 2473,
+    "remaining_case_adjudications": 13,
+    "additional_infrastructure_retries": 0,
+    "additional_product_repairs": 0,
+    "replacement_campaigns": 0,
+    "stop": "First failure or exhausted limit. Preserve incomplete proof; no automatic repair or restarted campaign."
+  },
+  "review": {
+    "count": 1,
+    "condition": "Material verification green",
+    "path": "project execute with sealed Codex configuration",
+    "max_elapsed_seconds": 300,
+    "max_tokens": 24000,
+    "max_tool_calls": 18,
+    "new_tests": 0,
+    "write_scope": [
+      "evidence/first-pass/INDEPENDENT-QA.md"
+    ]
+  },
+  "delivery": "Cheap document/identity reconciliation, Doctor once after state edits, then commit, push same branch and draft PR. No merge/publication/install.",
+  "enforcement_boundary": "0.10 sealed Codex tools disable network and cannot supervise nested network-dependent verifier calls unchanged. Use the documented manual verification path with immutable existing runner limits, not a claim of aggregate nested-model enforcement. Sealed QA owns only local reads and its report.",
+  "outcome": {
+    "additional_target_calls": 42,
+    "additional_adjudicator_calls": 13,
+    "verification": "product-failure at DRIFT-016",
+    "additional_product_repairs": 0,
+    "replacement_campaigns": 0,
+    "independent_reviews": 0,
+    "sealed_review_activation": "not attempted because verification gate failed"
+  }
+}

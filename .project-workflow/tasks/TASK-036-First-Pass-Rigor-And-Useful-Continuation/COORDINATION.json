@@ -99,6 +99,27 @@
       "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
       "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
       "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
+    },
+    {
+      "affected_units": [
+        "TASK-036"
+      ],
+      "amendment_identity": ".project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/OWNER-AMENDMENT.md",
+      "boundary": "new-evidence-or-owner-reframe",
+      "capability_change": "Owner approves canonical 0.10 upgrade and fixed remaining continuation; no runtime or case change",
+      "classification": "approved-change",
+      "decided_by": "John Detlefs via current task approval",
+      "decision_date": "2026-09-16",
+      "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+      "relevant_ocs": [
+        "OC5",
+        "OC6",
+        "OC7"
+      ],
+      "shared_premises_valid": "yes",
+      "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
+      "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
+      "user_consequence": "Reuse passing proof; one resume within original checkpoint counters; one sealed independent QA if green"
     }
   ],
   "decisions": [],
@@ -111,18 +132,14 @@
     "affected_units": [
       "TASK-036"
     ],
-    "amendment_identity": null,
+    "amendment_identity": ".project-workflow/tasks/TASK-036-First-Pass-Rigor-And-Useful-Continuation/OWNER-AMENDMENT.md",
     "boundary": "new-evidence-or-owner-reframe",
-    "capability_change": "Runtime unchanged; correct target resume cwd and failure counter; earlier source-invalid proof retained in archived campaign",
-    "classification": "inside-envelope",
-    "decided_by": "Coordinator",
+    "capability_change": "Owner approves canonical 0.10 upgrade and fixed remaining continuation; no runtime or case change",
+    "classification": "approved-change",
+    "decided_by": "John Detlefs via current task approval",
     "decision_date": "2026-09-16",
     "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
     "relevant_ocs": [
-      "OC1",
-      "OC2",
-      "OC3",
-      "OC4",
       "OC5",
       "OC6",
       "OC7"
@@ -130,16 +147,16 @@
     "shared_premises_valid": "yes",
     "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
     "source_revision": "ec9d00504c935d062a59625b9657fb2497f3721b",
-    "user_consequence": "Refresh affected multi-turn proof with fixed inputs; single-turn evidence retained; no additional product repair"
+    "user_consequence": "Reuse passing proof; one resume within original checkpoint counters; one sealed independent QA if green"
   },
   "loaded_contract": {
     "asset_version": "8",
     "context_id": "01a0a7cf-f784-7341-884c-4475eb211baf",
     "contract_version": "2",
-    "package_version": "0.9.2",
+    "package_version": "0.10.0",
     "recorded_at": "2026-09-16"
   },
-  "next_action": "Run only the current full stage.",
+  "next_action": "Blocked after DRIFT-016 failure; no further tests, repairs or QA within the consumed allowance. Push the documented draft; any later correction needs a new bounded owner decision.",
   "outcome_checkpoint": {
     "checkpoint_unit": "TASK-036",
     "claim_class": "user-facing",
@@ -181,10 +198,10 @@
       "max_target_calls": 68
     },
     "mode": "certification",
-    "next_action": "Run only the current full stage.",
-    "outcome": "pending",
+    "next_action": "Campaign limit reached with required proof still missing: max_failures reached or exceeded (1/1); max_target_calls reached or exceeded (68/68). Record a current scope/limit decision; no pass is implied.",
+    "outcome": "limit-reached",
     "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
-    "receipt_ledger_identity": "sha256:7ab0de7dccb1936c944033239a1a545821fcd1d73234d331ea97cce1f5e99ce8",
+    "receipt_ledger_identity": "sha256:3d115a90151bdf4d215e3a8551740dccbdf502ebefe73ec431fc22cd02329c5b",
     "receipts": [
       {
         "artifact": "evidence/first-pass/resume-regression-tests.log",
@@ -248,6 +265,27 @@
         "stage_complete": true,
         "target_calls": 16,
         "target_identity": "sha256:aeeba01b027100984a97ba2ff557e495c64a6ca22ad8d14a1641fc1bb6adb8cb"
+      },
+      {
+        "artifact": "evidence/first-pass/completed-drift-remaining/result.json",
+        "candidate_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+        "elapsed_seconds": 1463,
+        "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+        "intent_identity": "sha256:7beffa5cd75a25e17fc529d07d8db50b531ed231580d33c67245f295dd85ddab",
+        "outcome": "product-failure",
+        "proof_contract_identity": "sha256:9b1322688c10b4742dbcde2f9731f2a6e5dee2d085a8fd0dd8666dba6bc1be57",
+        "receipt_identity": "sha256:4e2b04ac10a3342b87e85658230eb04d595c27efd67fcc6eddfd1a4edee31250",
+        "recorded_at": "2026-09-16",
+        "regrade": false,
+        "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+        "scope": [
+          "TASK-036 eight synthetic cases and current-source drift smoke"
+        ],
+        "source_identity": "sha256:5b62ec6a7c31178092e6d3a8c87a4b7fc1de6aa95e9392dfc51c27ea91d34497",
+        "stage": "full",
+        "stage_complete": true,
+        "target_calls": 50,
+        "target_identity": "sha256:b3595b3f1f1de9e533f21ec9da661c71d86e8ff54b46e00ea9dd408ee957b76a"
       }
     ],
     "schema_version": 1,

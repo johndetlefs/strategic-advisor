@@ -1,0 +1,33 @@
+{
+  "package": "project-workflow==0.10.0",
+  "commit": "00de6638f6984e837115baff7e4136eb48b96a9f",
+  "plan_fingerprint": "sha256:7ac61e44425a948829d65d784cba99308ba8586e7b59cedfc2f0cb9d2e7a6f0a",
+  "canonical_expected_output_checks": [
+    {
+      "artifact": ".agents/skills/project-architect/SKILL.md",
+      "expected": "sha256:99feee9b53098829a645146e3c0727804bf4b83a644fd0cdd1811ca65bf09c0f",
+      "actual": "sha256:99feee9b53098829a645146e3c0727804bf4b83a644fd0cdd1811ca65bf09c0f",
+      "match": true
+    },
+    {
+      "artifact": ".project-workflow/cli/workflow.py",
+      "expected": "sha256:8cb6a470e0608bb9367feccf2819d8b7392f10d3bad99e510169dfddc9c3dbb1",
+      "actual": "sha256:8cb6a470e0608bb9367feccf2819d8b7392f10d3bad99e510169dfddc9c3dbb1",
+      "match": true
+    },
+    {
+      "artifact": ".project-workflow/manifest.json",
+      "expected": "sha256:996d57ada73b0b3d24e7c37f35456ca69619fb03ae2c647e8d6f6c6bc4ef5b85",
+      "actual": "sha256:996d57ada73b0b3d24e7c37f35456ca69619fb03ae2c647e8d6f6c6bc4ef5b85",
+      "match": true
+    },
+    {
+      "artifact": "AGENTS.md",
+      "expected": "sha256:94efcdd537d67e08727991c0a0a984ed80cc0144f573e4de5c3bafc1a31c0404",
+      "actual": "sha256:94efcdd537d67e08727991c0a0a984ed80cc0144f573e4de5c3bafc1a31c0404",
+      "match": true
+    }
+  ],
+  "schema_migrations": [],
+  "scope": "Canonical asset identity only; runtime activation is a separate proof obligation"
+}

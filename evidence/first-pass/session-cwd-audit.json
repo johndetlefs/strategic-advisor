@@ -520,6 +520,508 @@
         }
       ],
       "matched_rollout_count": 1
+    },
+    {
+      "run": "isolated-baseline-recovery",
+      "case_id": "FIRST-001",
+      "session_id": "01a0a82b-9ac0-7ef0-b424-e97576afe020",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-as3f3z54",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-as3f3z54",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "isolated-baseline-recovery",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82c-6da6-7942-97ba-b7856cf6460e",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-as3f3z54",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-as3f3z54",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "isolated-baseline-recovery",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82d-4091-7b30-949e-733e84fab46f",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-as3f3z54",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-as3f3z54",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "isolated-baseline-recovery",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82e-462c-7c70-bf49-9f6ab88a119e",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-as3f3z54",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-as3f3z54",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "isolated-candidate-recovery",
+      "case_id": "FIRST-001",
+      "session_id": "01a0a82b-9a87-7091-9f07-a458bda78304",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-hi5zdctg",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-hi5zdctg",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "isolated-candidate-recovery",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82c-8f39-7171-b86f-d31f0cd6d7e2",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-hi5zdctg",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-hi5zdctg",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "isolated-candidate-recovery",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82d-57a9-7002-89c5-2dada75e1989",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-hi5zdctg",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-hi5zdctg",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "isolated-candidate-recovery",
+      "case_id": "FIRST-006",
+      "session_id": "01a0a82e-e3e4-7af2-8b9e-7355b8ba1ee9",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-hi5zdctg",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-hi5zdctg",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-001",
+      "session_id": "01a0a832-1be7-7cb3-9283-5709cdbff809",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 2,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-001",
+      "session_id": "01a0a832-cb44-7740-9c04-0b45b43fbcff",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 2,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-002",
+      "session_id": "01a0a833-fb94-7bf1-a8ce-a8bae1a7e0d1",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 3,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-003",
+      "session_id": "01a0a834-d953-7993-840f-c976b3be4a0e",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 3,
+      "aborted_turn_events": 1
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-004",
+      "session_id": "01a0a83b-8f34-7f00-bf8c-85981caf601a",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 4,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-005",
+      "session_id": "01a0a83c-c1bc-7191-89c2-eebb32995af8",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 3,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-006",
+      "session_id": "01a0a83d-b04f-7762-9012-78219aaea467",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 4,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-007",
+      "session_id": "01a0a83f-d2a5-70f2-8f64-3b00020dbd17",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 4,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-008",
+      "session_id": "01a0a841-e227-74a2-b35d-2236f3c08fc9",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 3,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-009",
+      "session_id": "01a0a842-fc2d-7903-8f97-e6e55624a9df",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 2,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-010",
+      "session_id": "01a0a844-07cd-7610-97ee-bafbf9ae9114",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 2,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-012",
+      "session_id": "01a0a844-f47c-7792-8491-1382b9f40b88",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 2,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-013",
+      "session_id": "01a0a847-50ee-74c0-9f55-2a4e1c12fcfa",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 3,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-013",
+      "session_id": "01a0a846-12bc-74f0-920d-4f48afdf192c",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 3,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-014",
+      "session_id": "01a0a848-8299-7cd2-b279-e24a2c86b9dd",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 3,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-015",
+      "session_id": "01a0a849-b6f4-7983-b58b-4bf0e93be22e",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 3,
+      "aborted_turn_events": 0
+    },
+    {
+      "run": "completed-drift-remaining",
+      "case_id": "DRIFT-016",
+      "session_id": "01a0a84a-d483-7c22-91d7-8847b1a8c648",
+      "contexts": [
+        {
+          "cwd": "/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        },
+        {
+          "cwd": "/private/var/folders/h2/bg9tb5m911509xyft70whbr80000gn/T/sa-drift-target-s_1y91x5",
+          "matches_frozen_target": true
+        }
+      ],
+      "matched_rollout_count": 1,
+      "completed_turn_events": 4,
+      "aborted_turn_events": 0
     }
   ]
 }

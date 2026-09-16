@@ -4,12 +4,13 @@ The change removes mandatory public readiness headings and the eight-section rep
 
 ## Scope and delivery
 
-Project Workflow 0.9.2 is included unchanged in a separate commit on `codex/advisor-first-pass-continuation`. The old 20,000-line diff was this generated upgrade, not stale main. The advisor changes and the narrow evaluation-source correction share that branch.
+Project Workflow 0.9.2 is included unchanged in a separate commit, followed by the owner-approved canonical 0.10.0 upgrade on `codex/advisor-first-pass-continuation`. The old 20,000-line diff was this generated upgrade, not stale main. The advisor changes and the narrow evaluation-source correction share that branch.
 
-- Upgrade: `b7e8510`.
+- Original upgrade: `b7e8510`; canonical 0.10.0 upgrade: `00de663`.
 - Initial advisor candidate and frozen cases: `659ad6b`.
 - Evaluation source binding: `a0de963`.
 - One targeted ownership repair and prepared alpha.9: `ce6563f`.
+- Resume directory and failure counter fixes: `ec9d005`.
 - Alpha.9 runtime: `cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e`.
 - Merge, publication and host installation are outside this authorised delivery. The installed version has not been replaced.
 
@@ -26,13 +27,15 @@ The corrected alpha.8 run still failed FIRST-004 on missing ownership. The one p
 ## Evidence inventory
 
 - `FREEZE.md`: case identity, model controls, budgets and source-routing correction.
-- `baseline/`: valid alpha.7 comparison, six passing and two failing groups.
+- `comparison.json`: exact per-case retained/recovered sources; baseline six of eight, alpha.9 eight of eight.
+- `baseline/`: six usable single-turn groups; its FIRST-001/FIRST-006 are excluded and replaced by `isolated-baseline-recovery/`.
+- `isolated-candidate-recovery/`: replacement FIRST-001/FIRST-006 observations; all sixteen recovered comparison turn contexts match their isolated target directories in `session-cwd-audit.json`.
 - `candidate-before-repair/`: valid alpha.8 failure retained unchanged.
 - `final-canary/`: alpha.9 FIRST-004, passing with each team's process owner assigned the observation.
 - `invalid-source/`: excluded initial sessions; no current-runtime conclusions may be drawn from these.
 - `deterministic-tests.log`: 226-test suite pass before the narrow runner repair.
 - `affected-validator-tests.log`: 46 validator tests pass, including historical-proof relabelling rejection.
-- `runner-regression-tests.log`: 19 runner tests pass after source-binding repair.
+- `runner-regression-tests.log`: 19 runner tests pass after source-binding repair; `resume-regression-tests.log`: 21 pass after resume-directory and verdict-counter fixes.
 - `alpha9-package-*-verification.json`: two reproducible, clean-source, identity-checked artifact builds from `ce6563f`.
 
 ## Before and after example
@@ -44,6 +47,10 @@ For the shared-runtime proposal, alpha.7 correctly withheld a merger and propose
 Prepared and structurally verified is not published, installed, supported, owner-accepted or strategically effective. Behavioural observations apply to these frozen CLI cases only. Historical alpha.6/alpha.7 diagnostics remain labelled historical, and historical source-access summaries have not been re-audited by this task.
 
 Final comparison: **Eight recovered scenario groups recorded in comparison.json: baseline six pass, alpha.9 eight pass.** Invalid earlier multi-turn observations remain excluded. The current index uses isolated-baseline-recovery and isolated-candidate-recovery for FIRST-001/FIRST-006.
-Current-source drift regression: **incomplete; stopped after owner challenged verification overrun.** See VERIFICATION-PAUSE.md. No runner remains active.
-Independent QA: pending.
-Push: pending.
+Current-source drift regression: **FAIL: 15/16 groups passed; DRIFT-016 failed.** See BLOCKING-FINDING.md and drift-summary.json. The resumed checkpoint completed 42 additional advisor calls and 13 additional adjudications without another repair. Total retained checkpoint consumption is 50 advisor calls and 15 adjudications; the separate canary accounts for two more turns.
+Independent QA: **Not started; verification failed and the allowed repair was already used.** The prepared sealed review was not activated.
+Push: authorised for a blocked draft; the remote branch and draft PR are the delivery evidence.
+
+The owner-challenged verification overrun is retained in VERIFICATION-PAUSE.md. Project Workflow 0.10 applies sealed execution is available for a later local review; external model verification uses its separately supported manual path and the unchanged runner checkpoint limits. No aggregate nested-model enforcement claim is made.
+
+The failure is a remaining gap against the task’s core user outcome. The candidate is implemented but not fully behaviourally validated. No later passing answer, narrow 8/8 comparison, static test, or prepared ZIP overrides it.

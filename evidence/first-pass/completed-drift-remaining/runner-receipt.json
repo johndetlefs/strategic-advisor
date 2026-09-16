@@ -1,0 +1,59 @@
+{
+  "artifact": "evidence/evaluations/isolated-drift-remaining/result.json",
+  "candidate_identity": "sha256:b3595b3f1f1de9e533f21ec9da661c71d86e8ff54b46e00ea9dd408ee957b76a",
+  "capabilities": [
+    "request-binding",
+    "selection",
+    "fail-fast",
+    "limits",
+    "typed-outcomes",
+    "checkpoint-resume",
+    "input-bound-receipts",
+    "transcript-regrade"
+  ],
+  "checkpoint_identity": "sha256:3a120cab9650767e3e09cb4443476ab40b93a785bc61ddd800d1950a2cd03d14",
+  "contract": "generic-verifier-receipt",
+  "diagnostic_decision": null,
+  "elapsed_seconds": 1236,
+  "evaluator_calls": 13,
+  "evaluator_identity": "sha256:b940bad26af976d92785d5abd1161936849ead1d4f1ae3b6101687fbf9395fd8",
+  "limits": {
+    "max_elapsed_seconds": 2700,
+    "max_failures": 1,
+    "max_target_calls": 50
+  },
+  "mode": "certification",
+  "outcome": "product-failure",
+  "proof_contract_identity": "sha256:84c1c493708bd1ff0721ffd0efadcb75a9ed10538fc8cca02e5eb278b5851350",
+  "receipt_identity": "sha256:9f2afb3ac68c1880e301f436b90a9eb1039fddc8352d9ab7de88264ad415a752",
+  "regrade": false,
+  "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+  "schema_version": 1,
+  "selected_scope": [
+    "DRIFT-001",
+    "DRIFT-002",
+    "DRIFT-003",
+    "DRIFT-004",
+    "DRIFT-005",
+    "DRIFT-006",
+    "DRIFT-007",
+    "DRIFT-008",
+    "DRIFT-009",
+    "DRIFT-010",
+    "DRIFT-012",
+    "DRIFT-013",
+    "DRIFT-014",
+    "DRIFT-015",
+    "DRIFT-016"
+  ],
+  "source_identity": "sha256:0043dc0d10f1903a2cc8c0ff83582e05d2ec00e120ecf307426ad338c9dfc83f",
+  "stage_complete": true,
+  "target_calls": 42,
+  "target_identity": "sha256:f1c9b7e727c567631800927d9a8f5513929e3220e467bd882f7e58952f4b7590",
+  "telemetry_totals": {
+    "elapsed_seconds": 1463,
+    "evaluator_calls": 15,
+    "failures": 1,
+    "target_calls": 50
+  }
+}

@@ -65,3 +65,7 @@ The repository may contain a skill, evaluation definitions, deterministic valida
 No output from the full skilled-versus-unskilled comparative matrix or formal real-pilot programme is present. The retained drift-smoke transcripts are separate bounded evidence and cannot be reused as the future comparative matrix or holdout. The next valid comparative step remains publishing and reviewing a new then-current authority commit, then creating the separate freeze commit exactly as specified.
 
 TASK-036 prepares a different runtime; the alpha.7 repair diagnostic is historical and does not validate the new candidate. Bounded comparison and current-source smoke are tracked in `evidence/first-pass/`.
+
+## TASK-036 alpha.9 bounded candidate
+
+The separate focused before/after comparison records alpha.7 at 6/8 and alpha.9 at 8/8. The current-source regression records 15/16 passing groups and a blocking DRIFT-016 failure. These are not the full skilled-versus-unskilled matrix above. See [the retained report](../first-pass/RUN-REPORT.md) and [blocking finding](../first-pass/BLOCKING-FINDING.md). Alpha.9 is prepared, not published or installed; independent QA was not started.

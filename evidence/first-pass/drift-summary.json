@@ -1,0 +1,68 @@
+{
+  "scope": "Union of two disjoint original certification results, not a fabricated full runner result.",
+  "status": "fail",
+  "passing_groups": 15,
+  "failing_groups": [
+    "DRIFT-016"
+  ],
+  "runtime_identity": "cdb4143fd33941f1ec24c4e0f00a00eb8cfd0c1d2f908be0c14c57489d79f54e",
+  "spec_sha256": "c3295bf81a840e482a8b78b40a421c97f8163211c74bcf16974861ef6684ed6e",
+  "host": "codex-cli",
+  "model": "gpt-5.6-sol",
+  "groups": 16,
+  "sessions": 18,
+  "turns": 52,
+  "case_ids": [
+    "DRIFT-001",
+    "DRIFT-002",
+    "DRIFT-003",
+    "DRIFT-004",
+    "DRIFT-005",
+    "DRIFT-006",
+    "DRIFT-007",
+    "DRIFT-008",
+    "DRIFT-009",
+    "DRIFT-010",
+    "DRIFT-011",
+    "DRIFT-012",
+    "DRIFT-013",
+    "DRIFT-014",
+    "DRIFT-015",
+    "DRIFT-016"
+  ],
+  "sources": [
+    {
+      "path": "isolated-resume-canary/result.json",
+      "sha256": "6e8c30b91d3c7a887ce16ef40833538b3f8d3c3af17c156b3e0e70da0228e6c9",
+      "case_ids": [
+        "DRIFT-011"
+      ]
+    },
+    {
+      "path": "completed-drift-remaining/result.json",
+      "sha256": "b7a0ccab5c3eec52be9a11cd47d5b14a821074e568d6095ce322c5cc3d6137d4",
+      "case_ids": [
+        "DRIFT-001",
+        "DRIFT-002",
+        "DRIFT-003",
+        "DRIFT-004",
+        "DRIFT-005",
+        "DRIFT-006",
+        "DRIFT-007",
+        "DRIFT-008",
+        "DRIFT-009",
+        "DRIFT-010",
+        "DRIFT-012",
+        "DRIFT-013",
+        "DRIFT-014",
+        "DRIFT-015",
+        "DRIFT-016"
+      ]
+    }
+  ],
+  "limits": "Original checkpoint limits preserved; one owner-approved continuation, no additional repair.",
+  "limitations": [
+    "One synthetic observation per scenario/variant; not a population reliability estimate.",
+    "No desktop activation, install, publication, adoption or real strategic-outcome claim."
+  ]
+}
