@@ -68,7 +68,7 @@ WORKFLOW_CONFIG_FILENAME = "config.json"
 
 WORKFLOW_MANIFEST_FILENAME = "manifest.json"
 
-CURRENT_PACKAGE_VERSION = "0.10.0"
+CURRENT_PACKAGE_VERSION = "0.10.1"
 
 CURRENT_MANIFEST_VERSION = 1
 
@@ -3965,6 +3965,8 @@ def _parse_operational_epic_tracker(
 
 def _inspect_operational_active_work(
     root: Path,
+    *,
+    include_terminal: bool = False,
 ) -> tuple[tuple[OperationalStatusWorkItem, ...], tuple[OperationalStatusFinding, ...]]:
     workflow_dir = root / ".project-workflow"
     tracker_path = workflow_dir / "TRACKER.md"
@@ -4054,7 +4056,7 @@ def _inspect_operational_active_work(
                     (global_source,),
                 )
             )
-        if lifecycle not in OPERATIONAL_STATUS_GLOBAL_TERMINAL_STATES:
+        if include_terminal or lifecycle not in OPERATIONAL_STATUS_GLOBAL_TERMINAL_STATES:
             work_item = _operational_work_item_from_row(row, kind=kind, source=global_source)
             if work_item is not None:
                 active_work.append(work_item)
@@ -4139,7 +4141,7 @@ def _inspect_operational_active_work(
                     )
                 )
             child_is_active = lifecycle not in OPERATIONAL_STATUS_EPIC_CHILD_TERMINAL_STATES
-            if parent_is_active and child_is_active:
+            if include_terminal or (parent_is_active and child_is_active):
                 work_item = _operational_work_item_from_row(
                     row,
                     kind="epic-child",
@@ -4148,7 +4150,7 @@ def _inspect_operational_active_work(
                 )
                 if work_item is not None:
                     active_work.append(work_item)
-            elif not parent_is_active and child_is_active:
+            if not parent_is_active and child_is_active:
                 findings.append(
                     OperationalStatusFinding(
                         "PW_STATUS_CLOSED_EPIC_HAS_ACTIVE_CHILD",
@@ -14185,23 +14187,10 @@ def _coordination_source_identity(state: Mapping[str, object]) -> str:
 def _verification_work_item_layers(
     root: Path, target_id: str
 ) -> tuple[str, dict[str, OperationalStatusProofLayer]]:
-    work_items, _findings = _inspect_operational_active_work(root)
+    # Verification and Doctor must retain completed children and their Epic provenance.
+    # The ordinary operational summary remains active-only by default.
+    work_items, _findings = _inspect_operational_active_work(root, include_terminal=True)
     matches = [item for item in work_items if item.item_id == target_id]
-    if not matches:
-        tracker_path = root / ".project-workflow" / "TRACKER.md"
-        if tracker_path.is_file():
-            _lines, _header, rows = _global_tracker_rows(tracker_path)
-            terminal_rows = [row for row in rows if row.get("ID", "").strip() == target_id]
-            if len(terminal_rows) == 1:
-                item = _operational_work_item_from_row(
-                    terminal_rows[0],
-                    kind=_operational_status_global_kind(target_id),
-                    source=OperationalStatusSource(
-                        "global-tracker", ".project-workflow/TRACKER.md"
-                    ),
-                )
-                if item is not None:
-                    matches = [item]
     if len(matches) != 1:
         raise ValueError(
             f"Operational lifecycle contains {len(matches)} work items named {target_id}; "
